@@ -358,6 +358,24 @@ strong { color: var(--text); }
   margin-top: 18px;
 }
 
+.latest-diary-block {
+  margin-bottom: 24px;
+}
+
+.latest-diary-cards {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 16px;
+}
+
+.latest-card {
+  min-height: 100%;
+}
+
+.small-cta-row {
+  margin-top: 12px;
+}
+
 .last-block { margin-bottom: 0; }
 
 .mini-hero h1 {
@@ -402,7 +420,8 @@ strong { color: var(--text); }
   .hero-shell,
   .feature-grid,
   .double-panel,
-  .topic-grid {
+  .topic-grid,
+  .latest-diary-cards {
     grid-template-columns: 1fr;
   }
 

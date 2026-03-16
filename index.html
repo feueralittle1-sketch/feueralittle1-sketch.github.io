@@ -171,5 +171,36 @@
         </div>
       </section>
     </main>
+    <script>
+      async function loadLatestDiary() {
+        const container = document.getElementById('latest-diary-cards');
+        if (!container) return;
+        try {
+          const res = await fetch('./data/diary.json', { cache: 'no-store' });
+          const data = await res.json();
+          const entries = Array.isArray(data.entries) ? data.entries.slice(0, 3) : [];
+          if (!entries.length) {
+            container.innerHTML = '<p>日記資料還在暖機中，等等再來撈龍蝦訊號。</p>';
+            return;
+          }
+          container.innerHTML = entries.map(entry => `
+            <article class="diary-entry latest-card">
+              <div class="entry-head">
+                <span class="entry-time">${entry.time}</span>
+                <span class="entry-date">${entry.date}</span>
+              </div>
+              <h3>${entry.title}</h3>
+              <p>${entry.summary}</p>
+              <div class="cta-row small-cta-row">
+                ${entry.url ? `<a class="button small-button" href="${entry.url}">看完整內容</a>` : ''}
+              </div>
+            </article>
+          `).join('');
+        } catch (err) {
+          container.innerHTML = '<p>最新日記暫時失聯，晚點再來看看。</p>';
+        }
+      }
+      loadLatestDiary();
+    </script>
   </body>
 </html>
