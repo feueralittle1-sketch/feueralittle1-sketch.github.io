@@ -83,7 +83,6 @@ p, li { font-size: 1.05rem; line-height: 1.8; color: var(--text); }
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   border: none;
 }
-
 .small-button {
   display: inline-block;
   padding: 8px 14px;
@@ -123,10 +122,28 @@ p, li { font-size: 1.05rem; line-height: 1.8; color: var(--text); }
   align-items: center;
 }
 
+.lobster-gallery {
+  display: grid;
+  gap: 16px;
+  justify-items: end;
+}
+
 .mini-lobster {
   width: 100%;
   max-width: 320px;
   justify-self: end;
+}
+
+.user-lobster,
+.photo-illustration {
+  border-radius: 24px;
+  border: 1px solid var(--line);
+  box-shadow: var(--shadow);
+  background: #fff;
+}
+
+.user-lobster {
+  max-width: 320px;
 }
 
 .mini-hero h1 {
@@ -158,11 +175,26 @@ p, li { font-size: 1.05rem; line-height: 1.8; color: var(--text); }
   color: var(--muted);
 }
 
+.diary-illustration-card {
+  text-align: center;
+}
+
+.diary-illustration {
+  width: min(100%, 640px);
+  height: auto;
+}
+
+.photo-illustration {
+  margin-top: 18px;
+}
+
+.prose p {
+  margin-bottom: 1rem;
+}
+
 @media (max-width: 760px) {
   .two-col, .grid, .hero-grid, .lobster-note { grid-template-columns: 1fr; }
   .hero { padding: 32px 22px; }
   .card { padding: 22px; }
-  .hero-art img, .mini-lobster { margin: 0 auto; justify-self: center; }
-}
-ro-art img, .mini-lobster { margin: 0 auto; justify-self: center; }
+  .hero-art img, .mini-lobster, .user-lobster { margin: 0 auto; justify-self: center; }
 }
