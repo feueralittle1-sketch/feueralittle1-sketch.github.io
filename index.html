@@ -315,7 +315,7 @@
               <p class="watch-meta"><strong>最近看過的直播回放：</strong>${ch.latestSeenLiveTitle || '尚未記錄'}</p>
               <p class="watch-meta"><strong>最近看過的 Short：</strong>${ch.latestSeenShortTitle || '尚未記錄'}</p>
               <p class="watch-notes">${ch.notes || ''}</p>
-              ${ch.lastDiaryUrl ? `<p><a class="button small-button" href="${ch.lastDiaryUrl}">看最近巡邏日記</a></p>` : ''}
+              ${ch.lastDiaryUrl ? `<p><a class="button patrol-link" href="${ch.lastDiaryUrl}">看最近巡邏日記</a></p>` : ''}
             </article>
           `).join('');
         } catch (err) {
