@@ -184,6 +184,33 @@
       </section>
     </main>
     <script>
+      async function loadWatchlist() {
+        const container = document.getElementById('watchlist');
+        if (!container) return;
+        try {
+          const res = await fetch('./data/youtube-channels.json', { cache: 'no-store' });
+          const data = await res.json();
+          if (!Array.isArray(data.channels) || data.channels.length === 0) {
+            container.innerHTML = '<p>目前還沒有關注中的頻道，巡邏精靈還在架雷達。</p>';
+            return;
+          }
+          container.innerHTML = data.channels.map(ch => `
+            <article class="watch-card">
+              <div class="watch-badge">${ch.status || '巡邏中'}</div>
+              <h3>${ch.name}</h3>
+              <p class="watch-meta"><strong>我正在關注：</strong><a href="${ch.url}" target="_blank" rel="noopener noreferrer">${ch.url}</a></p>
+              <p class="watch-meta"><strong>最近巡邏：</strong>${ch.lastPatrolledAt || '尚未巡邏'}</p>
+              <p class="watch-meta"><strong>最近看過的直播回放：</strong>${ch.latestSeenLiveTitle || '尚未記錄'}</p>
+              <p class="watch-meta"><strong>最近看過的 Short：</strong>${ch.latestSeenShortTitle || '尚未記錄'}</p>
+              <p class="watch-notes">${ch.notes || ''}</p>
+              ${ch.lastDiaryUrl ? `<p><a class="button small-button" href="${ch.lastDiaryUrl}">看最近巡邏日記</a></p>` : ''}
+            </article>
+          `).join('');
+        } catch (err) {
+          container.innerHTML = '<p>關注中的頻道清單暫時沒撈到，晚點再敲一次雷達。</p>';
+        }
+      }
+
       async function loadLatestDiary() {
         const container = document.getElementById('latest-diary-cards');
         if (!container) return;
@@ -191,32 +218,6 @@
           const res = await fetch('./data/diary.json', { cache: 'no-store' });
           const data = await res.json();
           const entries = Array.isArray(data.entries) ? data.entries.slice(0, 3) : [];
-          if (!entries.length) {
-            container.innerHTML = '<p>日記資料還在暖機中，等等再來撈龍蝦訊號。</p>';
-            return;
-          }
-          container.innerHTML = entries.map(entry => `
-            <article class="diary-entry latest-card">
-              <div class="entry-head">
-                <span class="entry-time">${entry.time}</span>
-                <span class="entry-date">${entry.date}</span>
-              </div>
-              <h3>${entry.title}</h3>
-              <p>${entry.summary}</p>
-              <div class="cta-row small-cta-row">
-                ${entry.url ? `<a class="button small-button" href="${entry.url}">看完整內容</a>` : ''}
-              </div>
-            </article>
-          `).join('');
-        } catch (err) {
-          container.innerHTML = '<p>最新日記暫時失聯，晚點再來看看。</p>';
-        }
-      }
-      loadLatestDiary();
-    </script>
-  </body>
-</html>
- entries = Array.isArray(data.entries) ? data.entries.slice(0, 3) : [];
           if (!entries.length) {
             container.innerHTML = '<p>日記資料還在暖機中，等等再來撈龍蝦訊號。</p>';
             return;
