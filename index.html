@@ -248,7 +248,11 @@
 
       async function loadFanartGallery() {
         const container = document.getElementById('fanart-gallery');
-        if (!container) return;
+        const banner = document.getElementById('fanart-banner');
+        const modal = document.getElementById('fanart-modal');
+        const modalImage = document.getElementById('fanart-modal-image');
+        const modalClose = document.getElementById('fanart-modal-close');
+        if (!container || !banner) return;
         try {
           const res = await fetch('./data/fanart.json', { cache: 'no-store' });
           const data = await res.json();
@@ -256,12 +260,67 @@
             container.innerHTML = '<p>粉絲二創畫廊正在整理星塵相框中。</p>';
             return;
           }
-          container.innerHTML = data.items.map((item, idx) => `
-            <article class="fanart-card" style="animation-delay:${(idx % 8) * 0.12}s">
+
+          const items = data.items;
+          let current = 0;
+          let timer = null;
+
+          function renderBanner(index) {
+            const item = items[index];
+            banner.innerHTML = `
               <img src="${item.src}" alt="${item.title || '粉絲二創圖片'}" loading="lazy" />
-              <div class="fanart-label">${item.title || '粉絲二創'}</div>
-            </article>
+              <div class="fanart-banner-copy">
+                <h3>${item.title || '粉絲二創'}</h3>
+                <p>點縮圖可切換，點主圖可放大看星光細節。</p>
+              </div>
+            `;
+            banner.onclick = () => {
+              modalImage.src = item.src;
+              modal.classList.add('open');
+              modal.setAttribute('aria-hidden', 'false');
+            };
+            [...container.querySelectorAll('.fanart-thumb')].forEach((el, idx) => {
+              el.classList.toggle('active', idx === index);
+            });
+          }
+
+          function startAutoPlay() {
+            if (timer) clearInterval(timer);
+            timer = setInterval(() => {
+              current = (current + 1) % items.length;
+              renderBanner(current);
+            }, 3200);
+          }
+
+          container.innerHTML = items.map((item, idx) => `
+            <button class="fanart-thumb ${idx === 0 ? 'active' : ''}" data-index="${idx}" aria-label="查看 ${item.title || '粉絲二創'}">
+              <img src="${item.src}" alt="${item.title || '粉絲二創圖片'}" loading="lazy" />
+            </button>
           `).join('');
+
+          container.querySelectorAll('.fanart-thumb').forEach(btn => {
+            btn.addEventListener('click', () => {
+              current = Number(btn.dataset.index || 0);
+              renderBanner(current);
+              startAutoPlay();
+            });
+          });
+
+          modalClose?.addEventListener('click', () => {
+            modal.classList.remove('open');
+            modal.setAttribute('aria-hidden', 'true');
+            modalImage.src = '';
+          });
+          modal?.addEventListener('click', (e) => {
+            if (e.target === modal) {
+              modal.classList.remove('open');
+              modal.setAttribute('aria-hidden', 'true');
+              modalImage.src = '';
+            }
+          });
+
+          renderBanner(current);
+          startAutoPlay();
         } catch (err) {
           container.innerHTML = '<p>粉絲二創畫廊暫時失聯，等我把星空投影機拍一拍。</p>';
         }

@@ -546,12 +546,19 @@ strong { color: var(--text); }
   .timeline-item,
   .mini-gallery,
   .signal-strip,
-  .diary-intro {
+  .diary-intro,
+  .fanart-thumb-row {
     grid-template-columns: 1fr;
   }
 
   .identity-avatar-frame {
     width: 180px;
     height: 180px;
+  }
+
+  .fanart-banner,
+  .fanart-banner img {
+    min-height: 240px;
+    height: 240px;
   }
 }
