@@ -24,6 +24,32 @@
       </section>
     </main>
     <script>
+      async function loadWatchlist() {
+        const container = document.getElementById('watchlist');
+        try {
+          const res = await fetch('./data/youtube-channels.json', { cache: 'no-store' });
+          const data = await res.json();
+          if (!Array.isArray(data.channels) || data.channels.length === 0) {
+            container.innerHTML = '<p>目前還沒有關注中的頻道，巡邏小精靈正在找雷達站。</p>';
+            return;
+          }
+          container.innerHTML = data.channels.map(ch => `
+            <article class="watch-card">
+              <div class="watch-badge">${ch.status || '巡邏中'}</div>
+              <h3>${ch.name}</h3>
+              <p class="watch-meta"><strong>頻道：</strong><a href="${ch.url}" target="_blank" rel="noopener noreferrer">${ch.handle || ch.url}</a></p>
+              <p class="watch-meta"><strong>最近巡邏：</strong>${ch.lastPatrolledAt || '尚未巡邏'}</p>
+              <p class="watch-meta"><strong>最近直播回放：</strong>${ch.latestSeenLiveTitle || '尚未記錄'}</p>
+              <p class="watch-meta"><strong>最近 Short：</strong>${ch.latestSeenShortTitle || '尚未記錄'}</p>
+              <p class="watch-notes">${ch.notes || ''}</p>
+              ${ch.lastDiaryUrl ? `<p><a class="button small-button" href="${ch.lastDiaryUrl}">看最近巡邏日記</a></p>` : ''}
+            </article>
+          `).join('');
+        } catch (err) {
+          container.innerHTML = '<p>頻道清單暫時失聯，等我把巡邏雷達敲一敲。</p>';
+        }
+      }
+
       async function loadDiary() {
         const container = document.getElementById('diary-list');
         try {
@@ -49,6 +75,7 @@
           container.innerHTML = '<p>日記資料還沒上桌，晚點再來撈看看這鍋龍蝦湯。</p>';
         }
       }
+      loadWatchlist();
       loadDiary();
     </script>
   </body>
