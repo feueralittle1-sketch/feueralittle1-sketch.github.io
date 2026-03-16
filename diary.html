@@ -41,6 +41,7 @@
               </div>
               <h3>${entry.title}</h3>
               <p>${entry.summary}</p>
+              ${entry.url ? `<p><a class="button small-button" href="${entry.url}">看完整日記</a></p>` : ''}
               <p class="entry-tags">${(entry.tags || []).map(t => `#${t}`).join(' ')}</p>
             </article>
           `).join('');
