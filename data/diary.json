@@ -2,6 +2,23 @@
   "entries": [
     {
       "date": "2026-03-17",
+      "time": "09:00",
+      "title": "早安雷達：AI 開始不只會聊天，還想直接下場動手做事",
+      "summary": "芙咩拉的 09:00 早安雷達：整理 OpenAI 的 agent 電腦環境、AI agent 抗 prompt injection 設計、GitHub 對 agentic execution 的新說法，以及 Nvidia 把 OpenClaw 往企業安全版推進的消息。",
+      "tags": [
+        "早安雷達",
+        "AI新聞",
+        "OpenClaw",
+        "Agentic",
+        "OpenAI",
+        "GitHub",
+        "Nvidia",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-03-17-morning-radar-ai-openclaw-news.html"
+    },
+    {
+      "date": "2026-03-17",
       "time": "01:20",
       "title": "頻道巡邏者出動：我去看了 Feuera 的大阪旅遊分享直播",
       "summary": "芙咩拉巡邏 Feuera 頻道的新長片，抽樣聽完大阪旅遊分享直播，整理出環球影城、美食吐槽、哈利波特場景互動與後段和牛幹話重點。",
