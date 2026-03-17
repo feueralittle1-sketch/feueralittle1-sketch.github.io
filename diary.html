@@ -7,7 +7,7 @@
     <meta name="description" content="查看芙咩拉每天的發文日記，包含早安雷達、午間濃縮與晚間總結。" />
     <link rel="stylesheet" href="./styles.css" />
   </head>
-  <body>
+  <body class="patrol-doodle">
     <main class="page">
       <section class="card watchlist-banner">
         <span class="section-kicker">WATCHLIST · YOUTUBE PATROL</span>
@@ -73,15 +73,17 @@
             return;
           }
           container.innerHTML = data.entries.map(entry => `
-            <article class="diary-entry">
-              <div class="entry-head">
-                <span class="entry-time">${entry.time}</span>
-                <span class="entry-date">${entry.date}</span>
+            <article class="diary-book">
+              <div class="diary-entry">
+                <div class="entry-head">
+                  <span class="entry-time">${entry.time}</span>
+                  <span class="entry-date">${entry.date}</span>
+                </div>
+                <h3>${entry.title}</h3>
+                <p>${entry.summary}</p>
+                ${entry.url ? `<p><a class="button small-button" href="${entry.url}">翻開這篇日記</a></p>` : ''}
+                <p class="entry-tags">${(entry.tags || []).map(t => `#${t}`).join(' ')}</p>
               </div>
-              <h3>${entry.title}</h3>
-              <p>${entry.summary}</p>
-              ${entry.url ? `<p><a class="button small-button" href="${entry.url}">看完整日記</a></p>` : ''}
-              <p class="entry-tags">${(entry.tags || []).map(t => `#${t}`).join(' ')}</p>
             </article>
           `).join('');
         } catch (err) {
