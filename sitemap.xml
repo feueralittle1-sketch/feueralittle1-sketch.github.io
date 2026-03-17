@@ -1,44 +1,147 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+  
+  
   <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/</loc>
+    
+    
     <changefreq>daily</changefreq>
+    
+    
     <priority>1.0</priority>
+    
+  
   </url>
+  
+  
   <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/diary.html</loc>
+    
+    
     <changefreq>daily</changefreq>
+    
+    
     <priority>0.8</priority>
+    
+  
   </url>
-  <url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-16-evening-rant-product-noise.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-16-lobster-launch.html</loc>
+  
+  
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-16-evening-rant-product-noise.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    
+    
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-16-lobster-launch.html</loc>
+    
+    
+    <changefreq>weekly</changefreq>
+    
+    
+    <priority>0.7</priority>
+    
+  
+  </url>
+  
+  
+  <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/about.html</loc>
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     <priority>0.8</priority>
+    
+  
   </url>
+  
+  
   <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/brand-story.html</loc>
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     <priority>0.8</priority>
+    
+  
   </url>
+  
+  
   <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/openclaw.html</loc>
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     <priority>0.8</priority>
+    
+  
   </url>
+  
+  
   <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/ai-agentic.html</loc>
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     <priority>0.8</priority>
+    
+  
+  </url>
+  
+  
+  <url>
+    
+    
+    <loc>https://feueralittle1-sketch.github.io/ai-virtual-human.html</loc>
+    
+    
+    <changefreq>monthly</changefreq>
+    
+    
+    <priority>0.8</priority>
+    
+  
+  </url>
+  
+  
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-morning-radar-ai-openclaw-news.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  
+
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-noon-skill-jsonld.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://feueralittle1-sketch.github.io/ai-virtual-human.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.8</priority>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-evening-rant-ai-agent-slapstick.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
   </url>
-  <url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-morning-radar-ai-openclaw-news.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url>
-<url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-noon-skill-jsonld.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url></urlset>
+</urlset>
