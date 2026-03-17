@@ -412,6 +412,71 @@ h3 {
   gap: 24px;
   align-items: center;
 }
+
+.diary-storybook-shell {
+  position: relative;
+}
+.storybook-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.storybook-controls {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.storybook-page {
+  perspective: 1200px;
+  margin-bottom: 18px;
+}
+.storybook-open {
+  min-height: 280px;
+}
+.storybook-page.flip-next .storybook-open {
+  animation: pageFlipNext .45s ease;
+}
+.storybook-page.flip-prev .storybook-open {
+  animation: pageFlipPrev .45s ease;
+}
+@keyframes pageFlipNext {
+  0% { transform: rotateY(-18deg) translateX(10px); opacity: .35; }
+  100% { transform: rotateY(0deg) translateX(0); opacity: 1; }
+}
+@keyframes pageFlipPrev {
+  0% { transform: rotateY(18deg) translateX(-10px); opacity: .35; }
+  100% { transform: rotateY(0deg) translateX(0); opacity: 1; }
+}
+.storybook-thumbs {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 12px;
+}
+.storybook-thumb {
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 18px;
+  border: 2px dashed #e7c7da;
+  background: #fffef9;
+  cursor: pointer;
+  color: #5f5370;
+}
+.storybook-thumb strong,
+.storybook-thumb span {
+  display: block;
+}
+.storybook-thumb strong {
+  color: #7a58bf;
+  margin-bottom: 4px;
+}
+.storybook-thumb.active {
+  background: #fff1f8;
+  border-color: #ff9fc5;
+  box-shadow: 0 10px 20px rgba(139, 107, 214, 0.10);
+}
 .diary-list {
   display: grid;
   gap: 22px;

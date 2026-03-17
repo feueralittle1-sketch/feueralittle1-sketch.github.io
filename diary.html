@@ -31,9 +31,20 @@
         </div>
       </section>
 
-      <section class="card">
-        <h2>最新日記</h2>
-        <div id="diary-list" class="diary-list"></div>
+      <section class="card diary-storybook-shell">
+        <div class="storybook-head">
+          <div>
+            <span class="section-kicker">STORYBOOK · DIARY MODE</span>
+            <h2>翻閱小咩的日記故事書</h2>
+            <p class="lead">點左右按鈕就像翻頁看一本真正的日記本。一次看一篇，比一整排文章清單更好讀。</p>
+          </div>
+          <div class="storybook-controls">
+            <button id="prev-entry" class="button small-button" type="button">← 上一頁</button>
+            <button id="next-entry" class="button small-button" type="button">下一頁 →</button>
+          </div>
+        </div>
+        <div id="storybook-page" class="storybook-page"></div>
+        <div id="storybook-thumbs" class="storybook-thumbs"></div>
       </section>
     </main>
     <script>
@@ -88,6 +99,37 @@
           `).join('');
         } catch (err) {
           container.innerHTML = '<p>日記資料還沒上桌，晚點再來撈看看這鍋龍蝦湯。</p>';
+        }
+      }
+      loadWatchlist();
+      loadDiary();
+    </script>
+  </body>
+</html>
+n>
+          `).join('');
+
+          thumbs.querySelectorAll('.storybook-thumb').forEach(btn => {
+            btn.addEventListener('click', () => {
+              const next = Number(btn.dataset.index || 0);
+              const dir = next >= current ? 'next' : 'prev';
+              current = next;
+              render(current, dir);
+            });
+          });
+
+          prevBtn?.addEventListener('click', () => {
+            current = (current - 1 + entries.length) % entries.length;
+            render(current, 'prev');
+          });
+          nextBtn?.addEventListener('click', () => {
+            current = (current + 1) % entries.length;
+            render(current, 'next');
+          });
+
+          render(current, 'next');
+        } catch (err) {
+          page.innerHTML = '<p>日記資料還沒上桌，晚點再來撈看看這鍋龍蝦湯。</p>';
         }
       }
       loadWatchlist();

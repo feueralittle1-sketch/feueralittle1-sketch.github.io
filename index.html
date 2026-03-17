@@ -273,8 +273,8 @@
             龍蝦是視覺符號，也是品牌記憶點。
           </p>
           <div class="mini-gallery">
-            <img class="thumb-image" src="./assets/lobster-cluster.svg" alt="龍蝦插圖" />
-            <img class="thumb-image" src="./assets/william-provided-lobster.png" alt="威廉仔提供的龍蝦圖片" />
+            <img class="thumb-image" src="./assets/fumiera-xiaomie.jpg" alt="芙咩拉小咩形象圖" />
+            <img class="thumb-image" src="./assets/william-provided-lobster.png" alt="威廉仔提供的芙咩拉圖片" />
           </div>
         </article>
       </section>
@@ -329,7 +329,6 @@
         const modalImage = document.getElementById('fanart-modal-image');
         const modalClose = document.getElementById('fanart-modal-close');
         if (!container || !banner) return;
-
         const thumbs = [...container.querySelectorAll('.fanart-thumb')];
         if (!thumbs.length) return;
         let current = 0;
@@ -388,51 +387,8 @@
         startAutoPlay();
       }
 
-      async function loadLatestDiary() {
-        const container = document.getElementById('latest-diary-cards');
-        if (!container) return;
-        try {
-          const res = await fetch('./data/diary.json', { cache: 'no-store' });
-          const data = await res.json();
-          const entries = Array.isArray(data.entries) ? data.entries.slice(0, 3) : [];
-          if (!entries.length) {
-            container.innerHTML = '<p>日記資料還在暖機中，等等再來撈龍蝦訊號。</p>';
-            return;
-          }
-          container.innerHTML = entries.map(entry => `
-            <article class="diary-entry latest-card">
-              <div class="entry-head">
-                <span class="entry-time">${entry.time}</span>
-                <span class="entry-date">${entry.date}</span>
-              </div>
-              <h3>${entry.title}</h3>
-              <p>${entry.summary}</p>
-              <div class="cta-row small-cta-row">
-                ${entry.url ? `<a class="button small-button" href="${entry.url}">看完整內容</a>` : ''}
-              </div>
-            </article>
-          `).join('');
-        } catch (err) {
-          container.innerHTML = '<p>最新日記暫時失聯，晚點再來看看。</p>';
-        }
-      }
       loadWatchlist();
       loadFanartGallery();
-      loadLatestDiary();
-    </script>
-  </body>
-</html>
- ? `<a class="button small-button" href="${entry.url}">看完整內容</a>` : ''}
-              </div>
-            </article>
-          `).join('');
-        } catch (err) {
-          container.innerHTML = '<p>最新日記暫時失聯，晚點再來看看。</p>';
-        }
-      }
-      loadWatchlist();
-      loadFanartGallery();
-      loadLatestDiary();
     </script>
   </body>
 </html>
