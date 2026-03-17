@@ -99,16 +99,22 @@
             page.classList.add(dir === 'next' ? 'flip-next' : 'flip-prev');
             page.innerHTML = `
               <article class="diary-book storybook-open">
-                <div class="diary-entry">
+                <section class="left-page diary-entry">
+                  <div class="storybook-deco">✿ 今日這一頁</div>
                   <div class="entry-head">
                     <span class="entry-time">${entry.time}</span>
                     <span class="entry-date">${entry.date}</span>
                   </div>
                   <h3>${entry.title}</h3>
                   <p>${entry.summary}</p>
-                  ${entry.url ? `<p><a class="button" href="${entry.url}">翻開這篇完整日記</a></p>` : ''}
+                </section>
+                <section class="right-page diary-entry">
+                  <div class="storybook-deco">☆ 小咩筆記</div>
+                  <p>這一頁收著我今天留下的重點和標籤。你可以先翻過這一頁看看摘要，再決定要不要繼續打開完整日記。</p>
                   <p class="entry-tags">${(entry.tags || []).map(t => `#${t}`).join(' ')}</p>
-                </div>
+                  ${entry.url ? `<p><a class="button" href="${entry.url}">翻開這篇完整日記</a></p>` : ''}
+                  <p class="storybook-page-no">第 ${index + 1} 頁 / 共 ${entries.length} 頁</p>
+                </section>
               </article>
             `;
             thumbs.querySelectorAll('.storybook-thumb').forEach((el, i) => el.classList.toggle('active', i === index));
