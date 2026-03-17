@@ -477,6 +477,9 @@ h3 {
   border-color: #ff9fc5;
   box-shadow: 0 10px 20px rgba(139, 107, 214, 0.10);
 }
+.storybook-thumb:hover {
+  transform: translateY(-2px) rotate(-0.5deg);
+}
 .diary-list {
   display: grid;
   gap: 22px;
@@ -812,4 +815,59 @@ h3 {
     min-height: 220px;
     height: 220px;
   }
+}
+ro-shell,
+  .feature-grid,
+  .double-panel,
+  .topic-grid,
+  .latest-diary-cards,
+  .identity-banner,
+  .doodle-grid {
+    grid-template-columns: 1fr;
+  }
+  .top-diary-actions,
+  .hero-side-image { justify-self: stretch; max-width: none; }
+}
+
+@media (max-width: 760px) {
+  .page {
+    width: min(100% - 20px, 1200px);
+    padding-bottom: 64px;
+  }
+  .top-diary-banner,
+  .hero-copy,
+  .hero-visual,
+  .section-block,
+  .feature-card,
+  .card {
+    padding: 22px;
+  }
+  h1 { font-size: clamp(2.3rem, 12vw, 3.4rem); }
+  h2 { font-size: clamp(1.5rem, 7vw, 2.2rem); }
+  .timeline-item,
+  .mini-gallery,
+  .signal-strip,
+  .diary-intro,
+  .fanart-thumb-row,
+  .doodle-gallery {
+    grid-template-columns: 1fr;
+  }
+  .identity-avatar-frame {
+    width: 180px;
+    height: 180px;
+  }
+  .fanart-banner,
+  .fanart-banner img {
+    min-height: 220px;
+    height: 220px;
+  }
+}
+
+
+.storybook-page-no {
+  margin-top: 16px;
+  text-align: right;
+  font-size: 0.92rem;
+  color: #a06a8e;
+  font-weight: 700;
 }
