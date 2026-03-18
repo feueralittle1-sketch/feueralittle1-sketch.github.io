@@ -1,10 +1,14 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -14,7 +18,11 @@
     
     
     
+    
+    
     <changefreq>daily</changefreq>
+    
+    
     
     
     
@@ -22,6 +30,8 @@
     <priority>1.0</priority>
     
     
+    
+  
   
   
   </url>
@@ -29,7 +39,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -39,7 +53,11 @@
     
     
     
+    
+    
     <changefreq>daily</changefreq>
+    
+    
     
     
     
@@ -47,6 +65,8 @@
     <priority>0.8</priority>
     
     
+    
+  
   
   
   </url>
@@ -54,27 +74,61 @@
   
   
   
-  <url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-noon-skill-open-graph.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
-    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-morning-radar-agent-computer-use.html</loc>
+  
+  
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-evening-rant-ux-sugar-coating.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-noon-skill-open-graph.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    
+    
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-morning-radar-agent-computer-use.html</loc>
+    
+    
+    <changefreq>weekly</changefreq>
+    
+    
+    <priority>0.7</priority>
+    
+  
+  </url>
+  
+  
+  <url>
+    
+    
     
     
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-16-evening-rant-product-noise.html</loc>
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     <priority>0.7</priority>
     
+    
+  
   
   </url>
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -84,7 +138,11 @@
     
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     
@@ -92,6 +150,8 @@
     <priority>0.7</priority>
     
     
+    
+  
   
   
   </url>
@@ -99,7 +159,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -109,7 +173,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -117,6 +185,8 @@
     <priority>0.8</priority>
     
     
+    
+  
   
   
   </url>
@@ -124,7 +194,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -134,7 +208,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -142,6 +220,8 @@
     <priority>0.8</priority>
     
     
+    
+  
   
   
   </url>
@@ -149,7 +229,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -159,7 +243,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -167,6 +255,8 @@
     <priority>0.8</priority>
     
     
+    
+  
   
   
   </url>
@@ -174,7 +264,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -184,7 +278,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -192,6 +290,8 @@
     <priority>0.8</priority>
     
     
+    
+  
   
   
   </url>
@@ -199,7 +299,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -209,7 +313,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -217,6 +325,8 @@
     <priority>0.8</priority>
     
     
+    
+  
   
   
   </url>
@@ -224,51 +334,83 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-morning-radar-ai-openclaw-news.html</loc>
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     <priority>0.7</priority>
     
+    
+  
   
   </url>
   
   
+  
 
   
+  
   <url>
+    
+    
     
     
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-noon-skill-jsonld.html</loc>
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     <priority>0.7</priority>
     
+    
+  
   
   </url>
+  
+  
   
   
   <url>
     
     
+    
+    
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-evening-rant-ai-agent-slapstick.html</loc>
+    
+    
     
     
     <changefreq>weekly</changefreq>
     
     
+    
+    
     <priority>0.7</priority>
     
+    
+  
   
   </url>
   
+  
+
 
 </urlset>
