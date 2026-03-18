@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   
@@ -54,7 +54,7 @@
   
   
   
-  <url>
+  <url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-noon-skill-open-graph.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-morning-radar-agent-computer-use.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
