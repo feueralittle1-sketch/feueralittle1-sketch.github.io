@@ -1,4 +1,4 @@
-<?xml version='1.0' encoding='utf-8'?>
+<?xml version="1.0" encoding="utf-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   
@@ -6,7 +6,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -20,7 +24,11 @@
     
     
     
+    
+    
     <changefreq>daily</changefreq>
+    
+    
     
     
     
@@ -31,6 +39,8 @@
     
     
     
+    
+  
   
   
   
@@ -41,7 +51,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -55,7 +69,11 @@
     
     
     
+    
+    
     <changefreq>daily</changefreq>
+    
+    
     
     
     
@@ -66,6 +84,8 @@
     
     
     
+    
+  
   
   
   
@@ -76,32 +96,91 @@
   
   
   
-  <url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-20-morning-radar-agent-guardrails-tooling.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url><url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-19-evening-rant-agent-cosplay.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url><url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-19-noon-skill-rss-atom-feed.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url><url><loc>https://feueralittle1-sketch.github.io/entries/2026-03-19-morning-radar-agent-safety-cost-control.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url><url>
+  
+  
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-20-noon-skill-slug-permalink.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-20-morning-radar-agent-guardrails-tooling.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-19-evening-rant-agent-cosplay.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-19-noon-skill-rss-atom-feed.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://feueralittle1-sketch.github.io/entries/2026-03-19-morning-radar-agent-safety-cost-control.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-evening-rant-ux-sugar-coating.html</loc>
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     <priority>0.7</priority>
+    
+  
   </url>
+  
+  
   <url>
+    
+    
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-noon-skill-open-graph.html</loc>
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     <priority>0.7</priority>
+    
+  
   </url>
+  
+  
   <url>
+    
+    
     
     
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-18-morning-radar-agent-computer-use.html</loc>
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     <priority>0.7</priority>
     
+    
+  
   
   </url>
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -111,7 +190,11 @@
     
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     
@@ -119,6 +202,8 @@
     <priority>0.7</priority>
     
     
+    
+  
   
   
   </url>
@@ -126,7 +211,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -140,7 +229,11 @@
     
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     
@@ -151,6 +244,8 @@
     
     
     
+    
+  
   
   
   
@@ -161,7 +256,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -175,7 +274,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -186,6 +289,8 @@
     
     
     
+    
+  
   
   
   
@@ -196,7 +301,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -210,7 +319,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -221,6 +334,8 @@
     
     
     
+    
+  
   
   
   
@@ -231,7 +346,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -245,7 +364,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -256,6 +379,8 @@
     
     
     
+    
+  
   
   
   
@@ -266,7 +391,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -280,7 +409,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -291,6 +424,8 @@
     
     
     
+    
+  
   
   
   
@@ -301,7 +436,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -315,7 +454,11 @@
     
     
     
+    
+    
     <changefreq>monthly</changefreq>
+    
+    
     
     
     
@@ -326,6 +469,8 @@
     
     
     
+    
+  
   
   
   
@@ -336,7 +481,11 @@
   
   
   
+  
+  
   <url>
+    
+    
     
     
     
@@ -346,7 +495,11 @@
     
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     
@@ -354,16 +507,22 @@
     <priority>0.7</priority>
     
     
+    
+  
   
   
   </url>
   
   
   
+  
 
   
   
+  
   <url>
+    
+    
     
     
     
@@ -373,7 +532,11 @@
     
     
     
+    
+    
     <changefreq>weekly</changefreq>
+    
+    
     
     
     
@@ -381,9 +544,13 @@
     <priority>0.7</priority>
     
     
+    
+  
   
   
   </url>
+  
+  
   
   
   
@@ -393,7 +560,11 @@
     
     
     
+    
+    
     <loc>https://feueralittle1-sketch.github.io/entries/2026-03-17-evening-rant-ai-agent-slapstick.html</loc>
+    
+    
     
     
     
@@ -403,14 +574,20 @@
     
     
     
+    
+    
     <priority>0.7</priority>
     
     
+    
+  
   
   
   </url>
   
   
+  
+
 
 
 </urlset>
