@@ -208,6 +208,43 @@
       object-fit: contain;
       filter: drop-shadow(0 0 10px rgba(255,255,255,.08));
     }
+
+    .portrait-shell {
+      position: relative;
+      overflow: hidden;
+      min-height: 640px;
+      border-radius: 2rem;
+      border: 1px solid rgba(255,255,255,0.08);
+      box-shadow: 0 18px 60px rgba(0,0,0,.28);
+      background: linear-gradient(180deg, rgba(8,18,34,.2), rgba(8,18,34,.88));
+    }
+
+    .portrait-shell img {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 22%;
+      transform: scale(1.02);
+      filter: saturate(0.98) contrast(1.05) brightness(0.92);
+    }
+
+    .portrait-shell::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        linear-gradient(180deg, rgba(7,17,31,0.02) 0%, rgba(7,17,31,0.25) 32%, rgba(7,17,31,0.88) 100%),
+        linear-gradient(135deg, rgba(99,230,255,0.08), transparent 35%, rgba(156,140,255,0.06) 70%, transparent 100%);
+    }
+
+    .portrait-content {
+      position: absolute;
+      inset: auto 0 0 0;
+      z-index: 2;
+      padding: 1.5rem;
+    }
   </style>
 </head>
 <body>
@@ -256,7 +293,7 @@
               寫成真正有溫度的個人品牌
             </h1>
             <p class="text-lg sm:text-xl text-slate-300 max-w-3xl leading-8 mb-6">
-              我是 Dr.William，爍雲科技共同創辦人、維域智慧共同創辦人、台大博士，也是白帽駭客與系統治理實踐者。這裡記錄我一路走過的技術拆解、創業思考，以及 AI 逐漸進入日常後的互動生活觀察。
+              我是 Dr.William，爍雲科技共同創辦人、維域智慧共同創辦人、台大資訊工程博士，也是白帽駭客與系統治理實踐者。這裡記錄我一路走過的技術拆解、創業思考，以及 AI 逐漸進入日常後的互動生活觀察。
             </p>
 
             <div class="glass rounded-[1.75rem] p-5 sm:p-6 mb-8 max-w-4xl">
@@ -303,29 +340,37 @@
           </div>
 
           <div class="lg:col-span-5">
-            <div class="glass rounded-[2rem] p-6 sm:p-8 relative overflow-hidden">
-              <div class="absolute right-8 top-8 w-16 h-16 rounded-full bg-cyan-300/20 blur-2xl"></div>
-              <div class="flex items-center justify-between mb-8">
-                <div>
-                  <div class="text-sm text-slate-400">個人定位</div>
-                  <div class="text-2xl font-bold">技術 × 治理 × 人</div>
-                </div>
-                <div class="relative w-14 h-14 rounded-full border border-cyan-300/40 flex items-center justify-center sonar">
-                  <iconify-icon icon="mdi:shield-check-outline" width="26"></iconify-icon>
-                </div>
+            <div class="portrait-shell">
+              <img src="./assets/profile/dr-william-portrait.jpg" alt="Dr.William 個人形象照" />
+              <div class="absolute top-6 left-6 z-2 inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/40 px-4 py-2 text-xs text-slate-100 backdrop-blur-xl">
+                <span class="w-2 h-2 rounded-full bg-cyan-300"></span>
+                Dr.William
               </div>
-              <div class="space-y-4">
-                <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
-                  <div class="text-xs text-slate-400 mb-1">共同創辦</div>
-                  <div class="font-semibold">爍雲科技 / 維域智慧</div>
-                </div>
-                <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
-                  <div class="text-xs text-slate-400 mb-1">專長橫跨</div>
-                  <div class="font-semibold">資安、醫療資訊、AI 應用、系統架構</div>
-                </div>
-                <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
-                  <div class="text-xs text-slate-400 mb-1">網站主軸</div>
-                  <div class="font-semibold">創業歷程 / AI 生活日記 / 技術分享</div>
+              <div class="portrait-content">
+                <div class="glass rounded-[1.75rem] p-6 sm:p-7">
+                  <div class="flex items-center justify-between mb-6">
+                    <div>
+                      <div class="text-sm text-slate-400">個人定位</div>
+                      <div class="text-2xl font-bold">技術 × 治理 × 創業</div>
+                    </div>
+                    <div class="relative w-14 h-14 rounded-full border border-cyan-300/40 flex items-center justify-center sonar">
+                      <iconify-icon icon="mdi:shield-check-outline" width="26"></iconify-icon>
+                    </div>
+                  </div>
+                  <div class="space-y-4">
+                    <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
+                      <div class="text-xs text-slate-400 mb-1">學術與專業背景</div>
+                      <div class="font-semibold">台大資訊工程博士 / 白帽駭客 / 系統治理實踐者</div>
+                    </div>
+                    <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
+                      <div class="text-xs text-slate-400 mb-1">共同創辦</div>
+                      <div class="font-semibold">爍雲科技 / 維域智慧</div>
+                    </div>
+                    <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
+                      <div class="text-xs text-slate-400 mb-1">網站主軸</div>
+                      <div class="font-semibold">創業歷程 / AI 生活日記 / 技術分享</div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -391,7 +436,7 @@
           <div class="lg:col-span-8 grid md:grid-cols-2 gap-6">
             <div class="glass rounded-[1.75rem] p-6">
               <div class="text-sm text-cyan-200 mb-3">身份定位</div>
-              <h3 class="text-2xl font-bold mb-3">台大博士 × 白帽駭客 × 共同創辦人</h3>
+              <h3 class="text-2xl font-bold mb-3">台大資訊工程博士 × 白帽駭客 × 共同創辦人</h3>
               <p class="text-slate-300 leading-7">從學術研究到產業落地，從系統安全到 AI 應用治理，建立一個既懂技術深度、也懂商業場域與產業需求的跨域角色。</p>
             </div>
             <div class="glass rounded-[1.75rem] p-6">
@@ -533,7 +578,7 @@
       <div class="flex flex-col md:flex-row md:items-center md:justify-between gap-6">
         <div>
           <div class="text-xl font-bold">Dr.William</div>
-          <div class="text-slate-400 mt-2">爍雲科技共同創辦人｜維域智慧共同創辦人｜台大博士｜白帽駭客專家</div>
+          <div class="text-slate-400 mt-2">爍雲科技共同創辦人｜維域智慧共同創辦人｜台大資訊工程博士｜白帽駭客專家</div>
         </div>
         <div class="flex items-center gap-4 text-slate-300 text-sm">
           <a href="mailto:drwilliam9327@gmail.com?subject=%E8%88%87%20Dr.William%20%E8%81%AF%E7%B5%A1" class="hover:text-white inline-flex items-center gap-2"><iconify-icon icon="mdi:email-outline"></iconify-icon>Email</a>
