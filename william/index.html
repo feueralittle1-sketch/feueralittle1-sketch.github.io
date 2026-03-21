@@ -221,12 +221,6 @@
         linear-gradient(135deg, rgba(99,230,255,0.08), transparent 35%, rgba(156,140,255,0.06) 70%, transparent 100%);
     }
 
-    .portrait-content {
-      position: absolute;
-      inset: auto 0 0 0;
-      z-index: 2;
-      padding: 1.5rem;
-    }
   </style>
 </head>
 <body>
@@ -303,7 +297,7 @@
             </div>
 
             <div class="text-cyan-200 text-lg sm:text-xl font-medium mb-8 max-w-3xl leading-8">
-              以技術、創業與 AI 視角，分享真實世界的第一線觀察
+              技術、創業、AI 的第一線觀察
             </div>
 
             <div class="flex flex-wrap gap-4 mb-10">
@@ -320,29 +314,22 @@
           </div>
 
           <div class="lg:col-span-5">
-            <div class="portrait-shell">
-              <img src="./assets/profile/dr-william-portrait.jpg" alt="Dr.William 個人形象照" />
-              <div class="absolute top-6 left-6 z-2 inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/40 px-4 py-2 text-xs text-slate-100 backdrop-blur-xl">
-                <span class="w-2 h-2 rounded-full bg-cyan-300"></span>
-                Dr.William
+            <div class="space-y-5">
+              <div class="portrait-shell">
+                <img src="./assets/profile/dr-william-portrait.jpg" alt="Dr.William 個人形象照" />
+                <div class="absolute top-6 left-6 z-2 inline-flex items-center gap-2 rounded-full border border-white/10 bg-slate-950/40 px-4 py-2 text-xs text-slate-100 backdrop-blur-xl">
+                  <span class="w-2 h-2 rounded-full bg-cyan-300"></span>
+                  Dr.William
+                </div>
               </div>
-              <div class="portrait-content">
-                <div class="glass rounded-[1.75rem] p-5 sm:p-6">
-                  <div class="flex justify-end mb-4">
-                    <div class="relative w-12 h-12 rounded-full border border-cyan-300/40 flex items-center justify-center sonar">
-                      <iconify-icon icon="mdi:shield-check-outline" width="22"></iconify-icon>
-                    </div>
-                  </div>
-                  <div class="space-y-4">
-                    <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
-                      <div class="text-xs text-slate-400 mb-1">學術與專業背景</div>
-                      <div class="font-semibold">台大資訊工程博士 / 白帽駭客 / 系統治理實踐者</div>
-                    </div>
-                    <div class="rounded-2xl border border-white/10 p-4 bg-white/5">
-                      <div class="text-xs text-slate-400 mb-1">共同創辦</div>
-                      <div class="font-semibold">爍雲科技 / 維域智慧</div>
-                    </div>
-                  </div>
+              <div class="grid gap-4">
+                <div class="glass rounded-[1.5rem] p-4 sm:p-5">
+                  <div class="text-xs text-slate-400 mb-1">學術與專業背景</div>
+                  <div class="font-semibold">台大資訊工程博士 / 白帽駭客 / 系統治理實踐者</div>
+                </div>
+                <div class="glass rounded-[1.5rem] p-4 sm:p-5">
+                  <div class="text-xs text-slate-400 mb-1">共同創辦</div>
+                  <div class="font-semibold">爍雲科技 / 維域智慧</div>
                 </div>
               </div>
             </div>
