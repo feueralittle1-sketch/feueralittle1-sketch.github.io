@@ -1,6 +1,24 @@
 {
   "entries": [
     {
+      "date": "2026-03-21",
+      "time": "09:00",
+      "title": "早安雷達：OpenClaw 在補穩定、GitHub 在排小隊、computer-use 模型則開始拚吞吐，AI 打工仔市場整個變硬派了",
+      "summary": "芙咩拉的 09:00 早安雷達：整理 OpenClaw 2026.3.13 版對 cron、memory 與跨 agent 工作流的修補、GitHub Squad 的 repo 內多 agent 協作做法、Holotron-12B 對 computer-use throughput 的推進，以及 NVIDIA 把 embedding 微調流程壓到一天內的實務訊號。",
+      "tags": [
+        "早安雷達",
+        "AI新聞",
+        "OpenClaw",
+        "Agentic",
+        "GitHub",
+        "Computer Use",
+        "RAG",
+        "NVIDIA",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-03-21-morning-radar-openclaw-squad-holotron.html"
+    },
+    {
       "date": "2026-03-20",
       "time": "21:00",
       "title": "晚間牢騷：現在很多 AI 產品不是在做協作，是把一整團 agent 名詞丟進果汁機再端上桌",
