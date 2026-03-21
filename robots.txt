@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
 
-Sitemap: https://feueralittle1-sketch.github.io/sitemap.xml
+Sitemap: https://www.2gwine.com/sitemap.xml

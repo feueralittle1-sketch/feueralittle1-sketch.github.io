@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CISSP 考取心得｜Dr.William 的資安證照實戰筆記</title>
+  <meta name="description" content="Dr.William 分享國際資安證照 CISSP 的準備方式、學習策略、考試心得與實戰建議。" />
+  <link rel="canonical" href="https://www.2gwine.com/posts/cissp-journey.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="CISSP 考取心得｜Dr.William 的資安證照實戰筆記" />
+  <meta property="og:description" content="Dr.William 分享國際資安證照 CISSP 的準備方式、學習策略、考試心得與實戰建議。" />
+  <meta property="og:url" content="https://www.2gwine.com/posts/cissp-journey.html" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1400&q=80" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body {
+      margin: 0;
+      color: #e6eefc;
+      background: linear-gradient(180deg, #07111f, #0b1730 40%, #050c18 100%);
+      font-family: "Inter", "Noto Sans TC", system-ui, sans-serif;
+    }
+    .wrap { width: min(920px, calc(100% - 32px)); margin: 0 auto; }
+    .card {
+      background: rgba(13, 26, 46, 0.72);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 28px;
+      box-shadow: 0 10px 40px rgba(0,0,0,.22);
+      backdrop-filter: blur(18px);
+    }
+    .muted { color: #9fb3d9; }
+    .eyebrow { color: #63e6ff; letter-spacing: .18em; text-transform: uppercase; font-size: .78rem; font-weight: 800; }
+    h1,h2,h3 { line-height: 1.15; }
+    a { color: #63e6ff; text-decoration: none; }
+    .tag {
+      display: inline-block; padding: 8px 12px; border-radius: 999px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1); color: #d9e7ff;
+    }
+    .quote {
+      border-left: 4px solid #63e6ff; padding: 18px 20px; background: rgba(99,230,255,.08); border-radius: 0 18px 18px 0;
+    }
+    ul li, ol li, p { line-height: 1.9; color: #c5d3eb; }
+  </style>
+</head>
+<body>
+  <main class="wrap" style="padding: 56px 0 72px;">
+    <article class="card" style="padding: 32px;">
+      <p class="eyebrow">Security Certification Column</p>
+      <h1 style="font-size: clamp(2.2rem, 5vw, 3.6rem); margin: 10px 0 18px;">三週內考取 CISSP：一位白帽與系統治理實踐者的準備心得</h1>
+      <p class="muted" style="font-size: 1.05rem; margin-bottom: 20px;">這篇文章整理 Dr.William 過去考取國際資安證照 CISSP 的真實準備歷程，重新轉譯成現在個人網站的技術專欄版本。</p>
+
+      <img src="https://images.unsplash.com/photo-1510511459019-5dda7724fd87?auto=format&fit=crop&w=1400&q=80" alt="資訊安全與專業認證學習情境" style="width:100%; border-radius:24px; margin: 0 0 28px; object-fit:cover; max-height:420px;" />
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-bottom:28px;">
+        <span class="tag">CISSP</span>
+        <span class="tag">資安證照心得</span>
+        <span class="tag">白帽學習策略</span>
+        <span class="tag">Security Leadership</span>
+      </div>
+
+      <section style="margin-bottom: 30px;">
+        <h2>先講結論：CISSP 不是背題考試，而是判斷力考試</h2>
+        <p>對很多人來說，CISSP 難的不是知識量，而是它要求你跳出單點技術視角，改用更高階、更治理導向、更符合組織風險管理的思維做判斷。你不能只問「哪個技術最帥」，而是要問「哪個選擇最合理、最能降低整體風險、最符合角色責任」。</p>
+        <p>我在 2022 年完成這張證照時，最大的感受就是：這不是一場只靠臨時抱佛腳就能穩過的考試，但它也不是一場非得一年起跳才能碰的考試。只要你已經有足夠的實務背景，再加上一段高強度、設計過的衝刺期，就有可能把這張證照拿下來。</p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2>我的背景，為什麼能撐住這張證照</h2>
+        <p>在準備 CISSP 之前，我並不是從零開始。我本身有資訊與醫療資訊相關學術背景，工作上也長期落在安全開發、CI/CD、雲端架構、ISO 27001 驗證、資安事件處理、弱點掃描與滲透測試協作等範圍。</p>
+        <p>這些經驗很重要，因為 CISSP 的八大領域裡，有不少內容不是單純背定義就能理解，而是要知道它在真實世界裡怎麼運作。我熟悉的領域包括 Security and Risk Management、Security Architecture、IAM、Security Assessment、Security Operations 與 Software Development Security；相對較少接觸的，則是 BCP / DR、某些硬體控管與傳統資產管理情境。</p>
+        <p>換句話說，<strong>先盤點自己熟什麼、不熟什麼</strong>，會比一開始就盲目刷書更有效率。這是我覺得備考第一步最重要的事。</p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2>我怎麼準備：不是亂衝，而是把時間壓到最有效</h2>
+        <p>如果要濃縮成一句話，我的策略是：<strong>用實務經驗當底，再用短時間高密度補齊缺口</strong>。</p>
+        <p>我當時的準備方法大致分成三塊：</p>
+        <ol>
+          <li>上課建立框架：同一門課聽兩次，吸收不同老師的觀點與案例。</li>
+          <li>官方與經典書籍交叉閱讀：不是每頁精讀，而是快速掃描、互相比對，抓出自己不熟的地方。</li>
+          <li>大量做題與檢討：重點不只是對答案，而是把題目、選項與背後邏輯全部看懂。</li>
+        </ol>
+        <p>我會特別強調「檢討」，因為很多人做題只是想知道自己對幾題，但 CISSP 最有價值的部分反而在於：你有沒有看懂那題為什麼這樣問、這四個選項背後各站在哪個管理層次。</p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2>三週衝刺真正有用的，不是意志力，是結構化讀法</h2>
+        <p>我當時用近三週的時間高強度衝刺，前段以快速掃讀為主，中段開始補課本與官方教材，後段則進入連續大量模擬題練習。題目數量一路拉高，最後累積到千題以上。</p>
+        <p>但我要說清楚：<strong>這不是叫每個人都照抄我的作息</strong>。我的方法很硬，甚至接近極限操作。真正該學的不是時間表本身，而是背後的原則：</p>
+        <ul>
+          <li>每天都要碰到考題</li>
+          <li>做題後一定要檢討</li>
+          <li>不熟的概念要立刻查清楚，不能放過</li>
+          <li>把容易搞混的觀念整理成自己的筆記</li>
+        </ul>
+        <p>準備 CISSP 最怕的不是不會，而是「好像看過、但其實沒搞懂」。這種半熟最危險。</p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2>我真正的讀書心法</h2>
+        <p>如果把整個備考過程抽成方法論，我會歸納成下面四件事：</p>
+        <ol>
+          <li><strong>碰到陌生概念就查到底。</strong> 不只記名詞，而是要理解它在架構、治理與情境上的位置。</li>
+          <li><strong>題目不分對錯都要檢討。</strong> 答對不代表你懂，答錯也不代表你沒機會過，關鍵是你有沒有把邏輯補起來。</li>
+          <li><strong>建立自己的重要筆記。</strong> 最後衝刺不是再看一遍所有書，而是看你自己整理過、最容易失分的點。</li>
+          <li><strong>提醒自己用 CISSP 的角色在想，而不是只用工程師角色在想。</strong></li>
+        </ol>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2>考場上的真相：你會懷疑自己是不是沒讀過</h2>
+        <p>到真正上場時，我很快就發現一個所有考過的人大概都懂的現象：<strong>你不會看到很多熟悉到能秒答的題目</strong>。那種感覺會讓人瞬間自我懷疑，甚至開始懷疑自己是不是讀錯方向。</p>
+        <p>我在考試過程裡也有過這種時刻。看著題目，心裡想的是：我明明考的是 CISSP，為什麼每一題都像在問我人生選擇題？</p>
+        <p>但後來我反而覺得，這正是 CISSP 的本質。它不只是問你會不會，而是問你在資訊不完整、選項都看似合理時，能不能選出最符合整體安全治理精神的答案。</p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2>看到 Provisionally Passed 的那一刻</h2>
+        <p>走出考場時，我其實沒有把握。我甚至一度不太想看成績單，因為那種考完後的空虛感非常真實。直到翻開紙張看到關鍵字：<strong>Congratulations</strong>、<strong>Provisionally passed</strong>，才真的意識到自己通過了。</p>
+        <p>那一刻不只是考過一張證照，而是確認自己這些年的實務累積、學習習慣與高強度準備方式，真的有辦法撐過這種等級的考驗。</p>
+      </section>
+
+      <section style="margin-bottom: 30px;">
+        <h2>如果你也想考 CISSP，我的建議是什麼</h2>
+        <div class="quote" style="border-left-width: 6px; background: linear-gradient(135deg, rgba(99,230,255,.16), rgba(156,140,255,.12)); box-shadow: 0 10px 30px rgba(0,0,0,.18);">
+          <p style="margin:0; font-size:1.12rem; font-weight:700; color:#f4f8ff; line-height:1.9;">有努力不一定會成功，但不努力一定不會成功。準備 CISSP 時，更精確的說法是：有策略地努力，才比較有機會成功。</p>
+        </div>
+        <ul>
+          <li>先盤點自己的背景，不要假裝所有領域都一樣熟。</li>
+          <li>找適合自己的學習節奏，而不是迷信別人的作息。</li>
+          <li>把做題當成理解判斷邏輯，不是只當成背答案。</li>
+          <li>考前最後階段，要看自己的重點筆記，不要再把所有書硬吞一次。</li>
+          <li>進考場後，記得用更高階的安全治理視角答題。</li>
+        </ul>
+      </section>
+
+      <section style="margin-bottom: 12px;">
+        <h2>這張證照帶給我的真正價值</h2>
+        <p>對我來說，CISSP 的價值從來不只是履歷上多一行，而是它逼著你把原本分散的技術經驗、治理思維與風險判斷整合起來。你不再只是會做某件事，而是更能理解「為什麼要這樣做、這樣做對組織意味著什麼」。</p>
+        <p>如果你已經有一定實務底子，CISSP 會是一張能幫你把技術視野往上拉的證照；如果你還在累積中，它也會是一個很好的目標，逼你建立更完整的安全知識版圖。</p>
+      </section>
+
+      <hr style="border:none; border-top:1px solid rgba(255,255,255,.12); margin: 28px 0;" />
+      <p class="muted" style="margin-bottom:0;">本文內容改寫自 Dr.William 過去公開分享的 CISSP 應考心得，已重新整理為個人網站專欄版本，保留核心經驗與學習方法。</p>
+      <p style="margin-top:16px;"><a href="../index.html">← 回 Dr.William 首頁</a></p>
+    </article>
+  </main>
+</body>
+</html>
