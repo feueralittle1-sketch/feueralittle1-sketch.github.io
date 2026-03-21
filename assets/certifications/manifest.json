@@ -1,0 +1,128 @@
+[
+  {
+    "name": "AWS Certified Cloud Practitioner certificate.pdf",
+    "fileId": "1meIXEffO208VRQ-DSw6YNYWI_ss4NpFM",
+    "slug": "aws-certified-cloud-practitioner-certificate",
+    "pdf": "./assets/certifications/pdf/aws-certified-cloud-practitioner-certificate.pdf",
+    "image": "./assets/certifications/img/aws-certified-cloud-practitioner-certificate.png"
+  },
+  {
+    "name": "AWS Certified Security - Specialty certificate.pdf",
+    "fileId": "10HcgKoJAug7pZXrpAHg-eQKl9SJHtefO",
+    "slug": "aws-certified-security-specialty-certificate",
+    "pdf": "./assets/certifications/pdf/aws-certified-security-specialty-certificate.pdf",
+    "image": "./assets/certifications/img/aws-certified-security-specialty-certificate.png"
+  },
+  {
+    "name": "AWS Certified Solutions Architect - Associate certificate.pdf",
+    "fileId": "1cmgi-JxE3XEHGVIbEB6jM3qsxiWKcnvY",
+    "slug": "aws-certified-solutions-architect-associate-certificate",
+    "pdf": "./assets/certifications/pdf/aws-certified-solutions-architect-associate-certificate.pdf",
+    "image": "./assets/certifications/img/aws-certified-solutions-architect-associate-certificate.png"
+  },
+  {
+    "name": "AWS Certified Solutions Architect - Professional certificate.pdf",
+    "fileId": "1sLzJNSFyIcsHtN81A2nyMAtLbnfqDwnm",
+    "slug": "aws-certified-solutions-architect-professional-certificate",
+    "pdf": "./assets/certifications/pdf/aws-certified-solutions-architect-professional-certificate.pdf",
+    "image": "./assets/certifications/img/aws-certified-solutions-architect-professional-certificate.png"
+  },
+  {
+    "name": "AZ-SC900.pdf",
+    "fileId": "1f2nM4plCFiLcGuviiIwk0cMJFhhInF6C",
+    "slug": "az-sc900",
+    "pdf": "./assets/certifications/pdf/az-sc900.pdf",
+    "image": "./assets/certifications/img/az-sc900.png"
+  },
+  {
+    "name": "AZ204.pdf",
+    "fileId": "1SH2EgTvC9vC1HM40jxpXJQTBuZ-pobU0",
+    "slug": "az204",
+    "pdf": "./assets/certifications/pdf/az204.pdf",
+    "image": "./assets/certifications/img/az204.png"
+  },
+  {
+    "name": "AZ900.pdf",
+    "fileId": "1EcH8XJXyjcP9a1locOyUnik-LYlcteO8",
+    "slug": "az900",
+    "pdf": "./assets/certifications/pdf/az900.pdf",
+    "image": "./assets/certifications/img/az900.png"
+  },
+  {
+    "name": "CISSP.pdf",
+    "fileId": "1ivHa-_E1509udpTPIDHXv7etW6mbA9qr",
+    "slug": "cissp",
+    "pdf": "./assets/certifications/pdf/cissp.pdf",
+    "image": "./assets/certifications/img/cissp.png"
+  },
+  {
+    "name": "CompTIA Security+ ce certificate.pdf",
+    "fileId": "14Hnor2wmEVEqAKAZWPgV51g70hKtAcr-",
+    "slug": "comptia-security-ce-certificate",
+    "pdf": "./assets/certifications/pdf/comptia-security-ce-certificate.pdf",
+    "image": "./assets/certifications/img/comptia-security-ce-certificate.png"
+  },
+  {
+    "name": "ECC-CASEDOTNET-Certificate.pdf",
+    "fileId": "1VymLAmQuNJTE-aOwdlvfZr0AuGo80BAY",
+    "slug": "ecc-casedotnet-certificate",
+    "pdf": "./assets/certifications/pdf/ecc-casedotnet-certificate.pdf",
+    "image": "./assets/certifications/img/ecc-casedotnet-certificate.png"
+  },
+  {
+    "name": "ECC-CEH-Certificate.pdf",
+    "fileId": "1a1glyyVZdA0S3lHEar4ME40Fn1jV-9CT",
+    "slug": "ecc-ceh-certificate",
+    "pdf": "./assets/certifications/pdf/ecc-ceh-certificate.pdf",
+    "image": "./assets/certifications/img/ecc-ceh-certificate.png"
+  },
+  {
+    "name": "ECC-CHFI-Certificate-ANSI.pdf",
+    "fileId": "1LcuWv38WNLk-amkXTxCtJUHBPrtUO2iV",
+    "slug": "ecc-chfi-certificate-ansi",
+    "pdf": "./assets/certifications/pdf/ecc-chfi-certificate-ansi.pdf",
+    "image": "./assets/certifications/img/ecc-chfi-certificate-ansi.png"
+  },
+  {
+    "name": "ECC-CTIA-Certificate.pdf",
+    "fileId": "1sLje2yePMwp-yx2k5NKFG-WnkKfHusLz",
+    "slug": "ecc-ctia-certificate",
+    "pdf": "./assets/certifications/pdf/ecc-ctia-certificate.pdf",
+    "image": "./assets/certifications/img/ecc-ctia-certificate.png"
+  },
+  {
+    "name": "ECC-ECSA-Certificate.pdf",
+    "fileId": "1h5e4BOranH33uyAO30ZvGwFe2UlFlePJ",
+    "slug": "ecc-ecsa-certificate",
+    "pdf": "./assets/certifications/pdf/ecc-ecsa-certificate.pdf",
+    "image": "./assets/certifications/img/ecc-ecsa-certificate.png"
+  },
+  {
+    "name": "ISO 27001-2022.pdf",
+    "fileId": "1-oDsW6EAODwS-KWqGkRfC9KQFCvHojJf",
+    "slug": "iso-27001-2022",
+    "pdf": "./assets/certifications/pdf/iso-27001-2022.pdf",
+    "image": "./assets/certifications/img/iso-27001-2022.png"
+  },
+  {
+    "name": "ISO27001LA.pdf",
+    "fileId": "1guXsYVbrgezj6KE20lLMraBQVN2l2wpy",
+    "slug": "iso27001la",
+    "pdf": "./assets/certifications/pdf/iso27001la.pdf",
+    "image": "./assets/certifications/img/iso27001la.png"
+  },
+  {
+    "name": "ISO27701.pdf",
+    "fileId": "1E1vdVv2-YXV3AntMApGYcmjAcnSwysS-",
+    "slug": "iso27701",
+    "pdf": "./assets/certifications/pdf/iso27701.pdf",
+    "image": "./assets/certifications/img/iso27701.png"
+  },
+  {
+    "name": "Oracle Cloud Data Management 2022 Foundations Certified Associate_tzuwei.pdf",
+    "fileId": "1pDNbzBUCKmRAWginUSmyqBLm1m8oM5EJ",
+    "slug": "oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei",
+    "pdf": "./assets/certifications/pdf/oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei.pdf",
+    "image": "./assets/certifications/img/oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei.png"
+  }
+]
