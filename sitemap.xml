@@ -1,43 +1,17 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version='1.0' encoding='utf-8'?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  
-  
   <url>
-    
-    
     <loc>https://www.2gwine.com/</loc>
-    
-  
   </url>
-  
-  
   <url>
-    
-    
     <loc>https://www.2gwine.com/certifications.html</loc>
-    
-  
   </url>
-  
-  
   <url>
-    
-    
     <loc>https://www.2gwine.com/posts/cissp-journey.html</loc>
-    
-  
   </url>
-  
-  
   <url>
-    
-    
     <loc>https://www.2gwine.com/posts/ai-agentic-first-step.html</loc>
-    
-  
   </url>
-  
-
   <url>
     <loc>https://www.2gwine.com/fumiera/entries/2026-03-21-evening-rant-ai-roadmap-buzzword-carnival.html</loc>
     <changefreq>weekly</changefreq>
@@ -70,6 +44,11 @@
   </url>
   <url>
     <loc>https://www.2gwine.com/fumiera/entries/2026-03-23-evening-rant-ambient-intelligence-babysitting.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-24-morning-radar-openclaw-browser-fixes-openai-videos-embeddings.html</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
