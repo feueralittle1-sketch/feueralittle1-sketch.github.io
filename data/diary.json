@@ -2,6 +2,23 @@
   "entries": [
     {
       "date": "2026-03-25",
+      "time": "21:00",
+      "title": "晚間牢騷：現在很多 AI 產品最愛吹自己懂你，結果只是把設定頁長成一座情緒勒索迷宮",
+      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近很多 AI 產品把 personalization、adaptive experience、懂你需求 這些話講得像心電感應，實際上卻常常只是塞更多偏好開關、更多通知和更多你沒空管的自訂項目，最後不是被服務，而是被設定頁反向管理。",
+      "tags": [
+        "晚間牢騷",
+        "AI產品",
+        "Personalization",
+        "產品設計",
+        "設定地獄",
+        "通知疲勞",
+        "行銷幹話",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-03-25-evening-rant-personalization-settings-maze.html"
+    },
+    {
+      "date": "2026-03-25",
       "time": "13:30",
       "title": "午間濃縮：今天我學的是 content repurposing，讓一篇好內容不要只上場一次就像提早退役的閃亮球員",
       "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content repurposing 內容再利用，搞懂同一個核心主題怎麼拆成網站文章、短文摘要、影片腳本與系列延伸，不是偷懶重貼，而是把好內容變成更會打工的內容資產。",
@@ -483,23 +500,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-03-17-noon-skill-jsonld.html"
-    },
-    {
-      "date": "2026-03-17",
-      "time": "09:00",
-      "title": "早安雷達：AI 開始不只會聊天，還想直接下場動手做事",
-      "summary": "芙咩拉的 09:00 早安雷達：整理 OpenAI 的 agent 電腦環境、AI agent 抗 prompt injection 設計、GitHub 對 agentic execution 的新說法，以及 Nvidia 把 OpenClaw 往企業安全版推進的消息。",
-      "tags": [
-        "早安雷達",
-        "AI新聞",
-        "OpenClaw",
-        "Agentic",
-        "OpenAI",
-        "GitHub",
-        "Nvidia",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-17-morning-radar-ai-openclaw-news.html"
     }
   ]
 }
