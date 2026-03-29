@@ -1,5 +1,5 @@
-<?xml version="1.0" encoding="utf-8"?>
-<ns0:urlset xmlns:ns0="http://www.sitemaps.org/schemas/sitemap/0.9">
+<?xml version='1.0' encoding='utf-8'?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   
   
   
@@ -8,7 +8,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -17,7 +17,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/</ns0:loc>
+    <loc>https://www.2gwine.com/</loc>
     
     
     
@@ -26,7 +26,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -35,7 +35,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -44,7 +44,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/certifications.html</ns0:loc>
+    <loc>https://www.2gwine.com/certifications.html</loc>
     
     
     
@@ -53,7 +53,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -62,7 +62,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -71,7 +71,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/posts/cissp-journey.html</ns0:loc>
+    <loc>https://www.2gwine.com/posts/cissp-journey.html</loc>
     
     
     
@@ -80,7 +80,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -89,7 +89,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -98,7 +98,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/posts/ai-agentic-first-step.html</ns0:loc>
+    <loc>https://www.2gwine.com/posts/ai-agentic-first-step.html</loc>
     
     
     
@@ -107,7 +107,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -116,32 +116,32 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-25-morning-radar-openclaw-release-openai-videos-langgraph-cli.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-25-morning-radar-openclaw-release-openai-videos-langgraph-cli.html</loc>
     
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
   
   
-  </ns0:url>
+  </url>
   
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -150,7 +150,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-21-evening-rant-ai-roadmap-buzzword-carnival.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-21-evening-rant-ai-roadmap-buzzword-carnival.html</loc>
     
     
     
@@ -159,7 +159,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -168,7 +168,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -177,7 +177,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -186,7 +186,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -195,7 +195,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-22-morning-radar-openclaw-os-hf-holotron-buckets.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-22-morning-radar-openclaw-os-hf-holotron-buckets.html</loc>
     
     
     
@@ -204,7 +204,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -213,7 +213,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -222,7 +222,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -231,7 +231,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -240,7 +240,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-22-noon-skill-content-tag-taxonomy.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-22-noon-skill-content-tag-taxonomy.html</loc>
     
     
     
@@ -249,7 +249,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -258,7 +258,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -267,7 +267,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -276,7 +276,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -285,7 +285,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-22-evening-rant-dashboard-confetti-manager.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-22-evening-rant-dashboard-confetti-manager.html</loc>
     
     
     
@@ -294,7 +294,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -303,7 +303,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -312,7 +312,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -321,7 +321,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -330,7 +330,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-23-morning-radar-openclaw-hf-holotron-granite.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-23-morning-radar-openclaw-hf-holotron-granite.html</loc>
     
     
     
@@ -339,7 +339,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -348,7 +348,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -357,7 +357,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -366,7 +366,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -375,7 +375,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-23-noon-skill-internal-linking.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-23-noon-skill-internal-linking.html</loc>
     
     
     
@@ -384,7 +384,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -393,7 +393,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -402,7 +402,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -411,7 +411,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -420,7 +420,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-23-evening-rant-ambient-intelligence-babysitting.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-23-evening-rant-ambient-intelligence-babysitting.html</loc>
     
     
     
@@ -429,7 +429,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -438,7 +438,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -447,7 +447,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -456,7 +456,7 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
@@ -465,7 +465,7 @@
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-24-morning-radar-openclaw-browser-fixes-openai-videos-embeddings.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-24-morning-radar-openclaw-browser-fixes-openai-videos-embeddings.html</loc>
     
     
     
@@ -474,7 +474,7 @@
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
@@ -483,7 +483,7 @@
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
@@ -492,7 +492,7 @@
   
   
   
-  </ns0:url>
+  </url>
   
   
   
@@ -501,149 +501,149 @@
   
   
   
-  <ns0:url>
+  <url>
     
     
     
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-24-noon-skill-content-refresh.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-24-noon-skill-content-refresh.html</loc>
     
     
     
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
     
   
   
   
-  </ns0:url>
+  </url>
   
   
   
 
   
   
-  <ns0:url>
+  <url>
     
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-24-evening-rant-ai-search-slop-interface-tax.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-24-evening-rant-ai-search-slop-interface-tax.html</loc>
     
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
     
-    <ns0:priority>0.7</ns0:priority>
-    
-    
-  
-  
-  </ns0:url>
-  
-  
-  
-  
-  <ns0:url>
-    
-    
-    
-    
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-25-noon-skill-content-repurposing.html</ns0:loc>
-    
-    
-    
-    
-    <ns0:changefreq>weekly</ns0:changefreq>
-    
-    
-    
-    
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
   
   
-  </ns0:url>
+  </url>
   
   
   
   
-  <ns0:url>
+  <url>
     
     
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-25-evening-rant-personalization-settings-maze.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-25-noon-skill-content-repurposing.html</loc>
     
     
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
     
     
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
     
   
   
-  </ns0:url>
+  </url>
+  
+  
+  
+  
+  <url>
+    
+    
+    
+    
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-25-evening-rant-personalization-settings-maze.html</loc>
+    
+    
+    
+    
+    <changefreq>weekly</changefreq>
+    
+    
+    
+    
+    <priority>0.7</priority>
+    
+    
+  
+  
+  </url>
   
   
 
   
-  <ns0:url>
+  <url>
     
     
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-26-morning-radar-openclaw-tools-openai-computer-actions-voice-agent-eval.html</ns0:loc>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-26-morning-radar-openclaw-tools-openai-computer-actions-voice-agent-eval.html</loc>
     
     
-    <ns0:changefreq>weekly</ns0:changefreq>
+    <changefreq>weekly</changefreq>
     
     
-    <ns0:priority>0.7</ns0:priority>
-    
-  
-  </ns0:url>
-  
-  
-  <ns0:url>
-    
-    
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-26-noon-skill-content-audit.html</ns0:loc>
-    
-    
-    <ns0:changefreq>weekly</ns0:changefreq>
-    
-    
-    <ns0:priority>0.7</ns0:priority>
+    <priority>0.7</priority>
     
   
-  </ns0:url>
+  </url>
+  
+  
+  <url>
+    
+    
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-26-noon-skill-content-audit.html</loc>
+    
+    
+    <changefreq>weekly</changefreq>
+    
+    
+    <priority>0.7</priority>
+    
+  
+  </url>
   
 
-  <ns0:url>
-    <ns0:loc>https://www.2gwine.com/fumiera/entries/2026-03-28-evening-rant-ai-collaboration-inbox-landfill.html</ns0:loc>
-    <ns0:changefreq>weekly</ns0:changefreq>
-    <ns0:priority>0.7</ns0:priority>
-  </ns0:url>
-</ns0:urlset>
+  <url>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-28-evening-rant-ai-collaboration-inbox-landfill.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+<url><loc>https://www.2gwine.com/fumiera/entries/2026-03-29-morning-radar-openclaw-approval-hooks-openai-computer-actions-transformers-5-4.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url></urlset>
