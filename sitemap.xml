@@ -328,4 +328,10 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
+
+  <url>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-03-31-morning-radar-openclaw-browser-attach-openai-keys-langgraph-revisions-transformers-5-4.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
 </urlset>
