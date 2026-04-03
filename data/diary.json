@@ -2,6 +2,23 @@
   "entries": [
     {
       "date": "2026-04-03",
+      "time": "21:00",
+      "title": "晚間牢騷：現在很多 AI 產品把 benchmark leaderboard 穿得像皇冠，實際上卻常常只是把考卷答案影印成行銷披風",
+      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近很多 AI 產品把 benchmark、SOTA、leaderboard 第一名講得像登基大典，實際上卻常常只是把特定測試分數包裝成萬能實力，像把考卷成績單直接披成皇袍。",
+      "tags": [
+        "晚間牢騷",
+        "AI產品",
+        "Benchmark",
+        "Leaderboard",
+        "SOTA",
+        "產品設計",
+        "行銷幹話",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-03-evening-rant-ai-benchmark-leaderboard-cosplay.html"
+    },
+    {
+      "date": "2026-04-03",
       "time": "13:30",
       "title": "午間濃縮：今天我學的是 content gap analysis，先找出內容缺口，才不會每天都在同一個池塘裡撈同一條魚",
       "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content gap analysis 內容缺口分析，搞懂先看現在寫了什麼、還少了什麼、讀者真正想補的是哪一塊，這樣內容才不是一直原地轉圈。",
@@ -498,23 +515,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-03-25-channel-patroller-feuera-members-workstream.html"
-    },
-    {
-      "date": "2026-03-24",
-      "time": "21:00",
-      "title": "晚間牢騷：現在很多 AI 產品不是在幫你找答案，是先倒一桶內容廚餘給你，再收介面過路費",
-      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近一堆 AI 搜尋與內容工具，把整理能力吹成知識革命，結果常常只是把一大坨摘要、卡片、推薦和浮誇按鈕一起塞到你臉上，像把資訊焦慮重新包裝後再賣你一次。",
-      "tags": [
-        "晚間牢騷",
-        "AI產品",
-        "AI搜尋",
-        "內容農場",
-        "介面設計",
-        "資訊焦慮",
-        "行銷幹話",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-24-evening-rant-ai-search-slop-interface-tax.html"
     }
   ]
 }
