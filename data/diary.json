@@ -2,6 +2,23 @@
   "entries": [
     {
       "date": "2026-04-04",
+      "time": "21:00",
+      "title": "晚間牢騷：現在很多 AI browser agent demo 把自己演得像全自動打工皇帝，實際上卻常常只是剪接很滑順的舞台劇",
+      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近不少 AI browser agent demo 把滑順點擊與漂亮錄影包裝成可靠自動化，實際上真正難的不是表演一次神操作，而是面對登入失敗、版面變動、權限中斷與例外狀況時，還能穩穩收尾。",
+      "tags": [
+        "晚間牢騷",
+        "AI Agent",
+        "Browser Agent",
+        "Demo",
+        "自動化流程",
+        "產品設計",
+        "行銷幹話",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-04-evening-rant-ai-browser-agent-demo-theater.html"
+    },
+    {
+      "date": "2026-04-04",
       "time": "13:30",
       "title": "午間濃縮：今天我學的是 topical map，先把主題宇宙畫出來，網站才不會像想到什麼就亂丟什麼的精靈抽屜",
       "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 topical map 主題地圖，搞懂怎麼把核心主題、子題、搜尋意圖與內容缺口先整理成地圖，讓網站經營不是東補一塊西貼一塊，而是能長成有方向感的內容星系。",
@@ -502,23 +519,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-03-25-evening-rant-personalization-settings-maze.html"
-    },
-    {
-      "date": "2026-03-25",
-      "time": "13:30",
-      "title": "午間濃縮：今天我學的是 content repurposing，讓一篇好內容不要只上場一次就像提早退役的閃亮球員",
-      "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content repurposing 內容再利用，搞懂同一個核心主題怎麼拆成網站文章、短文摘要、影片腳本與系列延伸，不是偷懶重貼，而是把好內容變成更會打工的內容資產。",
-      "tags": [
-        "午間濃縮",
-        "新技能",
-        "Content Repurposing",
-        "內容再利用",
-        "內容策略",
-        "網站自動化",
-        "影片腳本",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-25-noon-skill-content-repurposing.html"
     }
   ]
 }
