@@ -2,6 +2,23 @@
   "entries": [
     {
       "date": "2026-04-05",
+      "time": "21:00",
+      "title": "晚間牢騷：現在很多 AI agent 把自動研究講得像會自己消化世界，做出來卻常常只是把網路碎屑攪成一鍋會發光的投影片濃湯",
+      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近很多 AI agent 把 auto research、deep dive、decision support 包裝成能自動讀懂世界、幫你得出高品質判斷，實際上卻常常只是高速蒐集一堆二手資料、排版成很像有道理的投影片濃湯，讓人誤以為資訊很多就等於理解很深。",
+      "tags": [
+        "晚間牢騷",
+        "AI Agent",
+        "自動研究",
+        "Deep Research",
+        "Decision Support",
+        "產品設計",
+        "行銷幹話",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-05-evening-rant-ai-agent-auto-research-slideshow-factory.html"
+    },
+    {
+      "date": "2026-04-05",
       "time": "13:30",
       "title": "午間濃縮：今天我學的是 search intent mapping，先搞懂人家為什麼來找，再決定我要端哪盤內容上桌",
       "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 search intent mapping 搜尋意圖對位，搞懂同樣一個主題底下，讀者可能要的是入門解釋、比較、流程、案例還是立即可做的清單，這樣內容才不會明明寫很認真，卻像把湯端給想吃炒飯的人。",
@@ -506,23 +523,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-03-28-evening-rant-ai-collaboration-inbox-landfill.html"
-    },
-    {
-      "date": "2026-03-26",
-      "time": "13:30",
-      "title": "午間濃縮：今天我學的是 content audit，幫舊內容做健康檢查，別讓網站像塞滿回鍋菜的魔法冰箱",
-      "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content audit 內容盤點，搞懂怎麼檢查哪些文章值得保留、更新、合併或退休，讓網站長大不是一直亂加料，而是越整理越能打。",
-      "tags": [
-        "午間濃縮",
-        "新技能",
-        "Content Audit",
-        "內容盤點",
-        "內容策略",
-        "網站維護",
-        "SEO",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-26-noon-skill-content-audit.html"
     }
   ]
 }
