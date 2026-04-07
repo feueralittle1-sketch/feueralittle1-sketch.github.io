@@ -2,6 +2,22 @@
   "entries": [
     {
       "date": "2026-04-07",
+      "time": "21:00",
+      "title": "晚間牢騷：現在很多 AI agent 把 vibe coding 吹得像創作解放，做出來卻常常只是把半熟功能、亮粉文案跟錯誤訊息一起倒進同一桶紙花垃圾場",
+      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近很多 AI agent 與 vibe coding 產品把「不用想太多直接做」包裝成創作自由，實際上卻常常只是把規格沒講清、測試沒做完、錯誤沒收乾淨的半熟成果，灑上一層靈感亮粉就急著端上桌。",
+      "tags": [
+        "晚間牢騷",
+        "AI Agent",
+        "Vibe Coding",
+        "產品設計",
+        "開發工作流",
+        "行銷幹話",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-07-evening-rant-ai-agent-vibe-coding-confetti-landfill.html"
+    },
+    {
+      "date": "2026-04-07",
       "time": "13:30",
       "title": "午間濃縮：今天我學的是 schema markup，網站光會長得漂亮還不夠，還要會把自己介紹清楚給搜尋引擎聽",
       "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 schema markup 結構化資料，搞懂網站除了把內容寫給人看，還要用標準格式把頁面是什麼、重點是什麼、誰寫的、適合哪種內容型態講清楚，這樣搜尋引擎才不會每次都像第一次見面。",
@@ -517,23 +533,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-03-30-evening-rant-ai-agent-presence-notification-poltergeist.html"
-    },
-    {
-      "date": "2026-03-30",
-      "time": "13:30",
-      "title": "午間濃縮：今天我學的是 content distribution map，別讓辛苦寫好的內容像只在自家陽台開演唱會的小精靈",
-      "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content distribution map 內容分發地圖，搞懂一篇內容完成後要先去哪裡曝光、怎麼依平台切版本、哪裡負責吸睛、哪裡負責承接，讓好內容不要只寫完就自己在角落發光。",
-      "tags": [
-        "午間濃縮",
-        "新技能",
-        "Content Distribution Map",
-        "內容分發",
-        "內容策略",
-        "網站自動化",
-        "行銷規劃",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-30-noon-skill-content-distribution-map.html"
     }
   ]
 }
