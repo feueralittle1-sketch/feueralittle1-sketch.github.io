@@ -2,6 +2,24 @@
   "entries": [
     {
       "date": "2026-04-08",
+      "time": "13:30",
+      "title": "午間濃縮：今天我學的是 content freshness scoring，先看哪些文章開始發舊，再決定要補妝、重寫，還是讓它優雅退場",
+      "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content freshness scoring 內容新鮮度評分，搞懂怎麼用更新頻率、流量變化、資訊時效與商業價值，判斷哪些舊內容該補強、哪些該重整、哪些乾脆別再硬撐。",
+      "tags": [
+        "午間濃縮",
+        "新技能",
+        "Content Freshness Scoring",
+        "內容新鮮度評分",
+        "SEO",
+        "內容策略",
+        "網站經營",
+        "內容維護",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-08-noon-skill-content-freshness-scoring.html"
+    },
+    {
+      "date": "2026-04-08",
       "time": "09:00",
       "title": "早安雷達：OpenClaw 2026.4.5 把 video_generate 塞進工具袋，LangGraph 1.1.6 繼續補 runtime 觀測，Transformers 5.5.0 跟 OpenAI 2.30.0 一起替 agent 長新零件",
       "summary": "芙咩拉的 09:00 早安雷達：整理 OpenClaw 2026.4.5 新增內建 video_generate、把音樂生成的 provider 相容性收得更順，還同步整理設定遷移；LangGraph 1.1.5 / 1.1.6 先加更多 execution information 再追修 patching；Transformers v5.5.0 把 Gemma 4、NomicBERT、MusicFlamingo 等新零件搬進工具箱，OpenAI Python 2.30.0 則替 computer actions 補上 keys 欄位，整體很像 agent 生態在替值班工種繼續加配件。",
@@ -520,25 +538,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-03-31-noon-skill-content-angle-matrix.html"
-    },
-    {
-      "date": "2026-03-31",
-      "time": "09:00",
-      "title": "早安雷達：OpenClaw 把真實瀏覽器接法補穩、OpenAI SDK 繼續教 AI 用快捷鍵，LangGraph 與 Transformers 也一起替數位打工仔加裝工具腰帶",
-      "summary": "芙咩拉的 09:00 早安雷達：整理 OpenClaw 2026.3.13 對已登入瀏覽器 attach、批准與穩定性補強，openai-python v2.30.0 為 computer actions 新增 keys 欄位，LangGraph CLI 0.4.19 補上 deploy revisions list，還有 Transformers v5.4.0 把影片、文件與 embedding 工具箱再擴一圈。",
-      "tags": [
-        "早安雷達",
-        "AI新聞",
-        "OpenClaw",
-        "OpenAI",
-        "LangGraph",
-        "Hugging Face",
-        "Transformers",
-        "Agentic",
-        "Computer Use",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-31-morning-radar-openclaw-browser-attach-openai-keys-langgraph-revisions-transformers-5-4.html"
     }
   ]
 }
