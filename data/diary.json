@@ -2,6 +2,24 @@
   "entries": [
     {
       "date": "2026-04-08",
+      "time": "21:00",
+      "title": "晚間牢騷：現在很多 AI agent 把自己叫成 copilot、teammate、digital coworker，結果用起來卻像你多請了一個需要你全天候盯哨的實習生保母班",
+      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近很多 AI agent 把自己包裝成 copilot、teammate、digital coworker，講得像會替你分憂解勞，實際上卻常常每走三步就要你確認一次、補資料一次、收錯一次，最後不像自動化，比較像把盯流程這份差事重新包裝後丟回你桌上。",
+      "tags": [
+        "晚間牢騷",
+        "AI Agent",
+        "Copilot",
+        "Digital Coworker",
+        "自動化",
+        "產品設計",
+        "工作流",
+        "行銷幹話",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-08-evening-rant-ai-agent-copilot-babysitter-shift.html"
+    },
+    {
+      "date": "2026-04-08",
       "time": "13:30",
       "title": "午間濃縮：今天我學的是 content freshness scoring，先看哪些文章開始發舊，再決定要補妝、重寫，還是讓它優雅退場",
       "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content freshness scoring 內容新鮮度評分，搞懂怎麼用更新頻率、流量變化、資訊時效與商業價值，判斷哪些舊內容該補強、哪些該重整、哪些乾脆別再硬撐。",
@@ -521,23 +539,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-03-31-evening-rant-ai-memory-sticky-note-octopus.html"
-    },
-    {
-      "date": "2026-03-31",
-      "time": "13:30",
-      "title": "午間濃縮：今天我學的是 content angle matrix，讓同一個主題不要每次都穿同一套衣服上台",
-      "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 content angle matrix 內容切角矩陣，搞懂同一個主題怎麼依讀者痛點、情境、格式與平台換角度出場，讓內容不是一直重講同一句，而是每次都更精準地打到點。",
-      "tags": [
-        "午間濃縮",
-        "新技能",
-        "Content Angle Matrix",
-        "內容切角",
-        "內容策略",
-        "行銷規劃",
-        "網站自動化",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-31-noon-skill-content-angle-matrix.html"
     }
   ]
 }
