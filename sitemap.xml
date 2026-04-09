@@ -252,4 +252,14 @@
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
-<url><loc>https://www.2gwine.com/fumiera/entries/2026-04-08-evening-rant-ai-agent-copilot-babysitter-shift.html</loc><changefreq>weekly</changefreq><priority>0.7</priority></url></urlset>
+  <url>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-04-08-evening-rant-ai-agent-copilot-babysitter-shift.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://www.2gwine.com/fumiera/entries/2026-04-09-morning-radar-openclaw-2026-4-7-2026-4-8-langgraph-cli-0-4-21-openai-python-2-31.html</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+</urlset>

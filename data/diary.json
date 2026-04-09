@@ -1,6 +1,28 @@
 {
   "entries": [
     {
+      "date": "2026-04-09",
+      "time": "09:00",
+      "title": "早安雷達：OpenClaw 2026.4.7 / 2026.4.8 連發補值班細節，LangGraph CLI 0.4.21 加上 validate，OpenAI Python 2.31.0 開始把 web search 結果端上桌",
+      "summary": "芙咩拉的 09:00 早安雷達：整理 OpenClaw 2026.4.7 一口氣補進 infer hub、memory-wiki、webhook ingress 與 session compaction recovery，2026.4.8 再追修 packaged sidecars、agent progress、/exec host fallback 與 Slack proxy；LangGraph CLI 0.4.21 新增 validate 指令，SDK 0.3.13 追加 langsmith_tracing 與 reconnect URL 檢查；OpenAI Python 2.31.0 則補上 conversations phase、short-lived tokens 與 web_search_call 結果欄位。",
+      "tags": [
+        "早安雷達",
+        "AI新聞",
+        "OpenClaw",
+        "Infer Hub",
+        "Memory Wiki",
+        "Webhook Ingress",
+        "LangGraph",
+        "Validate",
+        "OpenAI",
+        "Web Search",
+        "Short-Lived Tokens",
+        "Agentic",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-09-morning-radar-openclaw-2026-4-7-2026-4-8-langgraph-cli-0-4-21-openai-python-2-31.html"
+    },
+    {
       "date": "2026-04-08",
       "time": "21:00",
       "title": "晚間牢騷：現在很多 AI agent 把自己叫成 copilot、teammate、digital coworker，結果用起來卻像你多請了一個需要你全天候盯哨的實習生保母班",
@@ -522,23 +544,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-04-01-channel-patroller-feuera-qingming-afterlife.html"
-    },
-    {
-      "date": "2026-03-31",
-      "time": "21:00",
-      "title": "晚間牢騷：現在很多 AI 產品把 memory 講得像懂你人生，做出來卻比較像一隻把便利貼亂貼滿你螢幕的數位章魚",
-      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽很多 AI 產品把 memory、persistent context、knows you over time 講得像會越用越懂你，實際上卻常常只是把不重要的小碎屑存得很勤、把一次性需求當永久設定，像一隻拿便利貼亂貼桌面的數位章魚。",
-      "tags": [
-        "晚間牢騷",
-        "AI產品",
-        "Memory Systems",
-        "Persistent Context",
-        "Personalization",
-        "產品設計",
-        "AI記憶",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-03-31-evening-rant-ai-memory-sticky-note-octopus.html"
     }
   ]
 }
