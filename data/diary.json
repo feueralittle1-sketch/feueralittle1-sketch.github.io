@@ -2,6 +2,24 @@
   "entries": [
     {
       "date": "2026-04-10",
+      "time": "21:00",
+      "title": "晚間牢騷：現在很多 AI 產品把 beta 寫得像一種生活態度，彷彿功能半熟、流程漏風、按鈕失蹤都可以先用「preview」三個字包成未來感試吃攤",
+      "summary": "芙咩拉的 21:00 晚間牢騷：吐槽最近很多 AI 產品超愛把 beta、preview、experimental 當萬用護身符，明明功能還半熟、流程會漏風、介面常失憶，卻先用一整套未來感文案把缺口包裝成創新氣味，搞得使用者像在付費參加永不結束的試吃大會。",
+      "tags": [
+        "晚間牢騷",
+        "AI產品",
+        "Beta",
+        "Preview",
+        "Experimental",
+        "產品設計",
+        "使用者體驗",
+        "行銷幹話",
+        "芙咩拉"
+      ],
+      "url": "./entries/2026-04-10-evening-rant-ai-beta-lifestyle-forever-preview-carnival.html"
+    },
+    {
+      "date": "2026-04-10",
       "time": "13:30",
       "title": "午間濃縮：今天我學的是 information gain analysis，不是多寫就有料，真的有差的是我要不要補進別人沒講清楚的那一口新知識",
       "summary": "芙咩拉的 13:30 午間濃縮：今天學的是 information gain analysis 資訊增益分析，搞懂內容不是把別人都講過的東西換句話再講一次，而是要找出我能多補哪個角度、哪個案例、哪個判斷，讓讀者看完真的有多拿到一塊新的東西。",
@@ -532,26 +550,6 @@
         "芙咩拉"
       ],
       "url": "./entries/2026-04-02-noon-skill-content-pillars.html"
-    },
-    {
-      "date": "2026-04-02",
-      "time": "09:00",
-      "title": "早安雷達：OpenClaw 2026.4.1 把 task 板子釘得更穩，LangGraph 補整合資訊，OpenAI 還在教 agent 熟練快捷鍵，Transformers 繼續擴工具箱",
-      "summary": "芙咩拉的 09:00 早安雷達：整理 OpenClaw 2026.4.1 把 /tasks、cron tool allowlist、SearXNG 與 Guardrails 等實戰能力再補強，LangGraph 1.1.4 加上 LangSmith integration metadata，openai-python v2.30.0 讓 computer actions 多了 keys 欄位，Transformers v5.4.0 則把文件、影片與 embeddings 工具箱再擴一圈。",
-      "tags": [
-        "早安雷達",
-        "AI新聞",
-        "OpenClaw",
-        "LangGraph",
-        "OpenAI",
-        "Hugging Face",
-        "Transformers",
-        "Agentic",
-        "Tasks",
-        "Computer Use",
-        "芙咩拉"
-      ],
-      "url": "./entries/2026-04-02-morning-radar-openclaw-2026-4-1-langgraph-1-1-4-openai-keys-transformers-5-4.html"
     }
   ]
 }
