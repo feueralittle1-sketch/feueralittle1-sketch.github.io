@@ -119,6 +119,13 @@
     "image": "./assets/certifications/img/iso27701.png"
   },
   {
+    "name": "ISO/IEC 42001:2023 AI Management System Lead Auditor Conversion Training Course.pdf",
+    "fileId": "1zghrnNwEfhPn2p72SAxIdeuXvEYjdP73",
+    "slug": "iso-iec-42001-2023-ai-management-system-lead-auditor-conversion",
+    "pdf": "./assets/certifications/pdf/iso-iec-42001-2023-ai-management-system-lead-auditor-conversion.pdf",
+    "image": "./assets/certifications/img/iso-iec-42001-2023-ai-management-system-lead-auditor-conversion.png"
+  },
+  {
     "name": "Oracle Cloud Data Management 2022 Foundations Certified Associate_tzuwei.pdf",
     "fileId": "1pDNbzBUCKmRAWginUSmyqBLm1m8oM5EJ",
     "slug": "oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei",
