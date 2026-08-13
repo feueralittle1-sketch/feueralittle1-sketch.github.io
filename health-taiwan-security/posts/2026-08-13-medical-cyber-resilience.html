@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>健康台灣深耕計畫-資安治理｜曾子維：醫療韌性不是備份打勾</title>
+  <meta name="description" content="曾子維博士解析健康台灣深耕計畫資安治理：醫院應如何落實可切換備援、最小權限、勒索軟體演練、主權雲、MDR、XDR、不可抹除備份與零信任。" />
+  <meta name="keywords" content="健康台灣深耕計畫-資安治理,健康台灣深耕計畫,曾子維,醫療資安,醫院資安治理,勒索軟體,主權雲,零信任,MDR,XDR" />
+  <link rel="canonical" href="https://www.2gwine.com/health-taiwan-security/posts/2026-08-13-medical-cyber-resilience.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="健康台灣深耕計畫-資安治理｜曾子維：醫療韌性不是備份打勾" />
+  <meta property="og:description" content="從六項治理行動解析醫院如何把資安預算轉化為可恢復、可稽核、可持續改善的醫療韌性。" />
+  <meta property="og:url" content="https://www.2gwine.com/health-taiwan-security/posts/2026-08-13-medical-cyber-resilience.html" />
+  <meta property="og:image" content="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1400&q=80" />
+  <meta property="article:published_time" content="2026-08-13T19:00:00+08:00" />
+  <meta property="article:author" content="曾子維" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(99,230,255,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:2}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.5rem;margin-bottom:1rem;color:#f4f8ff}.prose h3{font-size:1.25rem;margin-top:1.8rem;color:#a8edff}.muted{color:#9fb3d9}.note{border-left:4px solid #63e6ff;background:rgba(99,230,255,.08)}a{color:#8fe8ff}.tag{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}
+  </style>
+  <script type="application/ld+json">
+  {"@context":"https://schema.org","@type":"Article","headline":"醫療韌性不是備份打勾：健康台灣深耕計畫下的六項資安治理行動","description":"曾子維博士解析健康台灣深耕計畫的醫療資安治理行動。","datePublished":"2026-08-13T19:00:00+08:00","dateModified":"2026-08-13T19:00:00+08:00","mainEntityOfPage":"https://www.2gwine.com/health-taiwan-security/posts/2026-08-13-medical-cyber-resilience.html","author":{"@type":"Person","name":"曾子維","alternateName":"Dr.William","url":"https://www.2gwine.com/"},"publisher":{"@type":"Person","name":"曾子維"},"about":["健康台灣深耕計畫","資安治理","醫療資安","醫療韌性"]}
+  </script>
+</head>
+<body>
+  <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a href="../index.html" class="font-bold text-white no-underline">健康台灣深耕計畫-資安治理</a><a href="../../index.html">Dr.William 首頁</a></nav></header>
+  <main class="max-w-5xl mx-auto px-4 py-12">
+    <article class="glass rounded-[2rem] overflow-hidden">
+      <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1400&q=80" alt="醫療團隊透過數位系統進行照護與治理" class="w-full h-72 md:h-[420px] object-cover opacity-80" />
+      <div class="p-6 md:p-12">
+        <p class="text-cyan-300 tracking-[.2em] text-xs font-bold">健康台灣深耕計畫-資安治理 · 2026-08-13</p>
+        <h1 class="text-4xl md:text-6xl font-black leading-tight my-5">醫療韌性不是備份打勾：六項資安治理行動，如何真的守住臨床服務</h1>
+        <p class="muted text-lg leading-9">作者：曾子維博士（Dr.William）｜維域智慧共同創辦人暨執行長、醫療資訊與資安治理實務工作者</p>
+        <div class="flex flex-wrap gap-2 my-7 text-sm"><span class="tag rounded-full px-4 py-2">醫療資安治理</span><span class="tag rounded-full px-4 py-2">營運韌性</span><span class="tag rounded-full px-4 py-2">主權雲</span><span class="tag rounded-full px-4 py-2">零信任</span><span class="tag rounded-full px-4 py-2">曾子維</span></div>
+        <div class="prose max-w-none">
+          <p class="text-xl">《健康台灣深耕計畫—規劃及執行資安治理、資料治理及 AI 治理之注意事項說明》把資安治理的目標寫得很直接：醫院要強化的不只是防護工具，而是整體資安韌性與主動防禦能力。這個差別非常重要。因為醫院真正承受的風險，不只是某台主機被入侵，而是掛號、檢驗、影像、藥事、病歷或急診流程在關鍵時刻無法運作。</p>
+          <p>因此，健康台灣深耕計畫下的資安預算，不應只被拆成一張設備採購表。更合理的問題是：當勒索軟體、帳號濫用、雲端服務中斷或核心系統遭攻擊時，醫院能否維持最低必要服務？能否在可接受時間內復原？能否說明誰做了什麼、資料去了哪裡、風險如何被接受？</p>
+
+          <h2>一、可執行的備援，重點是「真的切得過去」</h2>
+          <p>文件首先提出異地備份、雲端備份與具備切換能力的雙活系統。這裡最容易出現的治理落差，是把「有備份」誤認成「可以復原」。備份檔案存在，只代表資料可能還在；它不代表檔案完整、金鑰可用、復原順序清楚，也不代表臨床端能在預定時間重新操作。</p>
+          <p>醫院應把復原時間目標（RTO）、復原點目標（RPO）、核心系統依賴關係與降級運作方式寫進計畫，並定期執行還原與切換演練。真正有價值的指標不是「備份成功率 100%」，而是抽樣還原成功率、關鍵服務實際恢復時間，以及演練後修正項目的完成率。</p>
+
+          <h2>二、核心系統安全檢測，要先釐清標的與方法</h2>
+          <p>原始文件第（二）點可見文字寫為「第針對醫院核心系統進行 Claude Mythos 安全檢測」，內文也提到「雲端安全 Claude Mythos 掃描服務」。由於「Claude Mythos」並不是本文可確認的通用資安檢測類別或標準名稱，醫院在據此規劃採購、驗收或 KPI 前，應向主管機關或計畫窗口確認正式定義、適用範圍與技術規格。</p>
+          <div class="note rounded-r-2xl p-5 my-6"><p class="m-0"><strong>文件判讀原則：</strong>本文忠實指出原文件的可見用語，但不把未被明確定義的名稱擴張解釋為既有標準。可落地的安全檢測仍應明列系統範圍、掃描類型、人工驗證、風險分級、修補時限、複測與例外接受流程。</p></div>
+          <p>對核心醫療資訊系統而言，只做一般弱點掃描也不夠。治理面應涵蓋外部曝露面、雲端設定、身分與權限、應用程式與 API、第三方元件、醫療設備連線，以及發現高風險問題後誰負責修補與誰有權接受剩餘風險。</p>
+
+          <h2>三、權限治理要從「帳號清冊」走向「行為可解釋」</h2>
+          <p>文件強調最小權限、帳號控管、使用者行為分析與異常偵測。醫院的權限情境往往比一般企業複雜：輪班、跨科會診、緊急救治、委外維護與臨時支援都可能需要例外權限。問題不是完全禁止例外，而是例外必須有原因、有時效、有紀錄，而且事後可以稽核。</p>
+          <p>可優先落實的工作包括：高權限帳號分離、多人共用帳號淘汰、到期自動撤權、委外帳號限定來源與時段、緊急破窗權限（break-glass）全程記錄，以及針對大量查閱病歷、非值勤時間存取、異常資料下載等行為建立偵測規則。</p>
+
+          <h2>四、勒索軟體演練不能只讓資訊室自己演</h2>
+          <p>勒索事件會同時影響臨床、行政、法遵、公共關係與決策指揮。只讓資訊室練習拔網路線，無法驗證醫院整體的應變能力。演練情境至少應包含事件判斷、隔離、損害控制、服務降級、資料復原、通報、跨部門決策與對外溝通。</p>
+          <p>更重要的是把臨床工作流程放進演練。例如電子病歷暫停時，哪些紙本流程立即啟動？檢驗結果如何回傳？藥物核對如何避免錯誤？恢復後紙本資料如何補登與交叉驗證？資安演練若沒有碰到這些問題，就仍只是 IT 演練，不是醫療韌性演練。</p>
+
+          <h2>五、主權雲不是一句「資料留在國內」就結束</h2>
+          <p>當醫院把病人資料用於生成式 AI 或雲端 AI 服務，資料主權必須被轉化為具體合約與技術控制。應確認資料儲存與處理位置、次處理者、跨境傳輸、模型訓練用途、資料刪除、金鑰控制、事件通報、稽核權、服務終止後的資料返還，以及供應商鎖定風險。</p>
+          <p>若導入 AI Agent，還需要額外管理工具權限、代理人可執行的動作、資料讀取範圍、操作日誌、敏感動作的人工確認，以及失敗時的安全停止機制。曾子維在企業 AI Agent 與安全治理的分享中持續強調：效率與治理不是二選一，真正能進入企業工作流程的 Agent，必須讓權限、資料流向與責任邊界都可以被說明。</p>
+
+          <h2>六、MDR、XDR、不可抹除備份與零信任，必須回到治理閉環</h2>
+          <p>文件鼓勵投入 AI 主動監控、MDR、XDR、備份加密、智慧化網段管理、不可抹除備份、異地雙活與零信任。這些都是重要能力，但每個名詞都可能變成昂貴卻孤立的採購案。治理上應先回答：要降低哪一類風險？偵測到告警後誰處理？多久內必須回應？跨系統證據如何保存？事件結束後如何回饋到權限、組態與教育訓練？</p>
+          <p>零信任也不等於買一套產品。它至少涉及持續驗證身分與裝置、分段存取、最小權限、風險式條件控管與完整可視性。不可抹除備份則要避免備份管理權限與正式環境共用，並確保保留政策不能被遭入侵的高權限帳號輕易變更。</p>
+
+          <h2>曾子維觀點：把預算項目改寫成可驗證的安全成果</h2>
+          <p>健康台灣深耕計畫提供的是轉型機會，但醫院最需要避免的是「建置完成，韌性沒有完成」。每一筆資安投入都應對應一個可驗證成果：備援對應實際切換時間；權限治理對應撤權與異常行為處理；MDR 對應偵測與回應時效；勒索演練對應臨床降級運作；主權雲對應可查核的資料與責任邊界。</p>
+          <p>當這些成果能被持續量測、演練、稽核與改善，資安才不再只是資訊部門的後勤，而會成為醫療品質與病人安全的一部分。這也是健康台灣深耕計畫在資安治理上最值得把握的核心：不是把防禦做得看起來更厚，而是讓醫療服務在遭遇事件時，仍有能力安全地繼續運作。</p>
+
+          <h2>給醫院的本週行動清單</h2>
+          <ol><li>選一套核心系統，實際完成一次備份還原或切換演練。</li><li>盤點高權限、共用與委外帳號，確認負責人、用途與到期日。</li><li>用臨床中斷情境辦一次跨部門勒索軟體桌上演練。</li><li>檢視雲端與 AI 合約是否涵蓋資料用途、次處理者、刪除與稽核權。</li><li>把 MDR／XDR 告警到處置的責任與 SLA 寫清楚。</li><li>向計畫窗口確認原文件「Claude Mythos 安全檢測」的正式定義。</li></ol>
+
+          <hr class="border-white/10 my-9" />
+          <h2>資料來源與聲明</h2>
+          <p>主要來源：<a href="https://htsprout.nhri.org.tw/UploadFile/1150731-attach1.pdf" target="_blank" rel="noopener noreferrer">《健康台灣深耕計畫—規劃及執行資安治理、資料治理及 AI 治理之注意事項說明》</a>（PDF，本文於 2026-08-13 存取）。本文為治理與實務觀點整理，不取代主管機關正式公告、計畫審查要求、法律意見或個別醫院風險評估。</p>
+          <p>延伸影音：<a href="https://www.youtube.com/watch?v=Ixoj0TF67co" target="_blank" rel="noopener noreferrer">曾子維解析醫院如何接軌 AI：資料整合、系統異質與數據防護</a>。</p>
+        </div>
+      </div>
+    </article>
+  </main>
+  <footer class="max-w-5xl mx-auto px-4 pb-12 muted text-sm">© 2026 Dr.William 曾子維｜健康台灣深耕計畫-資安治理專欄</footer>
+</body>
+</html>
