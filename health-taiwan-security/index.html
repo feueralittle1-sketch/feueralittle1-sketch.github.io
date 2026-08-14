@@ -3,60 +3,33 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>健康台灣深耕計畫-資安治理｜曾子維的智慧醫療治理專欄</title>
-  <meta name="description" content="健康台灣深耕計畫-資安治理專欄，由曾子維博士從醫療資安、AI Agent、資料治理與醫院營運韌性角度，持續解析備援、零信任、主權雲、MDR、XDR、FHIR 與 AI 治理實務。" />
-  <meta name="keywords" content="健康台灣深耕計畫-資安治理,健康台灣深耕計畫,資安治理,曾子維,醫療資安,AI治理,資料治理,醫院資安" />
+  <title>健康台灣深耕計畫-資安治理｜智慧醫療治理專欄</title>
+  <meta name="description" content="健康台灣深耕計畫-資安治理專欄，以第一人稱分享醫療資安、AI Agent、資料治理與醫院營運韌性的落地方法。" />
+  <meta name="keywords" content="健康台灣深耕計畫-資安治理,健康台灣深耕計畫,資安治理,醫療資安,AI治理,資料治理,醫院資安" />
   <link rel="canonical" href="https://www.2gwine.com/health-taiwan-security/" />
   <meta property="og:type" content="website" />
-  <meta property="og:title" content="健康台灣深耕計畫-資安治理｜曾子維的智慧醫療治理專欄" />
-  <meta property="og:description" content="從官方計畫文件到醫院落地實務，持續解析健康台灣深耕計畫的資安、資料與 AI 治理議題。" />
+  <meta property="og:title" content="健康台灣深耕計畫-資安治理｜智慧醫療治理專欄" />
+  <meta property="og:description" content="用圖解、流程與第一人稱實務觀點，持續整理健康台灣深耕計畫的資安、資料與 AI 治理議題。" />
   <meta property="og:url" content="https://www.2gwine.com/health-taiwan-security/" />
-  <meta property="og:image" content="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1400&q=80" />
+  <meta property="og:image" content="https://www.2gwine.com/health-taiwan-security/assets/medical-cyber-resilience.svg" />
   <meta name="twitter:card" content="summary_large_image" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <style>
-    body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 10%,rgba(99,230,255,.13),transparent 28%),radial-gradient(circle at 85% 10%,rgba(156,140,255,.12),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 45%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;min-height:100vh}.glass{background:rgba(13,26,46,.72);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.muted{color:#a8bad8}.gradient{background:linear-gradient(90deg,#fff,#8fe8ff 42%,#a997ff);-webkit-background-clip:text;background-clip:text;color:transparent}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff}.article-card{transition:.25s ease}.article-card:hover{transform:translateY(-4px);border-color:rgba(99,230,255,.3)}
-  </style>
-  <script type="application/ld+json">
-  {"@context":"https://schema.org","@type":"CollectionPage","name":"健康台灣深耕計畫-資安治理","description":"曾子維博士解析健康台灣深耕計畫的醫療資安、資料治理與 AI 治理議題。","url":"https://www.2gwine.com/health-taiwan-security/","about":["健康台灣深耕計畫","資安治理","醫療資安","AI治理"],"author":{"@type":"Person","name":"曾子維","alternateName":"Dr.William","url":"https://www.2gwine.com/"}}
-  </script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 10%,rgba(99,230,255,.13),transparent 28%),radial-gradient(circle at 85% 10%,rgba(156,140,255,.12),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 45%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;min-height:100vh}.glass{background:rgba(13,26,46,.72);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.muted{color:#a8bad8}.gradient{background:linear-gradient(90deg,#fff,#8fe8ff 42%,#a997ff);-webkit-background-clip:text;background-clip:text;color:transparent}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff}.article-card{transition:.25s ease}.article-card:hover{transform:translateY(-4px);border-color:rgba(99,230,255,.3)}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"健康台灣深耕計畫-資安治理","description":"以第一人稱分享醫療資安、資料治理與 AI 治理的實務專欄。","url":"https://www.2gwine.com/health-taiwan-security/","about":["健康台灣深耕計畫","資安治理","醫療資安","AI治理"],"author":{"@type":"Person","name":"Dr. William","url":"https://www.2gwine.com/"}}</script>
 </head>
 <body>
-  <header class="max-w-6xl mx-auto px-4 pt-6">
-    <nav class="glass rounded-2xl px-5 py-4 flex flex-wrap items-center justify-between gap-4">
-      <a href="../index.html" class="font-bold text-white no-underline">Dr.William 曾子維</a>
-      <div class="flex gap-4 text-sm"><a href="#articles">專欄文章</a><a href="https://htsprout.nhri.org.tw/UploadFile/1150731-attach1.pdf" target="_blank" rel="noopener noreferrer">計畫文件</a></div>
-    </nav>
-  </header>
+  <header class="max-w-6xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap items-center justify-between gap-4"><a href="../index.html" class="font-bold text-white no-underline">Dr. William</a><a href="#articles">專欄文章</a></nav></header>
   <main>
     <section class="max-w-6xl mx-auto px-4 py-20">
       <div class="grid lg:grid-cols-12 gap-8 items-center">
-        <div class="lg:col-span-8">
-          <p class="text-cyan-300 tracking-[.22em] text-xs font-bold uppercase">Health Taiwan · Cybersecurity Governance</p>
-          <h1 class="gradient text-5xl md:text-7xl font-black leading-tight my-5">健康台灣深耕計畫<br />資安治理專欄</h1>
-          <p class="muted text-lg md:text-xl leading-9 max-w-3xl">由曾子維博士從醫療資訊、資安治理與 AI Agent 落地經驗出發，持續拆解醫院如何把備援、權限、資料保護、雲端治理與 AI 風險管理，真正變成可執行、可驗證、可持續改善的制度。</p>
-          <div class="flex flex-wrap gap-3 mt-7 text-sm"><span class="chip rounded-full px-4 py-2">健康台灣深耕計畫</span><span class="chip rounded-full px-4 py-2">醫療資安治理</span><span class="chip rounded-full px-4 py-2">曾子維</span><span class="chip rounded-full px-4 py-2">AI 與資料治理</span></div>
-        </div>
-        <aside class="lg:col-span-4 glass rounded-[2rem] p-7">
-          <div class="text-cyan-300 text-xs tracking-[.18em] mb-3">COLUMN MISSION</div>
-          <h2 class="text-2xl font-bold mb-4">每天聚焦一個可落地的治理問題</h2>
-          <ul class="muted leading-8 pl-5 list-disc"><li>以官方文件與可信來源為底</li><li>區分原文、解讀與實務建議</li><li>不捏造政策、時程或強制要求</li><li>讓醫院主管與資安團隊都讀得懂</li></ul>
-        </aside>
+        <div class="lg:col-span-8"><p class="text-cyan-300 tracking-[.22em] text-xs font-bold uppercase">Health Taiwan · Cybersecurity Governance</p><h1 class="gradient text-5xl md:text-7xl font-black leading-tight my-5">健康台灣深耕計畫<br />資安治理專欄</h1><p class="muted text-lg md:text-xl leading-9 max-w-3xl">我會從醫療資訊、資安治理與 AI Agent 的實務經驗出發，用更短的文字、更多圖解，整理醫院如何把備援、權限、資料保護與 AI 風險管理真正落地。</p><div class="flex flex-wrap gap-3 mt-7 text-sm"><span class="chip rounded-full px-4 py-2">健康台灣深耕計畫</span><span class="chip rounded-full px-4 py-2">醫療資安治理</span><span class="chip rounded-full px-4 py-2">治理圖解</span><span class="chip rounded-full px-4 py-2">AI 與資料治理</span></div></div>
+        <aside class="lg:col-span-4 glass rounded-[2rem] p-7"><div class="text-cyan-300 text-xs tracking-[.18em] mb-3">COLUMN MISSION</div><h2 class="text-2xl font-bold mb-4">每天聚焦一個治理問題</h2><ul class="muted leading-8 pl-5 list-disc"><li>第一人稱實務整理</li><li>用架構圖與流程圖說明</li><li>區分事實、判讀與建議</li><li>不把不確定內容寫成規定</li></ul></aside>
       </div>
     </section>
-    <section id="articles" class="max-w-6xl mx-auto px-4 pb-20">
-      <div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8"><div><p class="text-cyan-300 text-xs tracking-[.2em]">LATEST ARTICLES</p><h2 class="text-4xl font-black mt-2">最新專欄</h2></div><p class="muted">持續累積健康台灣深耕計畫的治理知識庫。</p></div>
-      <article class="glass article-card rounded-[2rem] overflow-hidden grid md:grid-cols-5">
-        <img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=1200&q=80" alt="醫療團隊與數位治理" class="w-full h-full min-h-64 object-cover md:col-span-2" />
-        <div class="p-7 md:p-9 md:col-span-3">
-          <div class="text-cyan-300 text-xs mb-3">2026-08-13 · 資安治理 01</div>
-          <h3 class="text-3xl font-bold leading-tight mb-4">醫療韌性不是備份打勾：健康台灣深耕計畫下的六項資安治理行動</h3>
-          <p class="muted leading-8">從可切換備援、最小權限、勒索軟體演練、主權雲到 MDR／XDR 與不可抹除備份，解析醫院如何把資安投資變成臨床服務不中斷的能力。</p>
-          <a href="./posts/2026-08-13-medical-cyber-resilience.html" class="inline-flex mt-5 font-bold">閱讀全文 →</a>
-        </div>
-      </article>
+    <section id="articles" class="max-w-6xl mx-auto px-4 pb-20"><div class="flex flex-col md:flex-row md:items-end md:justify-between gap-4 mb-8"><div><p class="text-cyan-300 text-xs tracking-[.2em]">LATEST ARTICLES</p><h2 class="text-4xl font-black mt-2">最新專欄</h2></div><p class="muted">用圖解累積可落地的治理知識庫。</p></div>
+      <article class="glass article-card rounded-[2rem] overflow-hidden grid md:grid-cols-5"><img src="./assets/medical-cyber-resilience.svg" alt="醫療資安韌性六大治理能力圖" class="w-full h-full min-h-64 object-cover md:col-span-2" /><div class="p-7 md:p-9 md:col-span-3"><div class="text-cyan-300 text-xs mb-3">2026-08-13 · 資安治理 01</div><h3 class="text-3xl font-bold leading-tight mb-4">醫療韌性不是備份打勾：六項資安治理行動</h3><p class="muted leading-8">我用三張圖整理備援、權限、勒索演練、主權雲、MDR／XDR 與 AI Agent 治理，快速看懂如何守住臨床服務。</p><a href="./posts/2026-08-13-medical-cyber-resilience.html" class="inline-flex mt-5 font-bold">閱讀全文 →</a></div></article>
     </section>
   </main>
-  <footer class="border-t border-white/10 py-10"><div class="max-w-6xl mx-auto px-4 muted text-sm">健康台灣深耕計畫-資安治理｜Dr.William 曾子維</div></footer>
+  <footer class="border-t border-white/10 py-10"><div class="max-w-6xl mx-auto px-4 muted text-sm">健康台灣深耕計畫-資安治理｜Dr. William</div></footer>
 </body>
 </html>
