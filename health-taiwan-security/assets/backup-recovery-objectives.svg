@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療備援與復原名詞關係圖</title>
+  <desc id="desc">以時間軸說明 RPO、事故點、RTO，以及備份、異地備援、降級運作與復原之間的關係。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10254a"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#78e7ff"/></marker>
+  </defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <text x="70" y="78" fill="#f4f8ff" font-size="38" font-weight="800">備份回答「回到哪裡」，復原回答「何時恢復服務」</text>
+  <text x="70" y="120" fill="#9fb8d9" font-size="22">先以臨床可接受的資料損失與停機時間，反推技術設計</text>
+  <line x1="110" y1="330" x2="1090" y2="330" stroke="#78e7ff" stroke-width="5" marker-end="url(#arrow)"/>
+  <circle cx="300" cy="330" r="15" fill="#57f0c1" filter="url(#glow)"/><circle cx="600" cy="330" r="18" fill="#ff819f" filter="url(#glow)"/><circle cx="920" cy="330" r="15" fill="#a997ff" filter="url(#glow)"/>
+  <text x="245" y="380" fill="#dffcf3" font-size="26" font-weight="700">最近可用復原點</text><text x="548" y="380" fill="#ffe1e8" font-size="26" font-weight="700">事故發生</text><text x="835" y="380" fill="#eee9ff" font-size="26" font-weight="700">安全恢復服務</text>
+  <path d="M300 275 Q450 205 600 275" fill="none" stroke="#57f0c1" stroke-width="4"/><text x="405" y="225" fill="#57f0c1" font-size="30" font-weight="800">RPO</text><text x="333" y="260" fill="#c6d4eb" font-size="21">可接受資料損失</text>
+  <path d="M600 275 Q760 175 920 275" fill="none" stroke="#a997ff" stroke-width="4"/><text x="735" y="198" fill="#b9aaff" font-size="30" font-weight="800">RTO</text><text x="667" y="238" fill="#c6d4eb" font-size="21">可接受服務中斷</text>
+  <g font-size="23" font-weight="700" text-anchor="middle">
+    <rect x="85" y="485" width="230" height="120" rx="22" fill="#102f3a" stroke="#57f0c1"/><text x="200" y="535" fill="#57f0c1">備份／不可變副本</text><text x="200" y="572" fill="#d6e4f7" font-size="20">保留可還原資料</text>
+    <rect x="350" y="485" width="230" height="120" rx="22" fill="#1b2947" stroke="#78e7ff"/><text x="465" y="535" fill="#78e7ff">異地／雙活</text><text x="465" y="572" fill="#d6e4f7" font-size="20">縮短切換時間</text>
+    <rect x="615" y="485" width="230" height="120" rx="22" fill="#292341" stroke="#a997ff"/><text x="730" y="535" fill="#b9aaff">臨床降級運作</text><text x="730" y="572" fill="#d6e4f7" font-size="20">停機期間維持照護</text>
+    <rect x="880" y="485" width="230" height="120" rx="22" fill="#342338" stroke="#ff819f"/><text x="995" y="535" fill="#ff9fb4">還原與驗證</text><text x="995" y="572" fill="#d6e4f7" font-size="20">確認完整、可用、安全</text>
+  </g>
+  <text x="600" y="670" text-anchor="middle" fill="#91a8c8" font-size="20">RPO 與 RTO 是業務目標，不是由備份產品單方面決定的規格</text>
+</svg>

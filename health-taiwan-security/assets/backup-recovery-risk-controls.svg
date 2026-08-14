@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">備援與復原風險控制對照圖</title>
+  <desc id="desc">列出備份成功但還原失敗、同權限遭刪除、依賴缺漏、雙活錯誤擴散與演練失真五種風險及控制方法。</desc>
+  <defs><linearGradient id="bg"><stop stop-color="#081426"/><stop offset="1" stop-color="#10274a"/></linearGradient></defs>
+  <rect width="1200" height="760" rx="32" fill="url(#bg)"/>
+  <text x="70" y="76" fill="#f4f8ff" font-size="38" font-weight="800">五種常見失敗：控制要對準風險，不是堆疊副本</text>
+  <text x="70" y="116" fill="#9fb8d9" font-size="22">每個技術控制都要用還原證據與臨床情境驗證</text>
+  <g font-family="sans-serif">
+    <rect x="70" y="160" width="410" height="76" rx="18" fill="#351f31" stroke="#ff819f"/><text x="95" y="207" fill="#ffd8e1" font-size="23" font-weight="700">備份顯示成功，實際無法還原</text>
+    <path d="M500 198H610" stroke="#78e7ff" stroke-width="4"/><circle cx="555" cy="198" r="9" fill="#78e7ff"/>
+    <rect x="630" y="160" width="500" height="76" rx="18" fill="#12333b" stroke="#57f0c1"/><text x="655" y="207" fill="#dffcf3" font-size="23" font-weight="700">定期抽樣還原＋資料完整性與應用驗證</text>
+    <rect x="70" y="260" width="410" height="76" rx="18" fill="#351f31" stroke="#ff819f"/><text x="95" y="307" fill="#ffd8e1" font-size="23" font-weight="700">正式環境與備份使用相同管理權</text>
+    <path d="M500 298H610" stroke="#78e7ff" stroke-width="4"/><circle cx="555" cy="298" r="9" fill="#78e7ff"/>
+    <rect x="630" y="260" width="500" height="76" rx="18" fill="#12333b" stroke="#57f0c1"/><text x="655" y="307" fill="#dffcf3" font-size="23" font-weight="700">管理權分離＋不可變／離線副本＋MFA</text>
+    <rect x="70" y="360" width="410" height="76" rx="18" fill="#351f31" stroke="#ff819f"/><text x="95" y="407" fill="#ffd8e1" font-size="23" font-weight="700">只復原主機，身分或介面仍中斷</text>
+    <path d="M500 398H610" stroke="#78e7ff" stroke-width="4"/><circle cx="555" cy="398" r="9" fill="#78e7ff"/>
+    <rect x="630" y="360" width="500" height="76" rx="18" fill="#12333b" stroke="#57f0c1"/><text x="655" y="407" fill="#dffcf3" font-size="23" font-weight="700">依賴圖＋整鏈切換＋跨系統驗證</text>
+    <rect x="70" y="460" width="410" height="76" rx="18" fill="#351f31" stroke="#ff819f"/><text x="95" y="507" fill="#ffd8e1" font-size="23" font-weight="700">雙活把錯誤或加密同步到另一端</text>
+    <path d="M500 498H610" stroke="#78e7ff" stroke-width="4"/><circle cx="555" cy="498" r="9" fill="#78e7ff"/>
+    <rect x="630" y="460" width="500" height="76" rx="18" fill="#12333b" stroke="#57f0c1"/><text x="655" y="507" fill="#dffcf3" font-size="23" font-weight="700">版本保留＋隔離恢復區＋乾淨點判定</text>
+    <rect x="70" y="560" width="410" height="76" rx="18" fill="#351f31" stroke="#ff819f"/><text x="95" y="607" fill="#ffd8e1" font-size="23" font-weight="700">演練先通知答案，數字看似漂亮</text>
+    <path d="M500 598H610" stroke="#78e7ff" stroke-width="4"/><circle cx="555" cy="598" r="9" fill="#78e7ff"/>
+    <rect x="630" y="560" width="500" height="76" rx="18" fill="#12333b" stroke="#57f0c1"/><text x="655" y="607" fill="#dffcf3" font-size="23" font-weight="700">情境式演練＋計時＋失敗條件＋復盤</text>
+  </g>
+  <text x="600" y="704" text-anchor="middle" fill="#aebfda" font-size="21">3-2-1-1-0 的「0」要靠驗證證明；它不是貼在架構圖上的裝飾品</text>
+</svg>

@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">醫療系統備援與復原規劃流程</title>
+  <desc id="desc">從臨床影響分析、依賴盤點、分級設計、建置到還原演練與改善的六步流程。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#14234a"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#69ddff"/></marker></defs>
+  <rect width="1200" height="760" rx="32" fill="url(#bg)"/>
+  <text x="70" y="76" fill="#f4f8ff" font-size="38" font-weight="800">從臨床影響開始，而不是從設備清單開始</text>
+  <text x="70" y="118" fill="#9fb8d9" font-size="22">六步把目標、依賴、技術與演練串成可驗收的復原能力</text>
+  <g fill="none" stroke="#69ddff" stroke-width="4" marker-end="url(#a)"><path d="M330 245H430"/><path d="M770 245H870"/><path d="M1030 325V415"/><path d="M870 535H770"/><path d="M430 535H330"/></g>
+  <g font-family="sans-serif">
+    <g><rect x="70" y="170" width="260" height="150" rx="24" fill="#113040" stroke="#57f0c1"/><text x="98" y="215" fill="#57f0c1" font-size="22" font-weight="800">01 臨床影響分析</text><text x="98" y="257" fill="#d7e5f7" font-size="20">• 病人安全</text><text x="98" y="290" fill="#d7e5f7" font-size="20">• 可容忍中斷</text></g>
+    <g><rect x="430" y="170" width="340" height="150" rx="24" fill="#112c49" stroke="#69ddff"/><text x="458" y="215" fill="#78e7ff" font-size="22" font-weight="800">02 依賴與資料流盤點</text><text x="458" y="257" fill="#d7e5f7" font-size="20">身分、網路、介面、金鑰</text><text x="458" y="290" fill="#d7e5f7" font-size="20">醫令、檢驗、影像與設備</text></g>
+    <g><rect x="870" y="170" width="260" height="150" rx="24" fill="#282442" stroke="#a997ff"/><text x="898" y="215" fill="#b9aaff" font-size="22" font-weight="800">03 分級與目標</text><text x="898" y="257" fill="#d7e5f7" font-size="20">RTO／RPO</text><text x="898" y="290" fill="#d7e5f7" font-size="20">降級服務水準</text></g>
+    <g><rect x="870" y="420" width="260" height="150" rx="24" fill="#32243a" stroke="#ff819f"/><text x="898" y="465" fill="#ff9fb4" font-size="22" font-weight="800">04 分層設計</text><text x="898" y="507" fill="#d7e5f7" font-size="20">副本、異地、雙活</text><text x="898" y="540" fill="#d7e5f7" font-size="20">權限與金鑰隔離</text></g>
+    <g><rect x="430" y="420" width="340" height="150" rx="24" fill="#2b2b3e" stroke="#ffd36f"/><text x="458" y="465" fill="#ffd36f" font-size="22" font-weight="800">05 還原與切換演練</text><text x="458" y="507" fill="#d7e5f7" font-size="20">量測時間、資料完整性</text><text x="458" y="540" fill="#d7e5f7" font-size="20">臨床流程與補登可行性</text></g>
+    <g><rect x="70" y="420" width="260" height="150" rx="24" fill="#17333b" stroke="#57f0c1"/><text x="98" y="465" fill="#57f0c1" font-size="22" font-weight="800">06 改善與驗收</text><text x="98" y="507" fill="#d7e5f7" font-size="20">缺口、負責人</text><text x="98" y="540" fill="#d7e5f7" font-size="20">期限、複測證據</text></g>
+  </g>
+  <rect x="70" y="640" width="1060" height="64" rx="18" fill="#0b1d33" stroke="#405b7e"/><text x="600" y="681" text-anchor="middle" fill="#dbe8fa" font-size="23" font-weight="700">驗收證據＝成功還原紀錄＋實測 RTO／RPO＋臨床降級演練＋改善追蹤</text>
+</svg>
