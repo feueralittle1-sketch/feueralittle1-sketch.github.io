@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">核心系統安全檢測六步生命週期</title>
+  <desc id="desc">由臨床影響定義範圍，依序完成資產與依賴盤點、受控測試、風險判讀、修補或例外、複測與持續監控。</desc>
+  <defs><linearGradient id="bg2" x2="1" y2="1"><stop stop-color="#071321"/><stop offset="1" stop-color="#15163b"/></linearGradient><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e6ff"/></marker></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg2)"/>
+  <text x="70" y="75" fill="#f5fbff" font-size="36" font-weight="800">六步檢測生命週期：每一步都有停止條件</text>
+  <text x="70" y="115" fill="#9fb7d9" font-size="23">醫療場域先保護服務，再追求測試深度</text>
+  <path d="M205 270H365M525 270H685M845 270H1005M1005 370H845M685 370H525" stroke="#63e6ff" stroke-width="5" fill="none" marker-end="url(#arrow)"/>
+  <g text-anchor="middle"><g><rect x="65" y="190" width="140" height="160" rx="25" fill="#12374b" stroke="#63e6ff" stroke-width="3"/><text x="135" y="230" fill="#63e6ff" font-size="22" font-weight="800">01</text><text x="135" y="270" fill="#fff" font-size="23" font-weight="700">臨床分級</text><text x="135" y="307" fill="#b8c9df" font-size="18">定義影響</text></g>
+  <g><rect x="365" y="190" width="160" height="160" rx="25" fill="#1d2d52" stroke="#9c8cff" stroke-width="3"/><text x="445" y="230" fill="#bfb2ff" font-size="22" font-weight="800">02</text><text x="445" y="270" fill="#fff" font-size="23" font-weight="700">盤點依賴</text><text x="445" y="307" fill="#b8c9df" font-size="18">資產與邊界</text></g>
+  <g><rect x="685" y="190" width="160" height="160" rx="25" fill="#1b3153" stroke="#71a7ff" stroke-width="3"/><text x="765" y="230" fill="#9fc2ff" font-size="22" font-weight="800">03</text><text x="765" y="270" fill="#fff" font-size="23" font-weight="700">受控測試</text><text x="765" y="307" fill="#b8c9df" font-size="18">窗口與回復</text></g>
+  <g><rect x="1005" y="190" width="140" height="160" rx="25" fill="#422a49" stroke="#ff9bc8" stroke-width="3"/><text x="1075" y="230" fill="#ffb7d7" font-size="22" font-weight="800">04</text><text x="1075" y="270" fill="#fff" font-size="23" font-weight="700">風險判讀</text><text x="1075" y="307" fill="#b8c9df" font-size="18">情境與影響</text></g>
+  <g><rect x="685" y="370" width="160" height="160" rx="25" fill="#3b3425" stroke="#ffc857" stroke-width="3"/><text x="765" y="410" fill="#ffdb86" font-size="22" font-weight="800">05</text><text x="765" y="450" fill="#fff" font-size="23" font-weight="700">處置決策</text><text x="765" y="487" fill="#b8c9df" font-size="18">修補或例外</text></g>
+  <g><rect x="365" y="370" width="160" height="160" rx="25" fill="#173e3c" stroke="#57f0c1" stroke-width="3"/><text x="445" y="410" fill="#8ff6d7" font-size="22" font-weight="800">06</text><text x="445" y="450" fill="#fff" font-size="23" font-weight="700">複測關閉</text><text x="445" y="487" fill="#b8c9df" font-size="18">證據與監控</text></g></g>
+  <rect x="65" y="585" width="1080" height="75" rx="22" fill="#0d263e" stroke="#2f5476" stroke-width="2"/>
+  <text x="95" y="632" fill="#dceaff" font-size="21"><tspan font-weight="800" fill="#63e6ff">安全護欄：</tspan>核准窗口　備份確認　停測門檻　臨床聯絡人　回復程序　紀錄保存</text>
+</svg>

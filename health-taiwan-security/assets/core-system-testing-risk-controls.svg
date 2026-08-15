@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">核心系統安全檢測失敗模式與控制</title>
+  <desc id="desc">呈現四種常見失敗模式，包括未授權中斷、只看分數、修補造成臨床風險與例外永久化，以及相應治理控制。</desc>
+  <defs><linearGradient id="bg3" x2="1" y2="1"><stop stop-color="#081523"/><stop offset="1" stop-color="#21152f"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg3)"/>
+  <text x="70" y="75" fill="#f5fbff" font-size="36" font-weight="800">檢測本身也有風險：四種失敗模式</text>
+  <text x="70" y="115" fill="#9fb7d9" font-size="23">把「停止、判讀、驗證、到期」寫入治理流程</text>
+  <g font-size="22"><rect x="70" y="165" width="1060" height="105" rx="24" fill="#291f39" stroke="#ff9bc8" stroke-width="2"/><text x="105" y="205" fill="#ffb8d8" font-weight="800">未授權掃描造成服務中斷</text><text x="105" y="242" fill="#dce7f5">控制：測試窗口、限速、停測門檻、臨床聯絡人與可演練的回復程序</text>
+  <rect x="70" y="290" width="1060" height="105" rx="24" fill="#172e48" stroke="#71a7ff" stroke-width="2"/><text x="105" y="330" fill="#a9c9ff" font-weight="800">只看 CVSS 或弱點數量，忽略醫療情境</text><text x="105" y="367" fill="#dce7f5">控制：把可利用性、曝險路徑、資料敏感度與臨床影響一起分級</text>
+  <rect x="70" y="415" width="1060" height="105" rx="24" fill="#35301f" stroke="#ffc857" stroke-width="2"/><text x="105" y="455" fill="#ffdd8b" font-weight="800">急著修補，卻破壞設備相容性或照護流程</text><text x="105" y="492" fill="#dce7f5">控制：先於測試環境驗證；無法立即修補時採網段隔離、白名單等補償控制</text>
+  <rect x="70" y="540" width="1060" height="105" rx="24" fill="#163a36" stroke="#57f0c1" stroke-width="2"/><text x="105" y="580" fill="#8ff6d7" font-weight="800">例外核准後沒有期限，風險永久沉積</text><text x="105" y="617" fill="#dce7f5">控制：風險擁有人、到期日、補償控制、監控指標與重新核准條件缺一不可</text></g>
+  <text x="600" y="690" text-anchor="middle" fill="#98abc5" font-size="20">治理目標：不是「零弱點」，而是每個高風險都有可驗證的下一步。</text>
+</svg>

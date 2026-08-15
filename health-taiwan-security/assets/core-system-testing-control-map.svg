@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">核心醫療系統安全檢測控制地圖</title>
+  <desc id="desc">從攻擊面盤點，連結組態檢查、弱點掃描、滲透測試與軟體物料清單，再匯入風險分級與修補複測。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#071526"/><stop offset="1" stop-color="#101b3a"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <text x="70" y="75" fill="#f5fbff" font-size="36" font-weight="800">安全檢測不是單一掃描，而是一條證據鏈</text>
+  <text x="70" y="115" fill="#9fb7d9" font-size="23">四種方法回答不同問題，最後都要回到可追蹤的風險處置</text>
+  <rect x="70" y="175" width="230" height="125" rx="24" fill="#11314b" stroke="#63e6ff" stroke-width="3"/>
+  <text x="185" y="220" text-anchor="middle" fill="#63e6ff" font-size="26" font-weight="700">攻擊面盤點</text><text x="185" y="258" text-anchor="middle" fill="#d8e7f7" font-size="21">系統・介面・帳號</text>
+  <path d="M300 238H370" stroke="#63e6ff" stroke-width="5" marker-end="url(#a)"/>
+  <defs><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e6ff"/></marker></defs>
+  <g font-size="23" font-weight="700" text-anchor="middle">
+    <rect x="380" y="155" width="245" height="95" rx="22" fill="#192d50" stroke="#9c8cff" stroke-width="2"/><text x="502" y="195" fill="#d9d0ff">組態檢查</text><text x="502" y="226" fill="#aebfd8" font-size="18">基線是否偏移</text>
+    <rect x="650" y="155" width="245" height="95" rx="22" fill="#192d50" stroke="#71a7ff" stroke-width="2"/><text x="772" y="195" fill="#b9d3ff">弱點掃描</text><text x="772" y="226" fill="#aebfd8" font-size="18">已知弱點在哪裡</text>
+    <rect x="380" y="275" width="245" height="95" rx="22" fill="#192d50" stroke="#ff9bc8" stroke-width="2"/><text x="502" y="315" fill="#ffc1de">滲透測試</text><text x="502" y="346" fill="#aebfd8" font-size="18">缺口能否串成攻擊</text>
+    <rect x="650" y="275" width="245" height="95" rx="22" fill="#192d50" stroke="#57f0c1" stroke-width="2"/><text x="772" y="315" fill="#8ff6d7">SBOM</text><text x="772" y="346" fill="#aebfd8" font-size="18">元件與供應鏈曝險</text>
+  </g>
+  <path d="M895 262H960" stroke="#63e6ff" stroke-width="5" marker-end="url(#a)"/>
+  <rect x="970" y="175" width="170" height="185" rx="25" fill="#123d42" stroke="#57f0c1" stroke-width="3"/>
+  <text x="1055" y="220" text-anchor="middle" fill="#8ff6d7" font-size="25" font-weight="800">風險台帳</text><text x="1055" y="260" text-anchor="middle" fill="#d8e7f7" font-size="19">資產＋情境</text><text x="1055" y="293" text-anchor="middle" fill="#d8e7f7" font-size="19">影響＋責任人</text><text x="1055" y="326" text-anchor="middle" fill="#d8e7f7" font-size="19">期限＋證據</text>
+  <rect x="70" y="450" width="1070" height="175" rx="28" fill="#0d223b" stroke="#29486d" stroke-width="2"/>
+  <text x="105" y="500" fill="#f5fbff" font-size="27" font-weight="800">共同輸出</text>
+  <g font-size="22" text-anchor="middle"><rect x="105" y="530" width="200" height="58" rx="18" fill="#173454"/><text x="205" y="567" fill="#dceaff">風險分級</text><rect x="335" y="530" width="200" height="58" rx="18" fill="#173454"/><text x="435" y="567" fill="#dceaff">修補／緩解</text><rect x="565" y="530" width="200" height="58" rx="18" fill="#173454"/><text x="665" y="567" fill="#dceaff">例外接受</text><rect x="795" y="530" width="300" height="58" rx="18" fill="#173454"/><text x="945" y="567" fill="#dceaff">複測與關閉證據</text></g>
+  <text x="600" y="675" text-anchor="middle" fill="#8ba5c8" font-size="20">重點：發現數量不是成果；能否降低臨床風險才是。</text>
+</svg>
