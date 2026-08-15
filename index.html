@@ -228,6 +228,13 @@
         linear-gradient(135deg, rgba(99,230,255,0.08), transparent 35%, rgba(156,140,255,0.06) 70%, transparent 100%);
     }
 
+    @media (hover: none), (pointer: coarse) {
+      body { cursor: auto; }
+      .spotlight,
+      .cursor-dot,
+      .cursor-ring { display: none !important; }
+    }
+
   </style>
 </head>
 <body>
@@ -806,41 +813,47 @@
     const spotlight = document.getElementById('spotlight');
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let ringX = mouseX;
-    let ringY = mouseY;
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
 
-    window.addEventListener('mousemove', (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      spotlight.style.left = mouseX + 'px';
-      spotlight.style.top = mouseY + 'px';
-      cursorDot.style.left = mouseX + 'px';
-      cursorDot.style.top = mouseY + 'px';
-    });
+    if (finePointer && spotlight && cursorDot && cursorRing) {
+      let mouseX = window.innerWidth / 2;
+      let mouseY = window.innerHeight / 2;
+      let ringX = mouseX;
+      let ringY = mouseY;
 
-    function animateRing() {
-      ringX += (mouseX - ringX) * 0.16;
-      ringY += (mouseY - ringY) * 0.16;
-      cursorRing.style.left = ringX + 'px';
-      cursorRing.style.top = ringY + 'px';
-      requestAnimationFrame(animateRing);
+      window.addEventListener('mousemove', (e) => {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+        spotlight.style.left = mouseX + 'px';
+        spotlight.style.top = mouseY + 'px';
+        cursorDot.style.left = mouseX + 'px';
+        cursorDot.style.top = mouseY + 'px';
+      });
+
+      function animateRing() {
+        ringX += (mouseX - ringX) * 0.16;
+        ringY += (mouseY - ringY) * 0.16;
+        cursorRing.style.left = ringX + 'px';
+        cursorRing.style.top = ringY + 'px';
+        requestAnimationFrame(animateRing);
+      }
+      animateRing();
+
+      document.querySelectorAll('a, button').forEach(el => {
+        el.addEventListener('mouseenter', () => {
+          cursorRing.style.width = '52px';
+          cursorRing.style.height = '52px';
+          cursorRing.style.borderColor = 'rgba(99,230,255,.7)';
+        });
+        el.addEventListener('mouseleave', () => {
+          cursorRing.style.width = '34px';
+          cursorRing.style.height = '34px';
+          cursorRing.style.borderColor = 'rgba(255,255,255,.36)';
+        });
+      });
+    } else {
+      [spotlight, cursorDot, cursorRing].forEach(el => el?.remove());
     }
-    animateRing();
-
-    document.querySelectorAll('a, button').forEach(el => {
-      el.addEventListener('mouseenter', () => {
-        cursorRing.style.width = '52px';
-        cursorRing.style.height = '52px';
-        cursorRing.style.borderColor = 'rgba(99,230,255,.7)';
-      });
-      el.addEventListener('mouseleave', () => {
-        cursorRing.style.width = '34px';
-        cursorRing.style.height = '34px';
-        cursorRing.style.borderColor = 'rgba(255,255,255,.36)';
-      });
-    });
   </script>
 </body>
 </html>
