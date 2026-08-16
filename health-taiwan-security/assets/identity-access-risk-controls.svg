@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療權限治理風險與控制對照圖</title>
+  <desc id="desc">對照共用帳號、權限累積、常駐供應商帳號與過度依賴 UEBA 四種失敗模式，以及個人化帳號、定期複核、JIT PAM 與偵測後處置等控制。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#071526"/><stop offset="1" stop-color="#171536"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <text x="70" y="75" fill="#f5fbff" font-size="36" font-weight="800">四種常見失敗：控制要直接對準風險</text>
+  <text x="70" y="116" fill="#9fb7d9" font-size="23">買了 IAM 或 PAM 不等於治理完成；流程、責任與例外才決定效果</text>
+  <g font-size="21">
+    <text x="90" y="180" fill="#ff9bc8" font-size="25" font-weight="800">失敗模式</text><text x="465" y="180" fill="#ffbf69" font-size="25" font-weight="800">臨床／治理後果</text><text x="820" y="180" fill="#57f0c1" font-size="25" font-weight="800">對應控制</text>
+    <rect x="70" y="205" width="1060" height="88" rx="20" fill="#142840" stroke="#324f70"/>
+    <text x="95" y="242" fill="#ffd1e6" font-weight="700">共用帳號</text><text x="95" y="272" fill="#b8c8dd">無法確認實際操作者</text><text x="465" y="258" fill="#e4c9b1">追查中斷、責任不清</text><text x="820" y="242" fill="#baffea" font-weight="700">個人身分＋強化驗證</text><text x="820" y="272" fill="#b8d7cf">緊急使用另走受控流程</text>
+    <rect x="70" y="310" width="1060" height="88" rx="20" fill="#142840" stroke="#324f70"/>
+    <text x="95" y="347" fill="#ffd1e6" font-weight="700">權限累積</text><text x="95" y="377" fill="#b8c8dd">轉調後只加不減</text><text x="465" y="363" fill="#e4c9b1">越權存取與職務衝突</text><text x="820" y="347" fill="#baffea" font-weight="700">先撤舊再給新</text><text x="820" y="377" fill="#b8d7cf">定期複核＋職務分離</text>
+    <rect x="70" y="415" width="1060" height="88" rx="20" fill="#142840" stroke="#324f70"/>
+    <text x="95" y="452" fill="#ffd1e6" font-weight="700">供應商常駐帳號</text><text x="95" y="482" fill="#b8c8dd">遠端入口長期開放</text><text x="465" y="468" fill="#e4c9b1">憑證外洩後可持續潛伏</text><text x="820" y="452" fill="#baffea" font-weight="700">JIT＋PAM 工作階段</text><text x="820" y="482" fill="#b8d7cf">工單綁定、自動撤權</text>
+    <rect x="70" y="520" width="1060" height="88" rx="20" fill="#142840" stroke="#324f70"/>
+    <text x="95" y="557" fill="#ffd1e6" font-weight="700">只靠 UEBA</text><text x="95" y="587" fill="#b8c8dd">告警無人判讀或處置</text><text x="465" y="573" fill="#e4c9b1">異常被看見卻未被阻止</text><text x="820" y="557" fill="#baffea" font-weight="700">情境門檻＋處置劇本</text><text x="820" y="587" fill="#b8d7cf">連回帳號、核准與稽核證據</text>
+  </g>
+  <text x="600" y="662" text-anchor="middle" fill="#dcecff" font-size="22">設計原則：預防、偵測、處置與複核要形成閉環。</text>
+  <text x="600" y="696" text-anchor="middle" fill="#8ca7c8" font-size="19">若控制無法縮短暴露時間或增加可追查性，就不算有效驗收。</text>
+</svg>
