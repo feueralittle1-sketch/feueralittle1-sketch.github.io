@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療勒索演練失敗模式與控制對照</title>
+  <desc id="desc">將只演資安、直接拔線、復原等同開機、復盤無人負責四種失敗模式，對照跨部門指揮、影響評估、乾淨復原閘門與改善追蹤。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#061526"/><stop offset="1" stop-color="#171536"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <text x="70" y="72" fill="#f5fbff" font-size="36" font-weight="800">四個常見失敗模式：把「演過」改成「證明做得到」</text>
+  <text x="70" y="112" fill="#9fb7d9" font-size="23">每個風險都要綁定控制、證據與責任人，否則復盤只會變成會議紀錄</text>
+  <text x="80" y="170" fill="#ff9bc8" font-size="25" font-weight="800">失敗模式</text>
+  <text x="455" y="170" fill="#63e6ff" font-size="25" font-weight="800">治理控制</text>
+  <text x="875" y="170" fill="#57f0c1" font-size="25" font-weight="800">可驗收證據</text>
+  <g>
+    <rect x="65" y="195" width="1070" height="105" rx="22" fill="#14223a" stroke="#354d6b" stroke-width="2"/>
+    <text x="90" y="238" fill="#ffc7e1" font-size="23" font-weight="800">只有資安部門參加</text><text x="90" y="270" fill="#d9bfd0" font-size="19">病安與營運決策缺席</text>
+    <text x="455" y="238" fill="#9fefff" font-size="22" font-weight="800">成立跨部門事件指揮</text><text x="455" y="270" fill="#bddbe8" font-size="19">臨床、資訊、資安、法務、公關同桌</text>
+    <text x="875" y="238" fill="#a8f8df" font-size="22" font-weight="800">角色卡＋決策時間線</text><text x="875" y="270" fill="#badfd3" font-size="19">每項決策可追到人與理由</text>
+    <rect x="65" y="315" width="1070" height="105" rx="22" fill="#14223a" stroke="#354d6b" stroke-width="2"/>
+    <text x="90" y="358" fill="#ffc7e1" font-size="23" font-weight="800">一發現就全部拔線</text><text x="90" y="390" fill="#d9bfd0" font-size="19">可能中斷必要臨床服務</text>
+    <text x="455" y="358" fill="#9fefff" font-size="22" font-weight="800">分區隔離＋病安評估</text><text x="455" y="390" fill="#bddbe8" font-size="19">先辨識依賴，再核准隔離範圍</text>
+    <text x="875" y="358" fill="#a8f8df" font-size="22" font-weight="800">影響圖＋降級啟動紀錄</text><text x="875" y="390" fill="#badfd3" font-size="19">必要服務有替代流程</text>
+    <rect x="65" y="435" width="1070" height="105" rx="22" fill="#14223a" stroke="#354d6b" stroke-width="2"/>
+    <text x="90" y="478" fill="#ffc7e1" font-size="23" font-weight="800">開得起來就算復原</text><text x="90" y="510" fill="#d9bfd0" font-size="19">威脅、身分與資料可能未清乾淨</text>
+    <text x="455" y="478" fill="#9fefff" font-size="22" font-weight="800">乾淨復原四方閘門</text><text x="455" y="510" fill="#bddbe8" font-size="19">安全、資料、介接、臨床共同確認</text>
+    <text x="875" y="478" fill="#a8f8df" font-size="22" font-weight="800">掃描＋對帳＋交易測試</text><text x="875" y="510" fill="#badfd3" font-size="19">復原點與放行結果留痕</text>
+    <rect x="65" y="555" width="1070" height="105" rx="22" fill="#14223a" stroke="#354d6b" stroke-width="2"/>
+    <text x="90" y="598" fill="#ffc7e1" font-size="23" font-weight="800">復盤只有心得</text><text x="90" y="630" fill="#d9bfd0" font-size="19">同一缺口下次再出現</text>
+    <text x="455" y="598" fill="#9fefff" font-size="22" font-weight="800">缺口綁定責任與期限</text><text x="455" y="630" fill="#bddbe8" font-size="19">風險接受需指定核准層級</text>
+    <text x="875" y="598" fill="#a8f8df" font-size="22" font-weight="800">改善單＋複測結果</text><text x="875" y="630" fill="#badfd3" font-size="19">追蹤關閉率與逾期風險</text>
+  </g>
+  <text x="600" y="700" text-anchor="middle" fill="#8ca7c8" font-size="19">好的演練會留下決策、證據與改善閉環，而不只是漂亮的劇本。</text>
+</svg>

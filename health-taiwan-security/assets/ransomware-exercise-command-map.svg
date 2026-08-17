@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療勒索事件指揮與四條工作線架構</title>
+  <desc id="desc">事件指揮中心同時協調臨床持續運作、技術隔離、證據與通報、乾淨復原四條工作線，並以決策紀錄維持一致行動。</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#061526"/><stop offset="1" stop-color="#171536"/></linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e6ff"/></marker>
+  </defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <text x="70" y="72" fill="#f5fbff" font-size="36" font-weight="800">勒索演練不是資安單兵：四條工作線同時推進</text>
+  <text x="70" y="112" fill="#9fb7d9" font-size="23">指揮者要讓臨床安全、隔離止血、證據保全與復原順序使用同一份決策紀錄</text>
+  <rect x="370" y="155" width="460" height="125" rx="30" fill="#192747" stroke="#9c8cff" stroke-width="3"/>
+  <text x="600" y="205" text-anchor="middle" fill="#e7e0ff" font-size="29" font-weight="800">事件指揮中心</text>
+  <text x="600" y="243" text-anchor="middle" fill="#c4b9e8" font-size="21">定義事件等級・指定決策權・記錄時間線・核准切換</text>
+  <g stroke="#63e6ff" stroke-width="4" fill="none" marker-end="url(#arrow)">
+    <path d="M500 280L230 350"/><path d="M565 280L470 350"/><path d="M635 280L730 350"/><path d="M700 280L970 350"/>
+  </g>
+  <g text-anchor="middle">
+    <rect x="65" y="360" width="250" height="205" rx="26" fill="#143544" stroke="#57f0c1" stroke-width="3"/>
+    <text x="190" y="410" fill="#9ff8dc" font-size="26" font-weight="800">臨床持續運作</text>
+    <text x="190" y="455" fill="#d7efe9" font-size="21">啟動降級流程</text><text x="190" y="490" fill="#d7efe9" font-size="21">確認病安風險</text><text x="190" y="525" fill="#d7efe9" font-size="21">排定服務優先級</text>
+    <rect x="335" y="360" width="250" height="205" rx="26" fill="#102d45" stroke="#63e6ff" stroke-width="3"/>
+    <text x="460" y="410" fill="#8fe8ff" font-size="26" font-weight="800">技術隔離</text>
+    <text x="460" y="455" fill="#d9f4ff" font-size="21">切斷橫向移動</text><text x="460" y="490" fill="#d9f4ff" font-size="21">保留必要服務</text><text x="460" y="525" fill="#d9f4ff" font-size="21">盤點受影響範圍</text>
+    <rect x="605" y="360" width="250" height="205" rx="26" fill="#3b263e" stroke="#ff9bc8" stroke-width="3"/>
+    <text x="730" y="410" fill="#ffc7e1" font-size="26" font-weight="800">證據與通報</text>
+    <text x="730" y="455" fill="#f0d8e5" font-size="21">保全日誌與映像</text><text x="730" y="490" fill="#f0d8e5" font-size="21">建立事實版本</text><text x="730" y="525" fill="#f0d8e5" font-size="21">依法務判斷通報</text>
+    <rect x="875" y="360" width="260" height="205" rx="26" fill="#44322b" stroke="#ffbf69" stroke-width="3"/>
+    <text x="1005" y="410" fill="#ffd59d" font-size="26" font-weight="800">乾淨復原</text>
+    <text x="1005" y="455" fill="#f1ddc5" font-size="21">確認可信還原點</text><text x="1005" y="490" fill="#f1ddc5" font-size="21">重建身分與憑證</text><text x="1005" y="525" fill="#f1ddc5" font-size="21">依依賴順序上線</text>
+  </g>
+  <rect x="65" y="610" width="1070" height="65" rx="22" fill="#0d263b" stroke="#416989" stroke-width="2"/>
+  <text x="600" y="651" text-anchor="middle" fill="#dcecff" font-size="23">共同證據：事件時間線、決策人、病安影響、隔離範圍、復原驗證與未決風險</text>
+  <text x="600" y="703" text-anchor="middle" fill="#8ca7c8" font-size="19">演練成果不是「有開會」，而是跨部門在壓力下仍能做出可追查的決策。</text>
+</svg>
