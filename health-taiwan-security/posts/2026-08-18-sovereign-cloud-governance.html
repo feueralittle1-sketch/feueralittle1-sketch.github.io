@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>健康台灣深耕計畫-資安治理｜醫療主權雲如何可控、可查、可退出</title>
+  <meta name="description" content="我用三張圖拆解醫療主權雲的資料位置、跨境流向、BYOK／HYOK、次處理者、稽核權與退出驗收。" />
+  <meta name="keywords" content="健康台灣深耕計畫-資安治理,醫療資安治理,主權雲,資料落地,BYOK,HYOK,退出計畫" />
+  <link rel="canonical" href="https://www.2gwine.com/health-taiwan-security/posts/2026-08-18-sovereign-cloud-governance.html" />
+  <meta property="og:type" content="article" /><meta property="og:title" content="健康台灣深耕計畫-資安治理｜醫療主權雲如何可控、可查、可退出" /><meta property="og:description" content="把主權雲從資料落地口號，轉成可驗收的控制權、供應鏈與退出能力。" /><meta property="og:url" content="https://www.2gwine.com/health-taiwan-security/posts/2026-08-18-sovereign-cloud-governance.html" /><meta property="og:image" content="https://www.2gwine.com/health-taiwan-security/assets/sovereign-cloud-control-boundaries.svg" /><meta property="article:published_time" content="2026-08-18T15:45:00+08:00" /><meta property="article:author" content="Dr. William" /><meta name="twitter:card" content="summary_large_image" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(99,230,255,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#f4f8ff}.muted{color:#9fb3d9}.note{border-left:4px solid #63e6ff;background:rgba(99,230,255,.08)}a{color:#8fe8ff}.tag{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}figure{margin:2rem 0}figure img{display:block;max-width:100%;height:auto}figcaption{color:#94a3b8;font-size:.9rem;line-height:1.7;margin-top:.75rem;text-align:center}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"醫療主權雲不是資料放國內：從契約控制到可退出驗收","description":"把主權雲從資料落地口號，轉成可驗收的控制權、供應鏈與退出能力。","datePublished":"2026-08-18T15:45:00+08:00","dateModified":"2026-08-18T15:45:00+08:00","mainEntityOfPage":"https://www.2gwine.com/health-taiwan-security/posts/2026-08-18-sovereign-cloud-governance.html","image":"https://www.2gwine.com/health-taiwan-security/assets/sovereign-cloud-control-boundaries.svg","author":{"@type":"Person","name":"Dr. William","url":"https://www.2gwine.com/"},"publisher":{"@type":"Person","name":"Dr. William"},"about":["醫療資安治理","主權雲","雲端退出治理"]}</script>
+</head>
+<body>
+  <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a href="../index.html" class="font-bold text-white no-underline">健康台灣深耕計畫-資安治理</a><a href="../../index.html">Dr. William 首頁</a></nav></header>
+  <main class="max-w-5xl mx-auto px-4 py-12"><article class="glass rounded-[2rem] overflow-hidden"><img src="../assets/sovereign-cloud-control-boundaries.svg" alt="醫療主權雲的資料、身分金鑰、供應鏈稽核與退出復原四層控制架構" class="w-full object-cover" /><div class="p-6 md:p-12"><p class="text-cyan-300 tracking-[.2em] text-xs font-bold">健康台灣深耕計畫-資安治理 · 2026-08-18</p><h1 class="text-4xl md:text-6xl font-black leading-tight my-5">醫療主權雲不是資料放國內：從契約控制到可退出驗收</h1><p class="muted text-lg leading-9">作者：Dr. William｜醫療資訊與資安治理實務工作者</p><div class="flex flex-wrap gap-2 my-7 text-sm"><span class="tag rounded-full px-4 py-2">醫療資安治理</span><span class="tag rounded-full px-4 py-2">主權雲</span><span class="tag rounded-full px-4 py-2">雲端契約</span><span class="tag rounded-full px-4 py-2">退出治理</span></div>
+        <div class="prose max-w-none">
+          <p class="text-xl">這項能力要解決的是：醫院把資料與服務移到雲端後，仍能知道資料去哪裡、誰能操作、如何查證事件，以及供應商或策略改變時能否安全離開。我認為，資料位於特定地區只是起點；真正的主權來自可執行的控制權與可驗收的證據。</p>
+          <h2>名詞解釋：資料落地不等於資料主權</h2><p><strong>資料落地</strong>描述主要儲存位置；<strong>跨境傳輸</strong>還包含備份、遙測、維運與支援存取。<strong>次處理者</strong>是供應商再委託處理資料的第三方。<strong>BYOK</strong>（Bring Your Own Key）由客戶帶入金鑰，<strong>HYOK</strong>（Hold Your Own Key）則更強調金鑰留在客戶控制邊界；兩者都不能只看名稱，必須確認供應商是否仍有其他解密路徑。<strong>稽核權</strong>讓控制可被查證，<strong>退出計畫</strong>則定義資料匯出、介接遷移、刪除與服務切換。</p>
+          <div class="note rounded-r-2xl p-5 my-6"><p class="m-0"><strong>我的判讀：</strong>「主權雲」不是單一、通用的安全認證。醫院仍要依資料類型、適用規範與風險，逐項確認位置、管轄、控制與責任。</p></div>
+          <figure><img src="../assets/sovereign-cloud-control-boundaries.svg" alt="主權雲四層責任邊界，包含資料流向、身分金鑰、供應鏈稽核與退出復原" class="w-full rounded-2xl border border-white/10" /><figcaption>圖一：共享責任不是把責任交出去；醫院仍要定義風險決策、證據與放行條件。</figcaption></figure>
+          <h2>規劃：把需求寫成契約與驗收條件</h2><p>我會先以臨床用途與敏感度分類資料，畫出正式環境、備份、日誌、支援與災難復原的流向，再建立醫院、雲端供應商及次處理者的 RACI。契約至少要釐清允許區域、跨境條件、資料用途、次處理者變更、事件協作、證據保存、稽核方式、金鑰責任、服務水準、資料可攜格式、退出時程、費用與刪除證明。驗收指標應量得到，例如高權限撤回時間、日誌可用率、抽樣匯出成功率、切換時間與改善缺失關閉率。</p>
+          <figure><img src="../assets/sovereign-cloud-contract-lifecycle.svg" alt="從資料分類、責任設計、契約驗收、上線驗證到持續演練的五階段流程" class="w-full rounded-2xl border border-white/10" /><figcaption>圖二：每個閘門都有輸出；架構或供應鏈改變時，要回到資料分類重新評估。</figcaption></figure>
+          <h2>實作：先做小範圍證明，再擴大承載</h2><ol><li><strong>盤點：</strong>建立資料處理清冊、架構圖、介接清單與責任矩陣。</li><li><strong>設計：</strong>設定最小權限、管理平面隔離、金鑰輪替、日誌匯出、備份與告警路徑。</li><li><strong>驗證：</strong>在授權範圍測試權限撤回、跨區設定、金鑰不可用、事件證據取得與復原。</li><li><strong>上線：</strong>由資安、資料、法務採購與臨床服務負責人共同核准未解風險。</li><li><strong>演練：</strong>定期抽樣匯出資料與設定，驗證替代環境可讀、介接可重建、刪除可證明。</li></ol>
+          <h2>風險：最晚才發現的問題通常最昂貴</h2><p>只確認主資料庫位置，會漏掉支援與遙測流向；只買 BYOK，卻未測撤銷效果，控制權可能只是表面；次處理者不透明，會讓事件責任鏈中斷；沒有做過退出演練，格式、頻寬、費用與臨床停機限制常在解約時才出現。我的建議是把最壞情境提前變成驗收案例，而不是等供應商關係惡化後才第一次匯出。</p>
+          <figure><img src="../assets/sovereign-cloud-exit-risk-map.svg" alt="主權雲四種失敗模式、治理控制及驗收證據對照" class="w-full rounded-2xl border border-white/10" /><figcaption>圖三：每個風險都要有控制與證據；契約文字只有在技術測試可重現時才算落地。</figcaption></figure>
+          <h2>可執行清單</h2><ul><li>備份、遙測、支援與災難復原資料是否都在流向圖內？</li><li>次處理者清冊、變更通知與反對流程是否明確？</li><li>BYOK／HYOK 的保管、輪替、撤銷、備援與緊急存取是否測過？</li><li>醫院能否在事件中即時取得必要日誌與供應商協作紀錄？</li><li>匯出格式、介接重建、切換時程、成本與刪除證明是否實測？</li><li>不可消除的供應商鎖定是否有核准層級、期限與替代方案？</li></ul>
+          <h2>結語</h2><p>我建議把主權雲視為持續治理能力，而不是採購標籤。當醫院能查清資料流向、撤回關鍵控制、驗證責任鏈，並在可接受時間內安全退出，主權才從口號變成可管理的臨床韌性。</p>
+          <hr class="border-white/10 my-9" /><h2>參考資料</h2><ul><li><a href="https://www.cisa.gov/resources-tools/resources/cloud-security-technical-reference-architecture" target="_blank" rel="noopener noreferrer">CISA｜Cloud Security Technical Reference Architecture, Version 2</a>（修訂：2022-06-21；查閱：2026-08-18）</li><li><a href="https://csrc.nist.gov/pubs/sp/800/144/final" target="_blank" rel="noopener noreferrer">NIST SP 800-144｜Guidelines on Security and Privacy in Public Cloud Computing</a>（發布：2011-12；查閱：2026-08-18）</li></ul>
+          <h2>內容說明</h2><p>本文依健康台灣深耕計畫相關治理內容整理，並參考公開雲端安全指引加入我的控制邊界、契約問題與退出驗收框架；不取代主管機關正式公告、法律意見或個別醫院風險評估。</p>
+        </div></div></article></main>
+  <footer class="max-w-5xl mx-auto px-4 pb-12 muted text-sm">© 2026 Dr. William｜健康台灣深耕計畫-資安治理專欄</footer>
+</body>
+</html>

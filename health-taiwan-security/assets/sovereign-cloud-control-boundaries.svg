@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療主權雲四層控制邊界</title>
+  <desc id="desc">從資料位置與流向、身分與金鑰、供應鏈與稽核、退出與復原四層，說明醫院與雲端供應商的責任邊界。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#061526"/><stop offset="1" stop-color="#171536"/></linearGradient><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e6ff"/></marker></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <text x="65" y="70" fill="#f5fbff" font-size="36" font-weight="800">主權雲不只問「資料在哪裡」</text>
+  <text x="65" y="110" fill="#9fb7d9" font-size="23">我會把資料、控制權、供應鏈與退出能力一起畫進責任邊界</text>
+  <rect x="425" y="145" width="350" height="105" rx="28" fill="#1a2949" stroke="#9c8cff" stroke-width="3"/>
+  <text x="600" y="190" text-anchor="middle" fill="#e7e0ff" font-size="29" font-weight="800">臨床服務與醫療資料</text><text x="600" y="225" text-anchor="middle" fill="#c8c0e8" font-size="21">醫院保有風險決策與驗收責任</text>
+  <g stroke="#63e6ff" stroke-width="4" fill="none" marker-end="url(#arrow)"><path d="M500 250L220 325"/><path d="M565 250L475 325"/><path d="M635 250L725 325"/><path d="M700 250L980 325"/></g>
+  <g text-anchor="middle">
+    <rect x="55" y="340" width="255" height="245" rx="26" fill="#143544" stroke="#57f0c1" stroke-width="3"/><text x="183" y="390" fill="#9ff8dc" font-size="26" font-weight="800">資料位置與流向</text><text x="183" y="435" fill="#d7efe9" font-size="21">儲存與備份區域</text><text x="183" y="472" fill="#d7efe9" font-size="21">跨境與複寫路徑</text><text x="183" y="509" fill="#d7efe9" font-size="21">刪除與保留證據</text><text x="183" y="552" fill="#8bd8c1" font-size="19">驗收：可追蹤資料流</text>
+    <rect x="330" y="340" width="255" height="245" rx="26" fill="#102d45" stroke="#63e6ff" stroke-width="3"/><text x="458" y="390" fill="#8fe8ff" font-size="26" font-weight="800">身分與金鑰</text><text x="458" y="435" fill="#d9f4ff" font-size="21">最小權限與特權存取</text><text x="458" y="472" fill="#d9f4ff" font-size="21">BYOK／HYOK 邊界</text><text x="458" y="509" fill="#d9f4ff" font-size="21">輪替、撤銷與備援</text><text x="458" y="552" fill="#8fcce3" font-size="19">驗收：醫院能撤回控制</text>
+    <rect x="605" y="340" width="255" height="245" rx="26" fill="#3b263e" stroke="#ff9bc8" stroke-width="3"/><text x="733" y="390" fill="#ffc7e1" font-size="26" font-weight="800">供應鏈與稽核</text><text x="733" y="435" fill="#f0d8e5" font-size="21">次處理者與變更通知</text><text x="733" y="472" fill="#f0d8e5" font-size="21">事件證據與通報協作</text><text x="733" y="509" fill="#f0d8e5" font-size="21">稽核權與缺失改善</text><text x="733" y="552" fill="#d8a6bf" font-size="19">驗收：責任可被查證</text>
+    <rect x="880" y="340" width="265" height="245" rx="26" fill="#44322b" stroke="#ffbf69" stroke-width="3"/><text x="1013" y="390" fill="#ffd59d" font-size="26" font-weight="800">退出與復原</text><text x="1013" y="435" fill="#f1ddc5" font-size="21">可攜格式與介接清單</text><text x="1013" y="472" fill="#f1ddc5" font-size="21">遷移時程與費用上限</text><text x="1013" y="509" fill="#f1ddc5" font-size="21">切換、刪除與復原演練</text><text x="1013" y="552" fill="#d9b78f" font-size="19">驗收：離得開也救得回</text>
+  </g>
+  <rect x="55" y="620" width="1090" height="58" rx="20" fill="#0d263b" stroke="#416989" stroke-width="2"/><text x="600" y="657" text-anchor="middle" fill="#dcecff" font-size="22">共享責任不是責任外包：供應商提供控制，醫院仍要定義風險、證據與放行條件</text>
+</svg>
