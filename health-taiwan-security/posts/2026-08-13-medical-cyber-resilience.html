@@ -4,31 +4,31 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>健康台灣深耕計畫-資安治理｜醫療韌性不是備份打勾</title>
-  <meta name="description" content="我用三張治理圖解整理健康台灣深耕計畫下的醫療資安韌性、勒索應變、主權雲與 AI Agent 安全治理。" />
+  <meta name="description" content="三張治理圖解說明健康台灣深耕計畫下的醫療資安韌性、勒索應變、主權雲與 AI Agent 安全治理。" />
   <meta name="keywords" content="健康台灣深耕計畫-資安治理,健康台灣深耕計畫,醫療資安,醫院資安治理,勒索軟體,主權雲,零信任,MDR,XDR" />
   <link rel="canonical" href="https://www.2gwine.com/health-taiwan-security/posts/2026-08-13-medical-cyber-resilience.html" />
   <meta property="og:type" content="article" /><meta property="og:title" content="健康台灣深耕計畫-資安治理｜醫療韌性不是備份打勾" /><meta property="og:description" content="用三張圖快速掌握醫療資安韌性、勒索應變與 AI Agent 治理。" /><meta property="og:url" content="https://www.2gwine.com/health-taiwan-security/posts/2026-08-13-medical-cyber-resilience.html" /><meta property="og:image" content="https://www.2gwine.com/health-taiwan-security/assets/medical-cyber-resilience.svg" /><meta property="article:published_time" content="2026-08-13T14:30:00+08:00" /><meta property="article:author" content="Dr. William" /><meta name="twitter:card" content="summary_large_image" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(99,230,255,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#f4f8ff}.muted{color:#9fb3d9}.note{border-left:4px solid #63e6ff;background:rgba(99,230,255,.08)}a{color:#8fe8ff}.tag{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}figure{margin:2rem 0}figcaption{color:#94a3b8;font-size:.9rem;line-height:1.7;margin-top:.75rem;text-align:center}</style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"醫療韌性不是備份打勾：六項資安治理行動","description":"用三張治理圖解整理醫療資安韌性、勒索應變與 AI Agent 安全治理。","datePublished":"2026-08-13T14:30:00+08:00","dateModified":"2026-08-14T12:07:38+08:00","mainEntityOfPage":"https://www.2gwine.com/health-taiwan-security/posts/2026-08-13-medical-cyber-resilience.html","author":{"@type":"Person","name":"Dr. William","url":"https://www.2gwine.com/"},"publisher":{"@type":"Person","name":"Dr. William"},"about":["健康台灣深耕計畫","資安治理","醫療資安","醫療韌性"]}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"醫療韌性不是備份打勾：六項資安治理行動","description":"用三張治理圖解整理醫療資安韌性、勒索應變與 AI Agent 安全治理。","datePublished":"2026-08-13T14:30:00+08:00","dateModified":"2026-08-19T15:51:38+08:00","mainEntityOfPage":"https://www.2gwine.com/health-taiwan-security/posts/2026-08-13-medical-cyber-resilience.html","author":{"@type":"Person","name":"Dr. William","url":"https://www.2gwine.com/"},"publisher":{"@type":"Person","name":"Dr. William"},"about":["健康台灣深耕計畫","資安治理","醫療資安","醫療韌性"]}</script>
 </head>
 <body>
   <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a href="../index.html" class="font-bold text-white no-underline">健康台灣深耕計畫-資安治理</a><a href="../../index.html">Dr. William 首頁</a></nav></header>
   <main class="max-w-5xl mx-auto px-4 py-12"><article class="glass rounded-[2rem] overflow-hidden"><img src="../assets/medical-cyber-resilience.svg" alt="醫療資安韌性六大治理能力圖" class="w-full object-cover" /><div class="p-6 md:p-12"><p class="text-cyan-300 tracking-[.2em] text-xs font-bold">健康台灣深耕計畫-資安治理 · 2026-08-13</p><h1 class="text-4xl md:text-6xl font-black leading-tight my-5">醫療韌性不是備份打勾：六項資安治理行動</h1><p class="muted text-lg leading-9">作者：Dr. William｜醫療資訊與資安治理實務工作者</p><div class="flex flex-wrap gap-2 my-7 text-sm"><span class="tag rounded-full px-4 py-2">醫療資安治理</span><span class="tag rounded-full px-4 py-2">營運韌性</span><span class="tag rounded-full px-4 py-2">主權雲</span><span class="tag rounded-full px-4 py-2">零信任</span></div>
         <div class="prose max-w-none">
-          <p class="text-xl">我讀這份計畫內容時，最在意的不是能買哪些設備，而是醫院遇到攻擊後，能不能繼續提供安全的臨床服務。備份、權限、監控與演練應該被視為同一套韌性系統，而不是四張互不相干的採購單。</p>
-          <h2>先看全貌：六項能力要一起運作</h2><p>我把資安治理整理成六個相互連動的區塊。任何一塊缺席，都可能讓醫院在事件發生時出現斷點。</p>
+          <p class="text-xl">這份計畫的資安重點不只是設備採購，更包括醫院遭受攻擊後能否持續提供安全的臨床服務。備份、權限、監控與演練應該被視為同一套韌性系統，而不是四張互不相干的採購單。</p>
+          <h2>先看全貌：六項能力要一起運作</h2><p>資安治理可整理為六個相互連動的區塊。任何一塊缺席，都可能讓醫院在事件發生時出現斷點。</p>
           <figure><img src="../assets/medical-cyber-resilience.svg" alt="六項能力共同維持臨床服務不中斷" class="w-full rounded-2xl border border-white/10" /><figcaption>圖一：備援、檢測、權限、演練、主權雲與持續監控，最終都要回到臨床服務不中斷。</figcaption></figure>
-          <h2>有備份，不等於真的能復原</h2><p>我會先確認三件事：還原是否成功、切換需要多久、臨床端能否在降級模式下繼續工作。RTO、RPO、金鑰、系統依賴與紙本流程，都應透過演練驗證，而不是只看備份成功通知。</p>
-          <h2>安全檢測要先把驗收條件寫清楚</h2><p>計畫內容中有一個尚待確認的安全檢測名稱。我的做法不會是直接拿它當採購規格，而是先向計畫窗口釐清正式定義。真正可驗收的內容應包含檢測範圍、風險分級、修補時限、複測與例外接受流程。</p><div class="note rounded-r-2xl p-5 my-6"><p class="m-0"><strong>我的判讀原則：</strong>不確定的名稱就標示不確定，不把模糊文字包裝成已存在的標準。</p></div>
-          <h2>勒索演練要把臨床端拉進來</h2><p>如果演練只有資訊室參加，就無法回答病歷中斷、檢驗回傳、藥物核對與資料補登等真正影響病人安全的問題。我會用下面這條流程設計跨部門演練。</p>
+          <h2>有備份，不等於真的能復原</h2><p>復原能力至少要確認三件事：還原是否成功、切換需要多久、臨床端能否在降級模式下繼續工作。RTO、RPO、金鑰、系統依賴與紙本流程，都應透過演練驗證，而不是只看備份成功通知。</p>
+          <h2>安全檢測要先把驗收條件寫清楚</h2><p>計畫內容中有一個尚待確認的安全檢測名稱。在正式定義尚未釐清前，不宜直接將該名稱列為採購規格。真正可驗收的內容應包含檢測範圍、風險分級、修補時限、複測與例外接受流程。</p><div class="note rounded-r-2xl p-5 my-6"><p class="m-0"><strong>用語說明：</strong>該名稱的定義、範圍及驗收方式仍須由計畫權責單位確認。</p></div>
+          <h2>勒索演練要把臨床端拉進來</h2><p>如果演練只有資訊室參加，就無法回答病歷中斷、檢驗回傳、藥物核對與資料補登等真正影響病人安全的問題。跨部門演練可依下列流程設計。</p>
           <figure><img src="../assets/ransomware-response-flow.svg" alt="醫院勒索軟體事件應變流程" class="w-full rounded-2xl border border-white/10" /><figcaption>圖二：從發現、隔離到臨床降級與復原，資訊、臨床、管理與溝通必須在同一條應變鏈上。</figcaption></figure>
-          <h2>主權雲與 AI Agent 都要有邊界</h2><p>資料留在哪裡只是第一步。我還會確認次處理者、模型訓練用途、金鑰控制、資料刪除、稽核權與退出機制。如果導入 AI Agent，則要再加上工具權限、敏感動作人工確認、安全停止與完整操作紀錄。</p>
+          <h2>主權雲與 AI Agent 都要有邊界</h2><p>資料留在哪裡只是第一步。還須確認次處理者、模型訓練用途、金鑰控制、資料刪除、稽核權與退出機制。如果導入 AI Agent，則要再加上工具權限、敏感動作人工確認、安全停止與完整操作紀錄。</p>
           <figure><img src="../assets/ai-agent-governance.svg" alt="醫療 AI Agent 安全治理架構" class="w-full rounded-2xl border border-white/10" /><figcaption>圖三：Agent 的每個動作都應經過身分、權限與人工確認，並留下可追溯的稽核紀錄。</figcaption></figure>
-          <h2>我會先做的五件事</h2><ol><li>挑一套核心系統，實際做一次還原或切換演練。</li><li>盤點高權限、共用與委外帳號，補上負責人與到期日。</li><li>用臨床中斷情境進行跨部門勒索桌上演練。</li><li>檢查雲端與 AI 合約的資料用途、刪除及稽核條款。</li><li>把 MDR／XDR 告警到處置的責任與時效寫清楚。</li></ol>
-          <h2>結語</h2><p>我認為真正值得衡量的，不是「完成多少建置」，而是「遇到事件後多久能安全恢復」。當控制可以被演練、量測與改善，資安才會從資訊部門的工作，變成醫療品質的一部分。</p>
-          <hr class="border-white/10 my-9" /><h2>內容說明</h2><p>本文依健康台灣深耕計畫相關治理內容整理，並加入我的實務判讀；不取代主管機關正式公告、法律意見或個別醫院風險評估。</p>
-        </div></div></article></main>
+          <h2>優先執行的五件事</h2><ol><li>挑一套核心系統，實際做一次還原或切換演練。</li><li>盤點高權限、共用與委外帳號，補上負責人與到期日。</li><li>用臨床中斷情境進行跨部門勒索桌上演練。</li><li>檢查雲端與 AI 合約的資料用途、刪除及稽核條款。</li><li>把 MDR／XDR 告警到處置的責任與時效寫清楚。</li></ol>
+          <h2>結語</h2><p>治理成效不應只衡量「完成多少建置」，更要衡量「遇到事件後多久能安全恢復」。當控制可以被演練、量測與改善，資安才會從資訊部門的工作，變成醫療品質的一部分。</p>
+          <hr class="border-white/10 my-9" /><h2>內容說明</h2><p>本文依健康台灣深耕計畫相關治理內容整理，並提供治理與執行架構；不取代主管機關正式公告、法律意見或個別醫院風險評估。</p>
+        </div><nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">已是第一篇</strong></span><a rel="next" href="2026-08-14-backup-and-recovery.html" class="glass rounded-2xl p-5 no-underline block sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2 leading-7">醫療備援如何真正復原：從 RTO、RPO 到還原演練</strong></a></nav></div></article></main>
   <footer class="max-w-5xl mx-auto px-4 pb-12 muted text-sm">© 2026 Dr. William｜健康台灣深耕計畫-資安治理專欄</footer>
 </body>
 </html>
