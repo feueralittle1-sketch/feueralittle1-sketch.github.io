@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">持續監控風險與驗收證據對照</title>
+  <desc id="desc">將日誌盲區、告警過量、自動化誤傷、委外責任不清及備份同權五種風險，對應控制方法與驗收證據。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#061526"/><stop offset="1" stop-color="#18142f"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <text x="60" y="68" fill="#f5fbff" font-size="36" font-weight="800">風險、控制與證據必須一一對應</text>
+  <text x="60" y="108" fill="#a9bddb" font-size="22">不能只驗收平台上線；還要驗收盲區、回應品質與權限分離</text>
+  <g font-size="20"><rect x="55" y="145" width="1090" height="66" rx="18" fill="#162b45"/><text x="90" y="187" fill="#ffbdd8" font-weight="800">失敗模式</text><text x="400" y="187" fill="#8fe8ff" font-weight="800">關鍵控制</text><text x="835" y="187" fill="#9ff8dc" font-weight="800">驗收證據</text>
+  <rect x="55" y="225" width="1090" height="76" rx="16" fill="#3b263e"/><text x="90" y="270" fill="#ffe3ef">核心系統日誌未納管</text><text x="400" y="270" fill="#d9f4ff">資產分級與遙測涵蓋基線</text><text x="835" y="270" fill="#d7efe9">高影響資產涵蓋率與缺口期限</text>
+  <rect x="55" y="313" width="1090" height="76" rx="16" fill="#252844"/><text x="90" y="358" fill="#eeeaff">告警過量造成疲勞</text><text x="400" y="358" fill="#d9f4ff">風險分級、抑制與案例複核</text><text x="835" y="358" fill="#d7efe9">誤報率、逾時率與閉環率</text>
+  <rect x="55" y="401" width="1090" height="76" rx="16" fill="#44322b"/><text x="90" y="446" fill="#f8e0c5">自動隔離中斷臨床服務</text><text x="400" y="446" fill="#d9f4ff">分級授權、人工確認與回復劇本</text><text x="835" y="446" fill="#d7efe9">演練紀錄與回復時間</text>
+  <rect x="55" y="489" width="1090" height="76" rx="16" fill="#252844"/><text x="90" y="534" fill="#eeeaff">MDR 委外責任不清</text><text x="400" y="534" fill="#d9f4ff">RACI、升級門檻與證據存取權</text><text x="835" y="534" fill="#d7efe9">通知時效與案件抽查結果</text>
+  <rect x="55" y="577" width="1090" height="76" rx="16" fill="#3b263e"/><text x="90" y="622" fill="#ffe3ef">備份與正式環境同權</text><text x="400" y="622" fill="#d9f4ff">管理權分離、不可抹除與異地副本</text><text x="835" y="622" fill="#d7efe9">刪除阻擋測試與還原證據</text></g>
+</svg>
