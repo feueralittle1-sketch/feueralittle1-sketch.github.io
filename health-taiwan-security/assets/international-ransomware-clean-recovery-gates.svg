@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療勒索乾淨復原驗收閘門</title>
+  <desc id="desc">以身分、基礎設施、資料、介接與臨床五個閘門判斷能否回切，並列出失敗時的處置。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#071629"/><stop offset="1" stop-color="#181536"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <text x="60" y="70" fill="#f5fbff" font-size="36" font-weight="800">乾淨復原不是「備份成功」，而是五個閘門同時通過</text>
+  <text x="60" y="112" fill="#9fb7d9" font-size="23">任何一項證據不足，應維持隔離或降級運作，避免把攻擊帶回正式環境</text>
+  <g font-size="20">
+    <rect x="55" y="155" width="1090" height="62" rx="18" fill="#172942"/><text x="180" y="195" text-anchor="middle" fill="#8fe8ff" font-size="23" font-weight="800">驗收閘門</text><text x="575" y="195" text-anchor="middle" fill="#9ff8dc" font-size="23" font-weight="800">通過證據</text><text x="975" y="195" text-anchor="middle" fill="#ffd59d" font-size="23" font-weight="800">未通過處置</text>
+    <g><rect x="55" y="235" width="1090" height="76" rx="18" fill="#11243a" stroke="#304b68"/><text x="180" y="282" text-anchor="middle" fill="#d4caff" font-size="22" font-weight="700">身分可信</text><text x="575" y="282" text-anchor="middle" fill="#d7efe9">特權憑證輪替、MFA、服務帳號盤點</text><text x="975" y="282" text-anchor="middle" fill="#f1ddc5">停止回切，重建信任根</text></g>
+    <g><rect x="55" y="327" width="1090" height="76" rx="18" fill="#11243a" stroke="#304b68"/><text x="180" y="374" text-anchor="middle" fill="#8fe8ff" font-size="22" font-weight="700">基礎設施乾淨</text><text x="575" y="374" text-anchor="middle" fill="#d7efe9">重建映像、弱點修補、無持續性跡象</text><text x="975" y="374" text-anchor="middle" fill="#f1ddc5">隔離主機並重新蒐證</text></g>
+    <g><rect x="55" y="419" width="1090" height="76" rx="18" fill="#11243a" stroke="#304b68"/><text x="180" y="466" text-anchor="middle" fill="#9ff8dc" font-size="22" font-weight="700">資料一致</text><text x="575" y="466" text-anchor="middle" fill="#d7efe9">還原點、雜湊、筆數與交易對帳</text><text x="975" y="466" text-anchor="middle" fill="#f1ddc5">選擇較早還原點並補登</text></g>
+    <g><rect x="55" y="511" width="1090" height="76" rx="18" fill="#11243a" stroke="#304b68"/><text x="180" y="558" text-anchor="middle" fill="#ffd59d" font-size="22" font-weight="700">介接正確</text><text x="575" y="558" text-anchor="middle" fill="#d7efe9">病歷、檢驗、影像、藥事端到端測試</text><text x="975" y="558" text-anchor="middle" fill="#f1ddc5">維持單向或人工交換</text></g>
+    <g><rect x="55" y="603" width="1090" height="76" rx="18" fill="#11243a" stroke="#304b68"/><text x="180" y="650" text-anchor="middle" fill="#ffc7e1" font-size="22" font-weight="700">臨床可接受</text><text x="575" y="650" text-anchor="middle" fill="#d7efe9">高風險流程簽核、抽測與回復方案</text><text x="975" y="650" text-anchor="middle" fill="#f1ddc5">延後回切或限制服務範圍</text></g>
+  </g>
+</svg>
