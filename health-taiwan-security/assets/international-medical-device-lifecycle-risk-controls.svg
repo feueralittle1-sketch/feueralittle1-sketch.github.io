@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療設備生命週期風險與控制對照</title>
+  <desc id="desc">比較採購、上線、維運、終止支援與退場五階段的主要風險、控制證據及決策閘門。</desc>
+  <defs><linearGradient id="bg" x2="1" y2="1"><stop stop-color="#07162b"/><stop offset="1" stop-color="#102344"/></linearGradient></defs><rect width="1200" height="720" rx="34" fill="url(#bg)"/>
+  <text x="70" y="72" fill="#f4f8ff" font-family="Noto Sans TC, sans-serif" font-size="34" font-weight="700">EOL／EOS 不是日期欄位，而是服務風險閘門</text><text x="70" y="110" fill="#9fb3d9" font-family="Noto Sans TC, sans-serif" font-size="20">EOL 指產品生命週期終點；EOS 指供應商停止支援，兩者需依契約定義確認</text>
+  <g font-family="Noto Sans TC, sans-serif"><text x="70" y="174" fill="#63e6ff" font-size="21" font-weight="700">階段</text><text x="270" y="174" fill="#ff9fa9" font-size="21" font-weight="700">主要風險</text><text x="640" y="174" fill="#72f2cb" font-size="21" font-weight="700">最低控制證據</text>
+  <g font-size="19"><rect x="55" y="195" width="1090" height="82" rx="18" fill="#102a49"/><text x="75" y="244" fill="#f4f8ff" font-weight="700">採購</text><text x="270" y="230" fill="#ffd0d5">元件不透明、更新責任模糊</text><text x="640" y="230" fill="#d8e7fb">SBOM 交付格式、更新 SLA、揭露流程</text><text x="640" y="256" fill="#aebfda">EOL／EOS 通知期與退出條款</text>
+  <rect x="55" y="291" width="1090" height="82" rx="18" fill="#0d233f"/><text x="75" y="340" fill="#f4f8ff" font-weight="700">上線</text><text x="270" y="326" fill="#ffd0d5">預設帳密、暴露面未盤點</text><text x="640" y="326" fill="#d8e7fb">安全組態、網段、資料流與基線</text><text x="640" y="352" fill="#aebfda">設備—版本—位置—責任人可追溯</text>
+  <rect x="55" y="387" width="1090" height="82" rx="18" fill="#102a49"/><text x="75" y="436" fill="#f4f8ff" font-weight="700">維運</text><text x="270" y="422" fill="#ffd0d5">CVE 命中後無法快速定位</text><text x="640" y="422" fill="#d8e7fb">VEX／供應商判定、臨床分級、複驗</text><text x="640" y="448" fill="#aebfda">更新失敗回復與補償控制期限</text>
+  <rect x="55" y="483" width="1090" height="82" rx="18" fill="#0d233f"/><text x="75" y="532" fill="#f4f8ff" font-weight="700">EOS</text><text x="270" y="518" fill="#ffd0d5">無修補仍連接高信任網路</text><text x="640" y="518" fill="#d8e7fb">隔離、白名單、監測、例外核准</text><text x="640" y="544" fill="#aebfda">替換預算、病人安全與剩餘風險</text>
+  <rect x="55" y="579" width="1090" height="82" rx="18" fill="#102a49"/><text x="75" y="628" fill="#f4f8ff" font-weight="700">退場</text><text x="270" y="614" fill="#ffd0d5">資料殘留、帳號與介接未撤除</text><text x="640" y="614" fill="#d8e7fb">資料處置、憑證撤銷、介接關閉</text><text x="640" y="640" fill="#aebfda">資產清冊結案與證據保存</text></g></g>
+</svg>
