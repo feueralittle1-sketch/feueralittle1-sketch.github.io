@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療第三方與次處理者依賴地圖</title>
+  <desc id="desc">醫院核心服務連接雲端、醫療設備、維運服務與供應鏈，各供應商又依賴次處理者，形成共同故障與存取風險。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#101b38"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#76e4f7"/></marker>
+  </defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <text x="60" y="66" fill="#f8fbff" font-size="32" font-weight="700">醫療第三方風險：依賴鏈不只一層</text>
+  <text x="60" y="102" fill="#a8bad8" font-size="19">先辨識「服務—資料—權限—次處理者」，才能看見共同故障點</text>
+  <g stroke="#76e4f7" stroke-width="3" fill="none" opacity=".72" marker-end="url(#arrow)">
+    <path d="M478 286 C390 240 330 223 282 223"/><path d="M478 335 C380 344 326 351 282 351"/><path d="M478 390 C390 442 330 474 282 478"/>
+    <path d="M722 286 C810 240 870 223 918 223"/><path d="M722 335 C820 344 874 351 918 351"/><path d="M722 390 C810 442 870 474 918 478"/>
+  </g>
+  <g font-family="Inter,Noto Sans TC,sans-serif">
+    <rect x="465" y="250" width="270" height="190" rx="28" fill="#153252" stroke="#63e6ff" stroke-width="3" filter="url(#glow)"/>
+    <text x="600" y="305" fill="#63e6ff" font-size="20" text-anchor="middle" font-weight="700">醫院核心服務</text>
+    <text x="600" y="345" fill="#fff" font-size="28" text-anchor="middle" font-weight="700">臨床持續運作</text>
+    <text x="600" y="382" fill="#c6d4eb" font-size="18" text-anchor="middle">病歷・檢驗・影像・給藥</text>
+    <text x="600" y="414" fill="#c6d4eb" font-size="18" text-anchor="middle">身分・網路・通訊</text>
+    <g fill="#122a47" stroke="#6d8db7" stroke-width="2">
+      <rect x="70" y="165" width="215" height="112" rx="20"/><rect x="70" y="295" width="215" height="112" rx="20"/><rect x="70" y="425" width="215" height="112" rx="20"/>
+      <rect x="915" y="165" width="215" height="112" rx="20"/><rect x="915" y="295" width="215" height="112" rx="20"/><rect x="915" y="425" width="215" height="112" rx="20"/>
+    </g>
+    <g fill="#f8fbff" font-size="21" font-weight="700" text-anchor="middle"><text x="177" y="208">雲端／SaaS</text><text x="177" y="338">MSP／維運商</text><text x="177" y="468">醫療設備商</text><text x="1022" y="208">次處理者</text><text x="1022" y="338">軟體供應鏈</text><text x="1022" y="468">物流／通訊</text></g>
+    <g fill="#a8bad8" font-size="17" text-anchor="middle"><text x="177" y="240">資料與平台依賴</text><text x="177" y="370">遠端特權與工具</text><text x="177" y="500">韌體與維護通道</text><text x="1022" y="240">資料與服務再委外</text><text x="1022" y="370">元件、更新、簽章</text><text x="1022" y="500">單點與區域中斷</text></g>
+    <rect x="80" y="590" width="1040" height="76" rx="20" fill="#1e2946" stroke="#9c8cff" stroke-width="2"/>
+    <text x="600" y="622" fill="#c8bdff" font-size="19" text-anchor="middle" font-weight="700">集中風險（concentration risk）</text>
+    <text x="600" y="650" fill="#eef2ff" font-size="18" text-anchor="middle">多套臨床服務若共用同一雲區域、身分平台或維運商，一次事件可能同步放大</text>
+  </g>
+</svg>

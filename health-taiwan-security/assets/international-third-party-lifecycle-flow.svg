@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療供應商治理生命週期流程</title>
+  <desc id="desc">從規劃、選商、上線、持續管理到退出，以五道閘門驗證服務重要性、證據、權限、事件協作與資料可攜性。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#151a36"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L0 6L9 3z" fill="#63e6ff"/></marker></defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <text x="60" y="66" fill="#f8fbff" font-size="32" font-weight="700">供應商治理不是簽約一次：五道生命週期閘門</text>
+  <text x="60" y="102" fill="#a8bad8" font-size="19">每一階段都要留下可驗證證據，並預先定義失敗時的臨床替代方案</text>
+  <g stroke="#63e6ff" stroke-width="4" fill="none" marker-end="url(#a)"><path d="M240 272H286"/><path d="M456 272H502"/><path d="M672 272H718"/><path d="M888 272H934"/></g>
+  <g font-family="Inter,Noto Sans TC,sans-serif">
+    <g fill="#122b49" stroke="#5fb8d3" stroke-width="2"><rect x="55" y="185" width="185" height="175" rx="22"/><rect x="271" y="185" width="185" height="175" rx="22"/><rect x="487" y="185" width="185" height="175" rx="22"/><rect x="703" y="185" width="185" height="175" rx="22"/><rect x="919" y="185" width="225" height="175" rx="22"/></g>
+    <g fill="#63e6ff" font-size="18" font-weight="700"><text x="75" y="220">01 規劃</text><text x="291" y="220">02 選商</text><text x="507" y="220">03 上線</text><text x="723" y="220">04 管理</text><text x="939" y="220">05 退出</text></g>
+    <g fill="#fff" font-size="22" font-weight="700" text-anchor="middle"><text x="147" y="265">定義重要性</text><text x="363" y="265">驗證證據</text><text x="579" y="265">收斂權限</text><text x="795" y="265">監測與演練</text><text x="1031" y="265">可攜與刪除</text></g>
+    <g fill="#b8c8df" font-size="17" text-anchor="middle"><text x="147" y="301">資料／臨床依賴</text><text x="147" y="330">RTO、替代流程</text><text x="363" y="301">稽核、弱點、SBOM</text><text x="363" y="330">次處理者清單</text><text x="579" y="301">MFA、JIT、分段</text><text x="579" y="330">日誌回傳</text><text x="795" y="301">事件通知時限</text><text x="795" y="330">復原與聯合演練</text><text x="1031" y="301">格式、時間、完整性</text><text x="1031" y="330">可驗證資料刪除</text></g>
+    <g>
+      <rect x="55" y="420" width="1089" height="210" rx="28" fill="#111f38" stroke="#9c8cff" stroke-width="2"/>
+      <text x="85" y="462" fill="#c8bdff" font-size="22" font-weight="700">每道閘門的最低證據</text>
+      <g fill="#e6eefc" font-size="18"><text x="90" y="505">● 服務—資料—帳號—次處理者關聯圖</text><text x="90" y="546">● 供應商控制證據與缺口處置期限</text><text x="90" y="587">● 具名責任人、事件聯絡與升級路徑</text><text x="620" y="505">● 臨床降級、替代供應與復原測試紀錄</text><text x="620" y="546">● 契約終止、移轉、支援延續與刪除條款</text><text x="620" y="587">● 集中風險上限與具名風險接受</text></g>
+    </g>
+  </g>
+</svg>
