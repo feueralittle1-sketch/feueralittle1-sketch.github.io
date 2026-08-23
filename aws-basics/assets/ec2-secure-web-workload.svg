@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">EC2 安全 Web 工作負載示意流程</title>
+  <desc id="desc">使用者經負載平衡器進入跨兩個可用區的私有 EC2 執行個體，執行個體使用加密 EBS，並由 Systems Manager、CloudWatch、CloudTrail、IAM 角色與備份共同支援營運。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294b"/></linearGradient>
+    <linearGradient id="orange" x1="0" x2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffca75"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".25"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#81e6ff"/></marker>
+    <style>.box{fill:#122a49;stroke:#456789;stroke-width:2}.secure{fill:#143c3b;stroke:#48d1b4;stroke-width:2}.t{fill:#f5f9ff;font:700 22px system-ui,sans-serif}.s{fill:#bad0ea;font:16px system-ui,sans-serif}.k{fill:#ffbd70;font:700 16px system-ui,sans-serif;letter-spacing:1px}.line{stroke:#81e6ff;stroke-width:4;fill:none;marker-end:url(#arrow)}.dash{stroke:#6d8caf;stroke-width:2;stroke-dasharray:8 8;fill:none}</style>
+  </defs>
+  <rect width="1200" height="680" rx="28" fill="url(#bg)"/>
+  <text x="56" y="62" class="k">EC2 SECURE WEB WORKLOAD · 示意</text>
+  <rect x="48" y="96" width="1104" height="430" rx="24" fill="#0b1c33" stroke="#29496a" stroke-width="2"/>
+  <text x="75" y="130" class="s">VPC 網路邊界</text>
+  <g filter="url(#shadow)"><rect class="box" x="75" y="190" width="170" height="105" rx="18"/><text class="t" x="160" y="232" text-anchor="middle">使用者</text><text class="s" x="160" y="265" text-anchor="middle">HTTPS 請求</text></g>
+  <path class="line" d="M245 242 H330"/>
+  <g filter="url(#shadow)"><rect class="box" x="335" y="175" width="210" height="135" rx="18"/><text class="t" x="440" y="222" text-anchor="middle">ALB</text><text class="s" x="440" y="254" text-anchor="middle">TLS 終止與健康檢查</text><text class="s" x="440" y="280" text-anchor="middle">只轉送必要連接埠</text></g>
+  <path class="line" d="M545 242 H625"/>
+  <rect x="630" y="150" width="460" height="320" rx="20" fill="#0d223d" stroke="#365c81" stroke-width="2"/>
+  <text x="660" y="184" class="k">PRIVATE SUBNETS</text>
+  <g filter="url(#shadow)"><rect class="secure" x="665" y="210" width="180" height="105" rx="16"/><text class="t" x="755" y="252" text-anchor="middle">EC2 · AZ-A</text><text class="s" x="755" y="281" text-anchor="middle">IAM 角色／無公網 IP</text></g>
+  <g filter="url(#shadow)"><rect class="secure" x="875" y="210" width="180" height="105" rx="16"/><text class="t" x="965" y="252" text-anchor="middle">EC2 · AZ-B</text><text class="s" x="965" y="281" text-anchor="middle">Auto Scaling 備援</text></g>
+  <path class="dash" d="M755 315 V350 M965 315 V350"/>
+  <g><rect class="box" x="665" y="350" width="180" height="82" rx="15"/><text class="t" x="755" y="383" text-anchor="middle">加密 EBS</text><text class="s" x="755" y="411" text-anchor="middle">KMS／快照備份</text></g>
+  <g><rect class="box" x="875" y="350" width="180" height="82" rx="15"/><text class="t" x="965" y="383" text-anchor="middle">加密 EBS</text><text class="s" x="965" y="411" text-anchor="middle">KMS／快照備份</text></g>
+  <path class="dash" d="M360 526 V565 H870 V526"/>
+  <g><rect class="box" x="78" y="565" width="250" height="78" rx="15"/><text class="t" x="203" y="599" text-anchor="middle">Systems Manager</text><text class="s" x="203" y="626" text-anchor="middle">修補與 Session Manager</text></g>
+  <g><rect class="box" x="360" y="565" width="235" height="78" rx="15"/><text class="t" x="478" y="599" text-anchor="middle">CloudWatch</text><text class="s" x="478" y="626" text-anchor="middle">指標、日誌與告警</text></g>
+  <g><rect class="box" x="627" y="565" width="220" height="78" rx="15"/><text class="t" x="737" y="599" text-anchor="middle">CloudTrail</text><text class="s" x="737" y="626" text-anchor="middle">API 操作稽核</text></g>
+  <g><rect class="box" x="879" y="565" width="235" height="78" rx="15"/><text class="t" x="997" y="599" text-anchor="middle">AWS Backup</text><text class="s" x="997" y="626" text-anchor="middle">跨區複製與還原演練</text></g>
+</svg>
