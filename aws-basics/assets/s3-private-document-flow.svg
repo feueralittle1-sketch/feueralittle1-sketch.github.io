@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon S3 私有文件上傳、保存與復原流程</title>
+  <desc id="desc">使用者通過多因素驗證後，由應用程式核發短效預簽上傳網址，文件寫入封鎖公開存取且以 KMS 加密的 S3 儲存貯體，再由版本控制、生命週期、稽核與跨區複寫提供治理與復原能力。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102b48"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffca7a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#102741;stroke:#4d7294;stroke-width:2}.secure{fill:#172a25;stroke:#63d8a4;stroke-width:2}.archive{fill:#28233d;stroke:#b6a2ff;stroke-width:2}.t{font:700 24px system-ui,'Noto Sans TC',sans-serif;fill:#f7fbff}.s{font:500 17px system-ui,'Noto Sans TC',sans-serif;fill:#bad0e8}.n{font:700 16px system-ui,'Noto Sans TC',sans-serif;fill:#ffca7a}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#94a3b8;stroke-width:3;stroke-dasharray:9 8;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1200" height="720" rx="34" fill="url(#bg)"/>
+  <circle cx="1070" cy="90" r="150" fill="#ff9900" opacity=".08"/>
+  <text x="60" y="68" class="n">示意架構｜私有文件入口</text>
+  <text x="60" y="108" class="t" font-size="32">S3 不只是檔案空間：存取、加密、版本與稽核必須一起設計</text>
+
+  <g filter="url(#shadow)"><rect x="55" y="175" width="215" height="150" rx="22" class="box"/><text x="82" y="220" class="t">使用者</text><text x="82" y="254" class="s">IAM Identity Center</text><text x="82" y="282" class="s">MFA · 短期工作階段</text></g>
+  <g filter="url(#shadow)"><rect x="360" y="175" width="260" height="150" rx="22" class="box"/><text x="390" y="220" class="t">文件入口應用</text><text x="390" y="254" class="s">檢查身分與檔案規則</text><text x="390" y="282" class="s">核發短效預簽網址</text></g>
+  <g filter="url(#shadow)"><rect x="710" y="160" width="430" height="180" rx="24" class="secure"/><text x="745" y="208" class="t">S3 私有儲存貯體</text><text x="745" y="244" class="s">封鎖公開存取 · 停用 ACL</text><text x="745" y="274" class="s">SSE-KMS · 版本控制 · 最小權限政策</text><rect x="745" y="296" width="350" height="8" rx="4" fill="url(#orange)"/></g>
+  <path d="M270 250H350" class="line"/><text x="286" y="232" class="n">1 驗證</text>
+  <path d="M620 250H700" class="line"/><text x="635" y="232" class="n">2 授權</text>
+
+  <g filter="url(#shadow)"><rect x="85" y="445" width="280" height="155" rx="22" class="box"/><text x="115" y="490" class="t">稽核與偵測</text><text x="115" y="526" class="s">CloudTrail S3 資料事件</text><text x="115" y="557" class="s">CloudWatch 告警 · GuardDuty</text></g>
+  <g filter="url(#shadow)"><rect x="455" y="445" width="280" height="155" rx="22" class="archive"/><text x="485" y="490" class="t">生命週期管理</text><text x="485" y="526" class="s">轉換較低成本儲存類別</text><text x="485" y="557" class="s">到期、保留與刪除治理</text></g>
+  <g filter="url(#shadow)"><rect x="825" y="445" width="280" height="155" rx="22" class="secure"/><text x="855" y="490" class="t">復原副本</text><text x="855" y="526" class="s">跨帳號或跨區複寫</text><text x="855" y="557" class="s">Object Lock · 還原演練</text></g>
+  <path d="M830 340C760 395 355 382 250 435" class="dash"/>
+  <path d="M920 340C870 400 650 390 595 435" class="dash"/>
+  <path d="M1010 340V435" class="dash"/>
+  <text x="70" y="674" class="s">控制重點：預簽網址視同短效存取能力；限制有效時間、物件鍵、內容條件與可執行動作，並監看異常下載。</text>
+</svg>
