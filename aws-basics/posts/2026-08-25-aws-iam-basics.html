@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS IAM：身分、角色與最小權限治理</title>
+  <meta name="description" content="理解 AWS IAM 的使用者、角色、政策、短期憑證與權限評估，並掌握特權存取、稽核、成本及共同責任邊界。" />
+  <meta name="keywords" content="AWS基礎介紹,AWS IAM,IAM角色,最小權限,MFA,短期憑證,雲端資安" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-08-25-aws-iam-basics.html" />
+  <link rel="prev" href="./2026-08-24-amazon-s3-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS IAM：身分、角色與最小權限治理" />
+  <meta property="og:description" content="從身分與政策評估理解 IAM，建立短期憑證、最小權限、可稽核且可撤銷的 AWS 存取流程。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-08-25-aws-iam-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/iam-workforce-access-flow.svg" />
+  <meta property="article:published_time" content="2026-08-25T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#f4f8ff}.prose h3{font-size:1.2rem;margin-top:1.6rem;color:#ffcc84}.muted{color:#9fb3d9}.note{border-left:4px solid #ffbd70;background:rgba(255,153,0,.08)}a{color:#8fe8ff}.tag{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}figure{margin:2rem 0}figure img{display:block;max-width:100%;height:auto}figcaption{color:#94a3b8;font-size:.9rem;line-height:1.7;margin-top:.75rem;text-align:center}code{overflow-wrap:anywhere}@media(max-width:390px){.prose h2{font-size:1.5rem}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS IAM：身分、角色與最小權限治理","description":"理解 AWS IAM 的核心概念、使用邊界、權限評估、成本、可用性與特權存取風險。","datePublished":"2026-08-25T21:30:00+08:00","dateModified":"2026-08-25T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-08-25-aws-iam-basics.html","image":"https://www.2gwine.com/aws-basics/assets/iam-workforce-access-flow.svg"}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-4"><a href="../index.html" class="font-bold no-underline">AWS 基礎介紹</a><a href="../../index.html">Dr. William 首頁</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-12"><article class="glass rounded-[2rem] overflow-hidden"><img src="../assets/iam-workforce-access-flow.svg" alt="員工經 MFA 與聯合登入取得 IAM 短期角色，再存取私有 AWS 資源並接受稽核的流程" class="w-full object-cover" /><div class="p-6 md:p-12">
+<p class="text-orange-300 tracking-[.2em] text-xs font-bold">AWS 基礎介紹 04 · 2026-08-25</p>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS IAM：身分、角色與最小權限治理</h1>
+<p class="muted text-lg leading-9">作者：Dr. William｜雲端與資訊安全實務工作者</p>
+<div class="flex flex-wrap gap-2 my-7 text-sm"><span class="tag rounded-full px-4 py-2">AWS IAM</span><span class="tag rounded-full px-4 py-2">最小權限</span><span class="tag rounded-full px-4 py-2">短期憑證</span><span class="tag rounded-full px-4 py-2">存取治理</span></div>
+<div class="prose max-w-none">
+<p class="text-xl">AWS Identity and Access Management（IAM）是控制「誰能以何種條件，對哪些 AWS 資源執行哪些動作」的基礎服務。IAM 本身不承載應用資料，而是把人員、工作負載與 AWS 服務的身分連結到政策，讓每次 API 請求接受授權評估。安全目標不是建立更多使用者，而是讓權限可限定、可追查、可撤銷且盡量短效。</p>
+<div class="note rounded-r-2xl p-5 my-6"><p class="m-0"><strong>服務定位：</strong>IAM 負責 AWS 帳號內及跨帳號的身分與存取控制。員工集中登入宜搭配 IAM Identity Center 與既有身分提供者；面向應用程式終端使用者的註冊、登入與權杖需求通常評估 Amazon Cognito。IAM 不是機密保管庫，也不能取代網路隔離、資料加密、備份或應用程式授權。</p></div>
+<h2>核心概念：身分、政策與授權評估</h2>
+<ul>
+<li><strong>根使用者：</strong>根使用者擁有完整帳號權限，僅用於少數必須由根使用者完成的工作。應啟用 MFA、不建立根使用者存取金鑰，並建立受控緊急存取程序。</li>
+<li><strong>IAM 使用者與群組：</strong>使用者是帳號內的長期身分，群組可集中套用人員政策。一般員工不宜各自依賴 IAM 使用者與長期金鑰，優先採聯合登入及短期工作階段。</li>
+<li><strong>IAM 角色：</strong>角色沒有固定密碼或長期存取金鑰；受信任主體透過 AWS Security Token Service（STS）承擔角色後取得限時憑證。EC2、Lambda、容器、跨帳號與 CI/CD 工作負載都應優先使用角色。</li>
+<li><strong>政策：</strong>JSON 政策以 Effect、Action、Resource 與 Condition 表達允許或拒絕。身分型政策附加在人員或角色；資源型政策附加在 S3 儲存貯體、KMS 金鑰等支援的資源。</li>
+<li><strong>權限護欄：</strong>AWS Organizations 的服務控制政策（SCP）、權限邊界與工作階段政策可以限制最大權限，但不會單獨授予權限。明確拒絕通常優先於允許。</li>
+<li><strong>分析與驗證：</strong>IAM Access Analyzer 可找出支援資源的外部存取與產生政策；Policy Simulator、CloudTrail 紀錄與實際測試共同驗證授權結果。</li>
+</ul>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul><li>讓 AWS 工作負載以角色存取 S3、RDS、KMS 或其他服務。</li><li>建立跨帳號管理、部署、稽核與事件回應角色。</li><li>以政策、條件、標籤與組織護欄落實最小權限。</li><li>結合 IAM Identity Center，讓員工從企業身分來源取得短期 AWS 工作階段。</li></ul>
+<h3>不適合</h3><ul><li>直接保存資料庫密碼、API 機密或應用設定；這些值應交由 Secrets Manager 或 Systems Manager Parameter Store 管理。</li><li>單獨防止已獲合法權限的流量跨越網路；仍需 VPC、私有子網路、安全群組、端點政策與服務層公開存取控制。</li><li>管理面向大量消費者的完整註冊與登入生命週期；應評估 Cognito 或相符的身分平台。</li><li>把 AdministratorAccess 當成開發便利工具，或把 IAM 當成備份、加密與監控的替代品。</li></ul>
+<h2>示意故事案例：研究平台的跨帳號維運</h2>
+<p><strong>以下為示意案例，非真實客戶案例。</strong>某研究機構把正式環境與稽核日誌放在不同 AWS 帳號。維運人員先從企業身分提供者通過抗網路釣魚 MFA，再由 IAM Identity Center 選擇「正式環境唯讀」或經核准的「限時變更」權限集。權限集對應到目標帳號的 IAM 角色，STS 核發短期工作階段，不在筆電保存長期存取金鑰。</p>
+<p>唯讀角色只能查看指定資源；變更角色需工單條件、較短工作階段與權限邊界，且不能停用 CloudTrail、刪除備份或修改集中式 KMS 金鑰。API 操作寫入獨立日誌帳號，CloudWatch 對根使用者活動、政策變更與拒絕暴增發出告警。離職或事件發生時，團隊在身分來源撤銷人員資格並停用相關工作階段，避免逐一搜尋散落金鑰。</p>
+<figure><img src="../assets/iam-workforce-access-flow.svg" alt="員工經企業身分來源與 MFA 聯合登入 IAM Identity Center，取得短期角色後存取私有資源，再由 CloudTrail、CloudWatch 和 Access Analyzer 持續治理" class="w-full rounded-2xl border border-white/10" /><figcaption>圖一：IAM 員工存取流程示意。聯合登入與短期角色降低長期憑證風險，但仍須搭配最小權限、資源政策、網路隔離、集中稽核與撤權程序。</figcaption></figure>
+<h2>建置與運作流程</h2>
+<ol><li><strong>盤點主體與任務：</strong>區分人員、應用、AWS 服務、外部合作方與自動化流程，列出必要動作、資源、區域、時間與來源條件。</li><li><strong>保護帳號起點：</strong>根使用者啟用 MFA，不建立根存取金鑰；以 AWS Organizations 建立帳號分區、SCP 護欄與受控緊急角色。</li><li><strong>整合員工身分：</strong>以 IAM Identity Center 串接企業 IdP 或目錄，要求 MFA，透過群組與權限集分派帳號角色，避免為一般員工建立長期 IAM 使用者。</li><li><strong>建立工作負載角色：</strong>EC2 使用 instance profile，Lambda 使用 execution role，ECS/EKS 使用工作負載可承擔的角色；跨帳號角色的信任政策只接受必要主體與條件。</li><li><strong>撰寫最小權限政策：</strong>限定 Action 與 Resource，使用標籤、組織、VPC Endpoint、來源 ARN、MFA 或工作階段條件；先在測試環境驗證，再依 CloudTrail 實際使用縮減權限。</li><li><strong>分離機密：</strong>IAM 只授權讀取機密，不把機密值放入政策、程式碼或環境範本。Secrets Manager 或 Parameter Store 保存加密值，KMS 金鑰政策與 IAM 政策同步審查。</li><li><strong>建立稽核與偵測：</strong>啟用多區域 CloudTrail，日誌送往受隔離且防竄改的儲存位置；用 CloudWatch 監看根活動、角色信任變更、存取金鑰建立與高風險政策異動。</li><li><strong>定期複核與復原：</strong>用 Access Analyzer、credential report 與存取活動撤銷未用權限；備份政策與基礎設施程式碼，跨區保存關鍵稽核資料，並演練誤刪角色、IdP 中斷與帳號接管情境。</li></ol>
+<h2>成本、可用性與維運考量</h2>
+<ul><li><strong>IAM 服務費：</strong>AWS IAM 一般不另收使用費；透過 IAM 或 STS 使用其他 AWS 服務時，仍按該服務計費。IAM Access Analyzer 的部分外部存取分析能力不另計費，未使用存取分析等功能可能依官方定價計費。</li><li><strong>周邊成本：</strong>CloudTrail 額外事件副本或資料事件、CloudWatch 日誌與告警、AWS Config、Secrets Manager、KMS 請求及第三方 IdP 都可能產生費用。</li><li><strong>全域與區域性：</strong>IAM 多數資源屬全域；STS 端點與工作階段使用可採區域設計。架構不能假設某一區域的應用失效時，所有身分依賴都會自動切換。</li><li><strong>外部身分依賴：</strong>企業 IdP、網路或同步設定中斷可能阻止員工登入。應設計嚴格保護、有限人數、完整稽核的緊急存取路徑，而非建立大量永久管理員。</li><li><strong>政策複雜度：</strong>過多例外、萬用字元與重疊政策會增加維運成本和誤判。採模組化權限集、命名標準、版本審查與自動測試，比持續疊加例外可靠。</li></ul>
+<h2>IAM 特有的資安風險與控制</h2>
+<ul><li><strong>長期憑證外洩：</strong>Access Key 或使用者密碼一旦外洩，可在停用前持續被濫用。人員採聯合登入、MFA 與短期角色；工作負載用服務角色，禁止把憑證寫入程式碼、映像檔或公開儲存位置。</li><li><strong>權限提升：</strong>具備建立政策版本、PassRole、修改信任政策或建立存取金鑰等權限的主體，可能間接取得更高權限。限制敏感 IAM 動作，套用權限邊界與 SCP，並測試可組合的提升路徑。</li><li><strong>混淆代理人：</strong>跨帳號或 AWS 服務代為呼叫時，寬鬆信任政策可能被非預期主體利用。限定 Principal，依情境使用 ExternalId、SourceArn、SourceAccount 或組織條件。</li><li><strong>PassRole 誤用：</strong>若主體可把高權限角色傳給可執行程式碼的服務，就可能繞過自身限制。將 iam:PassRole 限定到特定角色與服務，並分離建立角色、傳遞角色與部署工作負載職責。</li><li><strong>公開資源政策：</strong>身分政策很嚴格，S3、KMS、SQS 等資源政策仍可能開放外部主體。以 Access Analyzer、AWS Config 與服務層公開存取控制持續檢查；網路隔離不能修正公開授權本身。</li><li><strong>稽核遭關閉：</strong>高權限主體可嘗試停止 Trail、刪除日誌或修改告警。日誌集中到另一帳號，以 SCP、儲存鎖定、KMS 與最小刪除權限保護，並對中斷立即告警。</li><li><strong>機密與加密邊界：</strong>取得 Secrets Manager、Parameter Store 或 KMS 解密權限，可能等同取得受保護資料。IAM 政策、資源政策與 KMS 金鑰政策需共同評估，並限制公開網路路徑與不必要跨帳號存取。</li></ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 IAM、STS 與底層雲端基礎設施的安全、服務軟體及實體控制。客戶負責保護根使用者、選擇身分來源與 MFA、建立角色信任、撰寫與測試政策、撤銷離職人員權限、管理工作階段、限制公開與跨帳號存取、保護 KMS 與機密服務權限、啟用 CloudTrail/CloudWatch、備份治理設定及建立跨區或 IdP 中斷的復原程序。AWS 提供授權機制，不會自動判斷每位人員的業務必要權限。</p>
+<h2>上線前可執行檢查清單</h2>
+<ul><li>□ 根使用者已啟用 MFA，未建立根存取金鑰，緊急存取程序已受控演練。</li><li>□ 員工使用 IAM Identity Center 或聯合登入及短期工作階段，高權限採更強 MFA 與較短期限。</li><li>□ EC2、Lambda、ECS/EKS 與 CI/CD 使用角色，不在程式碼、映像或設定檔保存長期憑證。</li><li>□ 身分型政策、資源型政策、角色信任、SCP、權限邊界與 KMS 金鑰政策已共同評估。</li><li>□ Action、Resource 與 Condition 符合最小權限；iam:PassRole、政策變更與跨帳號信任受到特別限制。</li><li>□ 私有資源沒有非預期公開或外部存取，VPC Endpoint 與網路隔離條件已按風險採用。</li><li>□ 機密保存在 Secrets Manager 或 Parameter Store，只有必要角色可讀取與使用對應 KMS 金鑰。</li><li>□ 多區域 CloudTrail、集中式防竄改日誌與 CloudWatch 告警涵蓋根活動、金鑰建立、信任及政策變更。</li><li>□ Access Analyzer、credential report 與存取活動定期執行，離職、閒置與例外權限可及時撤銷。</li><li>□ IdP 中斷、帳號接管與誤刪政策的備份、跨區稽核資料、緊急登入及復原演練符合 RTO/RPO。</li></ul>
+<h2>AWS 官方一手來源</h2>
+<ul><li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/introduction.html" target="_blank" rel="noopener noreferrer">AWS IAM User Guide｜What is IAM?</a>（查閱：2026-08-25）</li><li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/best-practices.html" target="_blank" rel="noopener noreferrer">AWS IAM User Guide｜Security best practices in IAM</a>（查閱：2026-08-25）</li><li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies.html" target="_blank" rel="noopener noreferrer">AWS IAM User Guide｜Policies and permissions</a>（查閱：2026-08-25）</li><li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/access_policies_identity-vs-resource.html" target="_blank" rel="noopener noreferrer">AWS IAM User Guide｜Identity-based and resource-based policies</a>（查閱：2026-08-25）</li><li><a href="https://docs.aws.amazon.com/IAM/latest/UserGuide/id_credentials_temp.html" target="_blank" rel="noopener noreferrer">AWS IAM User Guide｜Temporary security credentials</a>（查閱：2026-08-25）</li><li><a href="https://aws.amazon.com/iam/pricing/" target="_blank" rel="noopener noreferrer">AWS｜IAM pricing</a>（查閱：2026-08-25）</li><li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS｜Shared Responsibility Model</a>（查閱：2026-08-25）</li></ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依區域支援、最新價格、組織政策、法規與風險評估調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a rel="prev" href="./2026-08-24-amazon-s3-basics.html" class="glass rounded-2xl p-5 block"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon S3 基礎介紹</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</div></article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
