@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">EBS 與 EFS 私有儲存安全流程示意圖</title>
+  <desc id="desc">兩個可用區中的 EC2 Worker 使用各自加密 EBS，透過私有 EFS Mount Target 共用加密檔案系統，並以 KMS、Secrets Manager、CloudTrail、CloudWatch 與 AWS Backup 控制安全及復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#102a45"/></linearGradient>
+    <linearGradient id="storage" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffca80"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".32"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#73d9ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eef7ff}.muted{fill:#a9bdd7}.small{font-size:20px}.body{font-size:24px}.head{font-size:34px;font-weight:800}.box{fill:#10233a;stroke:#365878;stroke-width:2}.zone{fill:#0a1a2d;stroke:#4f7292;stroke-width:2;stroke-dasharray:10 8}.line{fill:none;stroke:#73d9ff;stroke-width:5;marker-end:url(#arrow)}.secure{fill:none;stroke:#70e0af;stroke-width:4;stroke-dasharray:8 7}</style>
+  </defs>
+  <rect width="1440" height="900" rx="30" fill="url(#bg)"/>
+  <text x="70" y="72" class="t head">示意｜私有運算如何搭配 EBS 與 EFS</text>
+  <text x="70" y="110" class="t muted small">區塊儲存貼近單一節點；共享檔案經私有網路存取；控制與復原獨立治理</text>
+
+  <rect x="60" y="150" width="600" height="430" rx="26" class="zone"/>
+  <text x="90" y="195" class="t body" font-weight="700">可用區 A｜私有子網路</text>
+  <rect x="100" y="235" width="250" height="125" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="225" y="282" text-anchor="middle" class="t body" font-weight="700">EC2 Worker A</text><text x="225" y="319" text-anchor="middle" class="t muted small">IAM Role · 短期憑證</text>
+  <rect x="100" y="410" width="250" height="110" rx="20" fill="url(#storage)" filter="url(#shadow)"/>
+  <text x="225" y="455" text-anchor="middle" fill="#1b2633" class="body" font-family="Inter,'Noto Sans TC',sans-serif" font-weight="800">EBS gp3</text><text x="225" y="490" text-anchor="middle" fill="#293747" class="small" font-family="Inter,'Noto Sans TC',sans-serif">系統與暫存 · KMS</text>
+  <path d="M225 360V405" class="line"/>
+  <rect x="410" y="270" width="205" height="115" rx="20" class="box"/>
+  <text x="512" y="317" text-anchor="middle" class="t body" font-weight="700">EFS Mount</text><text x="512" y="352" text-anchor="middle" class="t muted small">Target A · TLS</text>
+  <path d="M350 298H402" class="line"/>
+
+  <rect x="780" y="150" width="600" height="430" rx="26" class="zone"/>
+  <text x="810" y="195" class="t body" font-weight="700">可用區 B｜私有子網路</text>
+  <rect x="1090" y="235" width="250" height="125" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="1215" y="282" text-anchor="middle" class="t body" font-weight="700">EC2 Worker B</text><text x="1215" y="319" text-anchor="middle" class="t muted small">IAM Role · 短期憑證</text>
+  <rect x="1090" y="410" width="250" height="110" rx="20" fill="url(#storage)" filter="url(#shadow)"/>
+  <text x="1215" y="455" text-anchor="middle" fill="#1b2633" class="body" font-family="Inter,'Noto Sans TC',sans-serif" font-weight="800">EBS gp3</text><text x="1215" y="490" text-anchor="middle" fill="#293747" class="small" font-family="Inter,'Noto Sans TC',sans-serif">系統與暫存 · KMS</text>
+  <path d="M1215 360V405" class="line"/>
+  <rect x="825" y="270" width="205" height="115" rx="20" class="box"/>
+  <text x="927" y="317" text-anchor="middle" class="t body" font-weight="700">EFS Mount</text><text x="927" y="352" text-anchor="middle" class="t muted small">Target B · TLS</text>
+  <path d="M1085 298H1038" class="line"/>
+
+  <rect x="555" y="430" width="330" height="130" rx="25" fill="#163f55" stroke="#73d9ff" stroke-width="3" filter="url(#shadow)"/>
+  <text x="720" y="480" text-anchor="middle" class="t head">Amazon EFS</text><text x="720" y="520" text-anchor="middle" class="t small">Regional · KMS · Access Point</text>
+  <path d="M512 385L625 426" class="line"/><path d="M927 385L815 426" class="line"/>
+
+  <rect x="60" y="640" width="1320" height="185" rx="26" fill="#0b1d31" stroke="#315878" stroke-width="2"/>
+  <text x="90" y="683" class="t body" font-weight="700">共用安全與復原控制</text>
+  <g filter="url(#shadow)"><rect x="90" y="720" width="230" height="70" rx="16" class="box"/><rect x="345" y="720" width="250" height="70" rx="16" class="box"/><rect x="620" y="720" width="235" height="70" rx="16" class="box"/><rect x="880" y="720" width="210" height="70" rx="16" class="box"/><rect x="1115" y="720" width="235" height="70" rx="16" class="box"/></g>
+  <text x="205" y="764" text-anchor="middle" class="t small" font-weight="700">KMS 加密金鑰</text><text x="470" y="752" text-anchor="middle" class="t small" font-weight="700">Secrets Manager</text><text x="470" y="778" text-anchor="middle" class="t muted" font-size="17">Parameter Store</text><text x="737" y="752" text-anchor="middle" class="t small" font-weight="700">CloudTrail</text><text x="737" y="778" text-anchor="middle" class="t muted" font-size="17">控制面稽核</text><text x="985" y="752" text-anchor="middle" class="t small" font-weight="700">CloudWatch</text><text x="985" y="778" text-anchor="middle" class="t muted" font-size="17">效能與告警</text><text x="1232" y="752" text-anchor="middle" class="t small" font-weight="700">AWS Backup</text><text x="1232" y="778" text-anchor="middle" class="t muted" font-size="17">跨區復原演練</text>
+  <path d="M720 570V630" class="secure"/><text x="742" y="614" class="t muted" font-size="18">政策 · 監控 · 備份</text>
+</svg>
