@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Elastic Load Balancing 與 EC2 Auto Scaling 高可用 Web 流程示意圖</title>
+  <desc id="desc">使用者經 Route 53、WAF 與公開 Application Load Balancer，將 HTTPS 流量分配到兩個可用區的私有 EC2 Auto Scaling 群組；健康檢查、監控、加密、機密管理、稽核與備份形成控制層。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#102a45"/></linearGradient>
+    <linearGradient id="entry" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd08a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".32"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#73d9ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eef7ff}.muted{fill:#a9bdd7}.small{font-size:19px}.body{font-size:23px}.head{font-size:34px;font-weight:800}.box{fill:#10233a;stroke:#365878;stroke-width:2}.zone{fill:#0a1a2d;stroke:#4f7292;stroke-width:2;stroke-dasharray:10 8}.line{fill:none;stroke:#73d9ff;stroke-width:5;marker-end:url(#arrow)}.control{fill:none;stroke:#70e0af;stroke-width:4;stroke-dasharray:8 7}</style>
+  </defs>
+  <rect width="1440" height="900" rx="30" fill="url(#bg)"/>
+  <text x="70" y="66" class="t head">示意｜ELB 分流，Auto Scaling 維持容量</text>
+  <text x="70" y="104" class="t muted small">公開入口與私有運算分層；健康檢查決定路由，擴縮政策調整執行個體數量</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="145" width="210" height="90" rx="20" class="box"/>
+    <rect x="340" y="145" width="210" height="90" rx="20" class="box"/>
+    <rect x="610" y="135" width="360" height="110" rx="22" fill="url(#entry)"/>
+  </g>
+  <text x="175" y="183" text-anchor="middle" class="t body" font-weight="700">使用者</text><text x="175" y="214" text-anchor="middle" class="t muted small">HTTPS 請求</text>
+  <text x="445" y="183" text-anchor="middle" class="t body" font-weight="700">Route 53 ＋ WAF</text><text x="445" y="214" text-anchor="middle" class="t muted small">DNS · 邊界規則</text>
+  <text x="790" y="180" text-anchor="middle" fill="#172536" class="body" font-family="Inter,'Noto Sans TC',sans-serif" font-weight="800">Application Load Balancer</text><text x="790" y="214" text-anchor="middle" fill="#34485e" class="small" font-family="Inter,'Noto Sans TC',sans-serif">TLS 終止 · Listener · Target Group</text>
+  <path d="M280 190H332" class="line"/><path d="M550 190H602" class="line"/>
+
+  <rect x="60" y="300" width="620" height="335" rx="26" class="zone"/>
+  <text x="90" y="342" class="t body" font-weight="700">可用區 A｜私有應用子網路</text>
+  <rect x="105" y="390" width="230" height="115" rx="20" class="box" filter="url(#shadow)"/>
+  <rect x="385" y="390" width="230" height="115" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="220" y="435" text-anchor="middle" class="t body" font-weight="700">EC2 Target A1</text><text x="220" y="470" text-anchor="middle" class="t muted small">最小權限角色 · IMDSv2</text>
+  <text x="500" y="435" text-anchor="middle" class="t body" font-weight="700">EC2 Target A2</text><text x="500" y="470" text-anchor="middle" class="t muted small">健康時接收流量</text>
+
+  <rect x="760" y="300" width="620" height="335" rx="26" class="zone"/>
+  <text x="790" y="342" class="t body" font-weight="700">可用區 B｜私有應用子網路</text>
+  <rect x="805" y="390" width="230" height="115" rx="20" class="box" filter="url(#shadow)"/>
+  <rect x="1085" y="390" width="230" height="115" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="920" y="435" text-anchor="middle" class="t body" font-weight="700">EC2 Target B1</text><text x="920" y="470" text-anchor="middle" class="t muted small">最小權限角色 · IMDSv2</text>
+  <text x="1200" y="435" text-anchor="middle" class="t body" font-weight="700">EC2 Target B2</text><text x="1200" y="470" text-anchor="middle" class="t muted small">健康時接收流量</text>
+
+  <path d="M720 245L500 382" class="line"/><path d="M860 245L920 382" class="line"/>
+  <rect x="410" y="545" width="620" height="65" rx="18" fill="#163f55" stroke="#73d9ff" stroke-width="3"/>
+  <text x="720" y="585" text-anchor="middle" class="t body" font-weight="700">EC2 Auto Scaling Group｜最小 · 期望 · 最大容量</text>
+  <path d="M500 540V512" class="control"/><path d="M920 540V512" class="control"/>
+
+  <rect x="60" y="685" width="1320" height="155" rx="26" fill="#0b1d31" stroke="#315878" stroke-width="2"/>
+  <text x="90" y="726" class="t body" font-weight="700">安全、觀測與復原控制</text>
+  <g filter="url(#shadow)"><rect x="90" y="755" width="220" height="58" rx="15" class="box"/><rect x="330" y="755" width="250" height="58" rx="15" class="box"/><rect x="600" y="755" width="215" height="58" rx="15" class="box"/><rect x="835" y="755" width="230" height="58" rx="15" class="box"/><rect x="1085" y="755" width="265" height="58" rx="15" class="box"/></g>
+  <text x="200" y="791" text-anchor="middle" class="t small" font-weight="700">ACM ＋ KMS</text><text x="455" y="791" text-anchor="middle" class="t small" font-weight="700">Secrets Manager</text><text x="707" y="791" text-anchor="middle" class="t small" font-weight="700">CloudTrail</text><text x="950" y="791" text-anchor="middle" class="t small" font-weight="700">CloudWatch</text><text x="1217" y="791" text-anchor="middle" class="t small" font-weight="700">AMI／資料備份與跨區復原</text>
+  <path d="M720 610V675" class="control"/><text x="742" y="655" class="t muted" font-size="18">指標 · 告警 · 稽核</text>
+</svg>
