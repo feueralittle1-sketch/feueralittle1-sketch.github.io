@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon Route 53 DNS 與流量路由</title>
+  <meta name="description" content="理解 Amazon Route 53 的權威 DNS、託管區域、Alias、路由政策、健康檢查、Resolver、安全控制、成本與可用性。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-08-31-amazon-route-53-basics.html" />
+  <link rel="prev" href="./2026-08-30-elb-auto-scaling-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon Route 53：DNS、健康檢查與流量路由" />
+  <meta property="og:description" content="從名稱解析、路由政策與 DNSSEC，建立可觀測且可復原的 DNS 入口。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-08-31-amazon-route-53-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/route53-resilient-dns-flow.svg" />
+  <meta property="article:published_time" content="2026-08-31T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon Route 53：DNS、健康檢查與流量路由" />
+  <meta name="twitter:description" content="掌握 Route 53 託管區域、Alias、路由政策、安全邊界及復原設計。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/route53-resilient-dns-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:0!important;overflow:hidden}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon Route 53：DNS、健康檢查與流量路由","description":"理解 Amazon Route 53 的權威 DNS、託管區域、Alias、路由政策、健康檢查、Resolver、安全控制、成本與可用性。","datePublished":"2026-08-31T21:30:00+08:00","dateModified":"2026-08-31T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-08-31-amazon-route-53-basics.html","image":"https://www.2gwine.com/aws-basics/assets/route53-resilient-dns-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+  <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3" aria-label="主要導覽"><a href="../../index.html" class="font-bold text-white no-underline">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+      <div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">網路與 DNS</span><span class="chip rounded-full px-3 py-1 text-sm">2026-08-31</span></div>
+      <h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon Route 53：DNS、健康檢查與流量路由</h1>
+      <p class="text-xl leading-9 muted">Amazon Route 53 是高可用、可擴展的網域名稱系統（DNS）服務，提供網域註冊、權威 DNS、健康檢查與流量路由。它能把名稱查詢導向適當端點，但不能代替負載平衡器、應用健康設計、資料複寫或完整的災難復原。</p>
+      <p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-08-31</p>
+      <div class="prose max-w-none mt-10">
+        <h2>服務定位</h2>
+        <p><strong>Route 53 權威 DNS</strong>在 Hosted Zone（託管區域）內保存 DNS 記錄，回覆網域與 AWS 或外部端點的對應關係。服務名稱源自 DNS 使用的 TCP/UDP 53 埠。Route 53 也能註冊網域、執行端點健康檢查，以及透過 Route 53 Resolver 連接 VPC 與地端 DNS。</p>
+        <p>DNS 是入口控制平面，不是封包轉送資料平面。解析器取得答案後會依 TTL 快取，再直接連線至 ALB、CloudFront、API Gateway、S3 靜態網站、EC2 或其他目標。DNS 切換速度因此受 TTL、遞迴解析器快取、健康判定與用戶端行為影響。</p>
+
+        <h2>核心概念</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">名稱與記錄</h3><ul><li><strong>Public Hosted Zone：</strong>對網際網路發布權威 DNS 記錄。</li><li><strong>Private Hosted Zone：</strong>只對關聯 VPC 提供私有名稱解析。</li><li><strong>Record：</strong>A、AAAA、CNAME、MX、TXT、CAA 等類型各有明確語意。</li><li><strong>Alias：</strong>Route 53 特有的虛擬記錄，可把網域根名稱指向支援的 AWS 資源，且不等同 CNAME。</li></ul></section>
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">路由與解析</h3><ul><li><strong>Routing Policy：</strong>Simple、Weighted、Latency、Failover、Geolocation、Geoproximity 與 Multivalue Answer 依不同規則產生答案。</li><li><strong>Health Check：</strong>可檢查公開端點、其他健康檢查的計算結果或 CloudWatch Alarm。</li><li><strong>TTL：</strong>控制記錄可被快取多久；短 TTL 提高切換彈性，也增加查詢量。</li><li><strong>Resolver：</strong>VPC 內建解析配合 Inbound/Outbound Endpoint 與規則，支援混合雲 DNS 轉送。</li></ul></section>
+        </div>
+
+        <h2>適合與不適合的使用情境</h2>
+        <h3>適合</h3><ul><li>管理公開或私有網域，將名稱穩定映射到 AWS 與外部服務。</li><li>在多端點、多區域或混合雲架構中，以權重、延遲、地理或容錯移轉政策控制 DNS 回覆。</li><li>需要把網域根名稱指向 ALB、CloudFront 等支援 Alias 的 AWS 資源。</li><li>需要 VPC 與地端網路之間的條件式 DNS 轉送及集中解析規則。</li></ul>
+        <h3>不適合或不能單獨完成</h3><ul><li>需要逐一 HTTP 請求的內容路由、TLS 終止、連線排空或 WAF 整合；應搭配 ALB、CloudFront 或 API Gateway。</li><li>需要即時切換且不能容忍任何 DNS 快取；既有答案可能持續到 TTL 到期，部分用戶端也可能延長快取。</li><li>把 Multivalue Answer 視為負載平衡器；它不提供連線層健康管理、黏著工作階段或後端保護。</li><li>只有 DNS 記錄，備援區域卻未配置容量、資料、KMS 金鑰、機密與相依服務；DNS 無法建立缺少的復原環境。</li></ul>
+
+        <h2>示意故事案例：雙區域服務的 DNS 容錯移轉</h2>
+        <p><strong>以下為架構示意，不代表特定組織或正式部署。</strong>一個線上預約服務以主要區域 ALB 提供流量，備援區域維持可接手的暖待命環境。Route 53 公有託管區域建立 Failover Alias：Primary 指向主要 ALB 並關聯健康評估，Secondary 指向備援 ALB。當主要端點持續不健康，Route 53 對新查詢回覆備援目標。團隊以 CloudWatch 監控健康狀態、以 CloudTrail 稽核記錄異動，部署人員使用 MFA 與短期憑證；資料庫跨區複寫、Secrets Manager 機密、KMS 金鑰與 AWS Backup 復原點另依 RTO/RPO 建置並演練。</p>
+        <figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><img src="../assets/route53-resilient-dns-flow.svg" alt="示意：使用者查詢 Route 53，Route 53 依健康檢查與容錯移轉路由政策回覆主要或備援區域端點，並由 IAM、DNSSEC、CloudTrail、CloudWatch、備份與切換演練提供控制" class="w-full h-auto" loading="lazy" /><figcaption class="muted text-sm mt-3">原創示意圖：Route 53 負責 DNS 決策；端點容量、應用狀態、資料一致性與跨區復原仍需分別設計。</figcaption></figure>
+
+        <h2>建置與運作流程</h2>
+        <ol><li><strong>盤點命名需求：</strong>列出公開與私有名稱、網域所有權、記錄類型、端點、區域、RTO/RPO、資料分類及相依 DNS。</li><li><strong>建立託管區域：</strong>依公開或私有需求建立 Hosted Zone。公開網域需在註冊商設定正確 NS；Private Hosted Zone 只關聯核准 VPC，跨帳號關聯依正式授權流程執行。</li><li><strong>選擇記錄與政策：</strong>網域根名稱優先評估 Alias；依單一、權重、延遲、地理或容錯需求選政策，避免以複雜規則掩蓋未定義的業務切換條件。</li><li><strong>設定健康判定：</strong>選擇可代表服務能力的 HTTPS 端點或 CloudWatch Alarm，避免健康檢查回應包含敏感資訊。對 Alias 可視服務能力使用 Evaluate Target Health。</li><li><strong>設定 TTL：</strong>日常記錄以變更頻率與查詢成本設定 TTL；計畫切換前可預先降低 TTL，待舊 TTL 消退後再變更，穩定後恢復合理值。</li><li><strong>收斂權限：</strong>以 IAM 最小權限限制 Hosted Zone 與 Record Set 變更；管理者使用 MFA 與短期憑證。網域註冊、DNSSEC KSK、Resolver 規則及跨帳號關聯採分權審核。</li><li><strong>保護解析路徑：</strong>公開區域依風險啟用 DNSSEC 簽署並在父區域建立 DS 記錄；私有與混合雲解析使用 Resolver Endpoint、Security Group 及規則限制來源和目的網域。</li><li><strong>建立觀測：</strong>CloudTrail 記錄 Route 53 API 變更；CloudWatch 追蹤健康檢查與 Resolver 指標，必要時啟用 DNS Query Logging 並設定保存、加密與敏感資料治理。</li><li><strong>備份與演練：</strong>以 IaC 或受控匯出保存 Hosted Zone 設定，測試誤刪復原、網域續約、DNSSEC 金鑰流程、主要端點故障與跨區切換；確認資料層及機密同步完成。</li></ol>
+
+        <h2>成本與可用性考量</h2>
+        <p>Route 53 通常依 Hosted Zone、DNS 查詢、健康檢查、網域註冊及 Resolver Endpoint 小時與處理查詢量計費；不同路由與 Alias 查詢可能有不同價格規則。Query Logging 會衍生 CloudWatch Logs 或其他目的地的擷取、儲存與查詢費用。短 TTL、監控探測位置增加及大量無效查詢都可能提高成本，應依最新官方定價與實際查詢量估算。</p>
+        <p>Route 53 的權威 DNS 服務具全球性與高可用設計，但應用可用性仍受目標端點、區域、資料層及相依服務限制。健康檢查需要連續觀測後才改變狀態，DNS 答案也會被快取，因此切換不保證瞬時完成。Failover 記錄應確保至少一個可用備援，並在故障情境下驗證剩餘容量。</p>
+        <p>網域名稱是長期營運資產。自動續約、付款方式、註冊聯絡資訊、Registrar Lock、到期告警與復原責任必須有明確擁有者。對跨區復原，除了 DNS，還需驗證 KMS 多區域或目的區金鑰、Secrets Manager 複寫、資料庫複寫、備份還原及服務配額。</p>
+
+        <h2>特有資安風險與控制</h2>
+        <ul><li><strong>DNS 劫持與未授權變更：</strong>攻擊者若取得 Route 53 或註冊商權限，可把流量導向惡意端點。IAM 採最小權限與資源／記錄條件，管理者使用 MFA 與短期憑證，敏感變更需審核；CloudTrail 對 Hosted Zone、Record、DNSSEC 與網域異動告警。</li><li><strong>網域過期或移轉：</strong>停用自動續約、付款失敗或未授權移轉可造成服務與郵件中斷。啟用自動續約、Registrar Lock、多人到期告警與受控聯絡信箱，定期驗證所有權及復原程序。</li><li><strong>DNSSEC 設定錯誤：</strong>DS 與 KSK 不一致、錯誤輪替或停用 KMS 金鑰會造成驗證失敗。先建立變更順序、監控 DNSSEC 狀態，限制 KMS 金鑰停用與刪除權限，於非生產網域演練輪替。</li><li><strong>懸空 DNS 與子網域接管：</strong>刪除雲端資源但保留 CNAME 或 Alias，可能讓他人重新取得目標。資源退役時原子化移除 DNS，持續盤點 NXDOMAIN、無主記錄及第三方 SaaS 綁定。</li><li><strong>錯誤公開與 Split-Horizon 混淆：</strong>內部名稱若誤放公有 Hosted Zone 會洩漏架構；同名公私有區域也可能讓查詢結果與預期不同。公開、私有區域分權管理，測試 VPC 內外解析，避免在記錄值放入機密。</li><li><strong>Resolver 橫向與資料外洩：</strong>過寬的 Inbound/Outbound Endpoint Security Group 或轉送規則可被濫用作 DNS 通道或未授權解析。端點置於私有子網路，只允許核准來源，規則限制目的網域，搭配 Route 53 Resolver DNS Firewall 與 Query Logging 偵測異常。</li><li><strong>健康檢查資訊洩漏與誤切：</strong>公開探測端點可能暴露版本或依賴狀態，錯誤判定會把流量切往未就緒環境。回應僅提供最少狀態，驗證 Host、TLS 與路徑，設定合理門檻並以合成交易交叉確認。</li><li><strong>日誌敏感資料：</strong>DNS 查詢名稱可能包含客戶、系統或資料識別。Query Logs、CloudTrail 與 CloudWatch 採 KMS 加密、最小讀取權限、保存期限及跨帳號集中保護；不得把 credential、Token、密碼或 cookie 編入 DNS 名稱。</li><li><strong>DDoS 與查詢濫用：</strong>Route 53 具備 AWS Shield Standard 基礎防護，但應用端點仍需容量、WAF、CloudFront 或 Shield Advanced 等分層控制。預算與異常查詢告警可降低成本盲點。</li></ul>
+
+        <h2>共同責任邊界</h2>
+        <p>AWS 負責 Route 53 全球權威 DNS、Resolver 受管控制平面、實體設施與底層服務基礎設施的安全及維護。客戶負責網域所有權與續約、Hosted Zone 類型、記錄內容、TTL、路由及健康政策、IAM 最小權限、MFA 與短期憑證、VPC 與 Resolver 網路隔離、公開存取範圍、DNSSEC 與 KMS 金鑰政策、Secrets Manager/Parameter Store、CloudTrail/CloudWatch 與 Query Logs、備份、資料複寫及跨區復原。Route 53 健康路由不會自動修補應用、同步資料或保證交易一致性。</p>
+
+        <h2>上線前可執行檢查清單</h2>
+        <ul><li>□ 網域註冊、Public/Private Hosted Zone、NS 委派及 VPC 關聯均已由不同網路位置驗證。</li><li>□ A、AAAA、CNAME、Alias、MX、TXT 與 CAA 類型使用正確，沒有懸空或無主的第三方目標。</li><li>□ 路由政策、TTL、健康門檻與故障後剩餘容量已用實際查詢及端對端交易測試。</li><li>□ Route 53、Registrar、DNSSEC 與 Resolver 管理者使用 MFA、短期憑證及最小權限，敏感變更需要審核。</li><li>□ 公開區域不含內部或敏感資訊；私有區域、Resolver Endpoint 與 DNS Firewall 僅服務核准網路。</li><li>□ DNSSEC 的 KSK、KMS 金鑰、父區 DS 記錄及輪替／停用程序已驗證，金鑰刪除受到保護。</li><li>□ CloudTrail、CloudWatch 健康告警與必要的 Query Logging 已啟用，日誌加密、保存及存取權限符合資料分級。</li><li>□ 網域自動續約、Registrar Lock、付款與聯絡資訊已確認，至少兩個獨立通知管道能收到到期告警。</li><li>□ 應用機密只存於 Secrets Manager 或 Parameter Store 並由 KMS 保護；DNS、健康回應與日誌不含敏感值。</li><li>□ Hosted Zone 設定有 IaC 或受控備份，已演練誤刪記錄、DNSSEC 錯誤及註冊商帳戶復原。</li><li>□ 跨區演練已驗證 DNS 切換、備援容量、資料複寫、備份還原、KMS、機密、配額與 RTO/RPO。</li></ul>
+
+        <h2>AWS 官方一手來源</h2>
+        <ul><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/Welcome.html" target="_blank" rel="noopener noreferrer">Amazon Route 53 Developer Guide｜What is Amazon Route 53?</a>（查閱：2026-08-31）</li><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/hosted-zones-working-with.html" target="_blank" rel="noopener noreferrer">Working with hosted zones</a>（查閱：2026-08-31）</li><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/routing-policy.html" target="_blank" rel="noopener noreferrer">Choosing a routing policy</a>（查閱：2026-08-31）</li><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-failover.html" target="_blank" rel="noopener noreferrer">Configuring DNS failover</a>（查閱：2026-08-31）</li><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/dns-configuring-dnssec.html" target="_blank" rel="noopener noreferrer">Configuring DNSSEC signing</a>（查閱：2026-08-31）</li><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html" target="_blank" rel="noopener noreferrer">What is Route 53 Resolver?</a>（查閱：2026-08-31）</li><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/route-53-concepts.html" target="_blank" rel="noopener noreferrer">Route 53 concepts</a>（查閱：2026-08-31）</li><li><a href="https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/best-practices-dns.html" target="_blank" rel="noopener noreferrer">Best practices for Amazon Route 53 DNS</a>（查閱：2026-08-31）</li><li><a href="https://aws.amazon.com/route53/pricing/" target="_blank" rel="noopener noreferrer">Amazon Route 53 pricing</a>（查閱：2026-08-31）</li><li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-08-31）</li></ul>
+        <h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依區域支援、最新價格與配額、工作負載測試、組織政策、法規及風險評估調整。</p>
+      </div>
+      <nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a href="./2026-08-30-elb-auto-scaling-basics.html" rel="prev" class="glass rounded-2xl p-5 block"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Elastic Load Balancing 與 EC2 Auto Scaling：分流與彈性容量</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+    </article>
+  </main>
+  <footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body>
+</html>

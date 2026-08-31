@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1000" height="1100" viewBox="0 0 1000 1100" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon Route 53 韌性 DNS 使用情境流程示意圖</title>
+  <desc id="desc">使用者向 Route 53 Resolver 查詢網域，Route 53 依健康檢查與容錯移轉政策回覆主要區域或備援區域端點；控制層包含最小權限、DNSSEC、CloudTrail、CloudWatch 與跨區復原演練。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#12304d"/></linearGradient>
+    <linearGradient id="aws" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd08a"/></linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#76dcff"/></marker>
+    <filter id="shadow"><feDropShadow dx="0" dy="7" stdDeviation="9" flood-opacity=".32"/></filter>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eef7ff}.h{font-size:46px;font-weight:800}.b{font-size:36px;font-weight:700}.s{font-size:30px;fill:#b8cae3}.box{fill:#10263e;stroke:#426b8e;stroke-width:2}.line{fill:none;stroke:#76dcff;stroke-width:5;marker-end:url(#arrow)}.dash{fill:none;stroke:#73e0ad;stroke-width:4;stroke-dasharray:10 8}</style>
+  </defs>
+  <rect width="1000" height="1100" rx="28" fill="url(#bg)"/>
+  <text x="55" y="65" class="t h">示意｜Route 53 健康檢查與容錯移轉</text>
+  <text x="55" y="103" class="t s">DNS 回覆決定入口；應用與資料層仍需具備可復原能力</text>
+
+  <g filter="url(#shadow)"><rect x="310" y="145" width="380" height="105" rx="22" class="box"/></g>
+  <text x="500" y="190" text-anchor="middle" class="t b">使用者與遞迴解析器</text><text x="500" y="224" text-anchor="middle" class="t s">查詢 app.example.com</text>
+  <path d="M500 250V315" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="210" y="320" width="580" height="140" rx="25" fill="url(#aws)"/></g>
+  <text x="500" y="372" text-anchor="middle" class="t b" fill="#07111f">Amazon Route 53 公有託管區域</text>
+  <text x="500" y="410" text-anchor="middle" class="t s" fill="#18324a">Alias + Failover Routing Policy</text>
+  <text x="500" y="440" text-anchor="middle" class="t s" fill="#18324a">DNSSEC 簽署（依需求）</text>
+
+  <path d="M390 460C390 520 265 515 265 580" class="line"/>
+  <path d="M610 460C610 520 735 515 735 580" class="line"/>
+  <g filter="url(#shadow)"><rect x="75" y="585" width="380" height="145" rx="24" class="box"/><rect x="545" y="585" width="380" height="145" rx="24" class="box"/></g>
+  <text x="265" y="632" text-anchor="middle" class="t b">主要區域端點</text><text x="265" y="670" text-anchor="middle" class="t s">ALB／CloudFront／API</text><text x="265" y="705" text-anchor="middle" class="t s">健康時接收正常流量</text>
+  <text x="735" y="632" text-anchor="middle" class="t b">備援區域端點</text><text x="735" y="670" text-anchor="middle" class="t s">預先建置或暖待命</text><text x="735" y="705" text-anchor="middle" class="t s">故障時回覆備援目標</text>
+
+  <rect x="120" y="805" width="760" height="200" rx="25" fill="#0b2035" stroke="#4e7899" stroke-width="2"/>
+  <text x="500" y="850" text-anchor="middle" class="t b">控制與驗證層</text>
+  <text x="160" y="900" class="t s">• Route 53 健康檢查 + CloudWatch 告警</text>
+  <text x="160" y="940" class="t s">• IAM 最小權限、MFA、短期憑證與 CloudTrail</text>
+  <text x="160" y="980" class="t s">• 變更審核、託管區域保護、備份與切換演練</text>
+  <path d="M265 730V805M735 730V805" class="dash"/>
+  <text x="500" y="1060" text-anchor="middle" class="t s">原創流程圖｜Dr. William｜2026-08-31</text>
+</svg>
