@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon CloudFront：全球內容傳遞與邊緣安全</title>
+  <meta name="description" content="理解 Amazon CloudFront 的邊緣快取、Origin、Cache Behavior、失效、成本、可用性、來源保護與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-01-amazon-cloudfront-basics.html" />
+  <link rel="prev" href="./2026-08-31-amazon-route-53-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon CloudFront：全球內容傳遞與邊緣安全" />
+  <meta property="og:description" content="從邊緣快取、來源保護與可觀測性，建立快速且可控的內容傳遞路徑。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-09-01-amazon-cloudfront-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/cloudfront-secure-delivery-flow.svg" />
+  <meta property="article:published_time" content="2026-09-01T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon CloudFront：全球內容傳遞與邊緣安全" />
+  <meta name="twitter:description" content="掌握 CloudFront 快取、Origin、TLS、WAF、日誌與復原邊界。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/cloudfront-secure-delivery-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:0!important;overflow:hidden}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon CloudFront：全球內容傳遞與邊緣安全","description":"理解 Amazon CloudFront 的邊緣快取、Origin、Cache Behavior、失效、成本、可用性、來源保護與共同責任。","datePublished":"2026-09-01T21:30:00+08:00","dateModified":"2026-09-01T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-01-amazon-cloudfront-basics.html","image":"https://www.2gwine.com/aws-basics/assets/cloudfront-secure-delivery-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+  <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3" aria-label="主要導覽"><a href="../../index.html" class="font-bold text-white no-underline">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+      <div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">內容傳遞與邊緣安全</span><span class="chip rounded-full px-3 py-1 text-sm">2026-09-01</span></div>
+      <h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon CloudFront：全球內容傳遞與邊緣安全</h1>
+      <p class="text-xl leading-9 muted">Amazon CloudFront 是內容傳遞網路（CDN）服務，透過全球邊緣站點接收請求、快取內容並連回來源。它能降低延遲與來源負載，也能整合 TLS、AWS WAF 與 DDoS 防護；但不會自動修正錯誤的快取鍵、過度公開的來源或缺少復原能力的後端。</p>
+      <p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-09-01</p>
+      <div class="prose max-w-none mt-10">
+        <h2>服務定位</h2>
+        <p>CloudFront 位於使用者與 Origin（來源）之間。使用者連到最近且合適的邊緣站點；若物件已在快取且仍有效，邊緣直接回應，否則經 AWS 網路向 S3、Application Load Balancer、API Gateway、EC2 或自訂 HTTP 來源取回內容。Distribution（分配）定義網域、來源、快取行為、憑證、日誌與安全設定。</p>
+        <p>CloudFront 適合靜態檔案、影音、下載、網站與可明確定義快取規則的動態 API。它是傳遞與邊緣控制層，不是資料庫、備份服務或應用授權系統；來源資料一致性、交易正確性及區域復原仍由後端架構負責。</p>
+
+        <h2>核心概念</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">傳遞與快取</h3><ul><li><strong>Edge Location：</strong>接收 Viewer Request 並提供快取內容。</li><li><strong>Origin：</strong>內容的權威來源，可為 AWS 服務或自訂 HTTP 端點。</li><li><strong>Cache Behavior：</strong>依路徑模式指定來源、允許方法、快取政策、Origin Request Policy 與邊緣函式。</li><li><strong>Cache Key：</strong>由路徑及選定的 Query String、Header、Cookie 組成；設計錯誤可能洩漏個人化內容或降低命中率。</li><li><strong>TTL 與 Invalidation：</strong>TTL 控制新鮮度，版本化檔名通常比頻繁失效更可預測。</li></ul></section>
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">安全與流量控制</h3><ul><li><strong>Viewer／Origin Protocol Policy：</strong>分別控制使用者端與來源端 HTTP/HTTPS。</li><li><strong>Origin Access Control（OAC）：</strong>讓 CloudFront 以 SigV4 存取私有 S3 Bucket，避免使用 S3 網站端點作為私有來源。</li><li><strong>Signed URL／Cookie：</strong>限制付費或私有內容的存取時間與範圍。</li><li><strong>CloudFront Functions／Lambda@Edge：</strong>在邊緣執行輕量或進階請求處理，能力、區域與限制不同。</li><li><strong>AWS WAF／Shield：</strong>在邊緣過濾 Web 請求並提供分層 DDoS 防護。</li></ul></section>
+        </div>
+
+        <h2>適合與不適合的使用情境</h2>
+        <h3>適合</h3><ul><li>向跨地區使用者提供圖片、JavaScript、CSS、軟體下載或影音，並降低延遲與來源頻寬。</li><li>把網站或 API 的公開入口集中到 HTTPS、WAF、速率限制與一致的安全標頭。</li><li>以 OAC 保護 S3 私有來源，或以 Signed URL／Cookie 控制私有內容。</li><li>透過多來源與 Origin Group，在定義的 HTTP 狀態下執行來源容錯移轉。</li></ul>
+        <h3>不適合或不能單獨完成</h3><ul><li>每個請求都必須即時取得強一致、不可快取的交易結果，且邊緣層沒有延遲或安全價值。</li><li>以 CDN 取代應用身分驗證、物件層授權或資料遮罩；Signed URL 也不能修正來源的越權存取。</li><li>需要任意 TCP/UDP 協定代理；CloudFront 主要處理 HTTP/HTTPS，其他協定需評估 Global Accelerator 或負載平衡服務。</li><li>把 Origin Failover 視為完整跨區災難復原；資料、機密、KMS 金鑰、DNS、容量與第三方依賴仍須部署及演練。</li></ul>
+
+        <h2>示意故事案例：私有網站資產的全球安全傳遞</h2>
+        <p><strong>以下為架構示意，不代表特定組織或正式部署。</strong>一個線上學習平台把公開前端資產存入禁止公開存取的 S3 Bucket。Route 53 Alias 指向 CloudFront，ACM 憑證提供 HTTPS；CloudFront 透過 OAC 讀取 S3，AWS WAF 阻擋已知惡意模式並限制異常請求。版本化檔名讓新版本可長時間快取，部署完成後只對必要入口頁執行 Invalidation。CloudFront 標準日誌與即時指標送入受控觀測流程，CloudTrail 監控分配、政策與 WAF 變更。部署人員使用 MFA 與短期憑證，來源資料以 KMS 加密並透過版本控制、AWS Backup 或跨區複寫支援復原。</p>
+        <figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><img src="../assets/cloudfront-secure-delivery-flow.svg" alt="示意：使用者經 Route 53、CloudFront、TLS 與 WAF 存取邊緣快取，未命中時由 OAC 存取私有 S3 來源，日誌送往 CloudWatch 與稽核儲存，資料另有版本與跨區復原" class="w-full h-auto" loading="lazy" /><figcaption class="muted text-sm mt-3">原創示意圖：CloudFront 負責邊緣傳遞與控制；來源私有化、快取鍵、資料保護及跨區復原需共同設計。</figcaption></figure>
+
+        <h2>建置與運作流程</h2>
+        <ol><li><strong>盤點內容與請求：</strong>區分公開、私有、個人化及不可快取內容，列出方法、Header、Cookie、Query String、檔案大小、地區、合規與 RTO/RPO。</li><li><strong>建立私有來源：</strong>S3 啟用 Block Public Access、版本控制與必要的 KMS 加密；自訂來源置於適當 VPC 網路層，只允許必要流量並防止繞過 CloudFront。</li><li><strong>建立 Distribution：</strong>設定來源、Alternate Domain Name、ACM 憑證、最低 TLS 政策與 HTTP 重新導向，依資料分類選擇價格等級與地理限制。</li><li><strong>設計 Behavior：</strong>每種路徑明確設定方法、快取政策與 Origin Request Policy。個人化回應不得共用錯誤快取鍵；轉送項目愈多通常愈難命中。</li><li><strong>保護來源：</strong>S3 優先採 OAC 及精確 Bucket Policy；自訂來源使用 HTTPS、來源驗證與網路限制。機密只存於 Secrets Manager 或 Parameter Store，不能寫入程式、URL、Cookie 名稱或快取內容。</li><li><strong>加入邊緣防護：</strong>依風險配置 AWS WAF Managed Rules、速率型規則、Bot Control 或地理條件，確認誤攔截處理與 Shield 防護層級。</li><li><strong>建立發布策略：</strong>資產使用內容雜湊或版本化檔名，HTML 設較短 TTL；先上傳新物件再切換參照，必要時精準 Invalidation，避免清除全部快取。</li><li><strong>建立觀測與稽核：</strong>啟用 CloudFront 指標、告警及適用的標準或即時日誌；CloudTrail 監控設定異動，集中日誌採 KMS 加密、最小權限與保存期限。</li><li><strong>測試與復原：</strong>驗證桌面與行動裝置、Cache Hit/Miss、錯誤回應、Signed URL、來源不可直連、WAF、IPv6 及多地區效能；演練來源故障、設定回復與跨區資料復原。</li></ol>
+
+        <h2>成本與可用性考量</h2>
+        <p>CloudFront 成本依方案與使用模式可能包含向網際網路傳出的資料、HTTP/HTTPS 請求、Origin Shield、即時日誌、CloudFront Functions、Lambda@Edge、Invalidation 及額外安全功能。AWS 來源傳至 CloudFront 的資料傳輸常有特定價格規則，但仍須依來源、區域與最新定價確認。低命中率、過多快取鍵、頻繁完整失效及大量錯誤流量會增加來源與邊緣成本。</p>
+        <p>CloudFront 使用全球邊緣網路，但整體可用性仍受來源、憑證、DNS、WAF 規則及設定部署影響。較長 TTL 可提高命中率並在來源短暫故障時保留既有快取，代價是內容更新較慢；錯誤快取 TTL 也需避免放大故障。Origin Shield 可減少多個邊緣同時回源，但增加費用與一個選定區域的路徑考量。</p>
+        <p>跨區復原不能只建立第二個 Origin。需確認資料已複寫、S3 Bucket Policy 與 OAC 權限有效、KMS 金鑰可用、Secrets Manager 機密已同步、WAF 與憑證設定一致，並測試 Origin Group 的切換條件是否符合應用語意與 RTO/RPO。</p>
+
+        <h2>特有資安風險與控制</h2>
+        <ul><li><strong>來源可被繞過：</strong>若 S3、ALB 或自訂來源仍可直接公開存取，攻擊者能避開 WAF、速率限制與 CloudFront 日誌。S3 使用 OAC 與 Block Public Access；自訂來源限制入口並驗證 CloudFront 才持有的受管值，定期測試來源不可直連。</li><li><strong>快取鍵造成資料外洩：</strong>授權狀態、Cookie 或個人化 Header 未納入正確決策，可能把一位使用者的回應提供給他人。敏感回應設為不快取，明確定義 Cache-Control 與快取鍵，建立多身分隔離測試。</li><li><strong>快取投毒與非預期轉送：</strong>未驗證的 Host、Header、Query String 或重寫邏輯可能污染共享快取。只允許必要轉送欄位，正規化輸入、限制方法，WAF 阻擋異常格式，監控命中率與錯誤尖峰。</li><li><strong>Signed URL／Cookie 誤用：</strong>期限過長、私鑰管理不當或路徑範圍過寬會擴大未授權分享。使用受控 Key Group、最短有效期與精確資源範圍；私鑰放入受限機密系統並輪替，不得寫入網站或日誌。</li><li><strong>TLS 與自訂網域錯置：</strong>過舊安全政策、憑證未涵蓋網域或 Viewer 允許 HTTP 會造成降級及中斷。強制 HTTPS、採合適最低 TLS 版本，監控 ACM 到期與 CAA/DNS 變更。</li><li><strong>邊緣程式碼風險：</strong>CloudFront Functions 或 Lambda@Edge 的重寫、授權與標頭程式若有缺陷，會在全球放大。最小化程式與 IAM 權限，版本化、測試、分階段發布並保留快速回復版本。</li><li><strong>WAF 規則誤攔截或繞過：</strong>規則順序、Scope-down Statement 或未涵蓋的路徑可能造成可用性或保護缺口。先以 Count 觀測、測試例外與優先序，對 ACL 變更設 CloudTrail 告警及雙人審核。</li><li><strong>日誌中的敏感資訊：</strong>URL、Query String、Cookie 與 Header 可能含個資或機密。應用不得把 credential、Access Key、Secret Key、Token、密碼或 cookie 值放入 URL；日誌採欄位最小化、KMS 加密、最小讀取權限及保存期限。</li><li><strong>DDoS 與成本消耗：</strong>大量動態、未命中或昂貴路徑可同時壓迫來源與帳單。使用 Shield Standard、適用時評估 Shield Advanced，搭配 WAF 速率規則、快取、來源容量與 AWS Budgets／異常偵測告警。</li></ul>
+
+        <h2>共同責任邊界</h2>
+        <p>AWS 負責 CloudFront 全球邊緣基礎設施、受管服務控制平面、實體設施及底層網路與主機的安全維護。客戶負責 Distribution、Origin、Behavior、Cache Key、TLS、Signed URL、邊緣程式、IAM 最小權限、MFA 與短期憑證、VPC 與來源網路隔離、公開存取、OAC、KMS 加密、Secrets Manager/Parameter Store、AWS WAF、CloudTrail/CloudWatch、日誌資料治理、備份及跨區復原。CloudFront 交付成功不代表來源授權、內容正確性或資料復原已完成。</p>
+
+        <h2>上線前可執行檢查清單</h2>
+        <ul><li>□ 自訂網域、Route 53 Alias、ACM 憑證、HTTP 轉 HTTPS 與最低 TLS 政策已從外部網路驗證。</li><li>□ 每個 Cache Behavior 的來源、方法、Cache Policy、Origin Request Policy 與回應標頭符合資料分類。</li><li>□ 個人化及授權回應已用兩個隔離身分交叉測試，未出現在共享快取或錯誤快取鍵。</li><li>□ S3 Block Public Access、OAC 與精確 Bucket Policy 已生效；自訂來源無法繞過 CloudFront 直接存取。</li><li>□ 管理者使用 MFA、短期憑證與 IAM 最小權限，Distribution、WAF、OAC 及邊緣程式變更需要審核。</li><li>□ KMS 金鑰政策、S3 加密與跨區目的地權限已驗證；應用機密只在 Secrets Manager 或 Parameter Store。</li><li>□ AWS WAF 規則已經 Count／測試階段驗證，速率限制、誤攔截處理及 Shield 層級有明確責任人。</li><li>□ CloudFront、WAF、來源與 CloudWatch 指標告警已啟用，CloudTrail 變更稽核及日誌保存、加密、權限符合政策。</li><li>□ 發布採版本化檔名，TTL、錯誤快取與 Invalidation 範圍已測試，不依賴大範圍清除作為日常流程。</li><li>□ Signed URL／Cookie 的 Key Group、有效期、路徑範圍、私鑰保存與輪替流程已測試。</li><li>□ 已演練來源故障、錯誤設定回復與跨區復原，確認備份、複寫、KMS、機密、容量及 RTO/RPO。</li><li>□ URL、日誌、程式碼與設定中不含 credential、Access Key、Secret Key、Token、密碼或 cookie 值。</li></ul>
+
+        <h2>AWS 官方一手來源</h2>
+        <ul><li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/Introduction.html" target="_blank" rel="noopener noreferrer">Amazon CloudFront Developer Guide｜What is Amazon CloudFront?</a>（查閱：2026-09-01）</li><li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/ConfiguringCaching.html" target="_blank" rel="noopener noreferrer">Managing how long content stays in the cache</a>（查閱：2026-09-01）</li><li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/controlling-the-cache-key.html" target="_blank" rel="noopener noreferrer">Control the cache key with a policy</a>（查閱：2026-09-01）</li><li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html" target="_blank" rel="noopener noreferrer">Restrict access to an Amazon S3 origin</a>（查閱：2026-09-01）</li><li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PrivateContent.html" target="_blank" rel="noopener noreferrer">Serve private content with signed URLs and signed cookies</a>（查閱：2026-09-01）</li><li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/high_availability_origin_failover.html" target="_blank" rel="noopener noreferrer">Optimize high availability with CloudFront origin failover</a>（查閱：2026-09-01）</li><li><a href="https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/security.html" target="_blank" rel="noopener noreferrer">Security in Amazon CloudFront</a>（查閱：2026-09-01）</li><li><a href="https://docs.aws.amazon.com/waf/latest/developerguide/cloudfront-features.html" target="_blank" rel="noopener noreferrer">AWS WAF protections for CloudFront</a>（查閱：2026-09-01）</li><li><a href="https://aws.amazon.com/cloudfront/pricing/" target="_blank" rel="noopener noreferrer">Amazon CloudFront pricing</a>（查閱：2026-09-01）</li><li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-09-01）</li></ul>
+        <h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依區域支援、最新價格與配額、工作負載測試、組織政策、法規及風險評估調整。</p>
+      </div>
+      <nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a href="./2026-08-31-amazon-route-53-basics.html" rel="prev" class="glass rounded-2xl p-5 block"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon Route 53：DNS、健康檢查與流量路由</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+    </article>
+  </main>
+  <footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body>
+</html>

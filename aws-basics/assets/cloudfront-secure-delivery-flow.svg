@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="820" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">CloudFront 私有來源與邊緣安全傳遞示意圖</title>
+  <desc id="desc">使用者經 Route 53、CloudFront、TLS 與 WAF 存取邊緣快取，未命中時由 Origin Access Control 存取私有 S3 來源，日誌送往監控與稽核儲存，資料以版本及跨區複寫復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294b"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd08a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#10243e;stroke:#436887;stroke-width:2}.safe{fill:#123b35;stroke:#58d6ad;stroke-width:2}.warn{fill:#392b1b;stroke:#ffb24c;stroke-width:2}.t{font:700 28px system-ui,sans-serif;fill:#fff}.s{font:500 20px system-ui,sans-serif;fill:#c7d8ee}.mini{font:600 17px system-ui,sans-serif;fill:#a9c4df}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#6e91af;stroke-width:3;stroke-dasharray:10 9;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="820" rx="32" fill="url(#bg)"/>
+  <text x="70" y="72" class="t" font-size="34">示意｜CloudFront 全球傳遞、來源保護與復原邊界</text>
+  <text x="70" y="108" class="s">快取命中由邊緣直接回應；未命中才經受控身分連回私有來源</text>
+
+  <g filter="url(#shadow)"><rect x="65" y="210" width="225" height="150" rx="24" class="box"/><text x="178" y="260" class="t" text-anchor="middle">使用者</text><text x="178" y="298" class="s" text-anchor="middle">瀏覽器／App</text><text x="178" y="330" class="mini" text-anchor="middle">HTTPS 請求</text></g>
+  <g filter="url(#shadow)"><rect x="370" y="185" width="300" height="200" rx="24" class="warn"/><text x="520" y="235" class="t" text-anchor="middle">Route 53 + CloudFront</text><text x="520" y="275" class="s" text-anchor="middle">TLS · AWS WAF · Shield</text><text x="520" y="310" class="s" text-anchor="middle">Cache Behavior／快取鍵</text><rect x="430" y="334" width="180" height="34" rx="17" fill="url(#accent)"/><text x="520" y="357" font-family="system-ui,sans-serif" font-size="17" font-weight="800" fill="#17202d" text-anchor="middle">邊緣快取</text></g>
+  <g filter="url(#shadow)"><rect x="760" y="210" width="275" height="150" rx="24" class="safe"/><text x="898" y="260" class="t" text-anchor="middle">OAC 受控回源</text><text x="898" y="298" class="s" text-anchor="middle">SigV4 · HTTPS</text><text x="898" y="330" class="mini" text-anchor="middle">只允許指定 Distribution</text></g>
+  <g filter="url(#shadow)"><rect x="1115" y="185" width="225" height="200" rx="24" class="safe"/><text x="1228" y="240" class="t" text-anchor="middle">私有 S3</text><text x="1228" y="278" class="s" text-anchor="middle">Block Public Access</text><text x="1228" y="313" class="s" text-anchor="middle">KMS 加密</text><text x="1228" y="348" class="mini" text-anchor="middle">版本控制</text></g>
+  <path d="M290 285H360" class="line"/><path d="M670 285H750" class="line"/><path d="M1035 285H1105" class="line"/>
+  <text x="325" y="265" class="mini" text-anchor="middle">DNS／TLS</text><text x="710" y="265" class="mini" text-anchor="middle">MISS</text><text x="1075" y="265" class="mini" text-anchor="middle">授權</text>
+  <path d="M660 170C560 120 405 125 300 185" class="dash"/><text x="485" y="142" class="mini" text-anchor="middle">HIT：直接由邊緣回應</text>
+
+  <g filter="url(#shadow)"><rect x="235" y="520" width="360" height="190" rx="24" class="box"/><text x="415" y="570" class="t" text-anchor="middle">觀測與稽核</text><text x="415" y="610" class="s" text-anchor="middle">CloudWatch 指標／告警</text><text x="415" y="645" class="s" text-anchor="middle">CloudFront／WAF 日誌</text><text x="415" y="680" class="s" text-anchor="middle">CloudTrail 設定異動</text></g>
+  <g filter="url(#shadow)"><rect x="805" y="520" width="360" height="190" rx="24" class="box"/><text x="985" y="570" class="t" text-anchor="middle">資料與跨區復原</text><text x="985" y="610" class="s" text-anchor="middle">物件版本／備份</text><text x="985" y="645" class="s" text-anchor="middle">跨區複寫與目的區 KMS</text><text x="985" y="680" class="s" text-anchor="middle">來源切換與還原演練</text></g>
+  <path d="M520 395V470H415V510" class="dash"/><path d="M1228 395V470H985V510" class="dash"/>
+  <text x="700" y="775" class="mini" text-anchor="middle">控制重點：IAM 最小權限 · MFA／短期憑證 · 來源不可繞過 · 正確快取鍵 · 日誌不含敏感值</text>
+</svg>
