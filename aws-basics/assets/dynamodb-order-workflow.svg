@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="860" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+  <title id="title">DynamoDB 訂單查詢、事件處理與復原示意圖</title>
+  <desc id="desc">顧客請求經邊緣防護、API Gateway 與 Lambda，以最小權限讀寫 DynamoDB；異動由 Streams 送往事件處理，另有監控、稽核、加密、備份與跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294b"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd08a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#10243e;stroke:#436887;stroke-width:2}.safe{fill:#123b35;stroke:#58d6ad;stroke-width:2}.warn{fill:#392b1b;stroke:#ffb24c;stroke-width:2}.t{font:700 27px system-ui,sans-serif;fill:#fff}.s{font:500 19px system-ui,sans-serif;fill:#c7d8ee}.mini{font:600 16px system-ui,sans-serif;fill:#a9c4df}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#6e91af;stroke-width:3;stroke-dasharray:10 9;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="860" rx="32" fill="url(#bg)"/>
+  <text x="70" y="70" class="t" font-size="34">示意｜DynamoDB 訂單資料、事件與復原控制</text>
+  <text x="70" y="107" class="s">低延遲資料路徑與非同步事件分離；每一段都需明確授權、監控與復原</text>
+
+  <g filter="url(#shadow)"><rect x="55" y="205" width="210" height="160" rx="24" class="box"/><text x="160" y="256" class="t" text-anchor="middle">顧客</text><text x="160" y="296" class="s" text-anchor="middle">網站／App</text><text x="160" y="330" class="mini" text-anchor="middle">訂單查詢或更新</text></g>
+  <g filter="url(#shadow)"><rect x="325" y="185" width="260" height="200" rx="24" class="warn"/><text x="455" y="234" class="t" text-anchor="middle">邊緣與 API</text><text x="455" y="274" class="s" text-anchor="middle">CloudFront · WAF</text><text x="455" y="308" class="s" text-anchor="middle">API Gateway</text><rect x="372" y="333" width="166" height="34" rx="17" fill="url(#accent)"/><text x="455" y="356" font-family="system-ui,sans-serif" font-size="16" font-weight="800" fill="#17202d" text-anchor="middle">驗證與速率控制</text></g>
+  <g filter="url(#shadow)"><rect x="645" y="205" width="250" height="160" rx="24" class="safe"/><text x="770" y="255" class="t" text-anchor="middle">Lambda</text><text x="770" y="295" class="s" text-anchor="middle">IAM Role</text><text x="770" y="329" class="mini" text-anchor="middle">短期憑證 · 冪等</text></g>
+  <g filter="url(#shadow)"><rect x="955" y="185" width="380" height="200" rx="24" class="safe"/><text x="1145" y="233" class="t" text-anchor="middle">DynamoDB 訂單表</text><text x="1145" y="273" class="s" text-anchor="middle">Partition Key + Sort Key</text><text x="1145" y="308" class="s" text-anchor="middle">條件式寫入 · KMS 加密</text><text x="1145" y="343" class="mini" text-anchor="middle">多可用區域受管複寫</text></g>
+  <path d="M265 285H315" class="line"/><path d="M585 285H635" class="line"/><path d="M895 285H945" class="line"/>
+  <text x="610" y="263" class="mini" text-anchor="middle">授權</text><text x="920" y="263" class="mini" text-anchor="middle">Query／Update</text>
+
+  <g filter="url(#shadow)"><rect x="160" y="540" width="330" height="190" rx="24" class="box"/><text x="325" y="590" class="t" text-anchor="middle">觀測與稽核</text><text x="325" y="630" class="s" text-anchor="middle">CloudWatch 指標／告警</text><text x="325" y="665" class="s" text-anchor="middle">CloudTrail 管理／資料事件</text><text x="325" y="700" class="mini" text-anchor="middle">節流 · 延遲 · 異常讀取</text></g>
+  <g filter="url(#shadow)"><rect x="535" y="540" width="330" height="190" rx="24" class="warn"/><text x="700" y="590" class="t" text-anchor="middle">Streams 事件</text><text x="700" y="630" class="s" text-anchor="middle">異動 → Lambda</text><text x="700" y="665" class="s" text-anchor="middle">通知／下游處理</text><text x="700" y="700" class="mini" text-anchor="middle">冪等 · 重試 · 失敗目的地</text></g>
+  <g filter="url(#shadow)"><rect x="910" y="540" width="330" height="190" rx="24" class="box"/><text x="1075" y="590" class="t" text-anchor="middle">備份與跨區復原</text><text x="1075" y="630" class="s" text-anchor="middle">PITR · AWS Backup</text><text x="1075" y="665" class="s" text-anchor="middle">跨帳號／跨區副本</text><text x="1075" y="700" class="mini" text-anchor="middle">隔離還原與 RTO/RPO 演練</text></g>
+  <path d="M770 375V475H325V530" class="dash"/><path d="M1145 395V470H700V530" class="dash"/><path d="M1160 395V530" class="dash"/>
+  <text x="700" y="815" class="mini" text-anchor="middle">控制重點：鍵分布 · IAM 最小權限 · 網路路徑 · 條件式寫入 · KMS · 稽核 · 可還原備份</text>
+</svg>
