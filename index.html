@@ -877,5 +877,23 @@
 
   <!-- NOXOR hosted AI character: William -->
   <script async src="https://d5uz4esltdmu6.cloudfront.net/character-7q0ds9/loader.js" data-nx-tenant="character-7q0ds9"></script>
+  <script>
+    (() => {
+      let attempts = 0;
+      const openWilliamAiPanel = () => {
+        const root = document.querySelector('[data-nx-embed-host]')?.shadowRoot;
+        if (!root) return false;
+        if (root.querySelector('.nx-panel')) return true;
+        const button = root.querySelector('button.nx-button');
+        if (!button) return false;
+        button.click();
+        return true;
+      };
+      const timer = window.setInterval(() => {
+        attempts += 1;
+        if (openWilliamAiPanel() || attempts >= 120) window.clearInterval(timer);
+      }, 100);
+    })();
+  </script>
 </body>
 </html>
