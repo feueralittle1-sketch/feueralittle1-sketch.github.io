@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon API Gateway：API 入口、授權與流量治理</title>
+  <meta name="description" content="理解 Amazon API Gateway 的 API 類型、整合、授權、流量控制、成本、可用性、記錄風險與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-03-amazon-api-gateway-basics.html" />
+  <link rel="prev" href="./2026-09-02-amazon-dynamodb-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon API Gateway：API 入口、授權與流量治理" />
+  <meta property="og:description" content="從 API 類型、路由、整合與授權，理解 API Gateway 的使用邊界與安全控制。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-09-03-amazon-api-gateway-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/api-gateway-secure-order-flow.svg" />
+  <meta property="article:published_time" content="2026-09-03T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon API Gateway：API 入口、授權與流量治理" />
+  <meta name="twitter:description" content="掌握 API Gateway 路由、授權、節流、私有整合、稽核與復原設計。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/api-gateway-secure-order-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:0!important;overflow:hidden}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon API Gateway：API 入口、授權與流量治理","description":"理解 Amazon API Gateway 的 API 類型、整合、授權、流量控制、成本、可用性、記錄風險與共同責任。","datePublished":"2026-09-03T21:30:00+08:00","dateModified":"2026-09-03T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-03-amazon-api-gateway-basics.html","image":"https://www.2gwine.com/aws-basics/assets/api-gateway-secure-order-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+  <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3" aria-label="主要導覽"><a href="../../index.html" class="font-bold text-white no-underline">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+      <div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">API 與整合</span><span class="chip rounded-full px-3 py-1 text-sm">2026-09-03</span></div>
+      <h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon API Gateway：API 入口、授權與流量治理</h1>
+      <p class="text-xl leading-9 muted">Amazon API Gateway 是建立、發布、維護、監控與保護 API 的全受管服務，可把行動應用、網站與系統請求導向 Lambda、HTTP 服務或其他 AWS 服務。它管理 API 入口，不會自動修正後端授權、商業邏輯、資料保護或跨區復原設計。</p>
+      <p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-09-03</p>
+      <div class="prose max-w-none mt-10">
+        <h2>服務定位</h2>
+        <p>API Gateway 位於用戶端與後端服務之間，負責接收請求、比對路由、執行適用的驗證與授權、轉換或轉送內容、限制流量並產生觀測資料。常見後端包括 Lambda、公開 HTTP 端點，以及透過私有整合連至 VPC 內的負載平衡器或 Cloud Map 服務。</p>
+        <p>它不是完整的應用程式防火牆、身分目錄、服務網格或資料庫，也不能取代後端的物件層級授權。API Gateway 接受一個通過入口授權的請求，不代表該主體可以讀取請求中指定的每一筆訂單或每一個租戶資料。</p>
+
+        <h2>核心概念</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">API 類型與入口</h3><ul><li><strong>REST API：</strong>功能較完整，支援使用計畫、API Key、請求驗證、轉換、快取及多種端點類型，適合需要細緻治理的 REST 工作負載。</li><li><strong>HTTP API：</strong>以較精簡功能和較低成本處理 HTTP 路由，支援 Lambda、HTTP 整合、JWT Authorizer 與 OIDC/OAuth 2.0 常見模式。</li><li><strong>WebSocket API：</strong>維持雙向連線，依路由鍵處理連線、訊息與中斷事件；連線狀態與訊息重試需由應用設計。</li><li><strong>端點類型：</strong>REST API 可依需求選擇 Edge-optimized、Regional 或 Private；API 類型與區域支援應在建置前核對。</li><li><strong>自訂網域：</strong>以 ACM 憑證與 DNS 對應正式網域，並明確管理 TLS、安全政策與憑證更新。</li></ul></section>
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">路由、整合與治理</h3><ul><li><strong>Route／Resource／Method：</strong>依路徑與方法選擇後端；HTTP API 以路由鍵表示，REST API 以資源與方法組成。</li><li><strong>Integration：</strong>將請求交給 Lambda、HTTP 後端或 AWS 服務；Proxy Integration 保留較多原始請求語意。</li><li><strong>Stage 與 Deployment：</strong>部署版本暴露於 Stage；設定、變更核准與回復策略應納入版本控制。</li><li><strong>Authorizer：</strong>可採 IAM、Cognito User Pools、JWT 或 Lambda Authorizer，實際可用方式依 API 類型而異。</li><li><strong>Throttling／Quota：</strong>限制突發與持續請求；它是容量及濫用控制，不是精準計費機制，也不能單獨抵禦所有阻斷服務攻擊。</li></ul></section>
+        </div>
+
+        <h2>適合與不適合的使用情境</h2>
+        <h3>適合</h3><ul><li>為 Lambda 或微服務提供一致的 HTTPS API 入口、路由、授權、節流與監控。</li><li>把公開 API 與 VPC 私有後端隔離，透過受控私有整合連至內部負載平衡器或服務。</li><li>需要依開發、測試與正式環境管理部署，並以基礎設施即程式碼保存設定。</li><li>WebSocket 聊天、通知或即時儀表板等需要受管雙向連線入口的工作負載。</li></ul>
+        <h3>不適合或不能單獨完成</h3><ul><li>大量靜態檔案與影音傳遞；通常應由 S3 與 CloudFront 承擔，不應把 API Gateway 當內容傳遞網路。</li><li>只需要內部服務間低延遲通訊，且不需要 API 管理功能的高頻資料平面；需比較直接負載平衡、服務發現或服務網格。</li><li>把 API Key 當作使用者身分驗證。API Key 主要用於識別用量與套用使用計畫，不應取代 IAM、JWT、Cognito 或其他適當授權。</li><li>需要入口自動判斷每筆業務資料擁有權；後端仍須執行物件層級與租戶邊界授權。</li></ul>
+
+        <h2>示意故事案例：會員訂單查詢 API</h2>
+        <p><strong>以下為架構示意，不代表特定組織或正式部署。</strong>一個零售平台以 Regional REST API 接收會員的訂單查詢。Route 53 將自訂網域指向 API Gateway，AWS WAF 套用受控規則與速率型規則；Authorizer 驗證短效身分聲明，API Gateway 依路由轉交 Lambda。Lambda 使用受限 IAM Role 與短期憑證，只能查詢必要的 DynamoDB 項目，並再次檢查會員與訂單的關聯。第三方連線機密保存在 Secrets Manager 或 Parameter Store；KMS 保護適用資料與日誌。CloudTrail 記錄控制平面變更，CloudWatch 收集指標、存取日誌與告警。API 定義、WAF 規則與後端資料備份保存在受控流程，另一區域預先建立可部署資源，並定期演練 DNS 切換。</p>
+        <figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/api-gateway-secure-order-flow-mobile.svg" /><img src="../assets/api-gateway-secure-order-flow.svg" alt="示意：會員請求經 Route 53、WAF 與 API Gateway 授權和節流後進入 Lambda，再以最小權限讀取 DynamoDB，並由 CloudWatch、CloudTrail、KMS 與跨區復原流程提供控制" class="w-full h-auto" loading="lazy" /></picture><figcaption class="muted text-sm mt-3 px-3 sm:px-0 pb-3 sm:pb-0">原創示意圖：API Gateway 治理 API 入口；後端仍負責租戶授權、資料處理、冪等、機密使用與復原驗證。</figcaption></figure>
+
+        <h2>建置與運作流程</h2>
+        <ol><li><strong>界定 API 契約：</strong>定義路徑、方法、訊息格式、錯誤碼、逾時、最大內容、身分主體、授權規則、流量預估、RTO/RPO 與資料分類。</li><li><strong>選擇 API 類型：</strong>依 REST API、HTTP API 與 WebSocket API 的功能、限制、區域支援及價格比較，不因名稱相似而假設功能相同。</li><li><strong>建立路由與整合：</strong>將路由連至 Lambda、HTTP 或私有後端；設定逾時、映射、錯誤處理與必要的 VPC Link，避免把內部後端直接公開。</li><li><strong>設計身分與授權：</strong>依呼叫者選擇 IAM、Cognito、JWT 或 Lambda Authorizer；人員管理身分啟用 MFA，工作負載使用 IAM Role 與短期憑證。</li><li><strong>建立縱深防禦：</strong>限制 Resource Policy、Lambda Invoke 權限、VPC Endpoint Policy、Security Group 與後端入口；適用時加入 AWS WAF、請求驗證與明確 CORS。</li><li><strong>控制流量：</strong>為 Stage、Route、用戶與後端容量設定節流、配額、保留併發或負載保護；定義 429、逾時與重試的退避及抖動。</li><li><strong>保護資料：</strong>使用 TLS，自訂網域採 ACM 憑證；必要資料與日誌使用 KMS。應用機密只由 Secrets Manager 或 Parameter Store 取得，不放入 URL、API 定義或記錄。</li><li><strong>建立可觀測性：</strong>使用 CloudWatch 指標、結構化存取日誌、追蹤與告警；記錄必要欄位並遮罩敏感內容。以 CloudTrail 監控 API 建立、部署、政策與 Stage 變更。</li><li><strong>版本化與發布：</strong>以 OpenAPI 或基礎設施即程式碼保存設定，在非正式環境執行契約、授權、負載與失敗測試，再經核准部署。</li><li><strong>準備復原：</strong>備份 API 定義、程式與設定，保護後端資料並建立跨區復原能力；定期演練重新部署、DNS 切換、KMS、憑證及相依後端。</li></ol>
+
+        <h2>成本與可用性考量</h2>
+        <p>API Gateway 成本依 API 類型可能包含 API 呼叫、WebSocket 訊息與連線時間、資料傳輸及選用的 REST API 快取。AWS WAF、CloudWatch Logs、X-Ray、Lambda、VPC Link、負載平衡器、NAT Gateway、Route 53 與後端服務另行計費。HTTP API 與 REST API 的價格及功能不同，不能只比較單次請求價格；應把授權器執行、日誌量、跨區傳輸、空閒私有連線與失敗重試一起估算。</p>
+        <p>不受控的存取日誌、詳細執行記錄、回應快取與高比例錯誤重試都可能增加成本。可依排錯與稽核需求選擇欄位、保留期限與取樣，不能為節省費用而移除必要安全證據。快取可能降低後端負載，但快取鍵若漏掉身分或租戶維度，會形成跨使用者資料洩漏。</p>
+        <p>API Gateway 是受管區域服務，但端到端可用性仍取決於 Authorizer、Lambda、VPC Link、負載平衡器、資料庫、DNS 與外部依賴。多可用區域後端、合理逾時、熔斷、冪等與容量保護可降低單點故障。需要區域級韌性時，應在另一區域部署獨立 API 與後端並以 Route 53 或其他受控方式切換；API 定義的備份不等同可運作的災難復原。</p>
+
+        <h2>特有資安風險與控制</h2>
+        <ul><li><strong>入口授權與物件授權混淆：</strong>通過 JWT 或 Authorizer 的主體仍可能竄改路徑中的訂單 ID。後端必須逐筆驗證主體、租戶、動作與資源關係，並測試跨帳號與跨租戶存取。</li><li><strong>API Key 被當作身分：</strong>API Key 可能被複製或出現在用戶端。只用它識別用量與配額，不承載機密授權；正式授權採 IAM、JWT、Cognito 或經審查的 Authorizer。</li><li><strong>Resource Policy 或 Invoke 權限過寬：</strong>萬用 Principal、來源或 Lambda Invoke 權限可能繞過預期入口。限制帳號、組織、VPC Endpoint、來源 ARN 與必要動作，並持續分析有效權限。</li><li><strong>CORS 設定錯誤：</strong>寬鬆 Origin、方法或 Header 可能讓瀏覽器接受非預期來源。只允許明確來源；不要把 CORS 當伺服器端授權，非瀏覽器呼叫者不受其保護。</li><li><strong>快取跨租戶洩漏：</strong>授權相關 Header 或租戶鍵未納入快取鍵，可能把一名使用者的回應交給另一名使用者。敏感端點停用快取，或完整定義並測試快取鍵與清除程序。</li><li><strong>節流與重試風暴：</strong>缺少節流會壓垮後端；過度重試會放大流量。設定分層配額、WAF 速率規則、後端容量保護、最大重試與指數退避；壓力測試 429 和逾時。</li><li><strong>請求與日誌洩密：</strong>URL、Query String、Header、Body、Authorizer Context 或詳細錯誤可能進入日誌。最小化記錄、遮罩敏感欄位、限制 CloudWatch Logs 權限、使用 KMS 與保留政策，禁止記錄 credential、Access Key、Secret Key、Token、密碼或 cookie 值。</li><li><strong>私有後端意外公開：</strong>建立 API Gateway 不會自動關閉負載平衡器或服務的公網入口。後端使用私有子網與受限 Security Group，透過 VPC Link 或 Private API 連線，驗證 VPC Endpoint Policy 與 DNS。</li><li><strong>部署漂移與未授權變更：</strong>主控台直接修改 Stage、路由或 Authorizer 可能避開審查。採基礎設施即程式碼、分離部署角色、CloudTrail、AWS Config 或等效偵測，並定期比對正式設定。</li><li><strong>注入與過量資料：</strong>API Gateway 的請求驗證不能取代後端輸入驗證。限制內容大小與型別，驗證結構及業務欄位，使用參數化查詢、輸出編碼與最小化回應。</li></ul>
+
+        <h2>共同責任邊界</h2>
+        <p>AWS 負責 API Gateway 服務的實體設施、底層主機、受管軟體與區域服務基礎設施。客戶負責 API 契約、路由與 Stage、IAM 最小權限、MFA 與短期憑證、Authorizer 與後端物件授權、Resource Policy、網路隔離、公開存取決策、VPC Link 與 Endpoint Policy、WAF 規則、KMS 金鑰政策、Secrets Manager/Parameter Store、CloudTrail/CloudWatch、日誌去識別化、後端備份及跨區復原。受管 API 入口不會自動保護錯誤商業邏輯、越權資料讀取、公開後端或不安全的相依服務。</p>
+
+        <h2>上線前可執行檢查清單</h2>
+        <ul><li>□ API 類型、路由、契約、配額、逾時、內容限制、RTO/RPO 與區域支援已記錄並測試。</li><li>□ 每條路由都有明確身分與授權規則；後端已測試物件層級及跨租戶拒絕。</li><li>□ 管理身分啟用 MFA；部署與執行角色使用短期憑證及 IAM 最小權限，無萬用 Invoke 權限。</li><li>□ 公開、Regional、Edge-optimized 或 Private 入口選擇有風險依據；私有後端無繞過 API 的公開路徑。</li><li>□ Resource Policy、VPC Endpoint Policy、Security Group、Lambda 權限與 WAF 規則已進行正負向測試。</li><li>□ CORS 僅允許必要來源、方法與 Header；API Key 未被當作使用者驗證。</li><li>□ KMS 金鑰政策符合資料分類；應用機密只存於 Secrets Manager 或 Parameter Store。</li><li>□ 存取與執行日誌不含敏感值，CloudWatch 指標及 4XX、5XX、延遲、整合錯誤與流量異常告警有效。</li><li>□ CloudTrail 已集中記錄並保護 API、Stage、政策、網域及部署等控制平面變更。</li><li>□ 節流、配額、429、逾時、最大重試、指數退避、後端容量與失敗隔離已通過壓力測試。</li><li>□ API 定義與基礎設施程式碼可重建；後端備份、跨區部署、DNS 切換與還原流程已演練。</li><li>□ 程式碼、OpenAPI、Stage 變數、URL、記錄及錯誤訊息中不含 credential、Access Key、Secret Key、Token、密碼或 cookie 值。</li></ul>
+
+        <h2>AWS 官方一手來源</h2>
+        <ul><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/welcome.html" target="_blank" rel="noopener noreferrer">Amazon API Gateway Developer Guide｜What is Amazon API Gateway?</a>（查閱：2026-09-03）</li><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/http-api-vs-rest.html" target="_blank" rel="noopener noreferrer">Choose between REST APIs and HTTP APIs</a>（查閱：2026-09-03）</li><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-api-endpoint-types.html" target="_blank" rel="noopener noreferrer">API Gateway endpoint types</a>（查閱：2026-09-03）</li><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/security.html" target="_blank" rel="noopener noreferrer">Security in Amazon API Gateway</a>（查閱：2026-09-03）</li><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/apigateway-control-access-to-api.html" target="_blank" rel="noopener noreferrer">Control access to REST APIs</a>（查閱：2026-09-03）</li><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/set-up-logging.html" target="_blank" rel="noopener noreferrer">Set up CloudWatch logging for REST APIs</a>（查閱：2026-09-03）</li><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-caching.html" target="_blank" rel="noopener noreferrer">Cache settings for REST APIs</a>（查閱：2026-09-03）</li><li><a href="https://docs.aws.amazon.com/apigateway/latest/developerguide/api-gateway-known-issues.html" target="_blank" rel="noopener noreferrer">Amazon API Gateway important notes and known issues</a>（查閱：2026-09-03）</li><li><a href="https://aws.amazon.com/api-gateway/pricing/" target="_blank" rel="noopener noreferrer">Amazon API Gateway pricing</a>（查閱：2026-09-03）</li></ul>
+        <h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依 API 類型、區域支援、最新價格與配額、工作負載測試、組織政策、法規及風險評估調整。</p>
+      </div>
+      <nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a href="./2026-09-02-amazon-dynamodb-basics.html" rel="prev" class="glass rounded-2xl p-5 block"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon DynamoDB：無伺服器 NoSQL 與資料建模</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+    </article>
+  </main>
+  <footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body>
+</html>

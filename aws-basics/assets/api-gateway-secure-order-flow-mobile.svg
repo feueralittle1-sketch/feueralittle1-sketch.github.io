@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 760" role="img" aria-labelledby="title desc">
+  <title id="title">API Gateway 會員訂單查詢安全流程手機版示意圖</title>
+  <desc id="desc">垂直呈現會員請求經 Route 53、WAF、API Gateway、Lambda 到 DynamoDB，並由身分、加密、監控、稽核與跨區復原控制覆蓋。</desc>
+  <defs>
+    <linearGradient id="bgm" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102847"/></linearGradient>
+    <linearGradient id="apim" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffbd70"/></linearGradient>
+    <marker id="am" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0l8 4-8 4z" fill="#77dff2"/></marker>
+    <style>.h{font:800 18px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#fff}.t{font:700 15px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#fff}.s{font:500 12px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#c9d8ee}.dark{fill:#102b48;stroke:#4b789c;stroke-width:1.5}.ctl{fill:#0c223d;stroke:#60cfe5;stroke-width:1.5}.line{stroke:#77dff2;stroke-width:3;marker-end:url(#am)}</style>
+  </defs>
+  <rect width="390" height="760" rx="20" fill="url(#bgm)"/>
+  <text x="24" y="36" class="h">示意｜會員訂單查詢 API</text>
+  <text x="24" y="58" class="s">入口治理不取代後端逐筆授權</text>
+  <g>
+    <rect x="24" y="82" width="342" height="58" rx="14" class="dark"/><text x="195" y="107" text-anchor="middle" class="t">會員應用 → Route 53 → AWS WAF</text><text x="195" y="128" text-anchor="middle" class="s">HTTPS・自訂網域・規則與速率控制</text>
+    <line x1="195" y1="140" x2="195" y2="162" class="line"/>
+    <rect x="24" y="170" width="342" height="78" rx="16" fill="url(#apim)"/><text x="195" y="200" text-anchor="middle" class="t" fill="#081426">Amazon API Gateway</text><text x="195" y="224" text-anchor="middle" class="s" fill="#081426">授權・路由・節流・結構化日誌</text>
+    <line x1="195" y1="248" x2="195" y2="270" class="line"/>
+    <rect x="24" y="278" width="342" height="64" rx="14" class="dark"/><text x="195" y="304" text-anchor="middle" class="t">Lambda 後端</text><text x="195" y="327" text-anchor="middle" class="s">逐筆驗證會員、租戶、訂單與動作</text>
+    <line x1="195" y1="342" x2="195" y2="364" class="line"/>
+    <rect x="24" y="372" width="342" height="64" rx="14" class="dark"/><text x="195" y="398" text-anchor="middle" class="t">Amazon DynamoDB</text><text x="195" y="421" text-anchor="middle" class="s">租戶鍵・IAM Role・短期憑證</text>
+  </g>
+  <text x="24" y="480" class="h">縱深控制</text>
+  <rect x="24" y="498" width="165" height="72" rx="13" class="ctl"/><text x="106" y="526" text-anchor="middle" class="t">KMS</text><text x="106" y="548" text-anchor="middle" class="s">資料與日誌加密</text>
+  <rect x="201" y="498" width="165" height="72" rx="13" class="ctl"/><text x="283" y="526" text-anchor="middle" class="t">Secrets 管理</text><text x="283" y="548" text-anchor="middle" class="s">不寫入 URL 或日誌</text>
+  <rect x="24" y="582" width="165" height="72" rx="13" class="ctl"/><text x="106" y="610" text-anchor="middle" class="t">CloudWatch</text><text x="106" y="632" text-anchor="middle" class="s">指標・日誌・告警</text>
+  <rect x="201" y="582" width="165" height="72" rx="13" class="ctl"/><text x="283" y="610" text-anchor="middle" class="t">CloudTrail</text><text x="283" y="632" text-anchor="middle" class="s">設定與部署稽核</text>
+  <rect x="24" y="676" width="342" height="58" rx="14" fill="#102b42" stroke="#ffad42" stroke-width="1.5"/><text x="195" y="701" text-anchor="middle" class="t">跨區復原</text><text x="195" y="722" text-anchor="middle" class="s">版本化定義・後端備份・DNS 切換演練</text>
+</svg>
