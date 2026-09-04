@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 980" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon ECS 私有容器服務安全與復原流程示意</title>
+  <desc id="desc">使用者流量經 Route 53、WAF 與 Application Load Balancer 進入跨可用區域的 ECS Service，任務以最小權限角色存取資料與機密，映像由 ECR 提供，CloudWatch 與 CloudTrail 收集監控稽核資料，資料另有備份及跨區重建流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102442"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#66e3ff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 12 6 0 12z" fill="#80e8ff"/></marker>
+    <style>.box{fill:#122844;stroke:#3d6387;stroke-width:2}.guard{fill:#302516;stroke:#ffad42;stroke-width:2}.data{fill:#142f31;stroke:#58d6b2;stroke-width:2}.obs{fill:#241d3b;stroke:#ad91ff;stroke-width:2}.t{fill:#f8fbff;font:700 22px system-ui,sans-serif}.s{fill:#c8d8eb;font:16px system-ui,sans-serif}.tiny{fill:#9fb7cf;font:14px system-ui,sans-serif}.line{fill:none;stroke:#80e8ff;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#ad91ff;stroke-width:3;stroke-dasharray:9 8;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="760" height="980" rx="28" fill="url(#bg)"/>
+  <rect x="30" y="28" width="700" height="8" rx="4" fill="url(#accent)"/>
+  <text x="380" y="78" text-anchor="middle" class="t">示意：ECS 私有容器服務的請求、部署與治理</text>
+  <rect class="box" filter="url(#shadow)" x="185" y="110" width="390" height="82" rx="18"/>
+  <text class="t" x="380" y="145" text-anchor="middle">使用者與企業用戶端</text><text class="s" x="380" y="173" text-anchor="middle">HTTPS · 短效身分聲明 · 不持有雲端長期金鑰</text>
+  <path class="line" d="M380 192v45"/>
+  <rect class="guard" filter="url(#shadow)" x="110" y="240" width="540" height="98" rx="18"/>
+  <text class="t" x="380" y="277" text-anchor="middle">Route 53 → AWS WAF → Application Load Balancer</text><text class="s" x="380" y="306" text-anchor="middle">TLS、受控公開入口、規則、健康檢查與流量分配</text>
+  <path class="line" d="M380 338v44"/>
+  <rect x="55" y="385" width="650" height="300" rx="24" fill="#0b1b31" stroke="#426b93" stroke-width="2"/>
+  <text class="t" x="380" y="425" text-anchor="middle">私有子網中的 Amazon ECS Service</text>
+  <text class="tiny" x="380" y="452" text-anchor="middle">Task Definition 固定映像版本、CPU／記憶體、Port、Role 與日誌設定</text>
+  <rect class="box" x="85" y="480" width="270" height="124" rx="18"/><text class="t" x="220" y="518" text-anchor="middle">可用區域 A</text><text class="s" x="220" y="548" text-anchor="middle">ECS Task · 應用容器</text><text class="tiny" x="220" y="576" text-anchor="middle">唯讀檔案系統 · 健康檢查</text>
+  <rect class="box" x="405" y="480" width="270" height="124" rx="18"/><text class="t" x="540" y="518" text-anchor="middle">可用區域 B</text><text class="s" x="540" y="548" text-anchor="middle">ECS Task · 應用容器</text><text class="tiny" x="540" y="576" text-anchor="middle">Service 維持期望數量</text>
+  <rect class="guard" x="145" y="626" width="470" height="42" rx="14"/><text class="s" x="380" y="653" text-anchor="middle">Security Group 僅允許 ALB；Task Role 採最小權限</text>
+  <path class="line" d="M380 685v43"/>
+  <rect class="data" filter="url(#shadow)" x="55" y="732" width="310" height="108" rx="18"/><text class="t" x="210" y="770" text-anchor="middle">受管資料與機密</text><text class="s" x="210" y="800" text-anchor="middle">RDS／DynamoDB · KMS</text><text class="tiny" x="210" y="825" text-anchor="middle">Secrets Manager／Parameter Store</text>
+  <rect class="data" filter="url(#shadow)" x="395" y="732" width="310" height="108" rx="18"/><text class="t" x="550" y="770" text-anchor="middle">映像與供應鏈</text><text class="s" x="550" y="800" text-anchor="middle">ECR · 不可變標籤 · 漏洞掃描</text><text class="tiny" x="550" y="825" text-anchor="middle">簽章／SBOM／核准後部署</text>
+  <path class="dash" d="M210 840v48h170"/><path class="dash" d="M550 840v48H390"/>
+  <rect class="obs" filter="url(#shadow)" x="75" y="890" width="610" height="62" rx="18"/><text class="t" x="380" y="919" text-anchor="middle">CloudWatch + CloudTrail + 備份與跨區重建演練</text><text class="tiny" x="380" y="943" text-anchor="middle">指標、日誌、控制平面稽核、告警、資料復原與 IaC 再部署</text>
+</svg>

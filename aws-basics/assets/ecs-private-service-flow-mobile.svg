@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 1100" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon ECS 私有容器服務手機版流程示意</title>
+  <desc id="desc">由上而下呈現使用者入口、WAF 與負載平衡器、跨可用區域 ECS Service、IAM 與網路控制、受管資料、映像供應鏈、監控稽核及跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102442"/></linearGradient>
+    <marker id="a" markerWidth="9" markerHeight="9" refX="8" refY="4.5" orient="auto"><path d="M0 0 9 4.5 0 9z" fill="#80e8ff"/></marker>
+    <style>.b{fill:#122844;stroke:#4e7ba5;stroke-width:2}.g{fill:#302516;stroke:#ffad42;stroke-width:2}.d{fill:#14302f;stroke:#58d6b2;stroke-width:2}.o{fill:#251e3c;stroke:#ad91ff;stroke-width:2}.t{fill:#fff;font:700 18px system-ui,sans-serif}.s{fill:#d3e0ef;font:15px system-ui,sans-serif}.x{fill:#a9bfd5;font:13px system-ui,sans-serif}.l{stroke:#80e8ff;stroke-width:3;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="390" height="1100" rx="22" fill="url(#bg)"/><rect x="18" y="18" width="354" height="6" rx="3" fill="#ff9900"/>
+  <text class="t" x="195" y="60" text-anchor="middle">示意：ECS 私有容器服務</text>
+  <rect class="b" x="40" y="85" width="310" height="75" rx="16"/><text class="t" x="195" y="116" text-anchor="middle">使用者與企業用戶端</text><text class="s" x="195" y="143" text-anchor="middle">HTTPS · 短效身分聲明</text><line class="l" x1="195" y1="160" x2="195" y2="198"/>
+  <rect class="g" x="30" y="205" width="330" height="95" rx="16"/><text class="t" x="195" y="238" text-anchor="middle">Route 53 · WAF · ALB</text><text class="s" x="195" y="266" text-anchor="middle">TLS、規則、健康檢查</text><text class="x" x="195" y="287" text-anchor="middle">唯一受控公開入口</text><line class="l" x1="195" y1="300" x2="195" y2="338"/>
+  <rect class="b" x="25" y="345" width="340" height="245" rx="20"/><text class="t" x="195" y="380" text-anchor="middle">私有子網 · ECS Service</text><text class="x" x="195" y="406" text-anchor="middle">Task Definition 固定映像 digest</text>
+  <rect class="b" x="47" y="430" width="296" height="58" rx="13"/><text class="s" x="195" y="454" text-anchor="middle">可用區域 A · ECS Task</text><text class="x" x="195" y="476" text-anchor="middle">應用容器 · 健康檢查</text>
+  <rect class="b" x="47" y="503" width="296" height="58" rx="13"/><text class="s" x="195" y="527" text-anchor="middle">可用區域 B · ECS Task</text><text class="x" x="195" y="549" text-anchor="middle">Service 維持健康副本</text><line class="l" x1="195" y1="590" x2="195" y2="628"/>
+  <rect class="g" x="28" y="635" width="334" height="87" rx="16"/><text class="t" x="195" y="666" text-anchor="middle">IAM 與網路控制</text><text class="s" x="195" y="693" text-anchor="middle">最小權限 Task Role</text><text class="x" x="195" y="714" text-anchor="middle">Security Group 僅允許 ALB</text><line class="l" x1="195" y1="722" x2="195" y2="760"/>
+  <rect class="d" x="28" y="767" width="334" height="92" rx="16"/><text class="t" x="195" y="798" text-anchor="middle">資料、金鑰與機密</text><text class="s" x="195" y="825" text-anchor="middle">RDS／DynamoDB · KMS</text><text class="x" x="195" y="848" text-anchor="middle">Secrets Manager／Parameter Store</text><line class="l" x1="195" y1="859" x2="195" y2="897"/>
+  <rect class="d" x="28" y="904" width="334" height="78" rx="16"/><text class="t" x="195" y="935" text-anchor="middle">ECR 映像供應鏈</text><text class="s" x="195" y="962" text-anchor="middle">掃描 · 簽章 · SBOM · 核准</text><line class="l" x1="195" y1="982" x2="195" y2="1020"/>
+  <rect class="o" x="20" y="1027" width="350" height="55" rx="15"/><text class="s" x="195" y="1051" text-anchor="middle">CloudWatch · CloudTrail</text><text class="x" x="195" y="1072" text-anchor="middle">備份 · IaC · 跨區重建演練</text>
+</svg>

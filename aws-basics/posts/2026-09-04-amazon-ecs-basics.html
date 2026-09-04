@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon ECS：容器編排、部署與工作負載隔離</title>
+  <meta name="description" content="理解 Amazon ECS 的叢集、Task Definition、Service、容量選項、成本、可用性、容器供應鏈風險與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-04-amazon-ecs-basics.html" />
+  <link rel="prev" href="./2026-09-03-amazon-api-gateway-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon ECS：容器編排、部署與工作負載隔離" />
+  <meta property="og:description" content="從 Task Definition、Service 與容量選項，理解 ECS 的部署邊界與安全控制。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-09-04-amazon-ecs-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/ecs-private-service-flow.svg" />
+  <meta property="article:published_time" content="2026-09-04T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon ECS：容器編排、部署與工作負載隔離" />
+  <meta name="twitter:description" content="掌握 ECS 任務、服務、容量、網路隔離、映像安全、監控與跨區復原。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/ecs-private-service-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:880px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon ECS：容器編排、部署與工作負載隔離","description":"理解 Amazon ECS 的叢集、Task Definition、Service、容量選項、成本、可用性、容器供應鏈風險與共同責任。","datePublished":"2026-09-04T21:30:00+08:00","dateModified":"2026-09-04T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-04-amazon-ecs-basics.html","image":"https://www.2gwine.com/aws-basics/assets/ecs-private-service-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+  <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3" aria-label="主要導覽"><a href="../../index.html" class="font-bold text-white no-underline">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+  <main class="max-w-5xl mx-auto px-4 py-10">
+    <article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+      <div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">容器與運算</span><span class="chip rounded-full px-3 py-1 text-sm">2026-09-04</span></div>
+      <h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon ECS：容器編排、部署與工作負載隔離</h1>
+      <p class="text-xl leading-9 muted">Amazon Elastic Container Service（Amazon ECS）是全受管容器編排服務，負責排程、部署、維持及擴縮容器化工作負載。它免除自行營運容器控制平面的工作，但不會自動保護映像供應鏈、應用程式、Task Role、網路、機密、資料或復原流程。</p>
+      <p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-09-04</p>
+      <div class="prose max-w-none mt-10">
+        <h2>服務定位</h2>
+        <p>ECS 把容器規格、執行容量與服務生命週期連接起來。團隊以 Task Definition 描述容器映像、CPU、記憶體、連接埠、環境、日誌及 IAM Role，再以獨立 Task 執行一次性工作，或由 Service 持續維持期望的 Task 數量並配合負載平衡器更新版本。</p>
+        <p>ECS 是編排層，不是映像登錄檔、資料庫、機密保管庫或完整 CI/CD 平台。Amazon ECR 可保存映像；RDS、DynamoDB、S3 或 EFS 可承擔持久資料；Secrets Manager 或 Systems Manager Parameter Store 可保存應用機密。這些服務仍需明確配置與授權。</p>
+
+        <h2>核心概念</h2>
+        <div class="grid md:grid-cols-2 gap-4">
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">編排物件</h3><ul><li><strong>Cluster：</strong>Task 與 Service 的邏輯群組，也是容量供應者與監控的管理邊界之一。</li><li><strong>Task Definition：</strong>版本化的應用藍圖；一個 revision 描述一個或多個容器及其資源、網路、儲存、Role、Health Check 與日誌設定。</li><li><strong>Task：</strong>Task Definition 的執行個體，可由排程、事件或人工啟動，適合批次或一次性工作。</li><li><strong>Service：</strong>維持期望 Task 數量，執行滾動、藍綠或其他部署策略，並可整合負載平衡與服務探索。</li></ul></section>
+          <section class="chip rounded-2xl p-5"><h3 class="mt-0">容量、網路與角色</h3><ul><li><strong>AWS Fargate：</strong>按 Task 所要求的運算資源執行，不需管理 EC2 主機；仍需管理容器設定、映像與應用安全。</li><li><strong>EC2 容量：</strong>可控制執行個體類型、作業系統與特殊硬體，但也承擔容量、修補、ECS Agent 與主機強化。</li><li><strong>awsvpc 網路：</strong>Task 取得彈性網路介面，可套用 Security Group；子網、路由與公網 IP 決策直接影響曝險。</li><li><strong>Task Execution Role：</strong>供 ECS Agent 拉取映像、傳送日誌或取得啟動所需資源；<strong>Task Role</strong>則授權應用程式呼叫 AWS API，兩者不應混用。</li></ul></section>
+        </div>
+
+        <h2>適合與不適合的使用情境</h2>
+        <h3>適合</h3><ul><li>已有 OCI／Docker 容器映像，希望使用 AWS 原生排程、負載平衡、自動擴縮、IAM 與觀測整合。</li><li>HTTP 微服務、背景工作者、排程批次、事件消費者，以及需要逐步更新並自動替換不健康副本的服務。</li><li>希望避免自行維護 Kubernetes 控制平面與生態複雜度，且 ECS 的工作負載模型已能滿足需求。</li><li>需要在 Fargate 的低主機維運負擔與 EC2 的容量控制、特殊硬體或成本模型之間選擇。</li></ul>
+        <h3>不適合或不能單獨完成</h3><ul><li>工作負載必須依賴 Kubernetes API、Operator、特定 Custom Resource 或可攜式 Kubernetes 工具鏈時，應比較 Amazon EKS。</li><li>單一短函式只需事件觸發、執行時間與封裝限制皆合適時，Lambda 可能比長期容器服務更簡潔。</li><li>把可變容器檔案系統當成永久資料庫。Task 被替換後本機資料可能消失，持久狀態應使用合適的外部儲存。</li><li>期待編排器自動完成程式漏洞修補、映像簽章、租戶隔離、機密輪替、資料備份與跨區復原。</li></ul>
+
+        <h2>示意故事案例：跨可用區域的訂單處理服務</h2>
+        <p><strong>以下為架構示意，不代表特定組織或正式部署。</strong>零售平台將訂單 API 與背景處理器封裝為容器。Route 53 將正式網域導向套用 AWS WAF 的 Application Load Balancer；ALB 只把流量送到兩個可用區域私有子網內的 ECS Service。每個 Task 使用專屬 Security Group 與最小權限 Task Role，僅能處理指定資料表與佇列。映像由 ECR 以不可變標籤保存，經漏洞掃描、簽章驗證與核准後，Task Definition 固定使用映像 digest。資料以 KMS 保護，外部服務機密由 Secrets Manager 或 Parameter Store 提供。CloudWatch 收集指標、應用日誌與部署告警；CloudTrail 集中保存 ECS、IAM、ECR 與網路控制平面變更。持久資料依 RPO 備份並複寫，另一區域可由基礎設施即程式碼重建服務，團隊定期演練映像、金鑰、DNS 與資料還原。</p>
+        <figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/ecs-private-service-flow-mobile.svg" /><img src="../assets/ecs-private-service-flow.svg" alt="示意：使用者流量經 Route 53、WAF 與負載平衡器進入跨可用區域的私有 ECS Service，Task 以最小權限存取資料與機密，ECR 提供受控映像，CloudWatch、CloudTrail、備份及跨區重建提供治理" class="w-full h-auto mx-auto" loading="lazy" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：ECS 管理容器排程與服務副本；網路入口、映像供應鏈、應用授權、持久資料及跨區復原仍需另行設計。</figcaption></figure>
+
+        <h2>建置與運作流程</h2>
+        <ol><li><strong>界定工作負載：</strong>記錄請求與背景工作模式、CPU／記憶體、連接埠、持久資料、尖峰容量、部署目標、RTO/RPO、資料分類及區域限制。</li><li><strong>選擇容量：</strong>比較 Fargate、EC2 或其他適用容量選項的功能、責任、啟動特性與價格；若使用 EC2，設計 Auto Scaling、AMI 修補、執行個體角色及容量餘裕。</li><li><strong>建立可信映像：</strong>採最小化基底映像、非 root 使用者、固定相依版本、SBOM、漏洞掃描與簽章；推送至受限 ECR，正式部署固定映像 digest，不依賴可變的 latest 標籤。</li><li><strong>定義 Task：</strong>限制 CPU、記憶體、Linux capabilities、唯讀根檔案系統及暫存空間；分離 Execution Role 與 Task Role，禁止把敏感值寫入映像、Task Definition 或一般環境變數。</li><li><strong>設計網路隔離：</strong>Service Task 置於私有子網，不配置公網 IP；只允許負載平衡器 Security Group 進入應用連接埠，必要的 AWS 服務採 VPC Endpoint，限制出口與 DNS 路徑。</li><li><strong>建立 Service：</strong>跨至少兩個可用區域配置副本、健康檢查、Deployment Circuit Breaker 或回復機制、最小與最大健康百分比，並設定 Service Auto Scaling。</li><li><strong>保護機密與資料：</strong>以 Secrets Manager 或 Parameter Store 供應機密並設定輪替；ECR、日誌、外部儲存及適用資料使用 KMS。機密更新後依注入模式重新部署 Task。</li><li><strong>建立可觀測性：</strong>將結構化應用日誌送至 CloudWatch Logs，監控 CPU、記憶體、Task 數、部署失敗、ALB 5XX、延遲及佇列深度；CloudTrail 記錄控制平面操作並設異常告警。</li><li><strong>受控發布：</strong>以基礎設施即程式碼保存 Cluster、Service、Task Definition、IAM、網路及告警；在非正式環境執行映像、權限、負載、失敗與回復測試，再逐步導流。</li><li><strong>準備復原：</strong>備份持久資料與設定，跨區保存核准映像，確認 KMS 與機密依賴；用 IaC 在另一區域重建 ECS 與周邊服務，演練資料還原及 DNS 切換。</li></ol>
+
+        <h2>成本與可用性考量</h2>
+        <p>使用 ECS 編排本身通常不另收控制平面費用，但實際帳單來自所選容量與周邊服務。Fargate 依 Task 要求的 vCPU、記憶體、作業系統、架構與暫存儲存等條件計費；EC2 模式支付執行個體、EBS 與相關資源，即使容器未充分使用仍可能產生成本。ECS Managed Instances、AWS Outposts 或其他容量選項有各自價格與限制，應以查閱日的官方定價與區域頁面重新試算。</p>
+        <p>Application Load Balancer、NAT Gateway、資料傳輸、ECR 儲存與拉取、CloudWatch Logs、Container Insights、KMS、Secrets Manager、Service Discovery 及備份另行計費。高頻映像拉取、未設保留期限的日誌、跨可用區域或跨區資料傳輸、過度配置 Task，以及為少量出口流量長期使用多個 NAT Gateway，都可能成為主要成本。成本優化不能犧牲最低副本數、故障域分散、安全證據或復原能力。</p>
+        <p>ECS Service 可跨可用區域維持 Task，但端到端可用性仍取決於容量、ALB、映像、DNS、資料庫、佇列、機密、金鑰及第三方服務。健康檢查若過於寬鬆會保留故障容器，過於嚴格則可能造成替換循環。Service Auto Scaling 也不是瞬間容量；映像大小、Task 啟動時間與下游限額都影響擴縮速度。區域級韌性需要另一區域的映像、基礎設施、機密、金鑰、資料及流量切換能力，不能只提高單區 Task 數。</p>
+
+        <h2>ECS 特有資安風險與控制</h2>
+        <ul><li><strong>Execution Role 與 Task Role 混用：</strong>把拉取映像所需權限授予應用，或讓多個服務共用寬權限 Task Role，會擴大橫向移動面。每個工作負載使用獨立 Task Role，只允許必要動作、資源與條件。</li><li><strong>映像供應鏈遭竄改：</strong>可變標籤、未鎖定基底映像與未掃描相依套件會使同一版本部署不同內容。固定 digest，使用不可變標籤、簽章、SBOM、持續掃描及部署核准門禁。</li><li><strong>容器逃逸與主機共用：</strong>特權模式、掛載 Docker socket、過多 Linux capabilities 或未修補核心會增加突破隔離的後果。禁止不必要特權、採非 root、唯讀檔案系統並移除 capabilities；EC2 模式要修補主機，強隔離需求需選擇合適運算邊界。</li><li><strong>Task Metadata 與角色憑證遭濫用：</strong>應用弱點可能被用來取得該 Task Role 的短期憑證。縮小 Role 權限、阻擋非必要中繼資料路徑、修補 SSRF 與輸入驗證缺陷，並以 CloudTrail 偵測異常 API 行為。</li><li><strong>Task 直接暴露公網：</strong>公網 IP、寬鬆 Security Group 或可繞過 ALB 的入口會跳過 WAF 與集中 TLS 控制。Task 放置私有子網，只接受 ALB Security Group，並定期掃描外部曝險。</li><li><strong>機密進入映像與日誌：</strong>映像層、Task Definition、環境變數、啟動命令或錯誤輸出可能留下敏感值。使用 Secrets Manager／Parameter Store、限制讀取、輪替並重新部署；日誌遮罩且禁止輸出認證資料。</li><li><strong>共用節點資源競爭：</strong>缺少 CPU／記憶體限制可能讓單一容器拖垮同一 Task 或 EC2 主機。設定硬限制與保留量，分離不同信任層級工作負載，監控 OOM、throttling 與磁碟壓力。</li><li><strong>部署與 Task Definition 漂移：</strong>主控台修改、舊 revision 或未受控映像會繞過審查。採 IaC、限制註冊與更新權限、記錄 CloudTrail，並比對正式 Service 所使用的 revision 與 digest。</li><li><strong>日誌驅動器與 sidecar 權限過大：</strong>觀測或代理容器若可讀取所有檔案、網路或 Role，將成為高權限旁路。限制 sidecar 掛載、網路、資源與 IAM，並驗證故障時不會阻塞主服務。</li></ul>
+
+        <h2>共同責任邊界</h2>
+        <p>AWS 負責 ECS 受管控制平面及底層雲端基礎設施的安全。使用 Fargate 時，AWS 也管理執行環境的底層主機與修補；客戶仍負責容器映像、應用程式、Task Definition、IAM、資料與網路設定。使用 EC2 容量時，客戶還要負責執行個體作業系統、ECS Agent、修補、容量與主機強化。所有模式下，客戶均負責 IAM 最小權限、管理身分 MFA、工作負載短期憑證、網路隔離、公開存取決策、KMS 金鑰政策、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、映像供應鏈、應用漏洞、持久資料備份與跨區復原。</p>
+
+        <h2>上線前可執行檢查清單</h2>
+        <ul><li>□ Cluster、容量選項、Task／Service 邊界、資源需求、RTO/RPO 與資料分類已記錄並通過負載測試。</li><li>□ 映像使用核准基底、非 root、固定 digest、不可變標籤、SBOM、漏洞掃描與簽章驗證。</li><li>□ Task Execution Role 與 Task Role 已分離；每個服務採 IAM 最小權限，無不必要萬用資源或動作。</li><li>□ 人員與緊急管理身分啟用 MFA；部署流程及工作負載使用角色與短期憑證，不建立長期靜態金鑰。</li><li>□ Task 位於私有子網且無公網 IP；Security Group 僅允許必要來源、連接埠與出口，無繞過 ALB／WAF 的路徑。</li><li>□ 容器禁止非必要 privileged、Docker socket、root、可寫根檔案系統及額外 Linux capabilities。</li><li>□ ECR、日誌、外部儲存與適用資料採 KMS；金鑰政策與解密權限已進行正負向測試。</li><li>□ 機密只由 Secrets Manager 或 Parameter Store 提供，具有輪替與 Task 重新部署流程；映像、定義、程式及日誌不含敏感值。</li><li>□ CloudWatch 指標、日誌、Container Insights 或必要替代方案涵蓋部署失敗、Task 數、資源、5XX、延遲及下游容量並已測試告警。</li><li>□ CloudTrail 集中保存並保護 ECS、ECR、IAM、KMS 與網路控制平面事件；異常角色使用可追查。</li><li>□ Service 跨可用區域配置健康副本，自動擴縮、Circuit Breaker、回復、容量不足及下游限額情境已演練。</li><li>□ 持久資料備份可還原；核准映像、IaC、KMS、機密及相依服務可在另一區域重建，DNS 切換已演練。</li></ul>
+
+        <h2>AWS 官方一手來源</h2>
+        <ul><li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/Welcome.html" target="_blank" rel="noopener noreferrer">Amazon ECS Developer Guide｜What is Amazon Elastic Container Service?</a>（查閱：2026-09-04）</li><li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_definitions.html" target="_blank" rel="noopener noreferrer">Amazon ECS task definitions</a>（查閱：2026-09-04）</li><li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security.html" target="_blank" rel="noopener noreferrer">Security in Amazon Elastic Container Service</a>（查閱：2026-09-04）</li><li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/security-iam-roles.html" target="_blank" rel="noopener noreferrer">IAM roles for Amazon ECS</a>（查閱：2026-09-04）</li><li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html" target="_blank" rel="noopener noreferrer">Pass sensitive data to an Amazon ECS container</a>（查閱：2026-09-04）</li><li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/service-auto-scaling.html" target="_blank" rel="noopener noreferrer">Automatically scale your Amazon ECS service</a>（查閱：2026-09-04）</li><li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-logging-monitoring.html" target="_blank" rel="noopener noreferrer">Logging and monitoring in Amazon ECS</a>（查閱：2026-09-04）</li><li><a href="https://aws.amazon.com/ecs/pricing/" target="_blank" rel="noopener noreferrer">Amazon ECS pricing</a>（查閱：2026-09-04）</li></ul>
+        <h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依容量選項、區域支援、平台版本、最新價格與配額、工作負載測試、組織政策、法規及風險評估調整。</p>
+      </div>
+      <nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a href="./2026-09-03-amazon-api-gateway-basics.html" rel="prev" class="glass rounded-2xl p-5 block"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon API Gateway：API 入口、授權與流量治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+    </article>
+  </main>
+  <footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body>
+</html>
