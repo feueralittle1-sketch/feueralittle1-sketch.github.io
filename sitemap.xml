@@ -93,6 +93,11 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://www.2gwine.com/health-taiwan-security/posts/2026-09-05-international-healthcare-ddos-clinical-access-resilience.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.2gwine.com/health-taiwan-security/posts/2026-09-04-international-healthcare-edge-device-forensic-readiness.html</loc>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
