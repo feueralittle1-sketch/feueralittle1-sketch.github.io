@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1220" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon EKS 私有叢集安全運作示意流程</title>
+  <desc id="desc">管理者透過身分中心、多因素驗證與短期角色進入受限 EKS API；使用者流量經 WAF 與負載平衡器進入跨可用區域的私有節點與 Pod。映像、機密、稽核、監控、備份與跨區重建分別由受控服務支援。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <linearGradient id="orange" x1="0" x2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffbd70"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".28"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#8fe8ff"/></marker>
+    <style>.h{font:700 28px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:700 22px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 18px Inter,'Noto Sans TC',sans-serif;fill:#c9d9ef}.n{font:700 18px Inter,'Noto Sans TC',sans-serif;fill:#081426}.box{fill:#112b4d;stroke:#5687b7;stroke-width:2}.ctl{fill:#18335a;stroke:#ffb75a;stroke-width:2}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="800" height="1220" rx="30" fill="url(#bg)"/>
+  <text x="400" y="55" text-anchor="middle" class="h">示意｜EKS 私有叢集安全運作</text>
+  <rect x="70" y="90" width="660" height="104" rx="20" class="ctl" filter="url(#shadow)"/>
+  <text x="400" y="130" text-anchor="middle" class="t">管理路徑</text><text x="400" y="163" text-anchor="middle" class="s">IAM Identity Center → MFA → 短期角色</text>
+  <path d="M400 194V245" class="line"/>
+  <rect x="120" y="245" width="560" height="112" rx="20" fill="url(#orange)" filter="url(#shadow)"/>
+  <text x="400" y="290" text-anchor="middle" class="n">Amazon EKS 受管控制平面</text><text x="400" y="324" text-anchor="middle" class="n">私有 API 端點・存取條目・稽核日誌</text>
+  <path d="M400 357V412" class="line"/>
+  <rect x="45" y="412" width="710" height="390" rx="28" fill="#0b1e37" stroke="#6b90ba" stroke-width="2"/>
+  <text x="400" y="452" text-anchor="middle" class="t">VPC 私有工作負載平面</text>
+  <rect x="80" y="480" width="640" height="90" rx="18" class="ctl"/>
+  <text x="400" y="517" text-anchor="middle" class="t">使用者流量：WAF → Load Balancer</text><text x="400" y="548" text-anchor="middle" class="s">僅允許必要入口；節點與 Pod 不配置公開入口</text>
+  <path d="M400 570V615" class="line"/>
+  <rect x="80" y="615" width="300" height="140" rx="18" class="box"/>
+  <text x="230" y="655" text-anchor="middle" class="t">可用區域 A</text><text x="230" y="690" text-anchor="middle" class="s">受管節點／Fargate</text><text x="230" y="723" text-anchor="middle" class="s">Pod + Service Account Role</text>
+  <rect x="420" y="615" width="300" height="140" rx="18" class="box"/>
+  <text x="570" y="655" text-anchor="middle" class="t">可用區域 B</text><text x="570" y="690" text-anchor="middle" class="s">受管節點／Fargate</text><text x="570" y="723" text-anchor="middle" class="s">Pod + Network Policy</text>
+  <path d="M230 755V840M570 755V840" class="line"/>
+  <rect x="45" y="840" width="335" height="120" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="212" y="880" text-anchor="middle" class="t">受控供應鏈與機密</text><text x="212" y="914" text-anchor="middle" class="s">ECR 掃描／固定 digest</text><text x="212" y="943" text-anchor="middle" class="s">Secrets Manager・KMS</text>
+  <rect x="420" y="840" width="335" height="120" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="588" y="880" text-anchor="middle" class="t">可觀測與稽核</text><text x="588" y="914" text-anchor="middle" class="s">CloudWatch 指標／日誌／告警</text><text x="588" y="943" text-anchor="middle" class="s">CloudTrail + 控制平面日誌</text>
+  <path d="M212 960V1018M588 960V1018" class="line"/>
+  <rect x="70" y="1018" width="660" height="132" rx="22" class="ctl" filter="url(#shadow)"/>
+  <text x="400" y="1060" text-anchor="middle" class="t">資料保護與區域復原</text><text x="400" y="1095" text-anchor="middle" class="s">持久資料備份・叢集資源與 IaC 保存</text><text x="400" y="1127" text-anchor="middle" class="s">另一區域重建、還原與流量切換演練</text>
+  <text x="400" y="1190" text-anchor="middle" class="s">控制平面受管，不代表節點、Pod、RBAC、映像與資料自動安全</text>
+</svg>

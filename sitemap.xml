@@ -88,6 +88,11 @@
     <priority>0.8</priority>
   </url>
   <url>
+    <loc>https://www.2gwine.com/aws-basics/posts/2026-09-05-amazon-eks-basics.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
     <loc>https://www.2gwine.com/health-taiwan-security/</loc>
     <changefreq>daily</changefreq>
     <priority>0.9</priority>
