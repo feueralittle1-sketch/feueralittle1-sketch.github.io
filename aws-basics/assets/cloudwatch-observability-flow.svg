@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 1220" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon CloudWatch 安全可觀測流程示意</title>
+  <desc id="desc">跨可用區域的訂單 API 將經遮罩的指標與日誌送往 CloudWatch，由儀表板、查詢與告警支援值班回應，並搭配最小權限、KMS、CloudTrail、保留封存與跨區重建。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <linearGradient id="orange" x1="0" x2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffbd70"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".28"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10Z" fill="#8fe8ff"/></marker>
+    <style>.h{font:700 28px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:700 22px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 18px Inter,'Noto Sans TC',sans-serif;fill:#c9d9ef}.n{font:700 18px Inter,'Noto Sans TC',sans-serif;fill:#081426}.box{fill:#112b4d;stroke:#5687b7;stroke-width:2}.ctl{fill:#18335a;stroke:#ffb75a;stroke-width:2}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="800" height="1220" rx="30" fill="url(#bg)"/>
+  <text x="400" y="55" text-anchor="middle" class="h">示意｜CloudWatch 安全可觀測流程</text>
+  <rect x="45" y="90" width="710" height="285" rx="28" fill="#0b1e37" stroke="#6b90ba" stroke-width="2"/>
+  <text x="400" y="132" text-anchor="middle" class="t">跨可用區域的訂單 API</text>
+  <rect x="80" y="165" width="300" height="130" rx="18" class="box"/>
+  <text x="230" y="208" text-anchor="middle" class="t">可用區域 A</text><text x="230" y="244" text-anchor="middle" class="s">運算・負載平衡・資料庫</text><text x="230" y="275" text-anchor="middle" class="s">應用健康與業務結果</text>
+  <rect x="420" y="165" width="300" height="130" rx="18" class="box"/>
+  <text x="570" y="208" text-anchor="middle" class="t">可用區域 B</text><text x="570" y="244" text-anchor="middle" class="s">運算・負載平衡・資料庫</text><text x="570" y="275" text-anchor="middle" class="s">應用健康與業務結果</text>
+  <text x="400" y="340" text-anchor="middle" class="s">來源端去敏・結構化欄位・低基數維度</text>
+  <path d="M400 375V430" class="line"/>
+  <rect x="70" y="430" width="660" height="112" rx="20" fill="url(#orange)" filter="url(#shadow)"/>
+  <text x="400" y="474" text-anchor="middle" class="n">Amazon CloudWatch 收集與保存</text><text x="400" y="509" text-anchor="middle" class="n">Metrics・Logs・最小權限寫入・KMS・保留期</text>
+  <path d="M400 542V600" class="line"/>
+  <rect x="45" y="600" width="335" height="140" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="212" y="644" text-anchor="middle" class="t">分析與呈現</text><text x="212" y="682" text-anchor="middle" class="s">Dashboard・Logs Insights</text><text x="212" y="715" text-anchor="middle" class="s">指標數學・趨勢與調查</text>
+  <rect x="420" y="600" width="335" height="140" rx="20" class="box" filter="url(#shadow)"/>
+  <text x="588" y="644" text-anchor="middle" class="t">偵測與告警</text><text x="588" y="682" text-anchor="middle" class="s">延遲・錯誤・流量・飽和度</text><text x="588" y="715" text-anchor="middle" class="s">複合告警・受控通知</text>
+  <path d="M212 740V805M588 740V805" class="line"/>
+  <rect x="70" y="805" width="660" height="120" rx="20" class="ctl" filter="url(#shadow)"/>
+  <text x="400" y="850" text-anchor="middle" class="t">值班回應與受控自動動作</text><text x="400" y="888" text-anchor="middle" class="s">處置手冊・獨立最小權限角色・限速・人工停止點</text>
+  <path d="M400 925V980" class="line"/>
+  <rect x="45" y="980" width="335" height="145" rx="20" class="box"/>
+  <text x="212" y="1023" text-anchor="middle" class="t">異動稽核與資料保護</text><text x="212" y="1061" text-anchor="middle" class="s">CloudTrail・政策監控</text><text x="212" y="1094" text-anchor="middle" class="s">重要日誌受保護封存</text>
+  <rect x="420" y="980" width="335" height="145" rx="20" class="box"/>
+  <text x="588" y="1023" text-anchor="middle" class="t">區域復原</text><text x="588" y="1061" text-anchor="middle" class="s">監控設定以 IaC 保存</text><text x="588" y="1094" text-anchor="middle" class="s">另一區域重建與演練</text>
+  <text x="400" y="1180" text-anchor="middle" class="s">收到遙測不等於完成安全監控；資料品質、告警與回應必須驗證</text>
+</svg>
