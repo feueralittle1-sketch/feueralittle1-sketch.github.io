@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1620" viewBox="0 0 760 1620" role="img" aria-labelledby="title desc">
+  <title id="title">CloudTrail 多帳號稽核證據流程手機版示意圖</title>
+  <desc id="desc">手機版垂直流程：活動來源、組織級 CloudTrail、集中保存、偵測、調查與跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#73defa"/></marker>
+    <style>.box{fill:#10233d;stroke:#52769d;stroke-width:3}.secure{fill:#102d35;stroke:#5ce0bb;stroke-width:3}.alert{fill:#38251b;stroke:#ffb65c;stroke-width:3}.t{fill:#fff;font:700 28px system-ui,-apple-system,"Noto Sans TC",sans-serif}.s{fill:#c8d8ec;font:23px system-ui,-apple-system,"Noto Sans TC",sans-serif}.k{fill:#8fe8ff;font:700 21px system-ui,-apple-system,"Noto Sans TC",sans-serif}.a{fill:none;stroke:#73defa;stroke-width:5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="760" height="1620" rx="28" fill="url(#bg)"/>
+  <text x="45" y="62" class="t" font-size="32">示意｜CloudTrail 稽核證據流程</text>
+  <text x="45" y="102" class="s">可追溯、可告警、可保存、可驗證</text>
+
+  <g filter="url(#shadow)"><rect x="45" y="150" width="670" height="180" rx="22" class="box"/><text x="78" y="195" class="k">01 活動來源</text><text x="78" y="240" class="t">人員與工作負載</text><text x="78" y="282" class="s">聯合登入、MFA、短期角色、最小權限</text></g>
+  <path d="M380 330V385" class="a"/>
+  <g filter="url(#shadow)"><rect x="45" y="400" width="670" height="205" rx="22" class="alert"/><text x="78" y="445" class="k">02 組織級 CloudTrail</text><text x="78" y="490" class="t">事件歷史與多區域 Trail</text><text x="78" y="532" class="s">管理事件｜資料事件｜Insights</text><text x="78" y="570" class="s">事件選擇器控制範圍與成本</text></g>
+  <path d="M380 605V660" class="a"/>
+  <g filter="url(#shadow)"><rect x="45" y="675" width="670" height="205" rx="22" class="secure"/><text x="78" y="720" class="k">03 集中式證據保存</text><text x="78" y="765" class="t">專用日誌帳號與私有 S3</text><text x="78" y="807" class="s">Block Public Access、KMS、保留</text><text x="78" y="845" class="s">完整性驗證與受控刪除</text></g>
+  <path d="M380 880V935" class="a"/>
+  <g filter="url(#shadow)"><rect x="45" y="950" width="670" height="180" rx="22" class="box"/><text x="78" y="995" class="k">04 偵測與關聯</text><text x="78" y="1040" class="t">CloudWatch Logs 與告警</text><text x="78" y="1082" class="s">敏感 API、身分、網路與應用事件</text></g>
+  <path d="M380 1130V1185" class="a"/>
+  <g filter="url(#shadow)"><rect x="45" y="1200" width="670" height="180" rx="22" class="alert"/><text x="78" y="1245" class="k">05 調查與回應</text><text x="78" y="1290" class="t">查詢、時間線、證據保全</text><text x="78" y="1332" class="s">事件分級、責任人與受控處置</text></g>
+  <path d="M380 1380V1435" class="a"/>
+  <g filter="url(#shadow)"><rect x="45" y="1450" width="670" height="130" rx="22" class="secure"/><text x="78" y="1495" class="k">06 韌性與驗證</text><text x="78" y="1540" class="t">備份、跨區復原、還原演練</text></g>
+</svg>

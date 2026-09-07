@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">CloudTrail 多帳號稽核證據流程示意圖</title>
+  <desc id="desc">人員與工作負載在成員帳號執行 AWS API，CloudTrail 記錄管理事件、資料事件與 Insights，送往集中式加密 S3、CloudWatch Logs 與告警調查流程，並搭配組織、IAM、KMS、備份和跨區復原控制。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <linearGradient id="aws" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd28a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="12" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#73defa"/></marker>
+    <style>.box{fill:#10233d;stroke:#52769d;stroke-width:2}.secure{fill:#102d35;stroke:#5ce0bb;stroke-width:2}.alert{fill:#38251b;stroke:#ffb65c;stroke-width:2}.t{fill:#fff;font:700 24px system-ui,-apple-system,"Noto Sans TC",sans-serif}.s{fill:#c8d8ec;font:18px system-ui,-apple-system,"Noto Sans TC",sans-serif}.k{fill:#8fe8ff;font:700 17px system-ui,-apple-system,"Noto Sans TC",sans-serif}.a{fill:none;stroke:#73defa;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#5ce0bb;stroke-width:3;stroke-dasharray:10 9}</style>
+  </defs>
+  <rect width="1400" height="900" rx="34" fill="url(#bg)"/>
+  <text x="70" y="70" class="t" font-size="34">示意｜CloudTrail 多帳號稽核證據流程</text>
+  <text x="70" y="105" class="s">目的：讓 API 活動可追溯、可告警、可保存、可驗證；不把「有紀錄」誤當成「已安全」。</text>
+
+  <g filter="url(#shadow)"><rect x="65" y="170" width="290" height="205" rx="24" class="box"/><text x="95" y="215" class="k">01 活動來源</text><text x="95" y="260" class="t">人員與工作負載</text><text x="95" y="302" class="s">• 聯合登入、MFA</text><text x="95" y="334" class="s">• 短期角色、最小權限</text></g>
+  <g filter="url(#shadow)"><rect x="440" y="150" width="415" height="245" rx="24" class="alert"/><text x="470" y="195" class="k">02 組織級 CloudTrail</text><text x="470" y="240" class="t">事件歷史與 Trail</text><text x="470" y="282" class="s">管理事件｜資料事件｜Insights</text><text x="470" y="319" class="s">多區域 Trail＋組織成員帳號</text><text x="470" y="356" class="s">事件選擇器控制範圍與成本</text></g>
+  <g filter="url(#shadow)"><rect x="945" y="170" width="390" height="205" rx="24" class="secure"/><text x="975" y="215" class="k">03 集中式證據保存</text><text x="975" y="260" class="t">專用日誌帳號</text><text x="975" y="302" class="s">S3 Block Public Access＋KMS</text><text x="975" y="334" class="s">完整性驗證、保留與受控刪除</text></g>
+  <path d="M355 272H425" class="a"/><path d="M855 272H930" class="a"/>
+
+  <g filter="url(#shadow)"><rect x="165" y="500" width="330" height="205" rx="24" class="box"/><text x="195" y="545" class="k">04 偵測與關聯</text><text x="195" y="590" class="t">CloudWatch Logs</text><text x="195" y="632" class="s">敏感 API 指標篩選與告警</text><text x="195" y="664" class="s">身分、網路與應用事件關聯</text></g>
+  <g filter="url(#shadow)"><rect x="535" y="500" width="330" height="205" rx="24" class="alert"/><text x="565" y="545" class="k">05 調查與回應</text><text x="565" y="590" class="t">事件分級</text><text x="565" y="632" class="s">查詢、時間線、責任人</text><text x="565" y="664" class="s">受控處置與證據保全</text></g>
+  <g filter="url(#shadow)"><rect x="905" y="500" width="330" height="205" rx="24" class="secure"/><text x="935" y="545" class="k">06 韌性與驗證</text><text x="935" y="590" class="t">備份與跨區復原</text><text x="935" y="632" class="s">獨立權限、金鑰與複本</text><text x="935" y="664" class="s">定期查詢、還原與演練</text></g>
+  <path d="M650 395V450H330V485" class="a"/><path d="M495 602H520" class="a"/><path d="M865 602H890" class="a"/>
+  <path d="M1140 375V460" class="dash"/><path d="M1140 460H1070V485" class="a"/>
+
+  <rect x="65" y="775" width="1270" height="70" rx="18" fill="#09192d" stroke="#33597c"/>
+  <text x="95" y="818" class="s">共同責任：AWS 維運 CloudTrail 服務；客戶決定啟用範圍、事件類型、權限、公開存取、KMS、保留、告警、備份與調查程序。</text>
+</svg>
