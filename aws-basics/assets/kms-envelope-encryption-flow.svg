@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">AWS KMS 信封加密與受控解密示意流程</title>
+  <desc id="desc">應用程式以短期角色向 KMS 取得資料金鑰，在工作負載內加密資料，只保存密文與加密後資料金鑰；讀取時由 KMS 依金鑰政策、授權條件與稽核控制解密資料金鑰。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102541"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffcb74"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#59d8ff"/><stop offset="1" stop-color="#95ffe5"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000" flood-opacity=".32"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0l10 5-10 5z" fill="#8fe8ff"/></marker>
+    <style>.h{font:700 28px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#fff}.t{font:600 20px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#e7f1ff}.s{font:400 17px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#b6c9e5}.n{font:800 18px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#071426}.line{stroke:#8fe8ff;stroke-width:4;fill:none;marker-end:url(#arrow)}.dash{stroke:#ffbd70;stroke-width:3;stroke-dasharray:10 10;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1440" height="900" rx="34" fill="url(#bg)"/>
+  <text x="72" y="72" class="h">示意：KMS 信封加密、權限邊界與可追溯解密</text>
+  <text x="72" y="108" class="s">明文資料金鑰只在受控工作負載記憶體中短暫使用；儲存層保留的是資料密文與加密後資料金鑰。</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="190" width="270" height="210" rx="24" fill="#102b48" stroke="#3d668d"/>
+    <circle cx="118" cy="240" r="25" fill="url(#cyan)"/><text x="112" y="247" class="n">1</text>
+    <text x="155" y="248" class="t">受控工作負載</text>
+    <text x="100" y="300" class="s">• IAM 短期角色</text><text x="100" y="336" class="s">• 私有網路／端點</text><text x="100" y="372" class="s">• 不持久化明文金鑰</text>
+
+    <rect x="585" y="165" width="300" height="260" rx="24" fill="#302411" stroke="#ffb34b"/>
+    <circle cx="638" cy="220" r="25" fill="url(#orange)"/><text x="632" y="227" class="n">2</text>
+    <text x="675" y="228" class="t">AWS KMS 金鑰</text>
+    <path d="M700 274a45 45 0 1 1 56 43v46h-30v-21h-20v-25a45 45 0 0 1-6-43zm28 8a14 14 0 1 0 28 0 14 14 0 0 0-28 0z" fill="#ffbd70"/>
+    <text x="625" y="390" class="s">政策＋授權條件＋金鑰狀態</text>
+
+    <rect x="1100" y="190" width="270" height="210" rx="24" fill="#102b48" stroke="#3d668d"/>
+    <circle cx="1148" cy="240" r="25" fill="url(#cyan)"/><text x="1142" y="247" class="n">3</text>
+    <text x="1185" y="248" class="t">加密資料儲存</text>
+    <text x="1130" y="300" class="s">• 資料密文</text><text x="1130" y="336" class="s">• 加密後資料金鑰</text><text x="1130" y="372" class="s">• 備份／跨區複本</text>
+  </g>
+
+  <path d="M340 255C430 190 500 190 585 240" class="line"/><text x="390" y="190" class="s">GenerateDataKey</text>
+  <path d="M585 350C490 410 420 405 340 330" class="line"/><text x="397" y="430" class="s">明文＋加密後資料金鑰</text>
+  <path d="M340 350C600 515 870 490 1100 330" class="line"/><text x="612" y="504" class="s">只寫入密文組合</text>
+  <path d="M1100 260C1008 195 965 195 885 238" class="dash"/><text x="930" y="180" class="s">讀取時提交加密後資料金鑰</text>
+  <path d="M885 345C966 420 1026 414 1100 348" class="dash"/><text x="916" y="450" class="s">授權後回傳明文資料金鑰</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="585" width="400" height="220" rx="24" fill="#0d223a" stroke="#365875"/>
+    <text x="105" y="635" class="t">預防控制</text>
+    <text x="105" y="680" class="s">最小權限、MFA、職責分離</text><text x="105" y="716" class="s">加密內容綁定、VPC Endpoint Policy</text><text x="105" y="752" class="s">停用／刪除金鑰須核准與等待期</text>
+    <rect x="520" y="585" width="400" height="220" rx="24" fill="#0d223a" stroke="#365875"/>
+    <text x="555" y="635" class="t">偵測與回應</text>
+    <text x="555" y="680" class="s">CloudTrail 記錄 KMS API 活動</text><text x="555" y="716" class="s">CloudWatch 告警政策與金鑰異動</text><text x="555" y="752" class="s">調查異常解密量與拒絕事件</text>
+    <rect x="970" y="585" width="400" height="220" rx="24" fill="#0d223a" stroke="#365875"/>
+    <text x="1005" y="635" class="t">韌性控制</text>
+    <text x="1005" y="680" class="s">配額、重試與降級路徑</text><text x="1005" y="716" class="s">備份可解密性與還原演練</text><text x="1005" y="752" class="s">依需求設計 Multi-Region keys</text>
+  </g>
+  <text x="72" y="855" class="s">原創架構示意，不代表特定組織或正式部署。KMS 金鑰不會離開服務邊界；應用程式負責妥善處理短暫取得的資料金鑰。</text>
+</svg>
