@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">AWS WAF 與 Shield 分層保護 Web 服務示意流程</title>
+  <desc id="desc">正常與異常流量經 Route 53、CloudFront、Shield 與 WAF 評估後，允許的請求送往跨可用區應用；封鎖與設定事件送往監控稽核，另一區域提供復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#102445"/></linearGradient>
+    <linearGradient id="safe" x1="0" x2="1"><stop stop-color="#22d3ee"/><stop offset="1" stop-color="#34d399"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#67e8f9"/></marker>
+    <marker id="block" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#fb7185"/></marker>
+    <style>.h{font:700 28px system-ui,sans-serif;fill:#fff}.t{font:700 19px system-ui,sans-serif;fill:#fff}.s{font:500 15px system-ui,sans-serif;fill:#cbd5e1}.k{font:700 14px system-ui,sans-serif;fill:#fbbf24}.box{fill:#122641;stroke:#35506f;stroke-width:2}.line{fill:none;stroke:#67e8f9;stroke-width:4;marker-end:url(#arrow)}.bad{fill:none;stroke:#fb7185;stroke-width:4;stroke-dasharray:10 8;marker-end:url(#block)}</style>
+  </defs>
+  <rect width="1200" height="760" rx="28" fill="url(#bg)"/>
+  <text x="52" y="58" class="h">示意｜公開 Web 入口的分層防護與復原</text>
+  <text x="52" y="88" class="s">不同層次各司其職：DDoS 緩解、HTTP(S) 規則、來源隔離、應用授權與事件回應</text>
+
+  <g filter="url(#shadow)"><rect class="box" x="50" y="155" width="190" height="118" rx="22"/><circle cx="95" cy="203" r="24" fill="#164e63"/><path d="M82 203h26M95 190v26" stroke="#67e8f9" stroke-width="4"/><text x="130" y="194" class="t">使用者</text><text x="130" y="222" class="s">正常 HTTPS</text><text x="74" y="252" class="s">Route 53 DNS</text></g>
+  <g filter="url(#shadow)"><rect x="50" y="340" width="190" height="118" rx="22" fill="#3b1724" stroke="#9f3754" stroke-width="2"/><path d="M83 376l34 34m0-34l-34 34" stroke="#fb7185" stroke-width="5"/><text x="130" y="381" class="t">異常流量</text><text x="130" y="408" class="s">洪水／惡意請求</text><text x="74" y="438" class="s">多來源與自動化</text></g>
+
+  <g filter="url(#shadow)"><rect class="box" x="330" y="205" width="225" height="190" rx="24"/><text x="365" y="247" class="k">全球入口</text><text x="365" y="282" class="t">CloudFront</text><text x="365" y="313" class="t">＋ AWS Shield</text><path d="M365 339h155" stroke="#35506f"/><text x="365" y="366" class="s">網路／傳輸層防護</text></g>
+
+  <g filter="url(#shadow)"><rect x="640" y="175" width="240" height="250" rx="26" fill="#112b35" stroke="#2dd4bf" stroke-width="3"/><path d="M735 209h50l14 18v42c0 35-25 59-39 66-14-7-39-31-39-66v-42z" fill="#0f766e" stroke="#5eead4" stroke-width="2"/><path d="M741 267l13 13 28-33" fill="none" stroke="#d1fae5" stroke-width="6"/><text x="695" y="364" class="t">AWS WAF</text><text x="682" y="391" class="s">Web ACL 依序評估</text></g>
+
+  <g filter="url(#shadow)"><rect class="box" x="965" y="145" width="185" height="145" rx="22"/><text x="1000" y="184" class="k">允許</text><text x="1000" y="216" class="t">跨可用區應用</text><text x="1000" y="246" class="s">ALB＋私有來源</text><text x="1000" y="269" class="s">逐物件授權</text></g>
+  <g filter="url(#shadow)"><rect x="965" y="342" width="185" height="116" rx="22" fill="#3b1724" stroke="#9f3754" stroke-width="2"/><text x="1000" y="381" class="k">封鎖／驗證</text><text x="1000" y="413" class="t">Block</text><text x="1000" y="439" class="s">Challenge / CAPTCHA</text></g>
+
+  <path class="line" d="M240 214H330"/><path class="bad" d="M240 399C285 399 278 333 330 333"/><path class="line" d="M555 300H640"/><path class="line" d="M880 250C925 250 920 217 965 217"/><path class="bad" d="M880 352C925 352 920 400 965 400"/>
+
+  <g filter="url(#shadow)"><rect class="box" x="330" y="520" width="300" height="160" rx="24"/><text x="365" y="560" class="k">觀測與稽核</text><text x="365" y="594" class="t">WAF 日誌去敏</text><text x="365" y="625" class="s">CloudWatch：流量／錯誤／健康告警</text><text x="365" y="651" class="s">CloudTrail：規則與關聯設定變更</text></g>
+  <g filter="url(#shadow)"><rect class="box" x="735" y="520" width="415" height="160" rx="24"/><text x="770" y="560" class="k">跨區復原</text><text x="770" y="594" class="t">獨立入口、Web ACL、應用與資料</text><text x="770" y="625" class="s">版本控制同步規則；Route 53 依程序切換</text><text x="770" y="651" class="s">定期驗證來源限制、告警、解密與還原</text></g>
+  <path d="M760 425V480H480V520" class="line"/><path d="M1060 290V490H943V520" class="line"/>
+  <rect x="50" y="704" width="1100" height="2" fill="url(#safe)"/><text x="50" y="735" class="s">控制邊界：IAM 最小權限與 MFA／短期角色 · KMS 加密 · Secrets Manager／Parameter Store · 備份與演練</text>
+</svg>

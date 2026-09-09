@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1220" role="img" aria-labelledby="title desc">
+  <title id="title">AWS WAF 與 Shield 分層保護 Web 服務手機版示意流程</title>
+  <desc id="desc">正常與異常流量依序通過 CloudFront、Shield 與 WAF，允許的請求進入跨可用區應用，封鎖事件進入監控，另有跨區復原。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#102445"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L10 3 0 6Z" fill="#67e8f9"/></marker><style>.h{font:700 30px system-ui,sans-serif;fill:#fff}.t{font:700 23px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#cbd5e1}.k{font:700 17px system-ui,sans-serif;fill:#fbbf24}.b{fill:#122641;stroke:#35506f;stroke-width:2}.l{fill:none;stroke:#67e8f9;stroke-width:5;marker-end:url(#a)}</style></defs>
+  <rect width="720" height="1220" rx="28" fill="url(#bg)"/>
+  <text x="40" y="58" class="h">示意｜分層入口防護</text><text x="40" y="92" class="s">DDoS、Web 規則、來源隔離與復原各自驗證</text>
+  <rect class="b" x="70" y="135" width="580" height="120" rx="24"/><text x="105" y="178" class="k">流量入口</text><text x="105" y="213" class="t">正常使用者 ＋ 異常流量</text><text x="105" y="239" class="s">Route 53 將網域導向受控入口</text>
+  <path class="l" d="M360 255v54"/>
+  <rect class="b" x="70" y="320" width="580" height="145" rx="24"/><text x="105" y="365" class="k">全球邊緣與 DDoS 緩解</text><text x="105" y="402" class="t">CloudFront ＋ AWS Shield</text><text x="105" y="435" class="s">處理適用的網路／傳輸層攻擊</text>
+  <path class="l" d="M360 465v54"/>
+  <rect x="70" y="530" width="580" height="175" rx="24" fill="#112b35" stroke="#2dd4bf" stroke-width="3"/><text x="105" y="575" class="k">第 7 層請求評估</text><text x="105" y="612" class="t">AWS WAF Web ACL</text><text x="105" y="647" class="s">受管規則 · 自訂條件 · 速率規則</text><text x="105" y="678" class="s">Allow／Block／Count／Challenge</text>
+  <path class="l" d="M360 705v54"/>
+  <rect class="b" x="70" y="770" width="580" height="145" rx="24"/><text x="105" y="815" class="k">允許的請求</text><text x="105" y="852" class="t">ALB ＋ 跨可用區私有應用</text><text x="105" y="885" class="s">來源限制、登入與逐物件授權仍須執行</text>
+  <path class="l" d="M200 915v54"/><path class="l" d="M520 915v54"/>
+  <rect class="b" x="35" y="980" width="310" height="165" rx="22"/><text x="64" y="1022" class="k">觀測與稽核</text><text x="64" y="1058" class="t">日誌去敏</text><text x="64" y="1090" class="s">CloudWatch 告警</text><text x="64" y="1120" class="s">CloudTrail 變更證據</text>
+  <rect class="b" x="375" y="980" width="310" height="165" rx="22"/><text x="404" y="1022" class="k">跨區復原</text><text x="404" y="1058" class="t">獨立入口與規則</text><text x="404" y="1090" class="s">應用、資料、DNS</text><text x="404" y="1120" class="s">實際切換與還原演練</text>
+  <text x="40" y="1187" class="s">共同控制：最小權限 · MFA · KMS · 機密管理 · 備份</text>
+</svg>
