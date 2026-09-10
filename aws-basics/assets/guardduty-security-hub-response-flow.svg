@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 780" role="img" aria-labelledby="title desc">
+  <title id="title">GuardDuty 與 Security Hub 多帳號威脅偵測及回應示意流程</title>
+  <desc id="desc">多帳號的 API、網路與工作負載訊號由 GuardDuty 分析，findings 送到 Security Hub 彙整，再經事件路由進行人工調查、隔離修復及備份復原驗證。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#102445"/></linearGradient>
+    <linearGradient id="bar" x1="0" x2="1"><stop stop-color="#f59e0b"/><stop offset=".5" stop-color="#22d3ee"/><stop offset="1" stop-color="#34d399"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#67e8f9"/></marker>
+    <style>.h{font:700 27px system-ui,sans-serif;fill:#fff}.t{font:700 19px system-ui,sans-serif;fill:#fff}.s{font:500 15px system-ui,sans-serif;fill:#cbd5e1}.k{font:700 14px system-ui,sans-serif;fill:#fbbf24}.box{fill:#122641;stroke:#35506f;stroke-width:2}.line{fill:none;stroke:#67e8f9;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#94a3b8;stroke-width:3;stroke-dasharray:9 8;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1200" height="780" rx="28" fill="url(#bg)"/>
+  <text x="48" y="56" class="h">示意｜從多帳號威脅訊號到可驗證事件結案</text>
+  <text x="48" y="86" class="s">finding 是調查線索；隔離、修復、復原與驗證仍需明確責任及核准流程</text>
+
+  <g filter="url(#shadow)"><rect class="box" x="45" y="145" width="220" height="260" rx="24"/><text x="78" y="183" class="k">AWS ORGANIZATIONS</text><text x="78" y="218" class="t">多帳號／多區域</text><rect x="78" y="245" width="154" height="42" rx="10" fill="#183553"/><text x="96" y="272" class="s">正式環境帳號</text><rect x="78" y="300" width="154" height="42" rx="10" fill="#183553"/><text x="96" y="327" class="s">測試環境帳號</text><rect x="78" y="355" width="154" height="42" rx="10" fill="#183553"/><text x="96" y="382" class="s">稽核／日誌帳號</text></g>
+  <g filter="url(#shadow)"><rect x="345" y="135" width="235" height="280" rx="25" fill="#2f2113" stroke="#f59e0b" stroke-width="3"/><path d="M445 176h36l12 15v30c0 28-20 47-30 52-11-5-31-24-31-52v-30z" fill="#92400e" stroke="#fbbf24" stroke-width="2"/><path d="M448 221l11 11 23-25" fill="none" stroke="#fef3c7" stroke-width="5"/><text x="393" y="306" class="t">Amazon GuardDuty</text><text x="383" y="337" class="s">CloudTrail 管理事件</text><text x="383" y="365" class="s">VPC Flow Logs／DNS</text><text x="383" y="393" class="s">適用的保護方案</text></g>
+  <g filter="url(#shadow)"><rect x="660" y="135" width="235" height="280" rx="25" fill="#102d37" stroke="#22d3ee" stroke-width="3"/><circle cx="778" cy="218" r="48" fill="#155e75" stroke="#67e8f9" stroke-width="2"/><path d="M751 218h54M778 191v54" stroke="#cffafe" stroke-width="6"/><text x="714" y="306" class="t">AWS Security Hub</text><text x="700" y="337" class="s">ASFF finding 彙整</text><text x="700" y="365" class="s">安全標準與控制</text><text x="700" y="393" class="s">集中分流與狀態</text></g>
+  <g filter="url(#shadow)"><rect class="box" x="975" y="145" width="180" height="250" rx="24"/><text x="1008" y="183" class="k">EVENT ROUTING</text><text x="1008" y="217" class="t">事件路由</text><text x="1008" y="252" class="s">EventBridge</text><text x="1008" y="280" class="s">票證／SOAR</text><path d="M1008 304h112" stroke="#35506f"/><text x="1008" y="337" class="s">分級通知</text><text x="1008" y="365" class="s">人工核准</text></g>
+  <path class="line" d="M265 275H345"/><path class="line" d="M580 275H660"/><path class="line" d="M895 275H975"/>
+
+  <g filter="url(#shadow)"><rect class="box" x="45" y="505" width="255" height="170" rx="24"/><text x="78" y="545" class="k">1｜調查與證據</text><text x="78" y="579" class="t">確認資源與工作階段</text><text x="78" y="609" class="s">CloudTrail／應用／身分紀錄</text><text x="78" y="637" class="s">獨立 S3＋KMS＋保留控制</text></g>
+  <g filter="url(#shadow)"><rect class="box" x="350" y="505" width="235" height="170" rx="24"/><text x="383" y="545" class="k">2｜隔離與修復</text><text x="383" y="579" class="t">收斂網路與權限</text><text x="383" y="609" class="s">撤銷短期工作階段</text><text x="383" y="637" class="s">修補根因／輪替機密</text></g>
+  <g filter="url(#shadow)"><rect class="box" x="635" y="505" width="235" height="170" rx="24"/><text x="668" y="545" class="k">3｜復原</text><text x="668" y="579" class="t">乾淨環境還原</text><text x="668" y="609" class="s">備份／跨區副本</text><text x="668" y="637" class="s">驗證解密與服務健康</text></g>
+  <g filter="url(#shadow)"><rect x="920" y="505" width="235" height="170" rx="24" fill="#123129" stroke="#34d399" stroke-width="3"/><text x="953" y="545" class="k">4｜結案驗證</text><text x="953" y="579" class="t">控制修復已生效</text><text x="953" y="609" class="s">finding 狀態＋結案證據</text><text x="953" y="637" class="s">演練回饋與規則調校</text></g>
+  <path class="line" d="M1065 395V460H172V505"/><path class="line" d="M300 590H350"/><path class="line" d="M585 590H635"/><path class="line" d="M870 590H920"/>
+  <path class="dash" d="M1037 505V462H778V415"/>
+  <rect x="45" y="720" width="1110" height="3" fill="url(#bar)"/><text x="45" y="752" class="s">全程控制：IAM 最小權限 · MFA／短期憑證 · 網路與公開存取 · Secrets Manager／Parameter Store · CloudWatch · 備份與跨區復原</text>
+</svg>

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 390 1260" role="img" aria-labelledby="title desc">
+  <title id="title">手機版 GuardDuty 與 Security Hub 威脅偵測及回應示意流程</title>
+  <desc id="desc">多帳號訊號由 GuardDuty 分析並送到 Security Hub 彙整，再經事件路由依序進行調查、隔離修復、復原與結案驗證。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#102445"/></linearGradient>
+    <linearGradient id="bar" x1="0" x2="1"><stop stop-color="#f59e0b"/><stop offset=".5" stop-color="#22d3ee"/><stop offset="1" stop-color="#34d399"/></linearGradient>
+    <marker id="arrow" markerWidth="9" markerHeight="9" refX="8" refY="3" orient="auto"><path d="M0,0 L9,3 L0,6 Z" fill="#67e8f9"/></marker>
+    <style>.h{font:700 19px system-ui,sans-serif;fill:#fff}.t{font:700 17px system-ui,sans-serif;fill:#fff}.s{font:500 13px system-ui,sans-serif;fill:#cbd5e1}.k{font:700 12px system-ui,sans-serif;fill:#fbbf24}.box{fill:#122641;stroke:#35506f;stroke-width:2}.line{fill:none;stroke:#67e8f9;stroke-width:3;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="390" height="1260" rx="22" fill="url(#bg)"/>
+  <text x="24" y="38" class="h">示意｜威脅偵測到事件結案</text><text x="24" y="63" class="s">finding 是線索，修復與復原須另行驗證</text>
+  <g><rect class="box" x="34" y="95" width="322" height="128" rx="20"/><text x="58" y="126" class="k">AWS ORGANIZATIONS</text><text x="58" y="157" class="t">多帳號／多區域訊號</text><text x="58" y="185" class="s">CloudTrail · VPC Flow Logs · DNS</text><text x="58" y="207" class="s">工作負載與適用保護方案</text></g>
+  <path class="line" d="M195 223V253"/>
+  <g><rect x="34" y="260" width="322" height="142" rx="20" fill="#2f2113" stroke="#f59e0b" stroke-width="3"/><text x="58" y="294" class="k">威脅偵測</text><text x="58" y="326" class="t">Amazon GuardDuty</text><text x="58" y="355" class="s">分析支援訊號與可疑活動</text><text x="58" y="381" class="s">產生含嚴重度與資源資訊的 finding</text></g>
+  <path class="line" d="M195 402V432"/>
+  <g><rect x="34" y="439" width="322" height="142" rx="20" fill="#102d37" stroke="#22d3ee" stroke-width="3"/><text x="58" y="473" class="k">安全態勢管理</text><text x="58" y="505" class="t">AWS Security Hub</text><text x="58" y="534" class="s">ASFF 彙整 · 安全標準與控制</text><text x="58" y="560" class="s">集中分流；狀態更新不等於已修復</text></g>
+  <path class="line" d="M195 581V611"/>
+  <g><rect class="box" x="34" y="618" width="322" height="110" rx="20"/><text x="58" y="651" class="k">EVENT ROUTING</text><text x="58" y="682" class="t">EventBridge／票證／SOAR</text><text x="58" y="708" class="s">依嚴重度與資產分流；破壞性動作人工核准</text></g>
+  <path class="line" d="M195 728V758"/>
+  <g><rect class="box" x="34" y="765" width="322" height="104" rx="20"/><text x="58" y="798" class="k">1｜調查與證據</text><text x="58" y="829" class="t">確認資源、工作階段與根因</text><text x="58" y="853" class="s">CloudTrail／身分紀錄 · 獨立 S3＋KMS</text></g>
+  <path class="line" d="M195 869V899"/>
+  <g><rect class="box" x="34" y="906" width="322" height="104" rx="20"/><text x="58" y="939" class="k">2｜隔離與修復</text><text x="58" y="970" class="t">收斂網路與權限</text><text x="58" y="994" class="s">撤銷工作階段 · 修補根因 · 輪替機密</text></g>
+  <path class="line" d="M195 1010V1040"/>
+  <g><rect x="34" y="1047" width="322" height="128" rx="20" fill="#123129" stroke="#34d399" stroke-width="3"/><text x="58" y="1080" class="k">3–4｜復原與結案驗證</text><text x="58" y="1111" class="t">由乾淨備份／跨區副本還原</text><text x="58" y="1139" class="s">驗證服務、解密、控制修復及結案證據</text><text x="58" y="1163" class="s">再依演練結果調校偵測與分流規則</text></g>
+  <rect x="24" y="1208" width="342" height="3" fill="url(#bar)"/><text x="24" y="1237" class="s">IAM 最小權限 · MFA · 觀測 · 備份 · 跨區復原</text>
+</svg>
