@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="760" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Backup 與跨區災難復原示意流程</title>
+  <desc id="desc">正式資源依備份計畫進入隔離保管庫，再複製到另一帳號及區域，於隔離環境進行還原與業務驗證，最後以演練結果修正復原計畫。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10274a"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffbf69"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8fe8ff"/></marker>
+    <style>.label{font:700 20px Inter,'Noto Sans TC',sans-serif;fill:#fff}.small{font:500 15px Inter,'Noto Sans TC',sans-serif;fill:#bfd0ea}.eyebrow{font:700 14px Inter,'Noto Sans TC',sans-serif;fill:#ffcb8a;letter-spacing:1px}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}.card{fill:#112a4b;stroke:#31567e;stroke-width:2}.safe{fill:#103c42;stroke:#48d6c5;stroke-width:2}</style>
+  </defs>
+  <rect width="1200" height="760" rx="32" fill="url(#bg)"/>
+  <text x="600" y="58" text-anchor="middle" class="label" font-size="30">從備份成功到可驗證的跨區復原</text>
+  <text x="600" y="88" text-anchor="middle" class="small">示意流程｜實際能力依資源類型、帳號與區域支援而異</text>
+
+  <g filter="url(#shadow)"><rect x="55" y="140" width="245" height="150" rx="22" class="card"/><text x="82" y="174" class="eyebrow">① 正式工作負載</text><text x="82" y="211" class="label">資料庫・檔案・運算</text><text x="82" y="242" class="small">多可用區負責局部高可用</text><text x="82" y="266" class="small">資源標籤納入保護清冊</text></g>
+  <g filter="url(#shadow)"><rect x="365" y="140" width="245" height="150" rx="22" class="card"/><text x="392" y="174" class="eyebrow">② AWS BACKUP</text><text x="392" y="211" class="label">備份計畫與工作</text><text x="392" y="242" class="small">排程・保留・生命週期</text><text x="392" y="266" class="small">失敗與缺漏即時告警</text></g>
+  <g filter="url(#shadow)"><rect x="675" y="140" width="245" height="150" rx="22" class="safe"/><text x="702" y="174" class="eyebrow">③ 隔離帳號</text><text x="702" y="211" class="label">受保護備份保管庫</text><text x="702" y="242" class="small">KMS・最小權限・Vault Lock</text><text x="702" y="266" class="small">正式管理員不可任意刪除</text></g>
+  <g filter="url(#shadow)"><rect x="985" y="140" width="160" height="150" rx="22" class="safe"/><text x="1012" y="174" class="eyebrow">④ 另一區域</text><text x="1012" y="211" class="label">隔離副本</text><text x="1012" y="242" class="small">縮小區域事故</text><text x="1012" y="266" class="small">共同故障範圍</text></g>
+  <path d="M300 215H355" class="line"/><path d="M610 215H665" class="line"/><path d="M920 215H975" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="140" y="410" width="260" height="165" rx="22" class="card"/><text x="168" y="447" class="eyebrow">⑦ 證據與改進</text><text x="168" y="486" class="label">實測 RPO／RTO</text><text x="168" y="518" class="small">CloudTrail・CloudWatch</text><text x="168" y="544" class="small">差異追蹤與計畫修正</text></g>
+  <g filter="url(#shadow)"><rect x="470" y="410" width="260" height="165" rx="22" class="card"/><text x="498" y="447" class="eyebrow">⑥ 業務驗證</text><text x="498" y="486" class="label">完整性・交易・效能</text><text x="498" y="518" class="small">驗證相依項目與切換</text><text x="498" y="544" class="small">完成後安全清除測試資源</text></g>
+  <g filter="url(#shadow)"><rect x="800" y="410" width="260" height="165" rx="22" class="card"/><text x="828" y="447" class="eyebrow">⑤ 隔離還原測試</text><text x="828" y="486" class="label">掃描後重建服務</text><text x="828" y="518" class="small">無公網・不連回正式環境</text><text x="828" y="544" class="small">基礎設施程式碼重建網路</text></g>
+  <path d="M1065 300V350Q1065 380 1035 380H930V400" class="line"/><path d="M800 492H740" class="line"/><path d="M470 492H410" class="line"/><path d="M270 410V350Q270 330 290 330H480V300" class="line"/>
+
+  <rect x="140" y="635" width="920" height="70" rx="20" fill="#0b2039" stroke="#274c72" stroke-width="2"/>
+  <text x="600" y="665" text-anchor="middle" class="label">控制面：MFA 與短期權限｜網路隔離｜KMS｜集中日誌｜跨帳號與跨區副本</text>
+  <text x="600" y="691" text-anchor="middle" class="small">備份、還原、應用驗證與切換演練必須形成可重複循環</text>
+</svg>
