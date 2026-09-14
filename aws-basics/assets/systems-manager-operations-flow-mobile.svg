@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1320" viewBox="0 0 720 1320" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Systems Manager 手機版安全維運流程示意圖</title>
+  <desc id="desc">維運人員以多因素驗證和短期角色進入 Systems Manager，透過受控功能管理私有節點，操作送至稽核與告警並保留回復路徑。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294a"/></linearGradient><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 12 6 0 12Z" fill="#78ddff"/></marker><style>.h{font:700 28px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:700 23px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 18px Inter,'Noto Sans TC',sans-serif;fill:#c7d7ec}.b{fill:#102a48;stroke:#5ecff2;stroke-width:2}.g{fill:#302510;stroke:#ffb84d;stroke-width:2}.l{stroke:#78ddff;stroke-width:5;marker-end:url(#a)}</style></defs>
+  <rect width="720" height="1320" rx="28" fill="url(#bg)"/>
+  <text x="42" y="62" class="h">示意：Systems Manager 安全維運</text><text x="42" y="96" class="s">不開放 SSH／RDP 管理連接埠</text>
+  <rect x="42" y="140" width="636" height="180" rx="22" class="g"/><text x="78" y="188" class="t">1 身分入口</text><text x="78" y="232" class="s">聯合登入＋MFA＋短期角色</text><text x="78" y="270" class="s">核准時限、原因與最小權限</text>
+  <line x1="360" y1="320" x2="360" y2="378" class="l"/>
+  <rect x="42" y="390" width="636" height="260" rx="22" class="b"/><text x="78" y="438" class="t">2 Systems Manager 控制面</text><text x="78" y="484" class="s">Session Manager：互動式維運</text><text x="78" y="524" class="s">Run Command：受控批次命令</text><text x="78" y="564" class="s">Patch Manager：基準與修補</text><text x="78" y="604" class="s">Parameter Store：設定與 SecureString</text>
+  <line x1="360" y1="650" x2="360" y2="708" class="l"/>
+  <rect x="42" y="720" width="636" height="210" rx="22" class="g"/><text x="78" y="768" class="t">3 私有受管節點</text><text x="78" y="814" class="s">EC2／混合環境＋SSM Agent</text><text x="78" y="854" class="s">執行個體角色＋VPC 介面端點</text><text x="78" y="894" class="s">安全群組不開放管理入站</text>
+  <line x1="360" y1="930" x2="360" y2="988" class="l"/>
+  <rect x="42" y="1000" width="636" height="240" rx="22" class="b"/><text x="78" y="1048" class="t">4 稽核、告警與回復</text><text x="78" y="1094" class="s">CloudTrail：API 與變更證據</text><text x="78" y="1134" class="s">CloudWatch：失敗與異常告警</text><text x="78" y="1174" class="s">核准的會話／命令輸出集中保存</text><text x="78" y="1214" class="s">備份、映像及跨區程序支援回復</text>
+  <text x="360" y="1282" text-anchor="middle" class="s">文件固定版本・目標標籤・限流・失敗中止</text>
+</svg>

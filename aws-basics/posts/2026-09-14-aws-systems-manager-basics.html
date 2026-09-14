@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Systems Manager：受管節點、安全維運與自動化</title>
+  <meta name="description" content="理解 AWS Systems Manager 的受管節點、Session Manager、Run Command、Patch Manager、Parameter Store、成本、可用性、資安風險與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-14-aws-systems-manager-basics.html" />
+  <link rel="prev" href="./2026-09-13-aws-secrets-manager-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Systems Manager：受管節點、安全維運與自動化" />
+  <meta property="og:description" content="從身分入口、私有管理通道到修補、自動化與稽核，建立可控且可回復的雲端維運流程。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-09-14-aws-systems-manager-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/systems-manager-operations-flow.svg" />
+  <meta property="article:published_time" content="2026-09-14T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Systems Manager：受管節點、安全維運與自動化" />
+  <meta name="twitter:description" content="掌握受管節點、無入站連接埠工作階段、受控命令、修補、參數、稽核與復原。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/systems-manager-operations-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1050px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Systems Manager：受管節點、安全維運與自動化","description":"理解 AWS Systems Manager 的受管節點、Session Manager、Run Command、Patch Manager、Parameter Store、成本、可用性、安全風險與共同責任。","datePublished":"2026-09-14T21:30:00+08:00","dateModified":"2026-09-14T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-14-aws-systems-manager-basics.html","image":"https://www.2gwine.com/aws-basics/assets/systems-manager-operations-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">維運與治理</span><span class="chip rounded-full px-3 py-1 text-sm">2026-09-14</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Systems Manager：受管節點、安全維運與自動化</h1>
+<p class="text-xl leading-9 muted">AWS Systems Manager 將雲端與混合環境節點的清冊、互動式連線、命令、修補、參數與自動化集中到受管控制面。它可以減少直接開放 SSH 或 RDP 的需要，但不會自動消除過寬權限、惡意文件、代理程式失聯或錯誤的大規模變更。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-09-14</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>AWS Systems Manager</strong> 是 AWS 的節點管理與安全維運服務。EC2 執行個體、部分邊緣裝置及透過混合啟用註冊的非 AWS 主機，可在安裝並連通 SSM Agent、具備必要身分權限後成為受管節點。管理者再透過 Session Manager、Run Command、Patch Manager、Automation、State Manager、Inventory 與 Parameter Store 等能力執行日常維運。</p>
+<p>Systems Manager 不是完整的端點偵測與回應、備份或組態管理替代品。它提供控制面與自動化元件；作業系統強化、應用相依性、變更核准、例外處理、證據保存及復原成效仍由使用組織設計與驗證。</p>
+<h2>核心概念與適用邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">主要元件</h3><ul>
+<li><strong>受管節點：</strong>SSM Agent 透過出站 HTTPS 與服務端點通訊，並使用執行個體設定檔或混合環境服務角色取得權限。</li>
+<li><strong>Session Manager：</strong>由 IAM 控制的互動式 shell 或連接埠轉送，不必把主機管理連接埠暴露於網際網路。</li>
+<li><strong>Run Command／Automation：</strong>使用 SSM Document 對指定節點執行命令或多步驟作業，可設定並行數、錯誤門檻與輸出位置。</li>
+<li><strong>Patch Manager：</strong>以修補政策、基準與維護時段掃描或安裝作業系統更新；安裝後的相容性仍須測試。</li>
+<li><strong>Parameter Store：</strong>保存階層式設定；敏感值使用 SecureString 並由 AWS KMS 加密。完整機密輪替需求可評估 Secrets Manager。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">邊界與依賴</h3><ul>
+<li>控制面是區域性服務，節點、文件、參數、日誌與金鑰的區域配置必須一致或明確複製。</li>
+<li>代理程式停止、網路端點不可達、IAM 權限錯誤或系統時間異常，都可能使節點離線。</li>
+<li>Session Manager 降低入站曝險，但取得高權限工作階段的人仍可能讀取或修改主機資料。</li>
+<li>Run Command 可快速擴大變更，也會快速擴大錯誤；目標、文件版本、並行數與失敗中止必須受控。</li>
+<li>Parameter Store 不是任意大型資料庫，配額、層級、API 吞吐、歷史與輪替能力須納入設計。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>需要在不開放主機管理入站連接埠的前提下，對私有子網路內節點進行經授權的維運。</li>
+<li>需要跨多個帳號或環境建立節點清冊、修補政策、狀態一致性及可稽核自動化。</li>
+<li>需要以標籤、資源群組、最大並行數與錯誤門檻控制批次命令或維護時段。</li>
+<li>需要集中保存非敏感設定與 KMS 加密的 SecureString，供工作負載以 IAM Role 在執行期讀取。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>必須在完全離線且無法連往 Systems Manager 端點的節點上即時操作，不能只依賴雲端控制面。</li>
+<li>需要完整弱點管理、惡意程式偵測、端點隔離或數位鑑識時，仍需其他安全能力與程序。</li>
+<li>未經分批測試就對全部正式節點執行高風險命令或修補，不應把自動化速度當作安全保證。</li>
+<li>把長生命週期資料庫登入資訊交給 Parameter Store 卻未設計輪替，可評估具輪替生命週期的 Secrets Manager。</li>
+</ul>
+<h2>示意故事案例：私有應用節點的安全維護</h2>
+<p><strong>以下為示意案例，不代表特定組織或正式部署。</strong> 一個訂單平台在兩個可用區運作六十台 EC2 執行個體。安全群組不允許來自網際網路的 SSH 或 RDP；節點透過私有 VPC 介面端點連往 Systems Manager、CloudWatch Logs 與必要的 KMS 服務。維運人員以 IAM Identity Center 聯合登入，完成 MFA 後取得限時角色，Session Manager 權限只涵蓋指定環境與標籤。</p>
+<p>每月修補先在測試群組執行，再進入少量正式節點，確認健康檢查、應用指標與回復程序後才逐批擴大。Run Command 固定文件版本並限制最大並行數與錯誤門檻；敏感設定以 Parameter Store SecureString 和 KMS 管理，資料庫機密則由 Secrets Manager 輪替。CloudTrail 保存 API 行為，CloudWatch 監看代理程式離線、命令失敗及異常工作階段，命令輸出與核准的會話紀錄送入集中儲存。跨區演練會重新建立角色、端點、文件與參數，並從備份或映像恢復節點。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/systems-manager-operations-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/systems-manager-operations-flow.svg" alt="示意：人員透過聯合登入、多因素驗證與短期角色使用 Systems Manager，經受控文件管理私有節點，並將事件送至 CloudTrail、CloudWatch 與集中儲存" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：管理通道不開放入站連接埠，仍須同時治理身分、SSM Document、節點目標、敏感參數、稽核輸出與回復路徑。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>建立節點與責任清冊：</strong>記錄帳號、區域、作業系統、業務擁有者、標籤、資料分類、修補時限、維護時段及復原目標。</li>
+<li><strong>部署並更新代理程式：</strong>使用可信映像或受控流程安裝 SSM Agent，確認版本、系統時間、出站連線與自動更新政策。</li>
+<li><strong>建立私有管理路徑：</strong>節點置於受控子網路，依需求建立 Systems Manager 相關 VPC 介面端點；安全群組與端點政策只允許必要來源及動作。</li>
+<li><strong>設計身分與核准：</strong>人員使用聯合登入、MFA 與短期角色；工作負載使用執行個體角色。分離文件建立、執行、核准與稽核責任。</li>
+<li><strong>限制文件與目標：</strong>只允許核准的 SSM Document、固定版本或雜湊、指定標籤與資源群組，並設定並行數、錯誤門檻與逾時。</li>
+<li><strong>分階段修補與變更：</strong>先掃描與測試，再依環境逐批部署；用負載平衡、維護時段與健康檢查維持服務容量。</li>
+<li><strong>治理參數：</strong>非敏感設定與敏感值分流；SecureString 選擇適當 KMS 金鑰並限制讀取。任何設定都不得寫入公開儲存庫或未受控日誌。</li>
+<li><strong>集中稽核與告警：</strong>啟用組織層級 CloudTrail，將核准的工作階段與命令輸出送至受控日誌位置，使用 CloudWatch 告警監看異常。</li>
+<li><strong>演練中斷與復原：</strong>測試控制面或代理失聯時的安全操作，以及錯誤修補、錯誤命令、區域中斷時的停止、回復與跨區重建。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>Systems Manager 多項基礎能力對 EC2 節點沒有額外服務費，但進階執行個體層級、混合環境受管節點、Parameter Store 進階參數與高吞吐、Automation 步驟、OpsCenter、Application Manager 或其他計量功能可能收費。CloudWatch Logs、S3、KMS、CloudTrail 額外事件、VPC 介面端點、資料傳輸、快照與備份也可能產生費用；應依當前定價頁與實際呼叫量估算。</p>
+<p>Systems Manager 控制面按區域運作。高可用工作負載要把變更分散到可用區並維持最低健康容量，不能同時修補所有節點。命令與 Automation 需要設計冪等、逾時、重試、並行與失敗中止；控制面暫時不可用或代理離線時，既有應用通常可繼續運作，但新的管理操作可能延後。</p>
+<p>跨區復原不能只複製一份文件。備援區域需準備 IAM、KMS、VPC 端點、日誌目的地、核准文件、Parameter Store 值、映像與備份，並實測重新註冊節點、敏感設定解密、DNS 或流量切換及業務驗證。可復原性以演練結果為準。</p>
+<h2>Systems Manager 特有資安風險與控制</h2><ul>
+<li><strong>受管通道被當成隱蔽管理入口：</strong>Session Manager 不需入站連接埠，因此更要以特定節點標籤、MFA、短期角色、工作階段時限與核准流程限制存取。</li>
+<li><strong>SSM Document 供應鏈遭竄改：</strong>分離文件作者與執行者，限制可用文件、固定版本或雜湊，對分享、更新及跨帳號來源建立 CloudTrail 告警。</li>
+<li><strong>大規模錯誤或惡意命令：</strong>Run Command 採小批次、低最大並行數、明確錯誤門檻、逾時與中止；正式環境先經測試與核准。</li>
+<li><strong>目標標籤漂移：</strong>若權限依標籤控制，未受控的標籤修改可能改變可操作範圍。限制標籤寫入並監看高權限資源的標籤變更。</li>
+<li><strong>代理程式或節點身分遭冒用：</strong>維持 SSM Agent 更新，縮小執行個體角色權限，保護執行個體中繼資料服務，移除退役節點與混合啟用。</li>
+<li><strong>工作階段與命令內容外洩：</strong>日誌可能含個資或敏感輸出。事前定義可記錄範圍、加密與存取權限，禁止輸出任何 credential、Access Key、Secret Key、Token、密碼或 cookie。</li>
+<li><strong>連接埠轉送降低可視性：</strong>對 Session Manager 連接埠轉送與 SSH 模式採更嚴權限；這類工作階段的內容記錄能力有限，需以來源、目的、時限與網路遙測補強。</li>
+<li><strong>Parameter Store 解密過寬：</strong>SecureString 同時限制參數路徑與 KMS 解密權限；避免讓廣泛的路徑查詢間接取得不應讀取的敏感值。</li>
+<li><strong>公開與外送路徑：</strong>節點使用私有子網路與 VPC 端點，端點政策及安全群組只放行必要流量；S3／CloudWatch Logs 目的地阻擋公開存取並使用 KMS 加密。</li>
+<li><strong>修補造成中斷或仍留弱點：</strong>定義修補基準、例外期限、掃描與安裝證據；先備份或建立映像，分批部署並驗證應用，失敗時執行回復。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Systems Manager 受管控制面與底層雲端基礎設施的安全，並提供區域服務端點、API、身分整合、文件及節點管理功能。客戶負責節點作業系統、SSM Agent 生命週期、執行個體或混合角色、IAM 與 KMS 政策、網路路徑、文件內容、命令目標、修補基準、參數分類、日誌保存及自動化結果。</p>
+<p>客戶仍須落實 IAM 最小權限、人員 MFA 與短期憑證、工作負載角色、網路隔離、關閉不必要的公開存取、KMS 加密、Secrets Manager／Parameter Store 適當分流、CloudTrail／CloudWatch 觀測，以及備份和跨區復原。AWS 不會判斷某個命令是否符合業務變更，也不會替客戶驗證修補後應用是否正常。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 所有受管節點都有擁有者、環境、區域、資料分類、維護時段、修補 SLA、RTO 與 RPO。</li>
+<li>□ 人員使用聯合登入、MFA 與短期角色；節點使用最小權限執行個體或混合服務角色。</li>
+<li>□ 正式節點不公開 SSH／RDP；私有端點、安全群組、DNS 與端點政策已實測。</li>
+<li>□ Session Manager 權限依節點、標籤、時限與用途限制，高風險工作階段具核准和告警。</li>
+<li>□ Run Command／Automation 只使用核准且固定版本的文件，並設定並行、錯誤門檻、逾時及失敗中止。</li>
+<li>□ 修補先掃描、測試與備份，再分批部署；已驗證健康容量、應用功能和回復程序。</li>
+<li>□ Parameter Store 敏感值使用 SecureString 與適當 KMS 金鑰；完整輪替機密已評估 Secrets Manager。</li>
+<li>□ S3、CloudWatch Logs 與其他輸出位置阻擋公開存取、使用 KMS 加密並限制保存與查詢權限。</li>
+<li>□ CloudTrail 集中保存；CloudWatch 已監看節點離線、命令失敗、文件與標籤變更及異常工作階段。</li>
+<li>□ 工作階段、命令、參數、日誌、映像與儲存庫皆不含有效的 credential、Access Key、Secret Key、Token、密碼或 cookie。</li>
+<li>□ 已估算付費節點、進階參數、Automation、日誌、KMS、介面端點、資料傳輸及備份成本。</li>
+<li>□ 已演練代理失聯、錯誤命令、修補失敗與區域中斷，並驗證備援區域的 IAM、KMS、端點、參數與映像。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/what-is-systems-manager.html" target="_blank" rel="noopener noreferrer">AWS Systems Manager User Guide｜What is AWS Systems Manager?</a>（查閱：2026-09-14）</li>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/session-manager.html" target="_blank" rel="noopener noreferrer">AWS Systems Manager Session Manager</a>（查閱：2026-09-14）</li>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/patch-manager.html" target="_blank" rel="noopener noreferrer">AWS Systems Manager Patch Manager</a>（查閱：2026-09-14）</li>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/systems-manager-parameter-store.html" target="_blank" rel="noopener noreferrer">AWS Systems Manager Parameter Store</a>（查閱：2026-09-14）</li>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/security-best-practices.html" target="_blank" rel="noopener noreferrer">Security best practices for AWS Systems Manager</a>（查閱：2026-09-14）</li>
+<li><a href="https://docs.aws.amazon.com/systems-manager/latest/userguide/monitoring-cloudtrail-logs.html" target="_blank" rel="noopener noreferrer">Logging AWS Systems Manager API calls with AWS CloudTrail</a>（查閱：2026-09-14）</li>
+<li><a href="https://aws.amazon.com/systems-manager/pricing/" target="_blank" rel="noopener noreferrer">AWS Systems Manager pricing</a>（查閱：2026-09-14）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-09-14）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、作業系統支援、功能層級、價格、配額、組織政策、資料分類、法規及復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-09-13-aws-secrets-manager-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Secrets Manager：機密生命週期、輪替與安全存取</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Systems Manager 安全維運流程示意圖</title>
+  <desc id="desc">維運人員透過聯合登入、多因素驗證與最小權限角色進入 Systems Manager，由 Session Manager、Run Command、Patch Manager 與 Parameter Store 管理私有執行個體，並將事件送至 CloudTrail、CloudWatch 與集中式儲存。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294a"/></linearGradient>
+    <linearGradient id="aws" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd27a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".25"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 12 6 0 12Z" fill="#78ddff"/></marker>
+    <style>.h{font:700 34px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:700 22px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 17px Inter,'Noto Sans TC',sans-serif;fill:#bed0e8}.n{font:700 16px Inter,'Noto Sans TC',sans-serif;fill:#071426}.box{fill:#102a48;stroke:#5ecff2;stroke-width:2}.guard{fill:#302510;stroke:#ffb84d;stroke-width:2}.line{fill:none;stroke:#78ddff;stroke-width:5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1440" height="900" rx="32" fill="url(#bg)"/>
+  <text x="72" y="76" class="h">示意：不開放管理連接埠的 Systems Manager 維運路徑</text>
+  <text x="72" y="112" class="s">控制身分、文件、目標與參數，再把每次操作送入不可忽略的稽核與告警流程</text>
+  <g filter="url(#shadow)"><rect x="70" y="190" width="275" height="210" rx="24" class="guard"/><text x="105" y="238" class="t">1 身分入口</text><text x="105" y="280" class="s">IAM Identity Center</text><text x="105" y="314" class="s">MFA＋短期角色</text><text x="105" y="348" class="s">核准時限與原因</text></g>
+  <path d="M345 295H440" class="line"/>
+  <g filter="url(#shadow)"><rect x="455" y="155" width="455" height="280" rx="26" class="box"/><text x="495" y="205" class="t">2 AWS Systems Manager 控制面</text><rect x="495" y="238" width="175" height="62" rx="14" fill="#143b60"/><text x="515" y="277" class="s">Session Manager</text><rect x="690" y="238" width="175" height="62" rx="14" fill="#143b60"/><text x="717" y="277" class="s">Run Command</text><rect x="495" y="320" width="175" height="62" rx="14" fill="#143b60"/><text x="524" y="359" class="s">Patch Manager</text><rect x="690" y="320" width="175" height="62" rx="14" fill="#143b60"/><text x="711" y="359" class="s">Parameter Store</text></g>
+  <path d="M910 295H1005" class="line"/>
+  <g filter="url(#shadow)"><rect x="1020" y="175" width="350" height="240" rx="24" class="guard"/><text x="1060" y="225" class="t">3 私有受管節點</text><text x="1060" y="268" class="s">EC2／混合環境主機</text><text x="1060" y="302" class="s">SSM Agent＋執行個體角色</text><text x="1060" y="336" class="s">VPC 介面端點</text><text x="1060" y="370" class="s">不開放 SSH／RDP 入站</text></g>
+  <path d="M1195 415V510" class="line"/>
+  <g filter="url(#shadow)"><rect x="835" y="530" width="535" height="220" rx="24" class="box"/><text x="875" y="580" class="t">4 證據、告警與回復</text><text x="875" y="624" class="s">CloudTrail：控制面 API 與變更紀錄</text><text x="875" y="658" class="s">CloudWatch：命令失敗、代理狀態與異常告警</text><text x="875" y="692" class="s">S3／CloudWatch Logs：核准的會話與輸出保存</text><text x="875" y="726" class="s">備份、映像與跨區復原程序：變更失敗時回復</text></g>
+  <path d="M835 640H690V435" class="line"/>
+  <g filter="url(#shadow)"><rect x="70" y="530" width="620" height="220" rx="24" class="guard"/><text x="110" y="580" class="t">每次操作都要通過的治理條件</text><text x="110" y="624" class="s">✓ 文件固定版本與雜湊　✓ 目標使用標籤與資源群組</text><text x="110" y="660" class="s">✓ Parameter Store 敏感值採 SecureString 與 KMS</text><text x="110" y="696" class="s">✓ 高風險命令分離核准、限流、失敗中止與回復測試</text></g>
+  <rect x="70" y="805" width="1300" height="48" rx="24" fill="url(#aws)"/><text x="720" y="836" text-anchor="middle" class="n">管理通道本身也是高權限供應鏈：身分、文件、代理程式、輸出與復原都必須一起治理</text>
+</svg>
