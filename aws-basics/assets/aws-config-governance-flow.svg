@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Config 多帳號組態治理流程示意圖</title>
+  <desc id="desc">多帳號與多區域資源由 AWS Config 記錄組態並接受規則評估，結果集中聚合後與 CloudTrail 證據一起進入告警、調查、核准修復及重新驗證流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294a"/></linearGradient>
+    <linearGradient id="aws" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd27a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".25"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 12 6 0 12Z" fill="#78ddff"/></marker>
+    <style>.h{font:700 34px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:700 22px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 17px Inter,'Noto Sans TC',sans-serif;fill:#bed0e8}.n{font:700 16px Inter,'Noto Sans TC',sans-serif;fill:#071426}.box{fill:#102a48;stroke:#5ecff2;stroke-width:2}.guard{fill:#302510;stroke:#ffb84d;stroke-width:2}.line{fill:none;stroke:#78ddff;stroke-width:5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1440" height="900" rx="32" fill="url(#bg)"/>
+  <text x="72" y="76" class="h">示意：AWS Config 從組態證據到受控修復</text>
+  <text x="72" y="112" class="s">持續記錄不等於即時阻擋；規則結果必須連結變更身分、核准、驗證與回復</text>
+  <g filter="url(#shadow)"><rect x="60" y="180" width="280" height="250" rx="24" class="guard"/><text x="96" y="228" class="t">1 資源與變更</text><text x="96" y="270" class="s">正式／測試／安全帳號</text><text x="96" y="304" class="s">多區域支援資源</text><text x="96" y="338" class="s">網路・儲存・運算・IAM</text><text x="96" y="382" class="s">預防：SCP／IAM／資源政策</text></g>
+  <path d="M340 305H425" class="line"/>
+  <g filter="url(#shadow)"><rect x="440" y="160" width="350" height="290" rx="26" class="box"/><text x="480" y="210" class="t">2 AWS Config</text><text x="480" y="254" class="s">組態記錄器與資源關聯</text><text x="480" y="290" class="s">組態歷程 → S3＋KMS</text><text x="480" y="326" class="s">受管／自訂 Config Rules</text><text x="480" y="362" class="s">Conformance Packs</text><text x="480" y="406" class="s">輸出：合規／不合規／錯誤</text></g>
+  <path d="M790 305H875" class="line"/>
+  <g filter="url(#shadow)"><rect x="890" y="180" width="490" height="250" rx="24" class="guard"/><text x="930" y="228" class="t">3 中央聚合與判讀</text><text x="930" y="270" class="s">跨帳號、跨區域組態聚合器</text><text x="930" y="304" class="s">EventBridge／告警／工單分級</text><text x="930" y="338" class="s">CloudTrail 補充變更者與 API 證據</text><text x="930" y="382" class="s">例外：理由＋擁有者＋到期日</text></g>
+  <path d="M1135 430V510" class="line"/>
+  <g filter="url(#shadow)"><rect x="760" y="530" width="620" height="220" rx="24" class="box"/><text x="800" y="580" class="t">4 核准修復與重新驗證</text><text x="800" y="624" class="s">人工調查 → 風險分級 → 核准處置</text><text x="800" y="660" class="s">Systems Manager Automation：最小權限、分批、限流</text><text x="800" y="696" class="s">Config 重新評估 → 保存前後證據 → 回復或結案</text></g>
+  <path d="M760 640H650V450" class="line"/>
+  <g filter="url(#shadow)"><rect x="60" y="530" width="590" height="220" rx="24" class="guard"/><text x="100" y="580" class="t">治理健康度</text><text x="100" y="624" class="s">✓ 所有允許區域都有記錄器與擁有者</text><text x="100" y="660" class="s">✓ S3 阻擋公開存取、KMS 加密、限制刪除</text><text x="100" y="696" class="s">✓ CloudWatch 監看傳遞失敗、規則錯誤與逾期例外</text></g>
+  <rect x="60" y="805" width="1320" height="48" rx="24" fill="url(#aws)"/><text x="720" y="836" text-anchor="middle" class="n">Config 提供可追溯的組態事實；預防控制、威脅偵測、修復安全與資料復原仍須分層設計</text>
+</svg>

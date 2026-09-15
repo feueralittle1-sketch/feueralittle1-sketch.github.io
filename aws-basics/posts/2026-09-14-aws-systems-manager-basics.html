@@ -7,6 +7,7 @@
   <meta name="description" content="理解 AWS Systems Manager 的受管節點、Session Manager、Run Command、Patch Manager、Parameter Store、成本、可用性、資安風險與共同責任。" />
   <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-14-aws-systems-manager-basics.html" />
   <link rel="prev" href="./2026-09-13-aws-secrets-manager-basics.html" />
+  <link rel="next" href="./2026-09-15-aws-config-basics.html" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="AWS Systems Manager：受管節點、安全維運與自動化" />
   <meta property="og:description" content="從身分入口、私有管理通道到修補、自動化與稽核，建立可控且可回復的雲端維運流程。" />
@@ -20,7 +21,7 @@
   <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/systems-manager-operations-flow.svg" />
   <script src="https://cdn.tailwindcss.com"></script>
   <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1050px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
-  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Systems Manager：受管節點、安全維運與自動化","description":"理解 AWS Systems Manager 的受管節點、Session Manager、Run Command、Patch Manager、Parameter Store、成本、可用性、安全風險與共同責任。","datePublished":"2026-09-14T21:30:00+08:00","dateModified":"2026-09-14T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-14-aws-systems-manager-basics.html","image":"https://www.2gwine.com/aws-basics/assets/systems-manager-operations-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Systems Manager：受管節點、安全維運與自動化","description":"理解 AWS Systems Manager 的受管節點、Session Manager、Run Command、Patch Manager、Parameter Store、成本、可用性、安全風險與共同責任。","datePublished":"2026-09-14T21:30:00+08:00","dateModified":"2026-09-15T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-14-aws-systems-manager-basics.html","image":"https://www.2gwine.com/aws-basics/assets/systems-manager-operations-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
 </head>
 <body>
 <header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
@@ -123,7 +124,7 @@
 </ul>
 <h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、作業系統支援、功能層級、價格、配額、組織政策、資料分類、法規及復原演練結果調整。</p>
 </div>
-<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-09-13-aws-secrets-manager-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Secrets Manager：機密生命週期、輪替與安全存取</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-09-13-aws-secrets-manager-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Secrets Manager：機密生命週期、輪替與安全存取</strong></a><a class="glass rounded-2xl p-5 block sm:text-right" href="./2026-09-15-aws-config-basics.html" rel="next"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">AWS Config：資源清冊、組態歷程與合規評估</strong></a></nav>
 </article></main>
 <footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
 </body></html>
