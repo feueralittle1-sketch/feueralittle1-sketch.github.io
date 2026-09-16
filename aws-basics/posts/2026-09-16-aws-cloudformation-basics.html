@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS CloudFormation：基礎設施即程式碼與受控變更</title>
+  <meta name="description" content="理解 AWS CloudFormation 的範本、堆疊、變更集、漂移偵測、StackSets、成本、可用性、資安風險與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-16-aws-cloudformation-basics.html" />
+  <link rel="prev" href="./2026-09-15-aws-config-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS CloudFormation：基礎設施即程式碼與受控變更" />
+  <meta property="og:description" content="從版本化範本、變更集審核、最小權限部署到漂移偵測，建立可重複且可追溯的基礎設施交付流程。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-09-16-aws-cloudformation-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-cloudformation-delivery-flow.svg" />
+  <meta property="article:published_time" content="2026-09-16T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS CloudFormation：基礎設施即程式碼與受控變更" />
+  <meta name="twitter:description" content="掌握範本、堆疊、變更集、服務角色、漂移偵測、回復與跨區重建。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-cloudformation-delivery-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1050px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS CloudFormation：基礎設施即程式碼與受控變更","description":"理解 AWS CloudFormation 的範本、堆疊、變更集、漂移偵測、StackSets、成本、可用性、安全風險與共同責任。","datePublished":"2026-09-16T21:30:00+08:00","dateModified":"2026-09-16T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-16-aws-cloudformation-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-cloudformation-delivery-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">基礎設施即程式碼</span><span class="chip rounded-full px-3 py-1 text-sm">2026-09-16</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS CloudFormation：基礎設施即程式碼與受控變更</h1>
+<p class="text-xl leading-9 muted">AWS CloudFormation 以宣告式範本建立與更新 AWS 資源，讓基礎設施能版本化、審查與重複部署。它負責協調資源狀態，但不會自動證明架構安全、資料可復原或每次變更都符合業務需求。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-09-16</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>AWS CloudFormation</strong> 是 AWS 的基礎設施即程式碼服務。團隊以 JSON 或 YAML 範本描述資源及相依關係，再由 CloudFormation 建立堆疊、計算變更順序並回報狀態。相同範本可配合不同參數部署到多個環境，降低人工點選造成的差異。</p>
+<p>CloudFormation 是資源協調與狀態管理工具，不是應用程式部署品質、執行階段防護或資料備份的替代品。範本能重建資源設定，不能自動還原資料內容；成功完成堆疊也不代表工作負載已通過安全、效能與復原驗證。</p>
+<h2>核心概念與適用邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">主要元件</h3><ul>
+<li><strong>範本：</strong>描述 Resources，並可搭配 Parameters、Mappings、Conditions、Outputs 與 Rules；敏感值不得直接寫入或輸出。</li>
+<li><strong>堆疊：</strong>一組由 CloudFormation 共同管理的資源；建立、更新與刪除會依相依關係協調。</li>
+<li><strong>變更集：</strong>在執行前預覽資源新增、修改、替換或刪除，供風險評估與核准。</li>
+<li><strong>堆疊政策與服務角色：</strong>前者限制重要資源的更新動作，後者決定 CloudFormation 代表使用者可執行的權限。</li>
+<li><strong>漂移偵測：</strong>比較支援資源的實際設定與範本預期，找出未經程式碼流程的變更。</li>
+<li><strong>StackSets：</strong>以單一操作跨帳號與區域部署堆疊執行個體，適合組織級基線。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">邊界與依賴</h3><ul>
+<li>並非所有資源屬性都支援匯入或漂移偵測，結果必須依資源類型能力解讀。</li>
+<li>變更集能顯示預期資源異動，但無法預測所有執行階段影響、資料移轉風險與應用相容性。</li>
+<li>回復可嘗試恢復堆疊資源狀態，不能保證資料庫、檔案或外部系統資料回到一致時間點。</li>
+<li>跨帳號與跨區部署會擴大權限與故障半徑，StackSets 必須限制目標、並行率與失敗容忍度。</li>
+<li>CloudFormation 管理控制面；作業系統、應用程式、資料、密鑰使用與網路流量仍需獨立治理。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>需要讓開發、測試與正式環境採用相同結構，並將每次基礎設施變更納入版本控制與審查。</li>
+<li>需要重複建立 VPC、IAM 角色、負載平衡、運算、資料庫、監控與備份等相依資源。</li>
+<li>需要跨帳號或跨區域部署組織基線，例如稽核角色、記錄目的地、Config 規則與安全告警。</li>
+<li>需要透過變更集、堆疊事件與漂移偵測保留可追溯的變更證據。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>只需執行短暫的一次性操作，且該操作沒有可重建、維護或稽核價值。</li>
+<li>需要管理應用程式內部狀態、資料內容或完整 CI/CD 流程時，仍需搭配部署、資料移轉與測試工具。</li>
+<li>未建立程式碼審查、環境隔離、權限邊界與回復演練時，不應直接以高權限自動化修改正式環境。</li>
+<li>資源供應商或必要屬性尚未受支援時，需評估自訂資源的生命週期、逾時、重試與額外攻擊面。</li>
+</ul>
+<h2>示意故事案例：雙可用區預約平台的受控交付</h2>
+<p><strong>以下為示意案例，不代表特定組織或正式部署。</strong> 一個預約平台把網路、負載平衡、運算、資料庫告警與備份政策拆成可審查的 CloudFormation 堆疊。範本存於版本控制系統，合併前執行語法、政策與安全檢查；測試環境先建立變更集並完成整合測試，正式環境再由不同核准者確認是否包含資源替換或刪除。</p>
+<p>正式部署使用受限服務角色，在私有子網路建立跨可用區資源，資料儲存採 KMS 加密，應用機密透過 Secrets Manager 動態參照取得。CloudWatch 告警可觸發回復，CloudTrail 保存控制面活動。每日漂移檢查若發現人工修改安全群組，團隊先調查必要性，再修正範本並重新走變更集流程，而不是把主控台修改永久留在正式環境。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-cloudformation-delivery-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-cloudformation-delivery-flow.svg" alt="示意：CloudFormation 範本經版本控制、檢查、變更集核准及最小權限角色部署，之後持續進行活動記錄、監控、漂移偵測與跨區重建演練" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：可控交付不只建立堆疊，還要把預覽、核准、執行權限、觀測、漂移修正與復原演練串成閉環。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>定義資源邊界：</strong>依生命週期、擁有者與故障半徑拆分堆疊，避免單一巨大堆疊使變更與回復互相牽連。</li>
+<li><strong>建立安全範本：</strong>設定私有網路、阻擋公開存取、傳輸與靜態加密、備份、標籤、記錄及告警；不嵌入任何有效敏感驗證資料。</li>
+<li><strong>納入版本控制：</strong>對範本、政策、參數結構與測試設定進行同儕審查，保護主要分支並保留核准紀錄。</li>
+<li><strong>執行前置檢查：</strong>驗證語法、資源規格、組織政策與安全基線，在隔離帳號部署測試並驗證刪除及替換行為。</li>
+<li><strong>建立變更集：</strong>確認新增、修改、替換、刪除與 IAM 能力；高風險變更由獨立人員核准並安排維護時段。</li>
+<li><strong>以受限角色部署：</strong>服務角色只允許必要資源與動作，人員透過聯合登入、MFA 與短期角色啟動流程。</li>
+<li><strong>監看與失敗處理：</strong>追蹤堆疊事件、CloudWatch 告警及回復觸發；失敗時保留證據，確認資料狀態後再重試。</li>
+<li><strong>偵測與修正漂移：</strong>定期檢查支援資源，將必要的緊急修改帶回範本；非必要偏差經核准後由程式碼修正。</li>
+<li><strong>演練跨區重建：</strong>在備援區域驗證範本、映像、資料備份、KMS 金鑰、DNS 與外部相依，量測實際 RTO 與 RPO。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>對 AWS 原生資源使用 CloudFormation 通常不另收服務費，實際建立的 EC2、RDS、S3、CloudWatch、CloudTrail、KMS、AWS Backup 與資料傳輸仍按各服務計價；第三方資源供應商可能另行收費。測試堆疊、重複環境、跨區備援、記錄保存及未刪除資源都會增加成本，應以標籤、預算與自動清理機制追蹤。</p>
+<p>CloudFormation 堆疊按帳號與區域運作。單區範本不會自動形成跨區可用性；高可用工作負載仍需在區域內採多可用區設計。跨區復原則要在目標區域準備可部署範本與區域化參數，並確認映像、配額、服務可用性、KMS 金鑰、憑證、DNS、備份複本與外部相依。</p>
+<p>回復可能受資源刪除政策、外部修改、不可逆資料操作或配額限制影響。重要資料資源應設定適當 DeletionPolicy 與 UpdateReplacePolicy，先取得可還原備份，再以失敗注入及復原演練確認流程，不把「堆疊回復完成」視為業務已恢復。</p>
+<h2>CloudFormation 特有資安風險與控制</h2><ul>
+<li><strong>服務角色權限過寬：</strong>CloudFormation 可代表操作者建立多種資源；依堆疊類型建立最小權限角色，限制可傳遞角色，並以權限邊界與 SCP 控制上限。</li>
+<li><strong>範本形成隱性公開面：</strong>安全群組、儲存政策、負載平衡或 API 設定可能意外公開；在合併與部署前以政策即程式碼阻擋高風險組態。</li>
+<li><strong>敏感資料進入範本或事件：</strong>機密使用 Secrets Manager 或 Parameter Store SecureString 的動態參照，限制讀取權限；不得放入範本、參數預設值、Outputs、標籤或日誌。</li>
+<li><strong>變更集誤判：</strong>資源替換可能造成中斷或資料遺失；核對 Replacement、刪除政策、相依資源與資料移轉計畫，高風險項目要求雙人核准。</li>
+<li><strong>自訂資源供應鏈：</strong>自訂 Lambda 或第三方型別可能取得廣泛權限並執行任意邏輯；固定版本、驗證來源、限制網路與 IAM，並監看逾時及回傳資料。</li>
+<li><strong>StackSets 擴大故障半徑：</strong>錯誤範本可同時影響多帳號多區域；先以沙箱與少量組織單位試行，限制並行率、設定失敗容忍度並保留停止條件。</li>
+<li><strong>漂移成為長期盲點：</strong>緊急人工修改若未回寫範本，後續更新可能覆蓋或保留不安全狀態；定期偵測、明確核准例外並追蹤到期日。</li>
+<li><strong>控制面證據不足：</strong>集中保存 CloudTrail，使用 CloudWatch 與 EventBridge 監看堆疊失敗、異常刪除及高風險變更，並限制日誌刪除權限。</li>
+<li><strong>復原依賴缺口：</strong>範本不是資料備份；以 AWS Backup 或服務原生機制定期備份、跨區複寫與實際還原，並驗證備援區域的金鑰與權限。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 CloudFormation 受管服務與底層雲端基礎設施的安全，並提供範本處理、堆疊協調、事件、變更集、漂移偵測與 API。客戶負責範本內容、資源架構、服務角色、IAM 能力確認、參數、堆疊政策、刪除與替換策略、變更核准、監控及復原測試。</p>
+<p>客戶仍須落實 IAM 最小權限、人員 MFA 與短期憑證、帳號與網路隔離、公開存取控制、KMS 加密、Secrets Manager／Parameter Store 機密管理、CloudTrail／CloudWatch 觀測，以及備份與跨區復原。AWS 不會替客戶判斷範本是否符合資料分類、法規、可用性目標或可接受風險。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 堆疊已依生命週期、擁有者與故障半徑拆分，跨堆疊相依及匯出值已有清冊。</li>
+<li>□ 範本通過語法、資源規格、組織政策與安全檢查，正式合併需要同儕審查。</li>
+<li>□ 服務角色與可傳遞角色符合 IAM 最小權限；管理人員使用聯合登入、MFA 與短期角色。</li>
+<li>□ 私有子網路、路由、安全群組、儲存政策與端點已驗證，無未核准公開存取。</li>
+<li>□ 資料資源採 KMS 加密，DeletionPolicy、UpdateReplacePolicy、備份與跨區複本符合 RTO／RPO。</li>
+<li>□ Secrets Manager／Parameter Store 管理應用機密；範本、參數預設值、Outputs、標籤、事件與日誌均不含有效敏感驗證資料。</li>
+<li>□ 每次正式更新先建立變更集，已審查替換、刪除、IAM 變更、資料移轉及中斷風險。</li>
+<li>□ 重要資源有堆疊政策、CloudWatch 告警與回復觸發，回復失敗的人工處置程序已演練。</li>
+<li>□ CloudTrail 集中保存控制面活動；堆疊失敗、刪除與高風險變更會產生可處理告警。</li>
+<li>□ 漂移偵測有固定週期、擁有者與例外期限，緊急修改會回寫範本並重新審查。</li>
+<li>□ StackSets 已限制目標、並行率與失敗容忍度，先在沙箱及少量帳號試行。</li>
+<li>□ 已在備援區域實際重建並還原資料，確認配額、KMS、DNS、映像與外部相依可用。</li>
+<li>□ 已依資源、測試環境、日誌、備份、跨區複本及資料傳輸估算並監看成本。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html" target="_blank" rel="noopener noreferrer">AWS CloudFormation User Guide｜What is AWS CloudFormation?</a>（查閱：2026-09-16）</li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacks.html" target="_blank" rel="noopener noreferrer">Working with stacks</a>（查閱：2026-09-16）</li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-updating-stacks-changesets.html" target="_blank" rel="noopener noreferrer">Update stacks using change sets</a>（查閱：2026-09-16）</li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/using-cfn-stack-drift.html" target="_blank" rel="noopener noreferrer">Detect unmanaged configuration changes with drift detection</a>（查閱：2026-09-16）</li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/stacksets-concepts.html" target="_blank" rel="noopener noreferrer">StackSets concepts</a>（查閱：2026-09-16）</li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/dynamic-references-secretsmanager.html" target="_blank" rel="noopener noreferrer">Get values stored in Secrets Manager</a>（查閱：2026-09-16）</li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/security-best-practices.html" target="_blank" rel="noopener noreferrer">Security best practices for CloudFormation</a>（查閱：2026-09-16）</li>
+<li><a href="https://aws.amazon.com/cloudformation/pricing/" target="_blank" rel="noopener noreferrer">AWS CloudFormation pricing</a>（查閱：2026-09-16）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-09-16）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新資源支援、區域功能、價格、配額、組織政策、資料分類、法規及復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-09-15-aws-config-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Config：資源清冊、組態歷程與合規評估</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
