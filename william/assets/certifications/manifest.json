@@ -119,10 +119,31 @@
     "image": "./assets/certifications/img/iso27701.png"
   },
   {
+    "name": "ISO/IEC 42001:2023 AI Management System Lead Auditor Conversion Training Course.pdf",
+    "fileId": "1zghrnNwEfhPn2p72SAxIdeuXvEYjdP73",
+    "slug": "iso-iec-42001-2023-ai-management-system-lead-auditor-conversion",
+    "pdf": "./assets/certifications/pdf/iso-iec-42001-2023-ai-management-system-lead-auditor-conversion.pdf",
+    "image": "./assets/certifications/img/iso-iec-42001-2023-ai-management-system-lead-auditor-conversion.png"
+  },
+  {
     "name": "Oracle Cloud Data Management 2022 Foundations Certified Associate_tzuwei.pdf",
     "fileId": "1pDNbzBUCKmRAWginUSmyqBLm1m8oM5EJ",
     "slug": "oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei",
     "pdf": "./assets/certifications/pdf/oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei.pdf",
     "image": "./assets/certifications/img/oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei.png"
+  },
+  {
+    "name": "OffSec Certified Professional (OSCP).pdf",
+    "fileId": "1oaKQ9xG795esSd_va3nc95NQ3K4BlU5Z",
+    "slug": "offsec-certified-professional-oscp",
+    "pdf": "./assets/certifications/pdf/offsec-certified-professional-oscp.pdf",
+    "image": "./assets/certifications/img/offsec-certified-professional-oscp.png"
+  },
+  {
+    "name": "OffSec Certified Professional Plus (OSCP+).pdf",
+    "fileId": "1xoo3zpqbMeXa6NpBxncmNC9JTtBUSl-z",
+    "slug": "offsec-certified-professional-plus-oscp-plus",
+    "pdf": "./assets/certifications/pdf/offsec-certified-professional-plus-oscp-plus.pdf",
+    "image": "./assets/certifications/img/offsec-certified-professional-plus-oscp-plus.png"
   }
 ]

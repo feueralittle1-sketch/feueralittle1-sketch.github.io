@@ -198,6 +198,46 @@
       filter: drop-shadow(0 0 10px rgba(255,255,255,.08));
     }
 
+    .portrait-credentials {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.75rem;
+    }
+
+    .portrait-credential {
+      min-height: 132px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.85rem;
+      padding: 0.9rem;
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 1.35rem;
+      background: linear-gradient(145deg, rgba(255,255,255,0.075), rgba(255,255,255,0.025));
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.05), 0 14px 32px rgba(0,0,0,0.16);
+      transition: transform .25s ease, border-color .25s ease, background .25s ease;
+    }
+
+    .portrait-credential:hover {
+      transform: translateY(-3px);
+      border-color: rgba(99,230,255,0.32);
+      background: linear-gradient(145deg, rgba(99,230,255,0.09), rgba(255,255,255,0.03));
+    }
+
+    .portrait-credential img {
+      width: auto;
+      max-width: 92px;
+      height: 82px;
+      object-fit: contain;
+      filter: drop-shadow(0 8px 18px rgba(0,0,0,0.25));
+    }
+
+    .portrait-credential span { min-width: 0; }
+    .portrait-credential strong,
+    .portrait-credential small { display: block; }
+    .portrait-credential strong { font-size: 0.95rem; color: #fff; }
+    .portrait-credential small { margin-top: 0.2rem; font-size: 0.72rem; color: #9fb3d9; }
+
     .portrait-shell {
       position: relative;
       overflow: hidden;
@@ -292,7 +332,7 @@
               <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-3 mb-5">
                 <div>
                   <div class="text-xs uppercase tracking-[0.22em] text-cyan-300 mb-2">Professional Certifications</div>
-                  <div class="text-xl sm:text-2xl font-bold">19+ 專業證照背書，從資安到雲端治理</div>
+                  <div class="text-xl sm:text-2xl font-bold">21 份專業證照背書，從資安到雲端治理</div>
                 </div>
                 <a href="./certifications.html" class="text-sm text-cyan-200 hover:text-white">查看全部證照 →</a>
               </div>
@@ -307,7 +347,7 @@
                 <div class="cert-logo-chip"><img src="./assets/certification-logos/ECC-CTIA-07FE193842E3.png" alt="CTIA logo" /></div>
               </div>
               <div class="flex flex-wrap gap-3 mt-4 text-xs text-slate-300">
-                <span class="tag rounded-full px-3 py-2">含 CISSP、CEH、CHFI、ECSA、CTIA</span>
+                <span class="tag rounded-full px-3 py-2">含 OSCP+、OSCP、CISSP、CEH、CHFI、ECSA、CTIA</span>
                 <span class="tag rounded-full px-3 py-2">AWS / Azure / Oracle / ISO / AI Governance 系列已完整收錄於證照頁</span>
               </div>
             </div>
@@ -333,6 +373,16 @@
                   <span class="w-2 h-2 rounded-full bg-cyan-300"></span>
                   Dr. William
                 </div>
+              </div>
+              <div class="portrait-credentials" aria-label="Dr. William 專業認證徽章">
+                <a class="portrait-credential" href="./certifications.html" aria-label="查看 OffSec OSCP+ 證照">
+                  <img src="./assets/certification-logos/offsec-oscp-plus.png" alt="OffSec OSCP+ 徽章" />
+                  <span><strong>OSCP+</strong><small>OffSec</small></span>
+                </a>
+                <a class="portrait-credential" href="./certifications.html" aria-label="查看 CISSP 證照">
+                  <img src="./assets/certification-logos/cissp-new.png" alt="CISSP 徽章" />
+                  <span><strong>CISSP</strong><small>ISC2</small></span>
+                </a>
               </div>
               <div class="grid gap-4">
                 <div class="glass rounded-[1.5rem] p-4 sm:p-5">
@@ -743,7 +793,7 @@
             <img src="https://images.unsplash.com/photo-1485827404703-89b55fcc595e?auto=format&fit=crop&w=1200&q=80" alt="AI 互動生活日記" class="w-full h-56 object-cover" />
             <div class="p-6">
               <div class="text-xs text-emerald-200 mb-3">證照專區</div>
-              <h3 class="text-2xl font-bold mb-3">19 份專業證照已整理完成，從資安、AI 治理到雲端架構一次看懂</h3>
+              <h3 class="text-2xl font-bold mb-3">21 份專業證照已整理完成，從資安、AI 治理到雲端架構一次看懂</h3>
               <p class="text-slate-300 leading-7 mb-5">證照頁已完成縮圖整理與分類，涵蓋 Security、Cloud、Governance、Development 與 AI 管理系統，適合對外展示 Dr. William 的專業可信度。</p>
               <a href="./certifications.html" class="text-white font-medium inline-flex items-center gap-2">前往證照區 <iconify-icon icon="mdi:arrow-right"></iconify-icon></a>
             </div>

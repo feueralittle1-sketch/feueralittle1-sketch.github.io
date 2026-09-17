@@ -131,5 +131,19 @@
     "slug": "oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei",
     "pdf": "./assets/certifications/pdf/oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei.pdf",
     "image": "./assets/certifications/img/oracle-cloud-data-management-2022-foundations-certified-associate-tzuwei.png"
+  },
+  {
+    "name": "OffSec Certified Professional (OSCP).pdf",
+    "fileId": "1oaKQ9xG795esSd_va3nc95NQ3K4BlU5Z",
+    "slug": "offsec-certified-professional-oscp",
+    "pdf": "./assets/certifications/pdf/offsec-certified-professional-oscp.pdf",
+    "image": "./assets/certifications/img/offsec-certified-professional-oscp.png"
+  },
+  {
+    "name": "OffSec Certified Professional Plus (OSCP+).pdf",
+    "fileId": "1xoo3zpqbMeXa6NpBxncmNC9JTtBUSl-z",
+    "slug": "offsec-certified-professional-plus-oscp-plus",
+    "pdf": "./assets/certifications/pdf/offsec-certified-professional-plus-oscp-plus.pdf",
+    "image": "./assets/certifications/img/offsec-certified-professional-plus-oscp-plus.png"
   }
 ]
