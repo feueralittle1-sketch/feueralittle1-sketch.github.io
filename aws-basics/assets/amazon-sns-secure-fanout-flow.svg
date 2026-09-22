@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon SNS 安全事件扇出示意流程</title>
+  <desc id="desc">訂單服務使用短期角色將最小化事件發布到加密 SNS 主題，依篩選政策分送至 SQS、Lambda 與 HTTPS 訂閱端點，並以死信佇列、CloudWatch、CloudTrail 及可重播來源支援治理與復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071528"/><stop offset="1" stop-color="#10264a"/></linearGradient>
+    <linearGradient id="orange" x1="0" x2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd08a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#10243f;stroke:#426b96;stroke-width:2}.safe{fill:#102f31;stroke:#49d6b2;stroke-width:2}.warn{fill:#392612;stroke:#ffb64d;stroke-width:2}.t{font:700 25px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 18px Inter,'Noto Sans TC',sans-serif;fill:#bed0e9}.k{font:700 17px Inter,'Noto Sans TC',sans-serif;fill:#8fe8ff}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
+  <text x="80" y="82" class="t" font-size="36">示意：事件發布、條件式扇出與失敗隔離</text>
+  <text x="80" y="118" class="s">Amazon SNS 負責路由與推送；訂閱端仍需驗證、冪等、監控與復原設計</text>
+
+  <g filter="url(#shadow)"><rect x="70" y="250" width="265" height="190" rx="24" class="box"/><text x="100" y="305" class="k">01 可信發布者</text><text x="100" y="350" class="t">訂單服務</text><text x="100" y="388" class="s">IAM 角色・短期憑證</text><text x="100" y="420" class="s">事件最小化・TLS</text></g>
+  <path d="M335 345H470" class="line"/>
+  <g filter="url(#shadow)"><rect x="470" y="215" width="340" height="260" rx="28" class="warn"/><text x="505" y="275" class="k">02 受控事件匯流排</text><text x="505" y="325" class="t">加密 SNS 主題</text><text x="505" y="365" class="s">主題政策最小權限</text><text x="505" y="400" class="s">KMS・篩選政策</text><text x="505" y="435" class="s">標準或 FIFO 模式</text></g>
+
+  <path d="M810 280H950" class="line"/><path d="M810 345H950" class="line"/><path d="M810 410H950" class="line"/>
+  <g filter="url(#shadow)"><rect x="950" y="170" width="285" height="150" rx="22" class="safe"/><text x="980" y="220" class="k">庫存事件</text><text x="980" y="260" class="t">SQS 佇列</text><text x="980" y="292" class="s">緩衝・冪等消費</text></g>
+  <g filter="url(#shadow)"><rect x="950" y="350" width="285" height="150" rx="22" class="safe"/><text x="980" y="400" class="k">通知事件</text><text x="980" y="440" class="t">Lambda</text><text x="980" y="472" class="s">有限重試・併發控制</text></g>
+  <g filter="url(#shadow)"><rect x="950" y="530" width="285" height="150" rx="22" class="safe"/><text x="980" y="580" class="k">合作夥伴事件</text><text x="980" y="620" class="t">HTTPS 端點</text><text x="980" y="652" class="s">簽章驗證・去重</text></g>
+  <path d="M1235 245H1370V725H1120" class="line"/>
+  <path d="M1235 425H1370" class="line"/><path d="M1235 605H1370" class="line"/>
+  <g filter="url(#shadow)"><rect x="870" y="720" width="365" height="120" rx="22" class="warn"/><text x="900" y="770" class="k">失敗隔離</text><text x="900" y="808" class="t">SQS 死信佇列</text></g>
+
+  <g filter="url(#shadow)"><rect x="70" y="570" width="670" height="220" rx="26" class="box"/><text x="105" y="625" class="k">治理與復原控制</text><text x="105" y="675" class="t">CloudWatch 告警</text><text x="105" y="712" class="s">投遞失敗・延遲・節流・死信深度</text><text x="405" y="675" class="t">CloudTrail 稽核</text><text x="405" y="712" class="s">主題、政策、訂閱與 KMS 變更</text><text x="105" y="758" class="s">原始事件另存於可重播來源；替代區域預建主題、政策、金鑰與訂閱</text></g>
+  <text x="80" y="860" class="s">原創流程圖｜不含真實客戶、帳號或驗證資訊</text>
+</svg>

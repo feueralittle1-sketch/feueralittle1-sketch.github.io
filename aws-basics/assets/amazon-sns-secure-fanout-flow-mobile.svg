@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1500" viewBox="0 0 760 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon SNS 安全事件扇出手機版示意流程</title>
+  <desc id="desc">可信發布者將事件送入加密 SNS 主題，再依篩選政策分送至 SQS、Lambda 與 HTTPS 端點；失敗進入死信佇列，CloudWatch、CloudTrail 與可重播來源支援治理和復原。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071528"/><stop offset="1" stop-color="#10264a"/></linearGradient><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#8fe8ff"/></marker><style>.b{fill:#10243f;stroke:#426b96;stroke-width:2}.g{fill:#102f31;stroke:#49d6b2;stroke-width:2}.o{fill:#392612;stroke:#ffb64d;stroke-width:2}.t{font:700 28px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 21px Inter,'Noto Sans TC',sans-serif;fill:#bed0e9}.k{font:700 20px Inter,'Noto Sans TC',sans-serif;fill:#8fe8ff}.l{fill:none;stroke:#8fe8ff;stroke-width:5;marker-end:url(#a)}</style></defs>
+  <rect width="760" height="1500" rx="32" fill="url(#bg)"/>
+  <text x="46" y="66" class="t">示意：SNS 安全事件扇出</text><text x="46" y="102" class="s">推送之外，仍需驗證、冪等與監控</text>
+  <rect x="70" y="150" width="620" height="145" rx="24" class="b"/><text x="105" y="200" class="k">01 可信發布者</text><text x="105" y="242" class="t">訂單服務</text><text x="350" y="242" class="s">短期角色・事件最小化・TLS</text>
+  <path d="M380 295V350" class="l"/>
+  <rect x="70" y="350" width="620" height="180" rx="24" class="o"/><text x="105" y="402" class="k">02 受控事件匯流排</text><text x="105" y="447" class="t">加密 Amazon SNS 主題</text><text x="105" y="490" class="s">最小權限政策・KMS・篩選政策</text>
+  <path d="M380 530V585" class="l"/>
+  <rect x="70" y="585" width="620" height="150" rx="24" class="g"/><text x="105" y="635" class="k">庫存事件</text><text x="105" y="680" class="t">SQS 佇列</text><text x="355" y="680" class="s">緩衝・冪等消費</text>
+  <path d="M380 735V790" class="l"/>
+  <rect x="70" y="790" width="620" height="150" rx="24" class="g"/><text x="105" y="840" class="k">通知事件</text><text x="105" y="885" class="t">Lambda</text><text x="355" y="885" class="s">有限重試・併發控制</text>
+  <path d="M380 940V995" class="l"/>
+  <rect x="70" y="995" width="620" height="150" rx="24" class="g"/><text x="105" y="1045" class="k">合作夥伴事件</text><text x="105" y="1090" class="t">HTTPS 端點</text><text x="355" y="1090" class="s">簽章驗證・去重</text>
+  <path d="M380 1145V1200" class="l"/>
+  <rect x="70" y="1200" width="620" height="115" rx="24" class="o"/><text x="105" y="1250" class="k">失敗隔離</text><text x="315" y="1250" class="t">SQS 死信佇列</text>
+  <rect x="70" y="1350" width="620" height="105" rx="24" class="b"/><text x="105" y="1393" class="k">治理與復原</text><text x="105" y="1430" class="s">CloudWatch・CloudTrail・可重播來源・替代區域</text>
+</svg>
