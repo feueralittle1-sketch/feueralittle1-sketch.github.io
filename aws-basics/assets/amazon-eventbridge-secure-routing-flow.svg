@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon EventBridge 安全事件路由示意流程</title>
+  <desc id="desc">訂單服務使用短期 IAM 角色將最小化事件送入加密 EventBridge 自訂事件匯流排，規則精確分流至 SQS、Lambda 與中央安全帳號，失敗事件進入死信佇列，並以封存重播、CloudWatch、CloudTrail 及替代區域支援治理與復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071528"/><stop offset="1" stop-color="#10264a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#10243f;stroke:#426b96;stroke-width:2}.safe{fill:#102f31;stroke:#49d6b2;stroke-width:2}.warn{fill:#392612;stroke:#ffb64d;stroke-width:2}.t{font:700 25px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 18px Inter,'Noto Sans TC',sans-serif;fill:#bed0e9}.k{font:700 17px Inter,'Noto Sans TC',sans-serif;fill:#8fe8ff}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1600" height="900" rx="36" fill="url(#bg)"/>
+  <text x="80" y="82" class="t" font-size="36">示意：精確事件路由、失敗隔離與受控重播</text>
+  <text x="80" y="118" class="s">EventBridge 負責比對與投遞；事件契約、目標冪等、監控及復原仍由架構共同完成</text>
+
+  <g filter="url(#shadow)"><rect x="65" y="235" width="270" height="205" rx="24" class="box"/><text x="95" y="292" class="k">01 可信事件來源</text><text x="95" y="340" class="t">訂單服務</text><text x="95" y="378" class="s">IAM 角色・短期憑證</text><text x="95" y="412" class="s">版本・識別值・資料最小化</text></g>
+  <path d="M335 338H455" class="line"/>
+  <g filter="url(#shadow)"><rect x="455" y="190" width="375" height="295" rx="28" class="warn"/><text x="490" y="250" class="k">02 受控事件路由</text><text x="490" y="300" class="t">加密 EventBridge 匯流排</text><text x="490" y="340" class="s">精確事件模式</text><text x="490" y="375" class="s">source・detail-type・account</text><text x="490" y="410" class="s">目標專用角色・有限重試</text><text x="490" y="445" class="s">KMS・匯流排政策</text></g>
+
+  <path d="M830 260H945" class="line"/><path d="M830 338H945" class="line"/><path d="M830 416H945" class="line"/>
+  <g filter="url(#shadow)"><rect x="945" y="155" width="305" height="145" rx="22" class="safe"/><text x="975" y="205" class="k">履約事件</text><text x="975" y="245" class="t">SQS 佇列</text><text x="975" y="275" class="s">緩衝・冪等消費</text></g>
+  <g filter="url(#shadow)"><rect x="945" y="325" width="305" height="145" rx="22" class="safe"/><text x="975" y="375" class="k">通知事件</text><text x="975" y="415" class="t">Lambda</text><text x="975" y="445" class="s">併發與重複控制</text></g>
+  <g filter="url(#shadow)"><rect x="945" y="495" width="305" height="145" rx="22" class="safe"/><text x="975" y="545" class="k">稽核事件</text><text x="975" y="585" class="t">中央安全帳號</text><text x="975" y="615" class="s">跨帳號來源限制</text></g>
+
+  <path d="M1250 228H1375V692H1175" class="line"/><path d="M1250 398H1375" class="line"/><path d="M1250 568H1375" class="line"/>
+  <g filter="url(#shadow)"><rect x="865" y="685" width="385" height="125" rx="22" class="warn"/><text x="895" y="735" class="k">永久投遞失敗</text><text x="895" y="775" class="t">加密標準 SQS DLQ</text></g>
+
+  <g filter="url(#shadow)"><rect x="65" y="555" width="690" height="255" rx="26" class="box"/><text x="100" y="610" class="k">治理與復原控制</text><text x="100" y="660" class="t">封存與受控重播</text><text x="100" y="695" class="s">限制時間窗、目標與容量・辨識 replay-name</text><text x="100" y="742" class="t">CloudWatch・CloudTrail</text><text x="100" y="777" class="s">匹配、失敗、節流、重試、死信與設定變更</text><text x="100" y="808" class="s">替代區域預建同名匯流排、規則、目標、金鑰與政策</text></g>
+  <text x="80" y="862" class="s">原創流程圖｜不含真實客戶、帳號、憑證或機密</text>
+</svg>
