@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療網路應用六階段發布流程</title>
+  <desc id="desc">由變更登錄、影響分析、分層安全測試、臨床驗收、受控發布到持續監測形成閉環，未通過時回到修正與重測。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#081426"/><stop offset="1" stop-color="#102544"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="36" fill="url(#bg)"/>
+  <text x="70" y="70" fill="#f7fbff" font-size="34" font-weight="800">六階段發布閉環：沒有證據，就不進正式環境</text>
+  <text x="70" y="108" fill="#9fb3d9" font-size="19">安全、臨床、維運與供應商在同一條變更紀錄上完成核准</text>
+  <g font-family="Arial, Noto Sans TC, sans-serif">
+    <g stroke-width="2">
+      <rect x="70" y="165" width="310" height="120" rx="22" fill="#122943" stroke="#63e6ff"/><rect x="445" y="165" width="310" height="120" rx="22" fill="#172b4b" stroke="#829dff"/><rect x="820" y="165" width="310" height="120" rx="22" fill="#20294c" stroke="#9c8cff"/>
+      <rect x="70" y="370" width="310" height="120" rx="22" fill="#122943" stroke="#63e6ff"/><rect x="445" y="370" width="310" height="120" rx="22" fill="#173146" stroke="#57f0c1"/><rect x="820" y="370" width="310" height="120" rx="22" fill="#20294c" stroke="#9c8cff"/>
+    </g>
+    <g fill="#fff" font-size="23" font-weight="800"><text x="100" y="207">01 變更登錄</text><text x="475" y="207">02 影響分析</text><text x="850" y="207">03 分層測試</text><text x="100" y="412">06 持續監測</text><text x="475" y="412">05 受控發布</text><text x="850" y="412">04 臨床驗收</text></g>
+    <g fill="#c8d7ea" font-size="18"><text x="100" y="243">版本、資產、資料流、責任人</text><text x="475" y="243">信任邊界、濫用情境、回退</text><text x="850" y="243">靜態、動態、互動與組態測試</text><text x="100" y="448">日誌、攻擊面、錯誤與告警</text><text x="475" y="448">分批、觀察窗、即時回退</text><text x="850" y="448">功能、效能、連線與降級</text></g>
+    <g stroke="#7bdff2" stroke-width="5" fill="none"><path d="M380 225H445"/><path d="M755 225H820"/><path d="M975 285V370"/><path d="M820 430H755"/><path d="M445 430H380"/><path d="M225 370V285"/></g>
+    <g fill="#7bdff2"><path d="M445 225l-18-12v24z"/><path d="M820 225l-18-12v24z"/><path d="M975 370l-12-18h24z"/><path d="M755 430l18-12v24z"/><path d="M380 430l18-12v24z"/><path d="M225 285l-12 18h24z"/></g>
+    <rect x="240" y="565" width="720" height="92" rx="22" fill="#0d1d33" stroke="#f9b84f" stroke-width="2"/>
+    <text x="600" y="603" text-anchor="middle" fill="#ffd88a" font-size="22" font-weight="800">任一閘門失敗：停止發布 → 修正 → 重測 → 更新風險紀錄</text>
+    <text x="600" y="635" text-anchor="middle" fill="#bdcce0" font-size="17">緊急變更仍需最小測試、核准、觀察窗與事後補驗，不等於免驗證</text>
+  </g>
+</svg>

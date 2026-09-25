@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">醫療對外應用部署證據架構</title>
+  <desc id="desc">顯示程式碼、第三方更新與組態變更，經安全影響分析、分層測試及臨床驗收後進入對外服務，並由防護與監測形成持續證據。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294a"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#63e6ff"/><stop offset="1" stop-color="#9c8cff"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="680" rx="36" fill="url(#bg)"/>
+  <text x="70" y="72" fill="#f8fbff" font-size="34" font-weight="800">醫療對外應用：變更不能直接穿過部署閘門</text>
+  <text x="70" y="108" fill="#9fb3d9" font-size="19">每次版本、供應商更新與組態調整，都要留下可重做的驗收證據</text>
+  <g font-family="Arial, Noto Sans TC, sans-serif">
+    <rect x="70" y="160" width="250" height="330" rx="24" fill="#10233d" stroke="#46698f" stroke-width="2"/>
+    <text x="98" y="205" fill="#63e6ff" font-size="22" font-weight="700">變更輸入</text>
+    <g fill="#d9e7f7" font-size="19"><text x="98" y="258">• 自研程式碼</text><text x="98" y="305">• 第三方套件／更新</text><text x="98" y="352">• 身分與權限設定</text><text x="98" y="399">• API／輸入欄位</text><text x="98" y="446">• 網路與雲端組態</text></g>
+    <path d="M320 325H405" stroke="#63e6ff" stroke-width="7"/><path d="M405 325l-20-14v28z" fill="#63e6ff"/>
+    <rect x="405" y="145" width="390" height="360" rx="28" fill="#142a48" stroke="url(#accent)" stroke-width="3" filter="url(#glow)"/>
+    <text x="600" y="196" text-anchor="middle" fill="#fff" font-size="25" font-weight="800">部署證據閘門</text>
+    <g fill="#0a1728" stroke="#5f87ad" stroke-width="2"><rect x="445" y="230" width="310" height="54" rx="14"/><rect x="445" y="302" width="310" height="54" rx="14"/><rect x="445" y="374" width="310" height="54" rx="14"/></g>
+    <g fill="#dcecff" font-size="19" font-weight="700"><text x="600" y="264" text-anchor="middle">安全影響分析＋威脅情境</text><text x="600" y="336" text-anchor="middle">SAST／DAST／手動互動測試</text><text x="600" y="408" text-anchor="middle">臨床功能、回退與責任核准</text></g>
+    <text x="600" y="466" text-anchor="middle" fill="#57f0c1" font-size="18">輸出：版本、結果、例外、責任人、期限</text>
+    <path d="M795 325H880" stroke="#57f0c1" stroke-width="7"/><path d="M880 325l-20-14v28z" fill="#57f0c1"/>
+    <rect x="880" y="160" width="250" height="330" rx="24" fill="#10233d" stroke="#4f8b7b" stroke-width="2"/>
+    <text x="908" y="205" fill="#57f0c1" font-size="22" font-weight="700">受控上線</text>
+    <g fill="#d9e7f7" font-size="19"><text x="908" y="258">• 強驗證與最小權限</text><text x="908" y="305">• WAF／輸入防護</text><text x="908" y="352">• 日誌與異常監測</text><text x="908" y="399">• 金絲雀／分批發布</text><text x="908" y="446">• 快速回退路徑</text></g>
+    <path d="M1005 490V570H600V515" fill="none" stroke="#9c8cff" stroke-width="4" stroke-dasharray="10 8"/>
+    <text x="815" y="603" text-anchor="middle" fill="#c9bcff" font-size="18">上線後遙測、事件與弱點回饋下一次驗證</text>
+  </g>
+</svg>

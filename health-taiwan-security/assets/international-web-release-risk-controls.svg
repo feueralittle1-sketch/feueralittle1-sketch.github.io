@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">醫療網路應用發布風險與控制證據</title>
+  <desc id="desc">將版本錯配、測試盲區、防護誤用與回退失效四類風險，對應到控制方法及可驗收證據。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#142544"/></linearGradient></defs>
+  <rect width="1200" height="700" rx="36" fill="url(#bg)"/>
+  <text x="65" y="70" fill="#f7fbff" font-size="34" font-weight="800">四類失敗模式：控制要能留下可驗收證據</text>
+  <text x="65" y="108" fill="#9fb3d9" font-size="19">WAF 不是程式修補，掃描報告也不是上線核准</text>
+  <g font-family="Arial, Noto Sans TC, sans-serif">
+    <g font-size="19" font-weight="800"><text x="75" y="165" fill="#ff9f9f">風險</text><text x="410" y="165" fill="#63e6ff">控制</text><text x="820" y="165" fill="#57f0c1">驗收證據</text></g>
+    <g stroke="#47617d" stroke-width="2">
+      <rect x="65" y="190" width="1070" height="96" rx="20" fill="#101f36"/><rect x="65" y="302" width="1070" height="96" rx="20" fill="#101f36"/><rect x="65" y="414" width="1070" height="96" rx="20" fill="#101f36"/><rect x="65" y="526" width="1070" height="96" rx="20" fill="#101f36"/>
+    </g>
+    <g fill="#ffd0d0" font-size="20" font-weight="700"><text x="85" y="230">版本錯配</text><text x="85" y="342">測試盲區</text><text x="85" y="454">防護誤用</text><text x="85" y="566">回退失效</text></g>
+    <g fill="#cfeeff" font-size="18"><text x="85" y="260">報告與正式版本不同</text><text x="85" y="372">只跑單一掃描工具</text><text x="85" y="484">以 WAF 取代程式修正</text><text x="85" y="596">發布後無法快速復原</text></g>
+    <g fill="#d9e7f7" font-size="18"><text x="410" y="230">鎖定成品雜湊、組態與相依清單</text><text x="410" y="342">組合 SAST、DAST、手動與權限測試</text><text x="410" y="454">修正根因，WAF 僅作額外防線</text><text x="410" y="566">分批發布、資料相容與回退演練</text></g>
+    <g fill="#c9ffe9" font-size="18"><text x="820" y="230">成品簽章＋部署清單</text><text x="820" y="342">案例覆蓋＋重現紀錄</text><text x="820" y="454">複測通過＋規則命中測試</text><text x="820" y="566">回退時間＋臨床功能結果</text></g>
+    <g stroke="#58718d" stroke-width="2"><path d="M365 208V270"/><path d="M775 208V270"/><path d="M365 320V382"/><path d="M775 320V382"/><path d="M365 432V494"/><path d="M775 432V494"/><path d="M365 544V606"/><path d="M775 544V606"/></g>
+    <text x="600" y="665" text-anchor="middle" fill="#b9c8dc" font-size="18">殘餘風險必須記錄適用範圍、補償控制、責任人與到期日</text>
+  </g>
+</svg>
