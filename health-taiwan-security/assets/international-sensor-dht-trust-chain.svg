@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">感測型數位健康技術可信資料鏈</title>
+  <desc id="desc">居家感測器經裝置身分、受保護傳輸、產品後端與臨床系統形成可信資料鏈，並由時間、完整性、可用性與人工覆核控制。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#061426"/><stop offset="1" stop-color="#10294a"/></linearGradient>
+    <linearGradient id="line" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#63e6ff"/><stop offset="1" stop-color="#9c8cff"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="680" rx="36" fill="url(#bg)"/>
+  <g font-family="Arial, Noto Sans TC, sans-serif">
+    <text x="70" y="72" fill="#f8fbff" font-size="34" font-weight="800">遠距生理感測：數值必須帶著可信脈絡抵達臨床</text>
+    <text x="70" y="108" fill="#9fb3d9" font-size="19">裝置、應用程式、後端與醫院介面是一個產品系統，不是四個互不相干的節點</text>
+    <path d="M170 306H1030" stroke="url(#line)" stroke-width="8" filter="url(#glow)"/>
+    <g fill="#10233d" stroke="#4e7197" stroke-width="2">
+      <rect x="65" y="175" width="230" height="260" rx="24"/>
+      <rect x="345" y="175" width="230" height="260" rx="24"/>
+      <rect x="625" y="175" width="230" height="260" rx="24"/>
+      <rect x="905" y="175" width="230" height="260" rx="24"/>
+    </g>
+    <g font-size="23" font-weight="800" text-anchor="middle"><text x="180" y="222" fill="#63e6ff">感測裝置</text><text x="460" y="222" fill="#63e6ff">病人端產品</text><text x="740" y="222" fill="#c9bcff">雲端／後端</text><text x="1020" y="222" fill="#57f0c1">臨床使用</text></g>
+    <g fill="#d9e7f7" font-size="18"><text x="90" y="270">• 裝置唯一身分</text><text x="90" y="309">• 韌體與更新狀態</text><text x="90" y="348">• 量測時間與品質</text><text x="90" y="387">• 離線緩衝</text><text x="370" y="270">• 配對與登入</text><text x="370" y="309">• 本機資料保護</text><text x="370" y="348">• 同意與使用邊界</text><text x="370" y="387">• 傳輸重試</text><text x="650" y="270">• API 與服務身分</text><text x="650" y="309">• 完整性與排序</text><text x="650" y="348">• 稽核與異常監測</text><text x="650" y="387">• 供應商責任</text><text x="930" y="270">• 病人對應</text><text x="930" y="309">• 單位／時區驗證</text><text x="930" y="348">• 缺值與異常標示</text><text x="930" y="387">• 人工覆核</text></g>
+    <g fill="#071426" stroke="#7d91b2" stroke-width="2"><rect x="115" y="500" width="210" height="80" rx="18"/><rect x="365" y="500" width="210" height="80" rx="18"/><rect x="615" y="500" width="210" height="80" rx="18"/><rect x="865" y="500" width="210" height="80" rx="18"/></g>
+    <g text-anchor="middle" font-size="18" font-weight="700"><text x="220" y="535" fill="#fff">身分證據</text><text x="220" y="561" fill="#9fb3d9">誰產生資料</text><text x="470" y="535" fill="#fff">完整性證據</text><text x="470" y="561" fill="#9fb3d9">途中是否改變</text><text x="720" y="535" fill="#fff">可用性證據</text><text x="720" y="561" fill="#9fb3d9">缺值如何處理</text><text x="970" y="535" fill="#fff">臨床證據</text><text x="970" y="561" fill="#9fb3d9">誰依何條件使用</text></g>
+    <text x="600" y="634" text-anchor="middle" fill="#c9bcff" font-size="18">任何一段失去可追溯性，數值就不能直接轉成診療行動</text>
+  </g>
+</svg>

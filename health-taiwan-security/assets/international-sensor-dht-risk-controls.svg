@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">遠距感測風險與控制對照</title>
+  <desc id="desc">將病人錯配、時間錯置、資料缺漏、更新失敗與後端中斷五種風險，對應預防控制、偵測訊號與臨床處置證據。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#112744"/></linearGradient></defs>
+  <rect width="1200" height="680" rx="36" fill="url(#bg)"/>
+  <g font-family="Arial, Noto Sans TC, sans-serif">
+    <text x="70" y="70" fill="#f8fbff" font-size="34" font-weight="800">遠距感測的風險不只在「資料被偷」</text>
+    <text x="70" y="106" fill="#9fb3d9" font-size="19">錯誤病人、錯誤時間與看似正常的缺值，同樣可能改變臨床判斷</text>
+    <g font-size="18" font-weight="800"><rect x="55" y="150" width="1090" height="58" rx="15" fill="#183454"/><text x="90" y="186" fill="#63e6ff">失敗模式</text><text x="330" y="186" fill="#63e6ff">預防控制</text><text x="665" y="186" fill="#c9bcff">偵測訊號</text><text x="930" y="186" fill="#57f0c1">驗收／處置證據</text></g>
+    <g stroke="#345473" stroke-width="1"><rect x="55" y="220" width="1090" height="72" fill="#0d2037"/><rect x="55" y="292" width="1090" height="72" fill="#102640"/><rect x="55" y="364" width="1090" height="72" fill="#0d2037"/><rect x="55" y="436" width="1090" height="72" fill="#102640"/><rect x="55" y="508" width="1090" height="72" fill="#0d2037"/></g>
+    <g fill="#f5f8ff" font-size="18" font-weight="700"><text x="90" y="264">病人／裝置錯配</text><text x="90" y="336">量測時間錯置</text><text x="90" y="408">資料缺漏或重送</text><text x="90" y="480">更新後行為改變</text><text x="90" y="552">後端或網路中斷</text></g>
+    <g fill="#d5e2f3" font-size="17"><text x="330" y="252">強配對、唯一身分、</text><text x="330" y="276">重新綁定需覆核</text><text x="330" y="324">可信時間、時區與</text><text x="330" y="348">序號規則</text><text x="330" y="396">緩衝、冪等、完整性</text><text x="330" y="420">與資料品質旗標</text><text x="330" y="468">簽章更新、分批部署、</text><text x="330" y="492">版本回退</text><text x="330" y="540">離線模式、替代通報、</text><text x="330" y="564">復原目標</text><text x="665" y="252">病人與設備關係異常</text><text x="665" y="276">同帳號多地同時使用</text><text x="665" y="324">未來時間、逆序、</text><text x="665" y="348">不合理採樣間隔</text><text x="665" y="396">長時間平線、重複值、</text><text x="665" y="420">預期筆數不足</text><text x="665" y="468">版本錯誤率、量測分布</text><text x="665" y="492">或耗電突變</text><text x="665" y="540">心跳消失、佇列堆積、</text><text x="665" y="564">延遲超標</text><text x="930" y="252">配對紀錄＋抽樣核對</text><text x="930" y="276">錯配可在時限內撤銷</text><text x="930" y="324">跨系統時間測試</text><text x="930" y="348">異常值不自動決策</text><text x="930" y="396">斷線重送測試</text><text x="930" y="420">缺值明確呈現</text><text x="930" y="468">臨床回歸＋回退演練</text><text x="930" y="492">版本覆蓋可查</text><text x="930" y="540">降級流程實測</text><text x="930" y="564">恢復後對帳完成</text></g>
+    <text x="600" y="635" text-anchor="middle" fill="#c9bcff" font-size="18">安全事件、資料品質事件與臨床事件應使用同一條追蹤與復盤鏈</text>
+  </g>
+</svg>

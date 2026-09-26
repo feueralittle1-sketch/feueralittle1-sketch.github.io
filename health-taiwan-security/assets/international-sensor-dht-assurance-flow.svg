@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">感測型數位健康技術分階段驗收流程</title>
+  <desc id="desc">從用途分級、產品盤點、信任建模、整合測試、受控上線到持續監測的六階段流程，每階段都有停止條件與驗收證據。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#13284a"/></linearGradient><linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#63e6ff"/><stop offset="1" stop-color="#9c8cff"/></linearGradient></defs>
+  <rect width="1200" height="680" rx="36" fill="url(#bg)"/>
+  <g font-family="Arial, Noto Sans TC, sans-serif">
+    <text x="70" y="72" fill="#f8fbff" font-size="34" font-weight="800">六階段把遠距感測從「可連線」變成「可採信」</text>
+    <text x="70" y="108" fill="#9fb3d9" font-size="19">安全測試、資料品質與臨床驗收必須使用同一版本、同一介面與同一風險情境</text>
+    <path d="M150 300H1050" stroke="url(#accent)" stroke-width="6"/>
+    <g fill="#10243f" stroke="#527aa1" stroke-width="2">
+      <rect x="45" y="185" width="165" height="225" rx="22"/><rect x="235" y="185" width="165" height="225" rx="22"/><rect x="425" y="185" width="165" height="225" rx="22"/><rect x="615" y="185" width="165" height="225" rx="22"/><rect x="805" y="185" width="165" height="225" rx="22"/><rect x="995" y="185" width="165" height="225" rx="22"/>
+    </g>
+    <g text-anchor="middle"><g fill="#63e6ff" font-size="17" font-weight="800"><text x="127" y="220">01 用途分級</text><text x="317" y="220">02 產品盤點</text><text x="507" y="220">03 信任建模</text><text x="697" y="220">04 整合驗證</text><text x="887" y="220">05 受控上線</text><text x="1077" y="220">06 持續監測</text></g>
+    <g fill="#d9e7f7" font-size="17"><text x="127" y="268">診斷／監測</text><text x="127" y="298">臨床後果</text><text x="127" y="328">停機容忍</text><text x="317" y="268">裝置＋App</text><text x="317" y="298">後端＋API</text><text x="317" y="328">版本與責任</text><text x="507" y="268">身分與金鑰</text><text x="507" y="298">資料與介面</text><text x="507" y="328">更新與失效</text><text x="697" y="268">重送／亂序</text><text x="697" y="298">斷線／缺值</text><text x="697" y="328">錯配／回退</text><text x="887" y="268">小範圍試行</text><text x="887" y="298">停止條件</text><text x="887" y="328">人工覆核</text><text x="1077" y="268">版本覆蓋</text><text x="1077" y="298">異常與缺值</text><text x="1077" y="328">事件與退場</text></g></g>
+    <g fill="#071426" stroke="#6c83a4" stroke-width="2"><rect x="55" y="475" width="1090" height="110" rx="24"/></g>
+    <text x="90" y="515" fill="#57f0c1" font-size="20" font-weight="800">每階段共同通過條件</text>
+    <g fill="#d9e7f7" font-size="18"><text x="90" y="552">版本可對應</text><text x="275" y="552">責任人已指定</text><text x="495" y="552">失敗情境已測試</text><text x="745" y="552">回退路徑可執行</text><text x="980" y="552">證據可重做</text></g>
+    <text x="600" y="634" text-anchor="middle" fill="#c9bcff" font-size="18">未通過就停止擴大部署，不以「先上線再觀察」取代驗收</text>
+  </g>
+</svg>
