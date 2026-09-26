@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon ElastiCache 安全低延遲商品快取流程示意圖</title>
+  <desc id="desc">私有應用先查詢跨可用區 ElastiCache for Valkey，命中時直接回應，未命中時經受控鎖查詢 Aurora 並回填；資料更新事件負責失效，周邊使用 TLS、IAM 短期驗證、RBAC、KMS、CloudWatch、CloudTrail、備份與跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#0d2240"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd28f"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#78dff2"/></marker>
+    <marker id="orangeArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#ffb657"/></marker>
+    <style>.box{fill:#102b4c;stroke:#5dd5ea;stroke-width:2}.step{fill:#11213b;stroke:#ffb657;stroke-width:2}.guard{fill:#142943;stroke:#9db8df;stroke-width:1.5}.t{font:700 22px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 16px Inter,'Noto Sans TC',sans-serif;fill:#c8d8ee}.k{font:800 15px Inter,'Noto Sans TC',sans-serif;fill:#ffbd70;letter-spacing:1px}.line{fill:none;stroke:#78dff2;stroke-width:4;marker-end:url(#arrow)}.event{fill:none;stroke:#ffb657;stroke-width:4;stroke-dasharray:10 8;marker-end:url(#orangeArrow)}</style>
+  </defs>
+  <rect width="1440" height="900" rx="36" fill="url(#bg)"/>
+  <text x="72" y="70" class="k">ORIGINAL ARCHITECTURE DIAGRAM · 示意</text>
+  <text x="72" y="114" class="t" font-size="34">快取加速讀取；權威資料與一致性仍由應用控制</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="190" width="220" height="130" rx="22" class="box"/>
+    <text x="170" y="232" text-anchor="middle" class="k">商品查詢</text>
+    <text x="170" y="267" text-anchor="middle" class="t">Web／Mobile</text>
+    <text x="170" y="296" text-anchor="middle" class="s">租戶＋商品版本</text>
+
+    <rect x="340" y="170" width="270" height="170" rx="24" class="box"/>
+    <text x="475" y="215" text-anchor="middle" class="k">私有應用服務</text>
+    <text x="475" y="253" text-anchor="middle" class="t">Cache-aside</text>
+    <text x="475" y="284" text-anchor="middle" class="s">逾時・連線池・有限重試</text>
+    <text x="475" y="312" text-anchor="middle" class="s">限流・斷路器・資料授權</text>
+
+    <rect x="680" y="145" width="430" height="250" rx="28" fill="#091a31" stroke="url(#accent)" stroke-width="3"/>
+    <text x="720" y="188" class="k">ELASTICACHE FOR VALKEY · MULTI-AZ</text>
+    <rect x="725" y="220" width="155" height="105" rx="18" class="step"/>
+    <text x="802" y="259" text-anchor="middle" class="t">Primary</text>
+    <text x="802" y="289" text-anchor="middle" class="s">讀寫＋TTL</text>
+    <rect x="910" y="220" width="155" height="105" rx="18" class="step"/>
+    <text x="987" y="259" text-anchor="middle" class="t">Replica</text>
+    <text x="987" y="289" text-anchor="middle" class="s">跨 AZ 複寫</text>
+    <path d="M880 272H910" class="event"/>
+    <text x="895" y="362" text-anchor="middle" class="s">TLS・IAM 短期驗證・RBAC・KMS</text>
+
+    <rect x="1180" y="190" width="200" height="130" rx="22" class="box"/>
+    <text x="1280" y="232" text-anchor="middle" class="k">快取命中</text>
+    <text x="1280" y="267" text-anchor="middle" class="t">低延遲回應</text>
+    <text x="1280" y="296" text-anchor="middle" class="s">可接受的新鮮度</text>
+
+    <path d="M280 255H340" class="line"/>
+    <path d="M610 255H680" class="line"/>
+    <path d="M1110 255H1180" class="line"/>
+
+    <rect x="340" y="475" width="270" height="145" rx="22" class="step"/>
+    <text x="475" y="516" text-anchor="middle" class="k">CACHE MISS 控制</text>
+    <text x="475" y="553" text-anchor="middle" class="t">請求合併／短效鎖</text>
+    <text x="475" y="583" text-anchor="middle" class="s">防止穿透、擊穿與雪崩</text>
+
+    <rect x="680" y="475" width="430" height="145" rx="22" class="box"/>
+    <text x="895" y="516" text-anchor="middle" class="k">權威資料來源</text>
+    <text x="895" y="553" text-anchor="middle" class="t">Aurora 跨可用區資料庫</text>
+    <text x="895" y="583" text-anchor="middle" class="s">完成授權查詢 → 回填快取</text>
+
+    <rect x="1180" y="475" width="200" height="145" rx="22" class="step"/>
+    <text x="1280" y="516" text-anchor="middle" class="k">資料更新</text>
+    <text x="1280" y="553" text-anchor="middle" class="t">版本事件</text>
+    <text x="1280" y="583" text-anchor="middle" class="s">刪除／更新鍵</text>
+
+    <path d="M475 340V475" class="line"/>
+    <path d="M610 547H680" class="line"/>
+    <path d="M895 475V395" class="line"/>
+    <path d="M1180 547H1110V360" class="event"/>
+  </g>
+  <g>
+    <rect x="60" y="700" width="300" height="120" rx="22" class="guard"/><text x="90" y="738" class="k">網路與身分</text><text x="90" y="773" class="t">私有 VPC＋最小權限</text><text x="90" y="800" class="s">安全群組、MFA、短期憑證</text>
+    <rect x="390" y="700" width="300" height="120" rx="22" class="guard"/><text x="420" y="738" class="k">一致性與過載</text><text x="420" y="773" class="t">TTL＋抖動＋斷路器</text><text x="420" y="800" class="s">舊值、熱鍵、資料庫保護</text>
+    <rect x="720" y="700" width="300" height="120" rx="22" class="guard"/><text x="750" y="738" class="k">觀測與稽核</text><text x="750" y="773" class="t">CloudWatch／CloudTrail</text><text x="750" y="800" class="s">命中率、延遲、淘汰、設定變更</text>
+    <rect x="1050" y="700" width="330" height="120" rx="22" class="guard"/><text x="1080" y="738" class="k">備份與復原</text><text x="1080" y="773" class="t">快照＋跨區策略</text><text x="1080" y="800" class="s">還原測試、預熱、流量切換</text>
+  </g>
+  <text x="720" y="866" text-anchor="middle" class="s">重點：快取故障時必須保護權威資料庫，不能讓所有請求無限制直接穿透。</text>
+</svg>
