@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon OpenSearch Service 多租戶安全搜尋流程示意圖</title>
+  <desc id="desc">商品資料經驗證、敏感欄位移除與失敗佇列後寫入私有跨可用區 OpenSearch 網域；搜尋 API 完成使用者與租戶授權後查詢索引，周邊配置 IAM 最小權限、MFA、TLS、KMS、細粒度存取控制、CloudWatch、CloudTrail、S3 原始資料與跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#0d2240"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd28f"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#78dff2"/></marker>
+    <marker id="orangeArrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#ffb657"/></marker>
+    <style>.box{fill:#102b4c;stroke:#5dd5ea;stroke-width:2}.step{fill:#11213b;stroke:#ffb657;stroke-width:2}.guard{fill:#142943;stroke:#9db8df;stroke-width:1.5}.t{font:700 22px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 16px Inter,'Noto Sans TC',sans-serif;fill:#c8d8ee}.k{font:800 15px Inter,'Noto Sans TC',sans-serif;fill:#ffbd70;letter-spacing:1px}.line{fill:none;stroke:#78dff2;stroke-width:4;marker-end:url(#arrow)}.event{fill:none;stroke:#ffb657;stroke-width:4;stroke-dasharray:10 8;marker-end:url(#orangeArrow)}</style>
+  </defs>
+  <rect width="1440" height="900" rx="36" fill="url(#bg)"/>
+  <text x="72" y="70" class="k">ORIGINAL ARCHITECTURE DIAGRAM · 示意</text>
+  <text x="72" y="114" class="t" font-size="34">搜尋索引可重建；權威資料、租戶授權與原始事件需獨立保存</text>
+  <g filter="url(#shadow)">
+    <rect x="60" y="180" width="220" height="145" rx="22" class="box"/>
+    <text x="170" y="222" text-anchor="middle" class="k">權威資料</text>
+    <text x="170" y="258" text-anchor="middle" class="t">Aurora／S3</text>
+    <text x="170" y="290" text-anchor="middle" class="s">商品＋原始事件</text>
+
+    <rect x="335" y="160" width="300" height="185" rx="24" class="step"/>
+    <text x="485" y="202" text-anchor="middle" class="k">受控攝取管線</text>
+    <text x="485" y="238" text-anchor="middle" class="t">驗證與資料最小化</text>
+    <text x="485" y="270" text-anchor="middle" class="s">Schema・租戶標記・遮罩</text>
+    <text x="485" y="302" text-anchor="middle" class="s">背壓・有限重試・失敗佇列</text>
+
+    <rect x="700" y="135" width="470" height="260" rx="28" fill="#091a31" stroke="url(#accent)" stroke-width="3"/>
+    <text x="745" y="178" class="k">OPENSEARCH DOMAIN · PRIVATE VPC · 3 AZ</text>
+    <rect x="745" y="215" width="110" height="100" rx="18" class="box"/>
+    <text x="800" y="252" text-anchor="middle" class="t">AZ-A</text><text x="800" y="282" text-anchor="middle" class="s">Primary</text>
+    <rect x="880" y="215" width="110" height="100" rx="18" class="box"/>
+    <text x="935" y="252" text-anchor="middle" class="t">AZ-B</text><text x="935" y="282" text-anchor="middle" class="s">Replica</text>
+    <rect x="1015" y="215" width="110" height="100" rx="18" class="box"/>
+    <text x="1070" y="252" text-anchor="middle" class="t">AZ-C</text><text x="1070" y="282" text-anchor="middle" class="s">Replica</text>
+    <path d="M855 265H880" class="event"/><path d="M990 265H1015" class="event"/>
+    <text x="935" y="355" text-anchor="middle" class="s">TLS・KMS・FGAC・索引生命週期</text>
+
+    <path d="M280 252H335" class="line"/>
+    <path d="M635 252H700" class="line"/>
+
+    <rect x="60" y="485" width="220" height="145" rx="22" class="box"/>
+    <text x="170" y="527" text-anchor="middle" class="k">使用者請求</text>
+    <text x="170" y="563" text-anchor="middle" class="t">Web／Mobile</text>
+    <text x="170" y="595" text-anchor="middle" class="s">身分＋租戶內容</text>
+
+    <rect x="335" y="465" width="300" height="185" rx="24" class="step"/>
+    <text x="485" y="507" text-anchor="middle" class="k">搜尋 API</text>
+    <text x="485" y="543" text-anchor="middle" class="t">授權與查詢保護</text>
+    <text x="485" y="575" text-anchor="middle" class="s">租戶過濾・查詢模板・逾時</text>
+    <text x="485" y="607" text-anchor="middle" class="s">欄位白名單・限流・結果上限</text>
+
+    <rect x="700" y="465" width="470" height="185" rx="24" class="box"/>
+    <text x="935" y="507" text-anchor="middle" class="k">細粒度資料存取</text>
+    <text x="935" y="543" text-anchor="middle" class="t">Index／Document／Field</text>
+    <text x="935" y="575" text-anchor="middle" class="s">服務角色只查詢授權索引與欄位</text>
+    <text x="935" y="607" text-anchor="middle" class="s">使用者不直接連線網域或 Dashboards</text>
+
+    <rect x="1220" y="485" width="160" height="145" rx="22" class="box"/>
+    <text x="1300" y="527" text-anchor="middle" class="k">搜尋結果</text>
+    <text x="1300" y="563" text-anchor="middle" class="t">受控回應</text>
+    <text x="1300" y="595" text-anchor="middle" class="s">無跨租戶資料</text>
+
+    <path d="M280 557H335" class="line"/>
+    <path d="M635 557H700" class="line"/>
+    <path d="M1170 557H1220" class="line"/>
+  </g>
+  <g>
+    <rect x="60" y="710" width="300" height="120" rx="22" class="guard"/><text x="90" y="748" class="k">身分與網路</text><text x="90" y="783" class="t">VPC＋IAM 最小權限</text><text x="90" y="810" class="s">聯合登入、MFA、短期憑證</text>
+    <rect x="390" y="710" width="300" height="120" rx="22" class="guard"/><text x="420" y="748" class="k">資料與金鑰</text><text x="420" y="783" class="t">TLS＋KMS＋遮罩</text><text x="420" y="810" class="s">保留、刪除、敏感欄位最小化</text>
+    <rect x="720" y="710" width="300" height="120" rx="22" class="guard"/><text x="750" y="748" class="k">觀測與稽核</text><text x="750" y="783" class="t">CloudWatch／CloudTrail</text><text x="750" y="810" class="s">JVM、磁碟、拒絕、政策變更</text>
+    <rect x="1050" y="710" width="330" height="120" rx="22" class="guard"/><text x="1080" y="748" class="k">備份與跨區復原</text><text x="1080" y="783" class="t">快照＋S3＋IaC</text><text x="1080" y="810" class="s">還原、重新索引、DNS 切換演練</text>
+  </g>
+  <text x="720" y="870" text-anchor="middle" class="s">重點：禁止讓終端使用者直接提交無界限查詢或繞過租戶授權存取搜尋端點。</text>
+</svg>

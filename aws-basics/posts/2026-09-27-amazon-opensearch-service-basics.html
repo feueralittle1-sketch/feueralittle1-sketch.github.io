@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon OpenSearch Service：搜尋、日誌分析與叢集治理</title>
+  <meta name="description" content="理解 Amazon OpenSearch Service 的索引、分片、副本、受管網域與 Serverless，以及搜尋品質、成本、可用性與資安控制。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-27-amazon-opensearch-service-basics.html" />
+  <link rel="prev" href="./2026-09-26-amazon-elasticache-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon OpenSearch Service：搜尋、日誌分析與叢集治理" />
+  <meta property="og:description" content="從索引、分片與查詢，到 VPC、細粒度存取控制、加密、監控、快照及跨區復原，建立可治理的搜尋與分析平台。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-09-27-amazon-opensearch-service-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-opensearch-secure-search-flow.svg" />
+  <meta property="article:published_time" content="2026-09-27T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon OpenSearch Service：搜尋、日誌分析與叢集治理" />
+  <meta name="twitter:description" content="掌握受管網域、Serverless、索引生命週期、搜尋授權、加密、監控、快照與復原邊界。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-opensearch-secure-search-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1050px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon OpenSearch Service：搜尋、日誌分析與叢集治理","description":"理解 Amazon OpenSearch Service 的索引、分片、副本、受管網域與 Serverless，以及搜尋品質、成本、可用性與資安控制。","datePublished":"2026-09-27T21:30:00+08:00","dateModified":"2026-09-27T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-27-amazon-opensearch-service-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-opensearch-secure-search-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">搜尋與日誌分析</span><span class="chip rounded-full px-3 py-1 text-sm">2026-09-27</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon OpenSearch Service：搜尋、日誌分析與叢集治理</h1>
+<p class="text-xl leading-9 muted">Amazon OpenSearch Service 是受管的搜尋與分析服務，可部署 OpenSearch 叢集或使用 OpenSearch Serverless，處理全文搜尋、應用程式可觀測資料、安全事件與近即時分析。它能代管基礎設施與部分維運工作，但不會自動修正不合理的索引模型、過寬的資料權限、無界限查詢、錯誤的分片規劃或不完整的資料保存與復原策略。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-09-27</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>Amazon OpenSearch Service</strong> 接收由應用、串流、資料管線或日誌代理送入的文件，建立可搜尋索引，並提供 REST API、OpenSearch Dashboards 與分析能力。典型用途包括網站與商品全文搜尋、集中式日誌分析、應用效能與營運事件探索，以及資安偵測資料的查詢與視覺化。</p>
+<p>主要部署方式分為<strong>受管網域</strong>與<strong>OpenSearch Serverless</strong>。受管網域讓團隊選擇執行個體、儲存、專用叢集管理節點、分片、副本與多可用區配置；Serverless 以 collection 為管理單位，自動配置與擴縮搜尋及索引容量。Serverless 減少節點管理，不代表可忽略資料存取政策、加密政策、網路政策、索引設計、查詢成本與容量上限。</p>
+<h2>核心概念與適用邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">搜尋與資料元件</h3><ul>
+<li><strong>文件與欄位：</strong>資料以 JSON 文件進入索引；欄位型別、分析器與 mapping 會直接影響搜尋結果、聚合能力及儲存量。</li>
+<li><strong>索引：</strong>索引是文件的邏輯集合；命名、版本、生命週期、寫入別名與保留期間必須預先設計。</li>
+<li><strong>主要分片：</strong>決定資料如何分散與平行處理；過少會形成容量瓶頸，過多會消耗記憶體與管理資源。</li>
+<li><strong>副本分片：</strong>提供讀取擴展與節點故障時的資料副本，但會增加儲存、寫入與同步成本。</li>
+<li><strong>分析器：</strong>將文字正規化與斷詞；語言、同義詞、停用詞與大小寫規則會影響召回率與精確度。</li>
+<li><strong>Dashboards：</strong>提供搜尋、視覺化與操作介面；仍須受到身分、角色、租戶與網路邊界限制。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">部署與責任邊界</h3><ul>
+<li><strong>受管網域：</strong>客戶控制節點、儲存、版本與拓撲；AWS 執行受管基礎設施維護，容量規劃仍屬客戶責任。</li>
+<li><strong>Serverless：</strong>以 collection、加密、網路與資料存取政策治理，自動擴縮底層運算；查詢與索引效率仍影響使用量。</li>
+<li><strong>VPC 存取：</strong>可將端點限制於 VPC；此時仍要正確設定安全群組、DNS、路由與來源工作負載。</li>
+<li><strong>細粒度存取控制：</strong>可限制 cluster、index、document、field 與 Dashboards 權限；不能只靠網域存取政策取代資料層授權。</li>
+<li><strong>近即時搜尋：</strong>文件寫入後通常需 refresh 才能被搜尋，不適合當作要求同步交易一致性的主資料庫。</li>
+<li><strong>快照：</strong>受管網域具有自動快照能力，也可使用手動快照；快照、應用設定與流量切換仍須定期還原演練。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>需要全文搜尋、相關性排序、模糊比對、欄位過濾、聚合與近即時索引。</li>
+<li>需要集中查詢大量應用日誌、稽核事件、指標衍生資料或安全事件，並建立可視化儀表板。</li>
+<li>資料來源有明確的權威系統，搜尋索引可由資料庫、物件儲存或串流重新建立。</li>
+<li>團隊能管理 mapping、分片、索引生命週期、資料存取角色、查詢限制與容量監控。</li>
+<li>工作負載變化大且希望減少節點管理時評估 Serverless；需要精細拓撲、版本與容量控制時評估受管網域。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>要求每次讀取都具同步強一致、完整交易、跨多筆資料的嚴格約束，且無其他權威資料庫。</li>
+<li>只需要低成本封存、很少查詢的原始日誌；此類資料可先存入 S3，再按需求建立查詢或索引層。</li>
+<li>希望把未分類的所有資料與日誌無限期送入索引，卻沒有保留、刪除、遮罩與成本上限。</li>
+<li>需要向網際網路匿名開放 Dashboards 或資料 API，且無法建立應用層驗證、WAF、速率限制與查詢邊界。</li>
+<li>將 OpenSearch 當成資料備份，卻沒有權威來源、快照驗證、重建程序與跨區復原設計。</li>
+</ul>
+<h2>示意故事案例：多租戶電商搜尋與日誌分析</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一個多租戶電商平台以 Aurora 保存商品與訂單的權威資料。商品變更事件進入受控資料管線，完成 schema 驗證、敏感欄位移除、租戶標記與失敗佇列處理後，寫入位於私有 VPC 的 OpenSearch 網域。搜尋 API 先驗證使用者與租戶，再以服務角色查詢對應索引別名；使用者不能直接連線到網域或 Dashboards。</p>
+<p>網域跨三個可用區配置專用叢集管理節點、資料節點與副本分片，節點間及靜態資料使用 KMS 加密，傳輸使用 TLS。細粒度存取控制限制每個服務可查詢的索引與操作；管理者透過聯合登入、MFA 與短期憑證進入受控維運路徑。CloudWatch 監控 JVM 記憶體壓力、CPU、磁碟、叢集狀態、寫入拒絕、搜尋延遲與錯誤，CloudTrail 稽核管理 API。舊索引依保留政策移除，原始事件保存於 S3；快照、索引範本、資料管線與 DNS 切換程序在另一區域定期演練。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-opensearch-secure-search-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-opensearch-secure-search-flow.svg" alt="示意：商品資料經驗證、敏感欄位移除與失敗佇列後寫入私有跨可用區 OpenSearch 網域；搜尋 API 完成使用者與租戶授權後查詢索引，周邊配置 IAM 最小權限、MFA、TLS、KMS、細粒度存取控制、CloudWatch、CloudTrail、S3 原始資料與跨區復原" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：搜尋索引提供探索與讀取加速，權威資料、租戶授權、原始事件與復原來源仍須由外部系統保留。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>定義查詢目標：</strong>列出使用者搜尋、日誌探索、聚合、延遲、索引速度、資料新鮮度、保存期間與復原目標。</li>
+<li><strong>盤點權威來源：</strong>確認哪些資料可重新索引、原始事件保存位置、刪除來源、資料分類與法規保存要求。</li>
+<li><strong>選擇部署模式：</strong>依流量可預測性、拓撲控制、版本需求、操作能力與成本模型選擇受管網域或 Serverless collection。</li>
+<li><strong>設計 mapping：</strong>明確定義 keyword、text、numeric、date、object 與向量等欄位型別，禁止不受控動態欄位造成 mapping explosion。</li>
+<li><strong>設計索引生命週期：</strong>建立時間或業務分區、寫入別名、rollover、保留、刪除及必要的冷資料策略。</li>
+<li><strong>規劃分片：</strong>以資料量、節點數、寫入量、查詢併發與故障復原測試決定主要分片及副本，避免單一巨大分片或大量微小分片。</li>
+<li><strong>建立私有網路：</strong>將網域或 Serverless VPC endpoint 放在受控網路，安全群組只允許指定應用與維運來源。</li>
+<li><strong>建立身分邊界：</strong>管理平面使用 IAM 最小權限、聯合登入、MFA 與短期憑證；資料平面使用細粒度角色、索引、文件與欄位權限。</li>
+<li><strong>啟用加密：</strong>強制 HTTPS、節點間加密與靜態加密，依資料分類使用 KMS key，限制 key policy 與管理權限。</li>
+<li><strong>建置攝取管線：</strong>驗證 schema、移除或遮罩敏感欄位、加入租戶與資料來源標記、設定批次大小、重試、背壓與失敗佇列。</li>
+<li><strong>保護查詢：</strong>由應用 API 執行授權、租戶過濾、查詢模板、欄位白名單、分頁上限、逾時、速率限制與成本保護。</li>
+<li><strong>配置可用性：</strong>正式受管網域依需求採多可用區、專用叢集管理節點與足夠副本；驗證節點失效、藍綠變更與容量水位。</li>
+<li><strong>管理設定與機密：</strong>一般設定存入 Parameter Store；需要保存的連線秘密存入 Secrets Manager，不寫入程式碼、映像或一般日誌。</li>
+<li><strong>建立觀測：</strong>以 CloudWatch 監控叢集狀態、CPU、JVM、磁碟、分片、延遲、拒絕、錯誤與使用量，並集中保存適用日誌。</li>
+<li><strong>備份與復原：</strong>確認自動快照與手動快照需求，保留 IaC、索引範本與管線設定，演練還原、重建索引及跨區流量切換。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>受管網域主要成本來自資料節點、專用叢集管理節點、EBS 儲存、UltraWarm 或冷資料、資料傳輸與快照儲存；Serverless 主要依索引與搜尋運算容量及儲存量計費。OpenSearch Ingestion、CloudWatch Logs、KMS、S3、跨區傳輸與其他整合服務可能另行計費。過多分片、高基數欄位、保存過久、深度分頁、前綴或萬用字元查詢、昂貴聚合及重複索引都會增加資源使用。</p>
+<p>高可用設計需同時考慮資料節點、專用叢集管理節點、可用區、副本分片與應用重試。多可用區與副本能降低單一節點或可用區故障影響，但叢集在重新配置或分片重分配期間可能出現效能下降、寫入拒絕或查詢延遲。應用須使用有限退避、合理逾時、冪等寫入與降級查詢，不能對過載叢集無限制重試。</p>
+<p>跨區復原不是只複製索引。復原計畫還須包含原始資料、攝取管線、IAM、KMS、VPC、DNS、應用設定、索引範本、Dashboards 物件與驗證程序。可依 RPO／RTO 選擇快照還原、由 S3 或資料庫重新索引，或採跨叢集複寫；任何方案都要測試 KMS 權限、版本相容性、容量與流量切換。</p>
+<h2>Amazon OpenSearch Service 特有資安風險與控制</h2><ul>
+<li><strong>資料端點或 Dashboards 暴露：</strong>優先使用 VPC 存取與受控維運入口；若業務必須使用公有端點，仍須使用強身分驗證、最小來源、WAF、速率限制與持續暴露檢查。</li>
+<li><strong>只做網域政策、不做資料授權：</strong>啟用細粒度存取控制，分離 cluster、index、document、field 與 Dashboards 權限；多租戶不得只依前端隱藏資料。</li>
+<li><strong>主使用者濫用：</strong>主使用者只用於初始設定與緊急復原，日常管理改用映射角色、聯合登入、MFA 與短期憑證。</li>
+<li><strong>跨租戶資料洩漏：</strong>在資料寫入與查詢兩側驗證租戶，採獨立索引或嚴格 document-level security，測試別名、Dashboards tenant、匯出與快取邊界。</li>
+<li><strong>敏感資料進入索引：</strong>攝取前分類、遮罩與最小化個資、驗證資料及秘密；原始請求、查詢字串、錯誤與 slow log 不得洩漏敏感內容。</li>
+<li><strong>mapping explosion：</strong>使用明確 mapping、欄位白名單與動態範本，限制由使用者控制的任意欄位名稱，對欄位數與拒絕事件告警。</li>
+<li><strong>資源耗盡與拒絕服務：</strong>限制查詢語法、聚合桶數、結果窗口、逾時、併發與請求大小；監控 rejected tasks、JVM、CPU、磁碟與單租戶流量。</li>
+<li><strong>惡意或昂貴查詢：</strong>禁止未受控 script、regex、leading wildcard 與深度分頁，使用查詢模板及欄位白名單，對匿名與低信任流量加上 WAF 與速率限制。</li>
+<li><strong>加密設定被弱化：</strong>強制 HTTPS、節點間加密與靜態加密；以 KMS 保護資料與快照，限制 key policy，並對停用、排程刪除與政策變更告警。</li>
+<li><strong>管理與稽核缺口：</strong>以 CloudTrail 集中保存建立、修改、刪除與存取政策等管理 API；啟用適用的稽核日誌並防止一般管理者任意刪除。</li>
+<li><strong>快照無法還原：</strong>定期在隔離環境驗證快照、版本、角色、KMS 與 repository 權限；原始資料與 IaC 亦須可重新建立索引。</li>
+<li><strong>刪除請求未傳播：</strong>把個資刪除、租戶終止與資料保留規則同步到索引、快照、原始事件及下游匯出，留下可稽核的執行紀錄。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 OpenSearch Service 受管基礎設施、實體設施、硬體與服務平台安全，並依部署模式提供節點維護、自動擴縮、快照、加密及可用性能力。客戶負責資料分類、mapping、索引生命週期、分片與容量、VPC、安全群組、存取政策、細粒度角色、KMS、查詢限制、原始資料、成本與復原。</p>
+<p>客戶仍須落實 IAM 最小權限、管理者 MFA 與短期憑證、網路隔離與公開存取盤點、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、備份及跨區復原。AWS 不會替應用判斷文件屬於哪個租戶、哪些欄位可被搜尋、查詢是否過度昂貴、索引是否應刪除，亦不保證錯誤 mapping 或無界限攝取不會耗盡資源。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已記錄搜尋與分析目標、p95／p99 延遲、資料新鮮度、索引量、查詢併發、RPO／RTO 與成本上限。</li>
+<li>□ 每個索引都有權威來源、資料擁有者、分類、租戶邊界、保留期限、刪除與重新索引程序。</li>
+<li>□ 受管網域或 Serverless 已依拓撲控制、版本、流量、維運能力與計費模型測試選定。</li>
+<li>□ mapping、分析器、動態範本與欄位上限已經版本控制，未允許不受控任意欄位。</li>
+<li>□ 分片與副本數已依資料量、節點、寫入、查詢與故障測試設定，沒有大量微小分片或超大分片。</li>
+<li>□ 網域、collection 與 Dashboards 位於受控網路；公開端點、0.0.0.0/0 與不必要跨網路路徑均已移除。</li>
+<li>□ 管理者使用聯合登入、MFA 與短期憑證；建立、修改、刪除、政策變更及 iam:PassRole 權限已縮限。</li>
+<li>□ 細粒度存取控制已限制 cluster、index、document、field、Dashboards tenant 與管理操作。</li>
+<li>□ 多租戶授權已在寫入、搜尋、匯出、Dashboards 與錯誤路徑測試，無法跨租戶查詢或推測資料。</li>
+<li>□ 任何 credential、Access Key、Secret Key、Token、密碼或 cookie 都未寫入索引、查詢、URL、原始碼、映像或一般日誌。</li>
+<li>□ 機密存於 Secrets Manager，非秘密設定存於 Parameter Store，兩者均有最小權限、輪替與稽核。</li>
+<li>□ HTTPS、節點間加密與靜態加密已啟用；KMS key policy、停用、刪除、快照與還原權限已測試。</li>
+<li>□ 攝取管線具 schema 驗證、敏感欄位遮罩、批次上限、背壓、有限重試、失敗佇列與可重送識別。</li>
+<li>□ 搜尋 API 使用查詢模板、欄位白名單、結果上限、逾時、速率限制與昂貴查詢防護。</li>
+<li>□ 正式網域已依需求配置多可用區、專用叢集管理節點、副本與足夠磁碟水位。</li>
+<li>□ CloudWatch 已監控叢集狀態、CPU、JVM、磁碟、分片、索引與搜尋延遲、拒絕、錯誤及成本。</li>
+<li>□ CloudTrail 已集中保存 OpenSearch 管理 API，存取政策、網路、加密、KMS、刪除與版本變更已告警。</li>
+<li>□ slow log、application log 與 audit log 已依適用性啟用，保存位置不可由一般網域管理者任意刪除。</li>
+<li>□ 已估算節點或 Serverless 運算、儲存、溫冷資料、攝取、日誌、快照、KMS 與資料傳輸成本。</li>
+<li>□ 已演練節點與可用區失效、磁碟壓力、mapping explosion、昂貴查詢、資料刪除、快照還原、重新索引與跨區切換。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/what-is.html" target="_blank" rel="noopener noreferrer">What is Amazon OpenSearch Service?</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/serverless-overview.html" target="_blank" rel="noopener noreferrer">What is Amazon OpenSearch Serverless?</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/bp.html" target="_blank" rel="noopener noreferrer">Operational best practices for Amazon OpenSearch Service</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/vpc.html" target="_blank" rel="noopener noreferrer">Launching OpenSearch Service domains within a VPC</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/fgac.html" target="_blank" rel="noopener noreferrer">Fine-grained access control in Amazon OpenSearch Service</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/encryption-at-rest.html" target="_blank" rel="noopener noreferrer">Encryption of data at rest for Amazon OpenSearch Service</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/ntn.html" target="_blank" rel="noopener noreferrer">Node-to-node encryption in Amazon OpenSearch Service</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/managedomains-multiaz.html" target="_blank" rel="noopener noreferrer">Multi-AZ with Standby</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/managedomains-snapshots.html" target="_blank" rel="noopener noreferrer">Creating index snapshots in Amazon OpenSearch Service</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/managedomains-cloudwatchmetrics.html" target="_blank" rel="noopener noreferrer">Monitoring OpenSearch cluster metrics with Amazon CloudWatch</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/monitoring-cloudtrail.html" target="_blank" rel="noopener noreferrer">Logging Amazon OpenSearch Service API calls with AWS CloudTrail</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/opensearch-service/latest/developerguide/security.html" target="_blank" rel="noopener noreferrer">Security in Amazon OpenSearch Service</a>（查閱：2026-09-27）</li>
+<li><a href="https://aws.amazon.com/opensearch-service/pricing/" target="_blank" rel="noopener noreferrer">Amazon OpenSearch Service pricing</a>（查閱：2026-09-27）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-09-27）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新功能、OpenSearch 版本、區域支援、價格、配額、資料分類、組織政策及復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-09-26-amazon-elasticache-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon ElastiCache：快取、低延遲與資料一致性治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
