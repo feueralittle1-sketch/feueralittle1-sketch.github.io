@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1600" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon Redshift 治理式分析手機流程示意圖</title>
+  <desc id="desc">垂直呈現營運資料進入 S3 受控落地區，經驗證、遮罩與品質檢查後載入私有 Redshift，再由 BI 語意層以最小權限查詢，並配置 WLM、加密、監控、稽核、快照與跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#0d2240"/></linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#78dff2"/></marker>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".35"/></filter>
+    <style>.box{fill:#102b4c;stroke:#5dd5ea;stroke-width:2}.step{fill:#11213b;stroke:#ffb657;stroke-width:2}.guard{fill:#142943;stroke:#9db8df;stroke-width:1.5}.t{font:700 23px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 18px Inter,'Noto Sans TC',sans-serif;fill:#c8d8ee}.k{font:800 16px Inter,'Noto Sans TC',sans-serif;fill:#ffbd70;letter-spacing:1px}.line{fill:none;stroke:#78dff2;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="720" height="1600" rx="32" fill="url(#bg)"/>
+  <text x="44" y="56" class="k">原創架構圖 · 示意</text><text x="44" y="96" class="t">Redshift 治理式分析流程</text>
+  <g filter="url(#shadow)">
+    <rect x="80" y="135" width="560" height="110" rx="22" class="box"/><text x="360" y="178" text-anchor="middle" class="t">1. 訂單／庫存／會員權威來源</text><text x="360" y="213" text-anchor="middle" class="s">批次與串流事件</text>
+    <path d="M360 245V280" class="line"/>
+    <rect x="80" y="290" width="560" height="155" rx="22" class="step"/><text x="360" y="332" text-anchor="middle" class="t">2. S3 受控落地區</text><text x="360" y="367" text-anchor="middle" class="s">Schema、惡意檔案隔離、個資遮罩</text><text x="360" y="399" text-anchor="middle" class="s">品質檢查、重複處理、失敗佇列</text>
+    <path d="M360 445V480" class="line"/>
+    <rect x="65" y="490" width="590" height="260" rx="28" fill="#091a31" stroke="#ffad3d" stroke-width="3"/>
+    <text x="105" y="532" class="k">PRIVATE REDSHIFT</text><text x="360" y="580" text-anchor="middle" class="t">佈建叢集或 Serverless</text>
+    <rect x="100" y="615" width="235" height="90" rx="18" class="box"/><text x="217" y="652" text-anchor="middle" class="t">資料模型</text><text x="217" y="682" text-anchor="middle" class="s">分布・排序・遮罩</text>
+    <rect x="385" y="615" width="235" height="90" rx="18" class="box"/><text x="502" y="652" text-anchor="middle" class="t">WLM</text><text x="502" y="682" text-anchor="middle" class="s">隔離・逾時・上限</text>
+    <text x="360" y="730" text-anchor="middle" class="s">TLS・KMS・資料庫角色・稽核日誌</text>
+    <path d="M360 750V785" class="line"/>
+    <rect x="80" y="795" width="560" height="135" rx="22" class="step"/><text x="360" y="837" text-anchor="middle" class="t">3. BI 語意層</text><text x="360" y="872" text-anchor="middle" class="s">核准指標、參數化查詢、列數上限</text><text x="360" y="904" text-anchor="middle" class="s">使用者不能取得管理或任意匯出權限</text>
+    <path d="M360 930V965" class="line"/>
+    <rect x="80" y="975" width="560" height="120" rx="22" class="box"/><text x="360" y="1017" text-anchor="middle" class="t">4. 最小權限資料存取</text><text x="360" y="1052" text-anchor="middle" class="s">工程／報表／稽核角色分離</text>
+    <path d="M360 1095V1130" class="line"/>
+    <rect x="80" y="1140" width="560" height="120" rx="22" class="box"/><text x="360" y="1182" text-anchor="middle" class="t">5. 監控、稽核與復原</text><text x="360" y="1217" text-anchor="middle" class="s">CloudWatch・CloudTrail・快照・跨區演練</text>
+  </g>
+  <g>
+    <rect x="55" y="1300" width="295" height="105" rx="18" class="guard"/><text x="78" y="1338" class="k">身分與網路</text><text x="78" y="1372" class="s">VPC、IAM、MFA、短期憑證</text>
+    <rect x="370" y="1300" width="295" height="105" rx="18" class="guard"/><text x="393" y="1338" class="k">資料與機密</text><text x="393" y="1372" class="s">TLS、KMS、Secrets、遮罩</text>
+    <rect x="55" y="1425" width="295" height="105" rx="18" class="guard"/><text x="78" y="1463" class="k">效能與成本</text><text x="78" y="1497" class="s">WLM、RPU、掃描、使用上限</text>
+    <rect x="370" y="1425" width="295" height="105" rx="18" class="guard"/><text x="393" y="1463" class="k">復原證明</text><text x="393" y="1497" class="s">快照、IaC、ETL、BI 跨區演練</text>
+  </g>
+  <text x="360" y="1570" text-anchor="middle" class="s">分析資料、查詢資源與匯出路徑都要有邊界。</text>
+</svg>

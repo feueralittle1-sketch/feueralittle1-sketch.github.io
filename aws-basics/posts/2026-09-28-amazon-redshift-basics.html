@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon Redshift：雲端資料倉儲、分析效能與資料治理</title>
+  <meta name="description" content="理解 Amazon Redshift 的資料倉儲定位、RA3、Serverless、資料分布、工作負載管理、成本、可用性與資安控制。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-09-28-amazon-redshift-basics.html" />
+  <link rel="prev" href="./2026-09-27-amazon-opensearch-service-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon Redshift：雲端資料倉儲、分析效能與資料治理" />
+  <meta property="og:description" content="從資料載入、欄式儲存與查詢治理，到私有網路、最小權限、KMS、稽核、快照與跨區復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-09-28-amazon-redshift-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-redshift-governed-analytics-flow.svg" />
+  <meta property="article:published_time" content="2026-09-28T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon Redshift：雲端資料倉儲、分析效能與資料治理" />
+  <meta name="twitter:description" content="掌握叢集與 Serverless、資料模型、WLM、成本、可用性、安全控制與共同責任。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-redshift-governed-analytics-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1050px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon Redshift：雲端資料倉儲、分析效能與資料治理","description":"理解 Amazon Redshift 的資料倉儲定位、RA3、Serverless、資料分布、工作負載管理、成本、可用性與資安控制。","datePublished":"2026-09-28T21:30:00+08:00","dateModified":"2026-09-28T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-09-28-amazon-redshift-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-redshift-governed-analytics-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">資料倉儲與分析</span><span class="chip rounded-full px-3 py-1 text-sm">2026-09-28</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon Redshift：雲端資料倉儲、分析效能與資料治理</h1>
+<p class="text-xl leading-9 muted">Amazon Redshift 是受管的雲端資料倉儲服務，適合以 SQL 分析大量結構化與半結構化資料，並可透過佈建叢集或 Redshift Serverless 提供運算能力。服務能減少底層基礎設施管理，但不會代替資料分類、模型設計、查詢隔離、身分治理、成本控制、備份驗證或災難復原決策。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-09-28</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>Amazon Redshift</strong> 以欄式儲存、大規模平行處理與 SQL 查詢引擎支援商業智慧、營運報表、資料集市、分析模型與跨資料來源查詢。資料可由 S3、關聯式資料庫、串流或整合管線載入；分析工具與應用則透過受控連線執行查詢。</p>
+<p>主要模式包括<strong>佈建叢集</strong>與<strong>Redshift Serverless</strong>。佈建叢集讓團隊選擇節點類型、節點數與網路配置；RA3 節點將受管儲存與主要運算容量分離。Serverless 以 namespace 與 workgroup 管理資料及運算，自動配置容量並依使用量計費。Serverless 降低容量管理負擔，不代表查詢、資料保留、網路、權限與成本可以不設邊界。</p>
+<h2>核心概念與適用邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">資料與效能元件</h3><ul>
+<li><strong>欄式儲存：</strong>同欄資料集中儲存，適合掃描少數欄位與大量資料的聚合分析。</li>
+<li><strong>MPP：</strong>查詢工作分散到多個運算資源平行執行；資料分布不均會形成傾斜與慢節點。</li>
+<li><strong>分布樣式：</strong>決定資料列如何配置到運算切片；錯誤的分布鍵會增加資料搬移。</li>
+<li><strong>排序鍵：</strong>影響區塊略過與掃描量；須依常用過濾、時間與關聯模式設計。</li>
+<li><strong>壓縮編碼：</strong>降低儲存與 I/O；載入方式、資料型別與欄位特性會影響效果。</li>
+<li><strong>WLM：</strong>工作負載管理用於分配查詢資源、優先級與佇列，避免報表與臨時查詢互相拖累。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">部署與整合邊界</h3><ul>
+<li><strong>RA3：</strong>受管儲存可讓資料量與主要運算容量分開成長，仍需管理節點、查詢與容量。</li>
+<li><strong>Serverless：</strong>自動配置分析容量；客戶仍須設定 workgroup、namespace、網路、基礎容量與使用上限。</li>
+<li><strong>Spectrum：</strong>可查詢 S3 資料湖中的外部資料；檔案格式、分割、掃描量與權限直接影響成本及效能。</li>
+<li><strong>資料分享：</strong>可在不複製資料的情況下分享即時資料；分享範圍與消費者權限必須明確治理。</li>
+<li><strong>連線介面：</strong>JDBC、ODBC、Data API 與整合工具都需要個別的身分、網路、逾時和查詢限制。</li>
+<li><strong>分析系統：</strong>Redshift 不宜作為高頻單筆交易、低延遲 OLTP 或未治理原始資料的唯一儲存層。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>需要以標準 SQL 執行大量掃描、聚合、關聯與商業智慧報表。</li>
+<li>資料來自多個營運系統，需要建立經治理的分析模型、指標口徑與歷史資料。</li>
+<li>團隊可管理資料管線、schema、資料品質、查詢工作負載、權限與成本預算。</li>
+<li>需要結合 Redshift 內部資料、S3 資料湖與受控資料分享進行分析。</li>
+<li>工作量相對穩定且需要精細容量控制時使用佈建叢集；間歇、難預測或希望減少容量操作時評估 Serverless。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>要求毫秒級單筆交易、頻繁逐列更新、複雜交易鎖定與高併發 OLTP。</li>
+<li>把資料倉儲直接開放給大量終端使用者提交任意 SQL，卻沒有語意層、資源治理與查詢限制。</li>
+<li>沒有資料擁有者、品質規則、欄位分類、保留期限與刪除程序，只想集中複製所有資料。</li>
+<li>希望以單一叢集同時承擔關鍵報表、資料科學探索、ETL 與高風險臨時查詢，卻不做工作負載隔離。</li>
+<li>把自動快照視為完整災難復原，卻未驗證 KMS、IAM、網路、BI 設定、管線與跨區重建。</li>
+</ul>
+<h2>示意故事案例：零售分析平台</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家跨通路零售商將訂單、庫存與會員系統視為權威來源。批次與串流資料先進入受控 S3 區域，完成 schema 驗證、惡意檔案隔離、個資遮罩、資料品質檢查與失敗佇列處理，再由私有資料管線載入 Redshift。資料工程角色可維護指定 schema；報表角色只能讀取經核准的資料集與遮罩後欄位；終端使用者透過 BI 語意層查詢，不能直接取得資料庫管理權限。</p>
+<p>正式環境部署於私有子網路，使用 IAM 最小權限、聯合登入、MFA 與短期憑證。資料庫認證資訊保存在 Secrets Manager，一般設定存於 Parameter Store；靜態資料與快照使用 KMS 加密，連線強制 TLS。WLM 將每日營運報表、資料載入與臨時分析分開，查詢監控規則終止超出掃描量或執行時間的查詢。CloudWatch 監控容量、查詢延遲、佇列、儲存與失敗，CloudTrail 保存管理 API；資料庫稽核日誌送往受保護位置。自動快照、手動快照、IaC、轉換程式與 BI 定義定期在另一區域演練還原。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-redshift-governed-analytics-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-redshift-governed-analytics-flow.svg" alt="示意：營運資料經 S3 落地、驗證、遮罩與品質檢查後載入私有 Redshift，BI 語意層以最小權限查詢，周邊配置 WLM、IAM、MFA、TLS、KMS、Secrets Manager、CloudWatch、CloudTrail、快照與跨區復原" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：分析平台須同時治理資料進入、資料庫權限、查詢資源、稽核證據與可驗證的復原路徑。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>定義分析目標：</strong>記錄報表、資料新鮮度、查詢併發、p95 延遲、資料量、RPO／RTO 與成本上限。</li>
+<li><strong>盤點權威來源：</strong>標示來源系統、資料擁有者、更新頻率、主鍵、刪除事件與重新載入方式。</li>
+<li><strong>分類資料：</strong>識別個資、財務、機密與一般資料，定義欄位遮罩、列級或欄級存取及保存期限。</li>
+<li><strong>選擇模式：</strong>依工作量穩定性、容量控制、維運能力、可用性與計費模型選擇佈建叢集或 Serverless。</li>
+<li><strong>建立私有網路：</strong>使用 VPC、私有子網路、安全群組與受控端點，只允許資料管線、BI 與維運來源。</li>
+<li><strong>建立身分治理：</strong>管理平面採 IAM 最小權限、聯合登入、MFA 與短期憑證；資料平面使用資料庫角色與群組分權。</li>
+<li><strong>設計資料模型：</strong>依查詢與業務口徑規劃 schema、事實表、維度表、資料型別、分布與排序策略。</li>
+<li><strong>建置受控載入：</strong>資料先進入隔離區，完成格式、schema、惡意內容、品質、遮罩、重複與失敗處理後再載入。</li>
+<li><strong>保護機密：</strong>資料庫認證資訊使用 Secrets Manager 管理與輪替；一般設定使用 Parameter Store，不寫入程式碼或日誌。</li>
+<li><strong>啟用加密：</strong>強制 TLS，使用 KMS 保護資料與快照，限制 key policy、管理權限、停用與刪除操作。</li>
+<li><strong>治理工作負載：</strong>以 WLM、優先級、查詢監控規則、逾時與併發限制隔離載入、報表及臨時分析。</li>
+<li><strong>建立資料存取層：</strong>使用檢視表、資料分享、列級與欄級控制或動態遮罩，避免廣泛授予底層表權限。</li>
+<li><strong>建立觀測與稽核：</strong>以 CloudWatch 監控容量、佇列、查詢、磁碟與錯誤；以 CloudTrail 與資料庫稽核日誌保存變更及存取證據。</li>
+<li><strong>控制成本：</strong>設定 Serverless 使用上限或叢集排程，檢查閒置、掃描量、Spectrum 檔案配置、併發擴展與資料保留。</li>
+<li><strong>備份與復原：</strong>設定快照保存與跨區需求，保留 IaC、schema、轉換、BI 與權限定義，定期執行完整還原演練。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>佈建 Redshift 的主要成本來自節點、受管儲存、備份儲存、併發擴展、Spectrum 掃描與資料傳輸；Serverless 主要依 RPU 使用量與受管儲存計費。S3、Glue Data Catalog、KMS、CloudWatch、跨區快照與其他整合服務可能另行計費。全表掃描、低效率關聯、資料傾斜、過寬資料型別、小檔案、未分割的 Spectrum 資料與無界限 BI 查詢都會放大成本。</p>
+<p>高可用性必須區分服務可用性與工作負載復原。Serverless 及不同佈建選項提供各自的受管可用性能力；是否採用 Multi-AZ、單一或多個叢集，須依區域支援、工作負載、成本與 RTO 決定。應用端仍要設定連線逾時、有限重試、查詢取消、降級報表與資料新鮮度標示。</p>
+<p>跨區復原須包含快照、KMS key、VPC、安全群組、IAM、資料庫角色、schema、外部表、S3 資料、ETL、排程、BI 連線與 DNS。僅確認快照存在不足以證明可復原；演練必須量測還原時間、重跑資料範圍、權限驗證、報表一致性與切換程序。</p>
+<h2>Amazon Redshift 特有資安風險與控制</h2><ul>
+<li><strong>公有可存取設定：</strong>正式資料倉儲優先放在私有子網路，安全群組只允許指定來源；持續檢查 publicly accessible 與路由變更。</li>
+<li><strong>資料庫超級使用者濫用：</strong>超級使用者只用於必要管理與緊急復原，日常操作改用分離角色、聯合登入、MFA 與短期憑證。</li>
+<li><strong>過寬 schema 或表權限：</strong>採預設拒絕、最小 GRANT、角色分層、檢視表、列級安全、欄級權限與動態資料遮罩。</li>
+<li><strong>資料分享外洩：</strong>每個 datashare 都要有資料擁有者、消費者、用途、欄位分類、到期日與撤銷流程，不能把分享當成免治理的複製替代品。</li>
+<li><strong>Spectrum 越權：</strong>限制外部 schema、Glue Catalog、S3 bucket、KMS key 與 IAM role；不同信任區不得共用過寬服務角色。</li>
+<li><strong>COPY／UNLOAD 權限濫用：</strong>將載入與匯出角色分離，限制 S3 路徑、KMS、格式與目的地，對大量匯出、跨帳戶存取及政策變更告警。</li>
+<li><strong>SQL 注入與任意查詢：</strong>使用參數化查詢、核准語意層、查詢模板、逾時、列數與掃描上限；終端輸入不得直接拼接 SQL。</li>
+<li><strong>工作負載耗盡：</strong>以 WLM、查詢監控規則、優先級、併發與使用上限隔離高風險查詢，監控長查詢、佇列與資源尖峰。</li>
+<li><strong>敏感資料進入日誌：</strong>查詢文字、應用錯誤、稽核與 BI 記錄不得包含 credential、Access Key、Secret Key、Token、密碼、cookie 或不必要個資。</li>
+<li><strong>加密與金鑰失效：</strong>使用 KMS 加密叢集、Serverless namespace 與快照，限制 key policy，並對停用、排程刪除與授權變更告警。</li>
+<li><strong>稽核證據缺口：</strong>CloudTrail 主要記錄管理 API；資料庫登入、連線與使用者活動還須依需求啟用資料庫稽核日誌並保護保存位置。</li>
+<li><strong>快照無法還原：</strong>定期在隔離帳戶或區域測試快照、KMS、IAM、網路、資料庫角色、外部表與 BI 連線，不以成功建立快照代替復原證明。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Redshift 服務底層實體設施、硬體、受管平台與服務可用性能力，並依部署模式執行部分修補、容量配置、儲存、快照與故障處理。客戶負責資料分類、schema、分布與排序、資料品質、查詢、WLM、VPC、安全群組、IAM、資料庫角色、KMS、外部資料、日誌、成本與復原。</p>
+<p>客戶仍須落實 IAM 最小權限、管理者 MFA 與短期憑證、網路隔離與公開存取盤點、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、備份及跨區復原。AWS 不會替客戶判斷哪個使用者可以看哪一列資料、報表口徑是否正確、SQL 是否過度昂貴、外部 S3 路徑是否授權過寬，或快照能否在目標時間內恢復完整業務。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已記錄資料量、載入頻率、p95 查詢延遲、併發、資料新鮮度、RPO／RTO 與月成本上限。</li>
+<li>□ 每個來源、資料集與指標都有擁有者、品質規則、分類、保存期限、刪除與重載程序。</li>
+<li>□ 已依工作量、維運能力、可用性與成本測試選定佈建叢集或 Serverless。</li>
+<li>□ schema、資料型別、壓縮、分布與排序策略已以代表性資料及查詢驗證。</li>
+<li>□ 正式環境位於受控 VPC；公開存取、0.0.0.0/0 與不必要跨網路路徑均已移除。</li>
+<li>□ 管理者採聯合登入、MFA 與短期憑證；建立、修改、刪除、快照、分享與 iam:PassRole 權限已縮限。</li>
+<li>□ 資料庫角色已分離管理、工程、載入、報表、臨時分析與稽核責任。</li>
+<li>□ 列級、欄級、遮罩、檢視表與 datashare 已按資料分類測試，無跨部門或跨租戶越權。</li>
+<li>□ COPY／UNLOAD、Spectrum、Glue、S3 與 KMS 角色只允許指定資源及操作。</li>
+<li>□ 任何 credential、Access Key、Secret Key、Token、密碼或 cookie 都未寫入 SQL、URL、程式碼、BI 檔案或一般日誌。</li>
+<li>□ 機密存於 Secrets Manager，非秘密設定存於 Parameter Store，兩者均有最小權限、輪替與稽核。</li>
+<li>□ TLS 與 KMS 加密已啟用；key policy、停用、刪除、快照與跨區還原權限已測試。</li>
+<li>□ WLM、查詢監控規則、逾時、併發與使用上限能阻止單一查詢耗盡平台。</li>
+<li>□ CloudWatch 已監控容量、儲存、查詢延遲、佇列、失敗、載入錯誤與成本異常。</li>
+<li>□ CloudTrail 與資料庫稽核日誌已送往受保護位置，登入、權限、分享、匯出與管理變更可追溯。</li>
+<li>□ 已估算節點或 RPU、受管儲存、Spectrum、併發擴展、快照、日誌、KMS 與資料傳輸成本。</li>
+<li>□ 已演練資料載入失敗、惡意查詢、權限撤銷、可用區事件、快照還原、重新載入與跨區切換。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/mgmt/welcome.html" target="_blank" rel="noopener noreferrer">Amazon Redshift Management Guide</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/mgmt/serverless-whatis.html" target="_blank" rel="noopener noreferrer">What is Amazon Redshift Serverless?</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_high_level_system_architecture.html" target="_blank" rel="noopener noreferrer">Amazon Redshift system architecture</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_Distributing_data.html" target="_blank" rel="noopener noreferrer">Data distribution for query optimization</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c_best-practices-sort-key.html" target="_blank" rel="noopener noreferrer">Choose the best sort key</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/cm-c-implementing-workload-management.html" target="_blank" rel="noopener noreferrer">Implementing workload management</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-db-encryption.html" target="_blank" rel="noopener noreferrer">Amazon Redshift database encryption</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/mgmt/security.html" target="_blank" rel="noopener noreferrer">Security in Amazon Redshift</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/r_CREATE_RLS_POLICY.html" target="_blank" rel="noopener noreferrer">Row-level security policy</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/t_ddm.html" target="_blank" rel="noopener noreferrer">Dynamic data masking</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/mgmt/db-auditing.html" target="_blank" rel="noopener noreferrer">Database audit logging</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/mgmt/working-with-snapshots.html" target="_blank" rel="noopener noreferrer">Amazon Redshift snapshots and backups</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/redshift/latest/dg/c-spectrum-external-tables.html" target="_blank" rel="noopener noreferrer">Amazon Redshift Spectrum external tables</a>（查閱：2026-09-28）</li>
+<li><a href="https://aws.amazon.com/redshift/pricing/" target="_blank" rel="noopener noreferrer">Amazon Redshift pricing</a>（查閱：2026-09-28）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-09-28）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新功能、區域支援、節點或 RPU 選項、價格、配額、資料分類、組織政策與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-09-27-amazon-opensearch-service-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon OpenSearch Service：搜尋、日誌分析與叢集治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
