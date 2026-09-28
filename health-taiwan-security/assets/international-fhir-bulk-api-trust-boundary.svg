@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">FHIR 批次資料交換信任邊界</title>
+  <desc id="desc">醫院資料來源經授權伺服器、FHIR API 閘道與非同步匯出工作，將最小必要資料交付給核准的照護或研究接收端，稽核與撤銷證據另行保存。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#10254a"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#63e6ff"/><stop offset="1" stop-color="#71a7ff"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#63e6ff"/></marker>
+  </defs>
+  <rect width="1200" height="675" rx="36" fill="url(#bg)"/>
+  <text x="60" y="68" fill="#ffffff" font-size="32" font-weight="800">FHIR 批次資料交換：每一段都要有獨立信任條件</text>
+  <text x="60" y="105" fill="#a8bad8" font-size="20">不是拿到 API 金鑰就能無限匯出；主體、用途、資料範圍、時效與接收端必須同時成立。</text>
+
+  <rect x="55" y="160" width="220" height="205" rx="24" fill="#10243e" stroke="#4fd1c5" stroke-width="2"/>
+  <text x="165" y="205" fill="#8ff7df" font-size="24" font-weight="700" text-anchor="middle">醫院資料來源</text>
+  <text x="85" y="252" fill="#e6eefc" font-size="20">• 電子病歷</text><text x="85" y="290" fill="#e6eefc" font-size="20">• 檢驗與影像索引</text><text x="85" y="328" fill="#e6eefc" font-size="20">• 病人與群組清冊</text>
+
+  <rect x="340" y="160" width="220" height="205" rx="24" fill="#122748" stroke="#71a7ff" stroke-width="2"/>
+  <text x="450" y="205" fill="#9fc3ff" font-size="24" font-weight="700" text-anchor="middle">授權與政策</text>
+  <text x="370" y="252" fill="#e6eefc" font-size="20">• 用戶端身分</text><text x="370" y="290" fill="#e6eefc" font-size="20">• 範圍與目的</text><text x="370" y="328" fill="#e6eefc" font-size="20">• 短效憑證／撤銷</text>
+
+  <rect x="625" y="160" width="230" height="205" rx="24" fill="#172647" stroke="#a997ff" stroke-width="2"/>
+  <text x="740" y="205" fill="#c4b7ff" font-size="24" font-weight="700" text-anchor="middle">FHIR API 與工作</text>
+  <text x="655" y="252" fill="#e6eefc" font-size="20">• kickoff 請求</text><text x="655" y="290" fill="#e6eefc" font-size="20">• 非同步狀態</text><text x="655" y="328" fill="#e6eefc" font-size="20">• 受控輸出檔</text>
+
+  <rect x="920" y="160" width="225" height="205" rx="24" fill="#10243e" stroke="#57f0c1" stroke-width="2"/>
+  <text x="1032" y="205" fill="#8ff7df" font-size="24" font-weight="700" text-anchor="middle">核准接收端</text>
+  <text x="950" y="252" fill="#e6eefc" font-size="20">• 照護協作</text><text x="950" y="290" fill="#e6eefc" font-size="20">• 公衛／研究</text><text x="950" y="328" fill="#e6eefc" font-size="20">• 受管分析環境</text>
+
+  <path d="M275 262H330" stroke="#63e6ff" stroke-width="4" marker-end="url(#arrow)"/><path d="M560 262H615" stroke="#63e6ff" stroke-width="4" marker-end="url(#arrow)"/><path d="M855 262H910" stroke="#63e6ff" stroke-width="4" marker-end="url(#arrow)"/>
+
+  <rect x="175" y="430" width="850" height="160" rx="28" fill="#0b1930" stroke="#63e6ff" stroke-opacity=".55"/>
+  <text x="600" y="472" fill="url(#cyan)" font-size="26" font-weight="800" text-anchor="middle">獨立證據面</text>
+  <text x="220" y="520" fill="#e6eefc" font-size="21">授權決策</text><text x="430" y="520" fill="#e6eefc" font-size="21">資料範圍</text><text x="620" y="520" fill="#e6eefc" font-size="21">下載與失效</text><text x="820" y="520" fill="#e6eefc" font-size="21">異常與撤銷</text>
+  <circle cx="255" cy="554" r="7" fill="#63e6ff"/><circle cx="465" cy="554" r="7" fill="#71a7ff"/><circle cx="660" cy="554" r="7" fill="#a997ff"/><circle cx="860" cy="554" r="7" fill="#57f0c1"/>
+  <text x="600" y="630" fill="#9fb3d9" font-size="19" text-anchor="middle">大量資料交換的安全邊界，取決於可驗證授權與可終止的交付生命週期。</text>
+</svg>

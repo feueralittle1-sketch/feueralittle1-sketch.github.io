@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">FHIR 批次資料交換風險與控制對照</title>
+  <desc id="desc">將過度授權、匯出範圍漂移、輸出檔暴露、資源耗盡與接收端失控，對應預防、偵測與復原控制。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#10254a"/></linearGradient></defs>
+  <rect width="1200" height="675" rx="36" fill="url(#bg)"/>
+  <text x="60" y="68" fill="#fff" font-size="32" font-weight="800">FHIR 批次交換：風險不能只靠登入控制</text>
+  <text x="60" y="106" fill="#a8bad8" font-size="20">大量資料的曝險面同時存在於授權、工作排程、輸出檔、容量與接收端。</text>
+
+  <g font-family="Inter, Noto Sans TC, sans-serif">
+    <rect x="55" y="150" width="250" height="455" rx="24" fill="#141f38" stroke="#ff8fa3" stroke-opacity=".7"/>
+    <text x="180" y="194" fill="#ffb3c1" font-size="25" font-weight="800" text-anchor="middle">失敗模式</text>
+    <text x="85" y="247" fill="#f7d7de" font-size="20">過度授權</text><text x="85" y="310" fill="#f7d7de" font-size="20">範圍漂移</text><text x="85" y="373" fill="#f7d7de" font-size="20">輸出檔暴露</text><text x="85" y="436" fill="#f7d7de" font-size="20">資源耗盡</text><text x="85" y="499" fill="#f7d7de" font-size="20">接收端失控</text><text x="85" y="562" fill="#f7d7de" font-size="20">無法追溯</text>
+
+    <rect x="335" y="150" width="250" height="455" rx="24" fill="#102a3c" stroke="#57f0c1" stroke-opacity=".7"/>
+    <text x="460" y="194" fill="#8ff7df" font-size="25" font-weight="800" text-anchor="middle">預防</text>
+    <text x="365" y="247" fill="#d8fff4" font-size="18">主體／用途／scope 綁定</text><text x="365" y="310" fill="#d8fff4" font-size="18">群組與資源白名單</text><text x="365" y="373" fill="#d8fff4" font-size="18">短效連結與加密</text><text x="365" y="436" fill="#d8fff4" font-size="18">配額、排程與隔離佇列</text><text x="365" y="499" fill="#d8fff4" font-size="18">接收端驗證與契約</text><text x="365" y="562" fill="#d8fff4" font-size="18">一致工作識別與時鐘</text>
+
+    <rect x="615" y="150" width="250" height="455" rx="24" fill="#132746" stroke="#71a7ff" stroke-opacity=".8"/>
+    <text x="740" y="194" fill="#9fc3ff" font-size="25" font-weight="800" text-anchor="middle">偵測</text>
+    <text x="645" y="247" fill="#dce9ff" font-size="18">授權決策與拒絕日誌</text><text x="645" y="310" fill="#dce9ff" font-size="18">筆數／類型基線差異</text><text x="645" y="373" fill="#dce9ff" font-size="18">下載來源與失效監測</text><text x="645" y="436" fill="#dce9ff" font-size="18">工作量與延遲告警</text><text x="645" y="499" fill="#dce9ff" font-size="18">再散布與保留期查核</text><text x="645" y="562" fill="#dce9ff" font-size="18">請求、工作、檔案關聯</text>
+
+    <rect x="895" y="150" width="250" height="455" rx="24" fill="#1b2441" stroke="#a997ff" stroke-opacity=".8"/>
+    <text x="1020" y="194" fill="#c4b7ff" font-size="25" font-weight="800" text-anchor="middle">復原</text>
+    <text x="925" y="247" fill="#eeeaff" font-size="18">撤銷用戶端與憑證</text><text x="925" y="310" fill="#eeeaff" font-size="18">停止工作並重新核准</text><text x="925" y="373" fill="#eeeaff" font-size="18">失效、刪除與事件通知</text><text x="925" y="436" fill="#eeeaff" font-size="18">降載與臨床優先順序</text><text x="925" y="499" fill="#eeeaff" font-size="18">停止交換與資料追蹤</text><text x="925" y="562" fill="#eeeaff" font-size="18">保存證據與範圍判定</text>
+  </g>
+  <g stroke="#334b74" stroke-width="1"><path d="M75 269H1125"/><path d="M75 332H1125"/><path d="M75 395H1125"/><path d="M75 458H1125"/><path d="M75 521H1125"/></g>
+  <text x="600" y="642" fill="#9fb3d9" font-size="19" text-anchor="middle">驗收重點：能證明誰、因何目的、匯出什麼、交給誰，以及何時已終止。</text>
+</svg>
