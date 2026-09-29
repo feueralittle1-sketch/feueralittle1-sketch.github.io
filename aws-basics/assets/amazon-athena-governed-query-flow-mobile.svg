@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1420" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon Athena 受治理查詢流程手機版示意圖</title>
+  <desc id="desc">來源資料依序經 S3 資料湖、目錄與權限、Athena workgroup，再進入加密結果、監控稽核與跨區復原流程。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7be7ff"/></marker><style>.h{font:700 30px system-ui,sans-serif;fill:#fff}.t{font:700 23px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#c5d7ef}.box{fill:#112844;stroke:#3c6387;stroke-width:2}.guard{fill:#112337;stroke:#52d6a3;stroke-width:2}.warn{fill:#362716;stroke:#ffb548;stroke-width:2}.line{stroke:#7be7ff;stroke-width:5;marker-end:url(#a)}</style></defs>
+  <rect width="720" height="1420" rx="34" fill="url(#bg)"/>
+  <text x="50" y="64" class="h">示意：Athena 受治理查詢</text><text x="50" y="98" class="s">控制資料、目錄、查詢、結果與復原</text>
+  <g><rect x="70" y="145" width="580" height="130" rx="22" class="box"/><text x="105" y="190" class="t">1. 資料來源</text><text x="105" y="228" class="s">應用事件、日誌、批次檔案與權威系統</text>
+  <line x1="360" y1="275" x2="360" y2="315" class="line"/>
+  <rect x="70" y="325" width="580" height="165" rx="22" class="guard"/><text x="105" y="370" class="t">2. S3 受控資料湖</text><text x="105" y="408" class="s">分區隔離、Parquet／ORC、壓縮與分割</text><text x="105" y="440" class="s">版本、生命週期、備份與跨區資料策略</text>
+  <line x1="360" y1="490" x2="360" y2="530" class="line"/>
+  <rect x="70" y="540" width="580" height="165" rx="22" class="box"/><text x="105" y="585" class="t">3. 目錄與授權</text><text x="105" y="623" class="s">Glue Data Catalog＋Lake Formation</text><text x="105" y="655" class="s">IAM 最小權限、欄列級控制與資料擁有者</text>
+  <line x1="360" y1="705" x2="360" y2="745" class="line"/>
+  <rect x="70" y="755" width="580" height="220" rx="22" class="warn"/><text x="105" y="800" class="t">4. Athena Workgroup</text><text x="105" y="838" class="s">分離互動、排程與高風險工作負載</text><text x="105" y="870" class="s">強制結果位置、擁有者與 KMS 加密</text><text x="105" y="902" class="s">掃描量上限、CloudWatch、EventBridge</text><text x="105" y="934" class="s">聯合登入、MFA、短期憑證</text>
+  <line x1="360" y1="975" x2="360" y2="1015" class="line"/>
+  <rect x="50" y="1025" width="200" height="250" rx="22" class="guard"/><text x="75" y="1070" class="t">結果</text><text x="75" y="1108" class="s">KMS 加密</text><text x="75" y="1140" class="s">最小讀取</text><text x="75" y="1172" class="s">生命週期</text><text x="75" y="1204" class="s">輸出分類</text>
+  <rect x="260" y="1025" width="200" height="250" rx="22" class="box"/><text x="285" y="1070" class="t">稽核</text><text x="285" y="1108" class="s">CloudTrail</text><text x="285" y="1140" class="s">CloudWatch</text><text x="285" y="1172" class="s">查詢歷史</text><text x="285" y="1204" class="s">成本告警</text>
+  <rect x="470" y="1025" width="200" height="250" rx="22" class="warn"/><text x="495" y="1070" class="t">復原</text><text x="495" y="1108" class="s">S3／目錄</text><text x="495" y="1140" class="s">IaC／SQL</text><text x="495" y="1172" class="s">KMS／IAM</text><text x="495" y="1204" class="s">跨區演練</text></g>
+  <rect x="50" y="1325" width="620" height="55" rx="16" fill="#091b2f" stroke="#315779"/><text x="75" y="1360" class="s">查得到只是起點；查得對、查得安全、查得起才是治理。</text>
+</svg>
