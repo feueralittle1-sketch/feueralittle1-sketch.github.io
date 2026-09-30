@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+<title id="title">醫療釣魚風險、控制與驗收證據對照</title>
+<desc id="desc">將憑證竊取、工作階段濫用、郵件偽冒、過度權限與偵測盲區，對應控制措施及可量測驗收證據。</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071626"/><stop offset="1" stop-color="#122047"/></linearGradient></defs><rect width="1200" height="720" rx="36" fill="url(#bg)"/><g font-family="Noto Sans TC, sans-serif"><text x="70" y="78" fill="#fff" font-size="38" font-weight="800">風險、控制、證據必須一一對應</text><text x="70" y="116" fill="#9fb3d9" font-size="20">沒有驗收證據的控制，只能證明做過，不能證明有效</text>
+<rect x="65" y="165" width="1070" height="485" rx="28" fill="#0d2038" stroke="#39597d"/><rect x="65" y="165" width="1070" height="70" rx="28" fill="#183052"/><text x="100" y="210" fill="#ffb1cc" font-size="21" font-weight="800">風險</text><text x="405" y="210" fill="#8fe8ff" font-size="21" font-weight="800">控制</text><text x="785" y="210" fill="#57f0c1" font-size="21" font-weight="800">驗收證據</text>
+<g stroke="#39597d"><path d="M350 165V650"/><path d="M730 165V650"/><path d="M65 318H1135"/><path d="M65 401H1135"/><path d="M65 484H1135"/><path d="M65 567H1135"/></g>
+<g font-size="18"><text x="100" y="275" fill="#fff" font-weight="700">憑證遭釣取</text><text x="100" y="302" fill="#c6d4eb">密碼被代理頁面即時轉送</text><text x="405" y="275" fill="#fff">抗釣魚驗證、風險登入阻擋</text><text x="785" y="275" fill="#fff">高風險角色覆蓋率、負向登入測試</text>
+<text x="100" y="365" fill="#fff" font-weight="700">工作階段遭竊</text><text x="405" y="365" fill="#fff">短效權杖、裝置綁定、持續驗證</text><text x="785" y="365" fill="#fff">撤銷生效時間、異常重播告警結果</text>
+<text x="100" y="448" fill="#fff" font-weight="700">郵件網域被偽冒</text><text x="405" y="448" fill="#fff">SPF、DKIM、DMARC 與隔離政策</text><text x="785" y="448" fill="#fff">驗證通過率、偽冒測試、誤攔截率</text>
+<text x="100" y="531" fill="#fff" font-weight="700">帳號權限過大</text><text x="405" y="531" fill="#fff">最小權限、PAM、敏感操作再驗證</text><text x="785" y="531" fill="#fff">閒置權限移除率、特權使用可追溯率</text>
+<text x="100" y="614" fill="#fff" font-weight="700">監測與通報盲區</text><text x="405" y="614" fill="#fff">集中日誌、異常分析、事件分級</text><text x="785" y="614" fill="#fff">告警命中率、MTTD、撤銷與通報時間</text></g>
+<rect x="260" y="672" width="680" height="34" rx="17" fill="#182c55"/><text x="600" y="696" text-anchor="middle" fill="#d9d1ff" font-size="17" font-weight="700">每項例外都要有責任人、期限、補償控制與剩餘風險核准</text></g></svg>
