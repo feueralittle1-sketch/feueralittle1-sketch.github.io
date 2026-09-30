@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1570" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Glue 受治理資料整合流程手機版示意圖</title>
+  <desc id="desc">資料來源依序經受控連線、AWS Glue 目錄與資料整合、受保護輸出、風險控制及監控復原。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7be7ff"/></marker><style>.h{font:700 29px system-ui,sans-serif;fill:#fff}.t{font:700 23px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#c7d8ef}.box{fill:#112844;stroke:#416d96;stroke-width:2}.glue{fill:#382817;stroke:#ffae4d;stroke-width:3}.guard{fill:#102d2b;stroke:#48d7c7;stroke-width:2}.warn{fill:#321f2b;stroke:#ec75b9;stroke-width:2}.line{stroke:#7be7ff;stroke-width:4;marker-end:url(#a)}</style></defs>
+  <rect width="720" height="1570" rx="34" fill="url(#bg)"/>
+  <text x="50" y="62" class="h">示意：AWS Glue 受治理資料整合</text><text x="50" y="98" class="s">控制來源、連線、程式、輸出與復原</text>
+  <rect x="70" y="140" width="580" height="155" rx="22" class="box"/><text x="105" y="185" class="t">1. 資料來源</text><text x="105" y="225" class="s">S3、資料庫、串流、第三方與權威系統</text><text x="105" y="258" class="s">標示擁有者、敏感度、負載與擷取窗口</text>
+  <line x1="360" y1="295" x2="360" y2="335" class="line"/>
+  <rect x="70" y="345" width="580" height="190" rx="22" class="guard"/><text x="105" y="390" class="t">2. 受控連線</text><text x="105" y="430" class="s">VPC 子網路、安全群組與私有 endpoint</text><text x="105" y="463" class="s">Secrets Manager、KMS、IAM 最小權限</text><text x="105" y="496" class="s">聯合登入、MFA 與短期管理憑證</text>
+  <line x1="360" y1="535" x2="360" y2="575" class="line"/>
+  <rect x="70" y="585" width="580" height="260" rx="22" class="glue"/><text x="105" y="630" class="t">3. AWS Glue</text><text x="105" y="670" class="s">Crawler／分類器探索 schema</text><text x="105" y="703" class="s">Data Catalog 管理表、分割、位置與版本</text><text x="105" y="736" class="s">ETL 工作、工作流程、觸發器與 bookmark</text><text x="105" y="769" class="s">Data Quality 規則與失敗閘門</text><text x="105" y="802" class="s">程式、套件、角色與執行參數版本化</text>
+  <line x1="360" y1="845" x2="360" y2="885" class="line"/>
+  <rect x="70" y="895" width="580" height="190" rx="22" class="box"/><text x="105" y="940" class="t">4. 受保護輸出</text><text x="105" y="980" class="s">S3 整理／隔離／錯誤區與分析服務</text><text x="105" y="1013" class="s">KMS、禁止公開存取、保留與下游授權</text><text x="105" y="1046" class="s">品質結果、lineage 與可重跑批次識別</text>
+  <line x1="360" y1="1085" x2="360" y2="1125" class="line"/>
+  <rect x="70" y="1135" width="580" height="205" rx="22" class="warn"/><text x="105" y="1180" class="t">5. 特有風險控制</text><text x="105" y="1220" class="s">schema 漂移、bookmark 漏失或重複</text><text x="105" y="1253" class="s">程式與套件供應鏈、任意輸出、來源過載</text><text x="105" y="1286" class="s">錯誤日誌、暫存資料與 Spark UI 洩密</text><text x="105" y="1319" class="s">變更審查、隔離測試、掃描與告警</text>
+  <line x1="360" y1="1340" x2="360" y2="1380" class="line"/>
+  <rect x="70" y="1390" width="580" height="130" rx="22" class="guard"/><text x="105" y="1435" class="t">6. 證據與復原</text><text x="105" y="1475" class="s">CloudWatch／CloudTrail、IaC、版本與備份</text><text x="105" y="1508" class="s">跨區重建資料、Catalog、KMS、角色與工作</text>
+</svg>

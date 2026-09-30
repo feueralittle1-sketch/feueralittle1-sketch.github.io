@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Glue 受治理資料整合流程示意圖</title>
+  <desc id="desc">資料來源經私有網路、受控連線與機密管理進入 AWS Glue，完成探索、目錄、資料品質與 ETL，再輸出至受保護的資料湖或分析服務，並納入權限、加密、監控及跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7be7ff"/></marker>
+    <style>.h{font:700 35px system-ui,sans-serif;fill:#fff}.t{font:700 24px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#c7d8ef}.box{fill:#112844;stroke:#416d96;stroke-width:2}.glue{fill:#382817;stroke:#ffae4d;stroke-width:3}.guard{fill:#102d2b;stroke:#48d7c7;stroke-width:2}.warn{fill:#321f2b;stroke:#ec75b9;stroke-width:2}.line{stroke:#7be7ff;stroke-width:4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="860" rx="36" fill="url(#bg)"/>
+  <text x="70" y="68" class="h">示意：AWS Glue 受治理資料整合，不是把 ETL 工作交給服務就結束</text>
+  <text x="70" y="105" class="s">來源、連線、目錄、程式、資料品質、輸出、稽核與復原必須形成完整控制鏈</text>
+
+  <rect x="70" y="150" width="270" height="235" rx="24" class="box"/>
+  <text x="105" y="195" class="t">1. 資料來源</text>
+  <text x="105" y="235" class="s">S3 物件與事件資料</text><text x="105" y="268" class="s">RDS／Aurora／JDBC 系統</text><text x="105" y="301" class="s">串流與第三方來源</text><text x="105" y="334" class="s">資料分類與擁有者</text><text x="105" y="367" class="s">來源端負載與擷取窗口</text>
+
+  <rect x="395" y="150" width="270" height="235" rx="24" class="guard"/>
+  <text x="430" y="195" class="t">2. 受控連線</text>
+  <text x="430" y="235" class="s">VPC 子網路與安全群組</text><text x="430" y="268" class="s">VPC endpoint／私有路徑</text><text x="430" y="301" class="s">Secrets Manager 機密</text><text x="430" y="334" class="s">IAM 最小權限角色</text><text x="430" y="367" class="s">KMS 與短期憑證</text>
+
+  <rect x="720" y="135" width="610" height="270" rx="28" class="glue"/>
+  <text x="760" y="180" class="t">3. AWS Glue 資料整合與目錄</text>
+  <text x="760" y="222" class="s">Crawler／分類器：探索 schema，不取代資料契約審查</text>
+  <text x="760" y="256" class="s">Data Catalog：資料庫、資料表、分割、位置與 schema 版本</text>
+  <text x="760" y="290" class="s">ETL／ELT 工作：Spark、Python shell、Ray 或受支援整合</text>
+  <text x="760" y="324" class="s">Job bookmark／工作流程／觸發器：增量處理與相依控制</text>
+  <text x="760" y="358" class="s">Data Quality：規則、結果與失敗閘門；程式與套件需版本治理</text>
+  <line x1="340" y1="268" x2="385" y2="268" class="line"/><line x1="665" y1="268" x2="710" y2="268" class="line"/>
+
+  <rect x="70" y="500" width="350" height="240" rx="24" class="box"/>
+  <text x="105" y="545" class="t">4. 受保護輸出</text>
+  <text x="105" y="585" class="s">S3 整理區／隔離區／錯誤區</text><text x="105" y="618" class="s">Redshift、Athena 或其他消費端</text><text x="105" y="651" class="s">KMS 加密與禁止公開存取</text><text x="105" y="684" class="s">資料品質閘門與可追溯 lineage</text><text x="105" y="717" class="s">保留、刪除與下游授權</text>
+
+  <rect x="480" y="500" width="390" height="240" rx="24" class="warn"/>
+  <text x="515" y="545" class="t">5. 特有風險控制</text>
+  <text x="515" y="585" class="s">Crawler 誤判與 schema 漂移</text><text x="515" y="618" class="s">Bookmark 遺失造成漏資料或重複</text><text x="515" y="651" class="s">ETL 程式／套件供應鏈風險</text><text x="515" y="684" class="s">錯誤日誌、暫存與 Spark UI 洩密</text><text x="515" y="717" class="s">任意輸出、角色提升與來源過載</text>
+
+  <rect x="930" y="500" width="400" height="240" rx="24" class="guard"/>
+  <text x="965" y="545" class="t">6. 證據與復原</text>
+  <text x="965" y="585" class="s">CloudWatch 指標、日誌與告警</text><text x="965" y="618" class="s">CloudTrail 管理 API 稽核</text><text x="965" y="651" class="s">IaC、程式、規則與目錄版本</text><text x="965" y="684" class="s">S3 備份／版本與跨區資料</text><text x="965" y="717" class="s">跨區重建 Catalog、角色與工作</text>
+
+  <path d="M1025 405V455H245V490" class="line"/><path d="M420 620H470" class="line"/><path d="M870 620H920" class="line"/>
+  <text x="70" y="805" class="s">共同責任：AWS 維護受管服務平台；客戶負責資料、程式、套件、schema、連線、權限、加密、品質、成本、稽核與可重建性。</text>
+</svg>
