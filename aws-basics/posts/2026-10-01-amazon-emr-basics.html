@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon EMR：大數據處理、部署選型與安全治理</title>
+  <meta name="description" content="理解 Amazon EMR 的 Spark、Hadoop、EMR on EC2、EMR Serverless、部署選型、成本、可用性與資安控制。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-01-amazon-emr-basics.html" />
+  <link rel="prev" href="./2026-09-30-aws-glue-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon EMR：大數據處理、部署選型與安全治理" />
+  <meta property="og:description" content="從 Spark 與 Hadoop 工作負載、EC2／Serverless／EKS 選型，到資料隔離、權限、加密、監控、成本與復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-01-amazon-emr-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-emr-secure-analytics-flow.svg" />
+  <meta property="article:published_time" content="2026-10-01T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon EMR：大數據處理、部署選型與安全治理" />
+  <meta name="twitter:description" content="掌握 EMR 部署模式、Spark 工作流程、最小權限、私有網路、加密、監控、成本及跨區重建。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-emr-secure-analytics-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1100px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon EMR：大數據處理、部署選型與安全治理","description":"理解 Amazon EMR 的 Spark、Hadoop、EMR on EC2、EMR Serverless、部署選型、成本、可用性與資安控制。","datePublished":"2026-10-01T21:30:00+08:00","dateModified":"2026-10-01T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-01-amazon-emr-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-emr-secure-analytics-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">大數據處理</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-01</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon EMR：大數據處理、部署選型與安全治理</h1>
+<p class="text-xl leading-9 muted">Amazon EMR 是執行 Apache Spark、Apache Hadoop、Apache Hive 等開源大數據框架的受管平台，可採 EMR on EC2、EMR Serverless 或 EMR on EKS。服務降低叢集佈建與框架整合負擔，但不會代替資料分割、工作調校、版本治理、網路隔離、權限控制、機密管理、成本護欄或災難復原。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-01</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>Amazon EMR</strong> 適合需要以 Spark、Hadoop、Hive 及相關開源元件處理大量資料的批次分析、互動查詢、串流處理與機器學習前處理。它可讀寫 Amazon S3、DynamoDB、資料庫與其他資料來源，並把運算環境、框架版本及 AWS 整合包裝成可重複部署的工作平台。</p>
+<p>EMR 的核心價值是降低大數據運算平台的基礎設施與框架維護成本，不是自動修正低效率程式、資料傾斜、過寬權限、公開網路、錯誤 schema 或不可重跑流程。部署模式、EMR release、執行角色、instance fleet 或 worker、bootstrap action、自訂映像、套件及資料路徑都必須納入版本、測試與稽核。</p>
+<h2>核心概念與適用邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">部署與運算</h3><ul>
+<li><strong>EMR on EC2：</strong>建立具有 primary、core 與 task 節點的叢集，能細緻控制 instance type、EBS、網路、應用程式與生命週期；團隊也需承擔容量、修補與節點維運責任。</li>
+<li><strong>EMR Serverless：</strong>以 application、job run、runtime role 與 worker 執行 Spark 或 Hive 工作，服務依工作需求增減 worker；仍須設定最大容量、逾時、日誌、網路及資料權限。</li>
+<li><strong>EMR on EKS：</strong>在既有 Amazon EKS 上執行 EMR 工作，適合已有 Kubernetes 平台與隔離模型的團隊；EKS、節點、namespace、映像及 pod 安全仍由客戶治理。</li>
+<li><strong>EMR release：</strong>每個版本綁定特定框架、元件與修正；升級前要驗證程式、連接器、序列化、效能及相容性。</li>
+<li><strong>Steps／job runs：</strong>以可追蹤的工作單位提交處理；應設定重試、逾時、冪等、輸入快照與輸出提交規則。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">資料與治理</h3><ul>
+<li><strong>EMRFS 與 S3：</strong>常以 S3 保存輸入、輸出、程式及日誌，使運算可與資料生命週期分離；bucket、prefix、KMS 與跨帳戶政策仍須明確限制。</li>
+<li><strong>本機儲存與 HDFS：</strong>可支援 shuffle、暫存或需要資料局部性的工作，但節點終止可能使本機資料消失，不應把暫存層誤當唯一持久副本。</li>
+<li><strong>Managed Scaling：</strong>EMR on EC2 可依工作負載調整容量；上下限、Spot 中斷、節點退役、資料傾斜及啟動時間仍會影響 SLA。</li>
+<li><strong>安全組態：</strong>可集中設定靜態、傳輸中及本機磁碟加密；KMS key policy、憑證、角色與資料來源政策仍須配套。</li>
+<li><strong>觀測與證據：</strong>CloudWatch、EMR 事件、工作日誌與 CloudTrail 分別支援效能、失敗、狀態與管理 API 稽核；必須設定保留、遮罩及告警。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>需要以 Spark 或 Hadoop 生態處理大量資料，工作能切分、平行執行並接受批次或秒至分鐘級延遲。</li>
+<li>需要控制框架版本、運算規格、套件與調校參數，或移轉既有 Spark、Hive、Hadoop 工作。</li>
+<li>資料主要保存在 S3，運算環境可按工作建立、擴縮或終止，避免資料與叢集永久綁定。</li>
+<li>工作量波動大，可透過 EMR Serverless、暫態叢集、Managed Scaling、Spot 與排程控制成本。</li>
+<li>團隊能管理資料分割、程式效能、IAM、VPC、KMS、日誌、版本、容量上限與復原演練。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>需要毫秒級逐筆交易、嚴格 OLTP 鎖定或長時間對外提供低延遲 API。</li>
+<li>資料量小、邏輯簡單且低頻，單一 Lambda、Glue 工作或資料庫查詢即可合理完成。</li>
+<li>希望把低效率 Spark 程式直接搬上雲端，卻不處理 shuffle、資料傾斜、小檔案與分割策略。</li>
+<li>無法接受節點或 Spot 中斷，且工作沒有 checkpoint、重試、冪等與輸出一致性設計。</li>
+<li>把 Serverless 誤解為不需要版本升級、最大容量、日誌、資料權限、網路與成本管理。</li>
+</ul>
+<h2>示意故事案例：夜間訂單與行為資料處理</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家零售團隊每天需要把 S3 中的網站點擊、門市訂單與商品資料整理成分析用 Parquet。團隊先定義資料擁有者、敏感度、schema、批次 ID、品質門檻、完成時限及月成本上限，再比較 EMR on EC2 與 EMR Serverless。由於工作每日只執行數小時且流量差異大，選用 EMR Serverless Spark application，設定最大 worker 容量及工作逾時，避免異常輸入無限制擴張。</p>
+<p>排程器以專用 runtime role 提交 job run；角色只允許讀取核准輸入 prefix、取得必要的 Secrets Manager 機密、使用指定 KMS key，並寫入隔離與正式輸出 prefix。application 連接私有子網路，安全群組只允許必要資料庫連線。程式先驗證 schema、惡意內容、主鍵重複及個資欄位，再完成去識別化與彙總。輸出以批次 ID 暫存，品質檢查通過後才切換 manifest；失敗工作可安全重跑。CloudWatch 保存應用程式指標與受遮罩日誌，CloudTrail 追蹤 EMR、IAM、KMS 與網路變更。程式、設定、相依套件、資料目錄與必要輸入保留跨區副本，定期在另一區域重建 application 並執行代表性批次。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-emr-secure-analytics-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-emr-secure-analytics-flow.svg" alt="示意：資料來源經私有網路、最小權限與機密管理進入 Amazon EMR，完成 Spark 處理、品質驗證與受控輸出，並納入監控、成本護欄及跨區復原" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：EMR 的治理範圍涵蓋部署模式、資料路徑、執行角色、框架版本、工作程式、容量、日誌與可重建性。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>定義工作需求：</strong>記錄資料量、格式、敏感度、處理窗口、並行度、延遲、框架、相依套件、RPO／RTO 與成本上限。</li>
+<li><strong>選擇部署模式：</strong>依控制需求、既有 EKS、工作持續時間、啟動延遲、容量波動與維運能力比較 EC2、Serverless 或 EKS。</li>
+<li><strong>固定版本：</strong>選定 EMR release、Spark／Hive 版本、Java／Python 環境、連接器、自訂映像與套件雜湊。</li>
+<li><strong>設計資料分區：</strong>分離輸入、暫存、隔離、正式輸出及日誌 prefix；設定 S3 Block Public Access、bucket policy、生命週期與版本。</li>
+<li><strong>配置身分：</strong>人員使用聯合登入、MFA 與短期憑證；服務角色、EC2 instance profile 或 Serverless runtime role 只取得必要權限。</li>
+<li><strong>建立私有網路：</strong>優先使用私有子網路、限制性安全群組與 VPC endpoint；若需連接資料庫，只開放指定來源、目的與埠。</li>
+<li><strong>管理機密與加密：</strong>credential 存於 Secrets Manager；一般參數存於 Parameter Store；S3、EBS、本機磁碟、日誌與傳輸依需求使用 KMS 與 TLS。</li>
+<li><strong>設定容量護欄：</strong>限制 instance fleet、Managed Scaling 範圍或 Serverless 最大容量、worker 規格、並行工作、逾時與重試。</li>
+<li><strong>開發可重跑工作：</strong>加入批次 ID、checkpoint、冪等、去重、輸出暫存與原子發布，避免重試造成重複或半成品。</li>
+<li><strong>測試異常：</strong>驗證資料傾斜、小檔案、格式錯誤、節點中斷、Spot 回收、KMS 拒絕、網路中斷及依賴下載失敗。</li>
+<li><strong>建立觀測：</strong>收集 driver、executor、step 或 job run 日誌、資源使用、處理筆數、延遲、失敗與成本；設定 CloudWatch 告警及 CloudTrail 稽核。</li>
+<li><strong>演練復原：</strong>從 IaC、程式、套件、設定與資料副本，在另一區域重建角色、網路、KMS、application 或叢集並驗證結果。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>EMR on EC2 的成本包含 EMR 費用、EC2、EBS，以及可能的 S3、KMS、CloudWatch、NAT Gateway、資料傳輸與公有 IPv4；EMR on EKS 還包含 EKS 與節點或 Fargate；EMR Serverless 依 worker 使用的 vCPU、記憶體與儲存計費，預先初始化容量在閒置時仍可能產生成本。價格、支援規格與區域能力應在部署前依官方頁面重新確認。</p>
+<p>成本控制不只依賴自動擴縮。應優先處理資料分割、欄式格式、壓縮、小檔案合併、predicate pushdown、shuffle、資料傾斜及 executor 配置，再設定容量上下限、逾時、重試、閒置終止、Spot 比例、標籤、預算與異常告警。未受控的迴圈、資料爆量或失敗重試可迅速放大運算與日誌費用。</p>
+<p>可用性必須以整條資料流程評估。EMR 服務可用不代表來源、S3、VPC、DNS、KMS、Secrets Manager、套件倉庫、資料目錄與輸出端都可用。HDFS 或本機磁碟上的唯一資料可能隨叢集故障或終止而遺失；關鍵資料、程式、設定及中繼資料應保存於持久層並驗證跨區重建。Serverless 跨可用區執行不等於跨區災難復原。</p>
+<h2>Amazon EMR 特有資安風險與控制</h2><ul>
+<li><strong>公開叢集與管理介面：</strong>EMR on EC2 優先部署私有子網路並保持 EMR Block Public Access；禁止 0.0.0.0/0 或 ::/0 對管理埠與應用程式介面開放。</li>
+<li><strong>執行角色資料越權：</strong>依工作、團隊與環境分離 runtime role 或 instance profile，限制 S3 prefix、Glue Data Catalog、KMS、資料庫與跨帳戶存取。</li>
+<li><strong>iam:PassRole 濫用：</strong>限制可傳遞角色、服務與條件，避免開發者把高權限角色交給叢集或 job run。</li>
+<li><strong>Bootstrap action／自訂映像供應鏈：</strong>固定來源、版本與雜湊，掃描弱點並限制下載目的地；啟動腳本不得從可被任意修改的位置執行。</li>
+<li><strong>框架與元件版本落後：</strong>建立 EMR release 升級週期，在隔離環境驗證相容性、安全修正、連接器與效能後再推進正式環境。</li>
+<li><strong>Spark UI、日誌與事件洩密：</strong>限制介面與日誌讀取，遮罩 SQL、參數、資料列與錯誤內容；設定 KMS、保留、刪除及異常下載告警。</li>
+<li><strong>工作程式任意外連：</strong>限制 egress、DNS、NAT 與 endpoint policy，只允許核准服務及套件來源，防止資料外流或惡意依賴下載。</li>
+<li><strong>本機暫存與 shuffle 洩密：</strong>啟用適用的本機磁碟與傳輸中加密，避免不同信任邊界共用運算，並在工作後清除暫存。</li>
+<li><strong>多租戶與互動環境越權：</strong>依團隊、資料敏感度及正式／測試環境分離 application、叢集、namespace、角色、KMS key 與日誌。</li>
+<li><strong>Spot 或縮容造成部分結果：</strong>使用 checkpoint、冪等、輸出暫存、manifest 與品質閘門，不能把工作狀態成功等同業務結果完整。</li>
+<li><strong>Serverless 無上限擴張：</strong>設定 maximum capacity、工作逾時、並行限制與成本告警，定期檢查預先初始化容量及閒置 application。</li>
+<li><strong>資料生命週期失控：</strong>對輸入、暫存、隔離、日誌與輸出設定不同的保留、存取及刪除政策，避免暫存副本長期留存敏感資料。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 EMR 受管服務平台及其底層雲端基礎設施的安全；依部署模式不同，AWS 管理的範圍有所差異。客戶仍負責資料、程式、框架與 release 選擇、套件、自訂映像、角色、網路、加密、日誌、容量、成本、結果正確性與復原。</p>
+<p>客戶須落實 IAM 最小權限、管理者 MFA 與短期憑證、私有網路及工作隔離、S3 公開存取封鎖、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、資料與設定備份及跨區復原。AWS 不會替客戶判斷 Spark 程式是否會遺漏或重複資料、bootstrap action 是否可信、runtime role 是否能讀取過多資料、輸出是否含敏感欄位，或另一區域能否在 RTO 內重建工作。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已記錄工作擁有者、資料分類、資料量、處理窗口、框架版本、RPO／RTO、品質門檻與月成本上限。</li>
+<li>□ 已以控制需求、啟動延遲、工作波動、既有 EKS 與維運能力選定 EC2、Serverless 或 EKS。</li>
+<li>□ EMR release、Spark／Hive、Java／Python、套件、連接器、自訂映像與雜湊均已版本化並完成升級測試。</li>
+<li>□ 人員使用聯合登入、MFA 與短期憑證；服務角色、runtime role、instance profile 與 iam:PassRole 均已最小化。</li>
+<li>□ 叢集或 application 使用核准私有網路；安全群組、NACL、DNS、NAT 與 endpoint policy 沒有不必要開放。</li>
+<li>□ EMR Block Public Access 已保持啟用，管理埠與 Spark／YARN／Hadoop 介面未對網際網路公開。</li>
+<li>□ S3 輸入、暫存、隔離、日誌與輸出 prefix 已分離，Block Public Access、bucket policy、版本與生命週期已檢查。</li>
+<li>□ credential 只存於 Secrets Manager；一般設定存於 Parameter Store；程式、bootstrap、參數、映像與日誌均無明文機密。</li>
+<li>□ S3、EBS、本機磁碟、日誌及傳輸中資料已依分類設定 KMS、TLS、key policy 與輪替程序。</li>
+<li>□ Serverless 最大容量，或 EC2 instance fleet／Managed Scaling 上下限、Spot 策略、閒置終止與工作逾時已設定。</li>
+<li>□ 工作具備批次 ID、checkpoint、冪等、去重、暫存輸出、品質閘門及失敗後重跑程序。</li>
+<li>□ 已測試資料傾斜、小檔案、格式錯誤、節點中斷、Spot 回收、KMS 拒絕、網路中斷及依賴失敗。</li>
+<li>□ CloudWatch 可追蹤資源、處理量、延遲、失敗、重試與成本；CloudTrail 可追蹤 EMR、IAM、KMS 與網路變更。</li>
+<li>□ Spark UI、工作日誌、暫存與錯誤輸出皆有限制存取、敏感內容遮罩、保留及刪除程序。</li>
+<li>□ 已在另一區域從 IaC、程式、套件、設定與資料副本重建角色、網路、KMS、application 或叢集並完成驗證。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-what-is-emr.html" target="_blank" rel="noopener noreferrer">What is Amazon EMR?</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-architecture.html" target="_blank" rel="noopener noreferrer">Amazon EMR architecture</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/emr-serverless.html" target="_blank" rel="noopener noreferrer">What is Amazon EMR Serverless?</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/EMR-on-EKS-DevelopmentGuide/emr-eks.html" target="_blank" rel="noopener noreferrer">What is Amazon EMR on EKS?</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-clusters-in-a-vpc.html" target="_blank" rel="noopener noreferrer">Amazon VPC options for EMR clusters</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-block-public-access.html" target="_blank" rel="noopener noreferrer">Using Amazon EMR block public access</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-data-encryption-options.html" target="_blank" rel="noopener noreferrer">Encryption options for Amazon EMR</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-managed-scaling.html" target="_blank" rel="noopener noreferrer">Using managed scaling in Amazon EMR</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-plan-logging.html" target="_blank" rel="noopener noreferrer">Configure Amazon EMR cluster logging and debugging</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/EMR-Serverless-UserGuide/logging.html" target="_blank" rel="noopener noreferrer">Storing logs for EMR Serverless</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-security.html" target="_blank" rel="noopener noreferrer">Security in Amazon EMR</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/emr/latest/ManagementGuide/emr-mgmt-view-web-log-files.html" target="_blank" rel="noopener noreferrer">View web interfaces and log files</a>（查閱：2026-10-01）</li>
+<li><a href="https://aws.amazon.com/emr/pricing/" target="_blank" rel="noopener noreferrer">Amazon EMR pricing</a>（查閱：2026-10-01）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-10-01）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新 EMR release、框架版本、區域支援、配額、價格、資料分類、組織政策與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-09-30-aws-glue-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Glue：資料整合、Data Catalog 與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

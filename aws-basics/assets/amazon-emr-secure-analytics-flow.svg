@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon EMR 安全大數據處理流程示意圖</title>
+  <desc id="desc">資料來源經私有網路、最小權限、機密與加密控制進入 Amazon EMR，選擇 EC2、Serverless 或 EKS 執行 Spark 工作，完成品質驗證後輸出至受保護資料區，並納入監控、成本護欄與跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7be7ff"/></marker>
+    <style>.h{font:700 35px system-ui,sans-serif;fill:#fff}.t{font:700 24px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#c7d8ef}.box{fill:#112844;stroke:#416d96;stroke-width:2}.emr{fill:#382817;stroke:#ffae4d;stroke-width:3}.guard{fill:#102d2b;stroke:#48d7c7;stroke-width:2}.warn{fill:#321f2b;stroke:#ec75b9;stroke-width:2}.line{stroke:#7be7ff;stroke-width:4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="860" rx="36" fill="url(#bg)"/>
+  <text x="70" y="68" class="h">示意：Amazon EMR 大數據處理要同時控制程式、容量、資料與復原</text>
+  <text x="70" y="105" class="s">受管平台降低叢集負擔，但版本、權限、網路、輸出一致性與成本仍由客戶治理</text>
+  <rect x="70" y="150" width="270" height="235" rx="24" class="box"/>
+  <text x="105" y="195" class="t">1. 資料與工作</text>
+  <text x="105" y="235" class="s">S3、資料庫與串流來源</text><text x="105" y="268" class="s">Spark／Hive／Hadoop 程式</text><text x="105" y="301" class="s">schema、分割與批次 ID</text><text x="105" y="334" class="s">資料分類與品質門檻</text><text x="105" y="367" class="s">RPO／RTO 與成本上限</text>
+  <rect x="395" y="150" width="270" height="235" rx="24" class="guard"/>
+  <text x="430" y="195" class="t">2. 安全入口</text>
+  <text x="430" y="235" class="s">私有子網路與安全群組</text><text x="430" y="268" class="s">VPC endpoint／限制 egress</text><text x="430" y="301" class="s">Runtime role 最小權限</text><text x="430" y="334" class="s">Secrets Manager／Parameter Store</text><text x="430" y="367" class="s">KMS、MFA 與短期憑證</text>
+  <rect x="720" y="135" width="610" height="270" rx="28" class="emr"/>
+  <text x="760" y="180" class="t">3. Amazon EMR 運算與部署選型</text>
+  <text x="760" y="222" class="s">EMR on EC2：叢集、instance fleet、EBS 與 Managed Scaling</text>
+  <text x="760" y="256" class="s">EMR Serverless：application、job run、worker 與最大容量</text>
+  <text x="760" y="290" class="s">EMR on EKS：virtual cluster、namespace、映像與 pod 隔離</text>
+  <text x="760" y="324" class="s">固定 EMR release、框架、套件、連接器與程式雜湊</text>
+  <text x="760" y="358" class="s">checkpoint、冪等、重試、資料品質與輸出提交控制</text>
+  <line x1="340" y1="268" x2="385" y2="268" class="line"/><line x1="665" y1="268" x2="710" y2="268" class="line"/>
+  <rect x="70" y="500" width="350" height="240" rx="24" class="box"/>
+  <text x="105" y="545" class="t">4. 受保護輸出</text>
+  <text x="105" y="585" class="s">S3 暫存／隔離／正式區</text><text x="105" y="618" class="s">Parquet、manifest 與批次對帳</text><text x="105" y="651" class="s">KMS 與 Block Public Access</text><text x="105" y="684" class="s">保留、刪除與下游授權</text><text x="105" y="717" class="s">持久層不依賴本機或 HDFS</text>
+  <rect x="480" y="500" width="390" height="240" rx="24" class="warn"/>
+  <text x="515" y="545" class="t">5. 特有風險控制</text>
+  <text x="515" y="585" class="s">Bootstrap／映像／套件供應鏈</text><text x="515" y="618" class="s">Spark UI、日誌與暫存洩密</text><text x="515" y="651" class="s">iam:PassRole 與資料路徑越權</text><text x="515" y="684" class="s">Spot／縮容造成部分結果</text><text x="515" y="717" class="s">工作失控擴張與高額重試成本</text>
+  <rect x="930" y="500" width="400" height="240" rx="24" class="guard"/>
+  <text x="965" y="545" class="t">6. 證據與復原</text>
+  <text x="965" y="585" class="s">CloudWatch 指標、日誌與告警</text><text x="965" y="618" class="s">CloudTrail 管理 API 稽核</text><text x="965" y="651" class="s">IaC、程式、套件與設定版本</text><text x="965" y="684" class="s">資料、目錄與 KMS 復原程序</text><text x="965" y="717" class="s">跨區重建並執行代表性批次</text>
+  <path d="M1025 405V455H245V490" class="line"/><path d="M420 620H470" class="line"/><path d="M870 620H920" class="line"/>
+  <text x="70" y="805" class="s">共同責任：AWS 維護受管平台；客戶負責資料、程式、版本、套件、角色、網路、加密、容量、成本、結果與復原。</text>
+</svg>

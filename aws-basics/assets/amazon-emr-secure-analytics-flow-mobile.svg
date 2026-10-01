@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1570" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon EMR 安全大數據處理流程手機版示意圖</title>
+  <desc id="desc">資料與工作依序經安全入口、Amazon EMR 部署與運算、受保護輸出、特有風險控制及監控復原。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7be7ff"/></marker><style>.h{font:700 29px system-ui,sans-serif;fill:#fff}.t{font:700 23px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#c7d8ef}.box{fill:#112844;stroke:#416d96;stroke-width:2}.emr{fill:#382817;stroke:#ffae4d;stroke-width:3}.guard{fill:#102d2b;stroke:#48d7c7;stroke-width:2}.warn{fill:#321f2b;stroke:#ec75b9;stroke-width:2}.line{stroke:#7be7ff;stroke-width:4;marker-end:url(#a)}</style></defs>
+  <rect width="720" height="1570" rx="34" fill="url(#bg)"/>
+  <text x="50" y="62" class="h">示意：Amazon EMR 安全處理流程</text><text x="50" y="98" class="s">控制版本、權限、容量、結果與復原</text>
+  <rect x="70" y="140" width="580" height="155" rx="22" class="box"/><text x="105" y="185" class="t">1. 資料與工作</text><text x="105" y="225" class="s">S3、資料庫、Spark／Hive 程式與 schema</text><text x="105" y="258" class="s">分類、品質、批次 ID、RPO／RTO、成本上限</text>
+  <line x1="360" y1="295" x2="360" y2="335" class="line"/>
+  <rect x="70" y="345" width="580" height="190" rx="22" class="guard"/><text x="105" y="390" class="t">2. 安全入口</text><text x="105" y="430" class="s">私有子網路、安全群組、endpoint、限制 egress</text><text x="105" y="463" class="s">Runtime role、Secrets Manager、Parameter Store</text><text x="105" y="496" class="s">KMS、聯合登入、MFA 與短期憑證</text>
+  <line x1="360" y1="535" x2="360" y2="575" class="line"/>
+  <rect x="70" y="585" width="580" height="260" rx="22" class="emr"/><text x="105" y="630" class="t">3. Amazon EMR</text><text x="105" y="670" class="s">EC2：叢集、instance fleet、Managed Scaling</text><text x="105" y="703" class="s">Serverless：application、job run、worker 上限</text><text x="105" y="736" class="s">EKS：virtual cluster、namespace、映像隔離</text><text x="105" y="769" class="s">固定 release、框架、套件與程式版本</text><text x="105" y="802" class="s">checkpoint、冪等、重試與品質閘門</text>
+  <line x1="360" y1="845" x2="360" y2="885" class="line"/>
+  <rect x="70" y="895" width="580" height="190" rx="22" class="box"/><text x="105" y="940" class="t">4. 受保護輸出</text><text x="105" y="980" class="s">S3 暫存／隔離／正式區、Parquet 與 manifest</text><text x="105" y="1013" class="s">KMS、Block Public Access、保留與授權</text><text x="105" y="1046" class="s">唯一持久副本不放在本機磁碟或 HDFS</text>
+  <line x1="360" y1="1085" x2="360" y2="1125" class="line"/>
+  <rect x="70" y="1135" width="580" height="205" rx="22" class="warn"/><text x="105" y="1180" class="t">5. 特有風險控制</text><text x="105" y="1220" class="s">Bootstrap、映像、套件與 release 供應鏈</text><text x="105" y="1253" class="s">UI、日誌、暫存、PassRole 與資料越權</text><text x="105" y="1286" class="s">Spot／縮容部分結果、重試與容量失控</text><text x="105" y="1319" class="s">雜湊、隔離、輸出提交、逾時與成本告警</text>
+  <line x1="360" y1="1340" x2="360" y2="1380" class="line"/>
+  <rect x="70" y="1390" width="580" height="130" rx="22" class="guard"/><text x="105" y="1435" class="t">6. 證據與復原</text><text x="105" y="1475" class="s">CloudWatch／CloudTrail、IaC、程式與資料副本</text><text x="105" y="1508" class="s">跨區重建角色、網路、KMS、application／叢集</text>
+</svg>
