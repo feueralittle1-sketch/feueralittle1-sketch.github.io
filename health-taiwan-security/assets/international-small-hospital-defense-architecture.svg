@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">小型醫院可驗證防禦架構</title>
+  <desc id="desc">以臨床服務為核心，配置身分郵件、端點網路、資料復原、監測告警與事件應變五層控制，並以證據庫保存驗收結果。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071525"/><stop offset="1" stop-color="#10264a"/></linearGradient>
+    <linearGradient id="core" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#63e6ff"/><stop offset="1" stop-color="#8b7cff"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="7" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <text x="70" y="72" fill="#f8fbff" font-size="38" font-weight="800">有限資源先保住五個控制面</text>
+  <text x="70" y="112" fill="#a9bddb" font-size="22">工具數量不是目標；臨床不中斷、異常可見、事件可處置才是驗收結果</text>
+  <rect x="435" y="265" width="330" height="170" rx="36" fill="url(#core)" opacity=".96" filter="url(#glow)"/>
+  <text x="600" y="325" text-anchor="middle" fill="#06111f" font-size="30" font-weight="900">臨床服務核心</text>
+  <text x="600" y="366" text-anchor="middle" fill="#10203a" font-size="22">HIS・PACS・醫療設備・照護流程</text>
+  <text x="600" y="402" text-anchor="middle" fill="#10203a" font-size="20">可用性與病人安全優先</text>
+  <g font-family="sans-serif">
+    <rect x="70" y="170" width="300" height="125" rx="24" fill="#102b47" stroke="#63e6ff" stroke-width="3"/>
+    <text x="95" y="213" fill="#63e6ff" font-size="25" font-weight="800">01 身分與郵件</text><text x="95" y="250" fill="#d7e7f7" font-size="21">MFA・最小權限・釣魚回報</text>
+    <rect x="830" y="170" width="300" height="125" rx="24" fill="#1d274b" stroke="#a997ff" stroke-width="3"/>
+    <text x="855" y="213" fill="#c6b8ff" font-size="25" font-weight="800">02 端點與網路</text><text x="855" y="250" fill="#d7e7f7" font-size="21">受管設備・分段・修補基線</text>
+    <rect x="70" y="420" width="300" height="125" rx="24" fill="#123b3c" stroke="#57f0c1" stroke-width="3"/>
+    <text x="95" y="463" fill="#72f4cf" font-size="25" font-weight="800">03 資料與復原</text><text x="95" y="500" fill="#d7e7f7" font-size="21">加密・離線備份・還原測試</text>
+    <rect x="830" y="420" width="300" height="125" rx="24" fill="#402941" stroke="#ff8ed8" stroke-width="3"/>
+    <text x="855" y="463" fill="#ffb5e6" font-size="25" font-weight="800">04 監測與告警</text><text x="855" y="500" fill="#d7e7f7" font-size="21">集中日誌・異常阻擋・值班升級</text>
+    <rect x="375" y="575" width="450" height="105" rx="25" fill="#372f18" stroke="#ffd166" stroke-width="3"/>
+    <text x="600" y="617" text-anchor="middle" fill="#ffe09a" font-size="25" font-weight="800">05 事件與臨床應變</text><text x="600" y="653" text-anchor="middle" fill="#f6edcf" font-size="21">隔離決策・停機流程・聯絡樹・乾淨恢復</text>
+  </g>
+  <g stroke="#b9d7ee" stroke-width="4" opacity=".75" fill="none"><path d="M370 235 C420 235 425 290 455 315"/><path d="M830 235 C780 235 775 290 745 315"/><path d="M370 485 C420 485 425 420 455 395"/><path d="M830 485 C780 485 775 420 745 395"/><path d="M600 435 V575"/></g>
+  <rect x="70" y="705" width="1060" height="34" rx="17" fill="#0a1729" stroke="#35506f"/><text x="600" y="729" text-anchor="middle" fill="#b9cee4" font-size="18">共同證據庫：資產清冊・組態基線・告警紀錄・演練結果・例外核准・改善期限</text>
+</svg>

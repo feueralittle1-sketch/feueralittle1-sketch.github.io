@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">小型醫院九十日資安導入路線</title>
+  <desc id="desc">前三十日完成臨床依賴與資產盤點，三十一至六十日部署高效控制，六十一至九十日進行模擬攻擊與停機演練，之後按月複測。</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#081525"/><stop offset="1" stop-color="#111d3c"/></linearGradient><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0,0 L12,6 L0,12 z" fill="#78dff7"/></marker></defs>
+  <rect width="1200" height="700" fill="url(#bg)"/>
+  <text x="65" y="72" fill="#f8fbff" font-size="38" font-weight="800">九十日先建立閉環，再擴充工具</text>
+  <text x="65" y="112" fill="#a9bddb" font-size="22">每一階段都要交付可檢查的證據，而不是只回報採購或安裝完成</text>
+  <path d="M245 345 H955" stroke="#78dff7" stroke-width="6" marker-end="url(#arrow)" opacity=".8"/>
+  <g font-family="sans-serif">
+    <circle cx="210" cy="345" r="80" fill="#12364d" stroke="#63e6ff" stroke-width="5"/><text x="210" y="334" text-anchor="middle" fill="#63e6ff" font-size="27" font-weight="900">0–30 日</text><text x="210" y="369" text-anchor="middle" fill="#eaf7ff" font-size="22">看清依賴</text>
+    <circle cx="470" cy="345" r="80" fill="#273052" stroke="#a997ff" stroke-width="5"/><text x="470" y="334" text-anchor="middle" fill="#c7bbff" font-size="27" font-weight="900">31–60 日</text><text x="470" y="369" text-anchor="middle" fill="#f3efff" font-size="22">優先加固</text>
+    <circle cx="730" cy="345" r="80" fill="#183b37" stroke="#57f0c1" stroke-width="5"/><text x="730" y="334" text-anchor="middle" fill="#75f3d1" font-size="27" font-weight="900">61–90 日</text><text x="730" y="369" text-anchor="middle" fill="#ebfff8" font-size="22">情境驗證</text>
+    <circle cx="990" cy="345" r="80" fill="#44331a" stroke="#ffd166" stroke-width="5"/><text x="990" y="334" text-anchor="middle" fill="#ffe092" font-size="27" font-weight="900">持續</text><text x="990" y="369" text-anchor="middle" fill="#fff7df" font-size="22">複測改善</text>
+    <rect x="75" y="475" width="270" height="150" rx="24" fill="#0d253a" stroke="#315777"/><text x="100" y="515" fill="#8ee9ff" font-size="23" font-weight="800">交付證據</text><text x="100" y="552" fill="#d6e5f4" font-size="20">• 關鍵服務與資產清冊</text><text x="100" y="585" fill="#d6e5f4" font-size="20">• 責任人與停機容忍度</text>
+    <rect x="335" y="160" width="270" height="150" rx="24" fill="#202848" stroke="#524f82"/><text x="360" y="200" fill="#c7bbff" font-size="23" font-weight="800">交付證據</text><text x="360" y="237" fill="#e4ddff" font-size="20">• MFA 與高權限收斂</text><text x="360" y="270" fill="#e4ddff" font-size="20">• 備份、日誌與分段基線</text>
+    <rect x="595" y="475" width="270" height="150" rx="24" fill="#12352f" stroke="#277562"/><text x="620" y="515" fill="#75f3d1" font-size="23" font-weight="800">交付證據</text><text x="620" y="552" fill="#dcfff4" font-size="20">• 模擬攻擊與告警紀錄</text><text x="620" y="585" fill="#dcfff4" font-size="20">• 臨床停機與還原結果</text>
+    <rect x="855" y="160" width="270" height="150" rx="24" fill="#3b2d18" stroke="#856a2c"/><text x="880" y="200" fill="#ffe092" font-size="23" font-weight="800">交付證據</text><text x="880" y="237" fill="#fff4d6" font-size="20">• 月度指標與例外期限</text><text x="880" y="270" fill="#fff4d6" font-size="20">• 變更後複測與復盤</text>
+  </g>
+</svg>

@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">小型醫院風險控制與驗收證據對照</title>
+  <desc id="desc">將帳號接管、惡意程式、橫向移動、資料破壞及營運中斷，分別連結到優先控制與可量測驗收證據。</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#071422"/><stop offset="1" stop-color="#172044"/></linearGradient></defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <text x="60" y="68" fill="#f8fbff" font-size="37" font-weight="800">每項風險都要對應控制與驗收證據</text>
+  <text x="60" y="108" fill="#a9bddb" font-size="21">資源有限時，以臨床衝擊與可驗證性排序，避免平均分配預算</text>
+  <g font-family="sans-serif">
+    <rect x="60" y="150" width="250" height="64" rx="18" fill="#25364c"/><text x="185" y="191" text-anchor="middle" fill="#ffffff" font-size="24" font-weight="800">主要風險</text>
+    <rect x="335" y="150" width="410" height="64" rx="18" fill="#203c4a"/><text x="540" y="191" text-anchor="middle" fill="#8feaff" font-size="24" font-weight="800">優先控制</text>
+    <rect x="770" y="150" width="370" height="64" rx="18" fill="#333054"/><text x="955" y="191" text-anchor="middle" fill="#c7bbff" font-size="24" font-weight="800">驗收證據</text>
+    <g fill="#102338" stroke="#2e5675"><rect x="60" y="235" width="250" height="82" rx="16"/><rect x="60" y="330" width="250" height="82" rx="16"/><rect x="60" y="425" width="250" height="82" rx="16"/><rect x="60" y="520" width="250" height="82" rx="16"/><rect x="60" y="615" width="250" height="82" rx="16"/></g>
+    <g fill="#112d35" stroke="#2b6977"><rect x="335" y="235" width="410" height="82" rx="16"/><rect x="335" y="330" width="410" height="82" rx="16"/><rect x="335" y="425" width="410" height="82" rx="16"/><rect x="335" y="520" width="410" height="82" rx="16"/><rect x="335" y="615" width="410" height="82" rx="16"/></g>
+    <g fill="#252440" stroke="#5d5591"><rect x="770" y="235" width="370" height="82" rx="16"/><rect x="770" y="330" width="370" height="82" rx="16"/><rect x="770" y="425" width="370" height="82" rx="16"/><rect x="770" y="520" width="370" height="82" rx="16"/><rect x="770" y="615" width="370" height="82" rx="16"/></g>
+    <g fill="#e8f3ff" font-size="22" font-weight="700"><text x="85" y="284">帳號接管</text><text x="85" y="379">惡意程式</text><text x="85" y="474">橫向移動</text><text x="85" y="569">資料破壞</text><text x="85" y="664">臨床中斷</text></g>
+    <g fill="#d9fbff" font-size="20"><text x="360" y="270">MFA・最小權限・異常登入阻擋</text><text x="360" y="365">端點防護・郵件過濾・快速隔離</text><text x="360" y="460">網路分段・管理面隔離・PAM</text><text x="360" y="555">不可變備份・金鑰分離・還原區</text><text x="360" y="650">停機程序・聯絡樹・替代照護流程</text></g>
+    <g fill="#eeeaff" font-size="20"><text x="795" y="270">負向登入測試與撤銷時間</text><text x="795" y="365">模擬樣本告警與隔離時間</text><text x="795" y="460">跨區連線阻擋與日誌完整率</text><text x="795" y="555">還原成功率、RTO、RPO</text><text x="795" y="650">演練完成率與臨床缺口清單</text></g>
+    <path d="M310 276 H335 M745 276 H770 M310 371 H335 M745 371 H770 M310 466 H335 M745 466 H770 M310 561 H335 M745 561 H770 M310 656 H335 M745 656 H770" stroke="#79def4" stroke-width="4"/>
+  </g>
+</svg>
