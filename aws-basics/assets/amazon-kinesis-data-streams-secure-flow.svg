@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon Kinesis Data Streams 安全即時串流流程示意圖</title>
+  <desc id="desc">Producer 經最小權限、私有端點與 KMS 將事件寫入 Kinesis Data Streams，依 partition key 分配至 shard，再由多個冪等 consumer 處理並將原始資料落地至持久儲存，搭配監控與跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7be7ff"/></marker>
+    <style>.h{font:700 34px system-ui,sans-serif;fill:#fff}.t{font:700 23px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#c7d8ef}.box{fill:#112844;stroke:#416d96;stroke-width:2}.stream{fill:#382817;stroke:#ffae4d;stroke-width:3}.guard{fill:#102d2b;stroke:#48d7c7;stroke-width:2}.warn{fill:#321f2b;stroke:#ec75b9;stroke-width:2}.line{stroke:#7be7ff;stroke-width:4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="900" rx="36" fill="url(#bg)"/>
+  <text x="70" y="66" class="h">示意：Kinesis 即時串流必須同時治理分區、重複、延遲與復原</text>
+  <text x="70" y="103" class="s">受管 stream 提供資料接收與短期保留；事件正確性、consumer 結果與跨區持續性仍由客戶負責</text>
+  <rect x="70" y="150" width="270" height="245" rx="24" class="box"/>
+  <text x="105" y="195" class="t">1. Producer 與事件</text>
+  <text x="105" y="235" class="s">應用、網站、裝置與服務</text><text x="105" y="268" class="s">Schema、版本與事件 ID</text><text x="105" y="301" class="s">高基數 partition key</text><text x="105" y="334" class="s">批次失敗逐筆重試</text><text x="105" y="367" class="s">敏感欄位最小化</text>
+  <rect x="395" y="150" width="270" height="245" rx="24" class="guard"/>
+  <text x="430" y="195" class="t">2. 安全入口</text>
+  <text x="430" y="235" class="s">工作負載角色最小權限</text><text x="430" y="268" class="s">MFA／短期憑證</text><text x="430" y="301" class="s">Interface VPC endpoint</text><text x="430" y="334" class="s">KMS 與 TLS</text><text x="430" y="367" class="s">Secrets Manager／Parameter Store</text>
+  <rect x="720" y="135" width="610" height="280" rx="28" class="stream"/>
+  <text x="760" y="180" class="t">3. Amazon Kinesis Data Streams</text>
+  <text x="760" y="222" class="s">On-demand 或 Provisioned：依流量、控制需求與成本選擇</text>
+  <text x="760" y="256" class="s">Partition key → shard：排序邊界、容量分布與 hot shard</text>
+  <text x="760" y="290" class="s">Retention：24 小時至 365 天，供短期修復與重播</text>
+  <text x="760" y="324" class="s">Shared throughput 或 enhanced fan-out consumer</text>
+  <text x="760" y="358" class="s">CloudWatch 指標、CloudTrail 證據、容量與成本護欄</text>
+  <line x1="340" y1="273" x2="385" y2="273" class="line"/><line x1="665" y1="273" x2="710" y2="273" class="line"/>
+  <rect x="70" y="510" width="370" height="250" rx="24" class="box"/>
+  <text x="105" y="555" class="t">4. 冪等 Consumers</text>
+  <text x="105" y="595" class="s">KCL／Lambda／自建 consumer</text><text x="105" y="628" class="s">Checkpoint 與 lag 監控</text><text x="105" y="661" class="s">事件 ID、去重與條件寫入</text><text x="105" y="694" class="s">毒性事件隔離／重試上限</text><text x="105" y="727" class="s">下游交易與業務對帳</text>
+  <rect x="500" y="510" width="370" height="250" rx="24" class="warn"/>
+  <text x="535" y="555" class="t">5. 特有風險控制</text>
+  <text x="535" y="595" class="s">Hot shard 與選擇性阻斷</text><text x="535" y="628" class="s">重複 record／重複處理</text><text x="535" y="661" class="s">順序假設與 reshard</text><text x="535" y="694" class="s">Consumer lag 超過 retention</text><text x="535" y="727" class="s">跨帳戶與 KMS 信任過寬</text>
+  <rect x="930" y="510" width="400" height="250" rx="24" class="guard"/>
+  <text x="965" y="555" class="t">6. 持久落地與復原</text>
+  <text x="965" y="595" class="s">S3 原始事件、版本與生命週期</text><text x="965" y="628" class="s">IaC、角色、KMS、網路與程式</text><text x="965" y="661" class="s">另一區域的獨立 stream</text><text x="965" y="694" class="s">切換、重播、去重與缺口檢查</text><text x="965" y="727" class="s">RPO／RTO 演練與結果證據</text>
+  <path d="M1025 415V462H255V500" class="line"/><path d="M440 635H490" class="line"/><path d="M870 635H920" class="line"/>
+  <text x="70" y="825" class="s">共同責任：AWS 維護受管串流平台；客戶負責事件、分區、程式、權限、加密、冪等、持久儲存、成本與跨區復原。</text>
+</svg>
