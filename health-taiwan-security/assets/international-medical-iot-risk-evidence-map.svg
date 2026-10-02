@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">醫療 IoT 風險、補償控制與驗收證據</title>
+  <desc id="desc">五種常見醫療 IoT 限制，對應補償控制及可驗收證據。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071322"/><stop offset="1" stop-color="#16264c"/></linearGradient><filter id="s"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-opacity=".3"/></filter></defs>
+  <rect width="1200" height="760" fill="url(#bg)"/>
+  <text x="58" y="64" fill="#f3f8ff" font-size="34" font-weight="800">風險、控制與證據要成套出現</text>
+  <text x="58" y="101" fill="#a9bddc" font-size="20">補償控制無法永久替代修補；每項例外都要有監測、期限與退場條件</text>
+  <g filter="url(#s)">
+    <rect x="55" y="142" width="1090" height="70" rx="20" fill="#17324b" stroke="#63e6ff"/>
+    <text x="82" y="185" fill="#bdf5ff" font-size="21" font-weight="800">限制／失敗模式</text><text x="402" y="185" fill="#bdf5ff" font-size="21" font-weight="800">補償控制</text><text x="786" y="185" fill="#bdf5ff" font-size="21" font-weight="800">最低驗收證據</text>
+    <rect x="55" y="226" width="1090" height="88" rx="18" fill="#241f43" stroke="#665e91"/>
+    <text x="82" y="262" fill="#fff" font-size="19" font-weight="700">無法部署強式驗證</text><text x="82" y="291" fill="#bac7df" font-size="17">共用密碼或固定憑證</text><text x="402" y="275" fill="#fff" font-size="18">身分閘道、來源限制、會話代理</text><text x="786" y="275" fill="#fff" font-size="18">未授權登入阻擋與可追溯會話紀錄</text>
+    <rect x="55" y="326" width="1090" height="88" rx="18" fill="#152b3f" stroke="#496f8f"/>
+    <text x="82" y="362" fill="#fff" font-size="19" font-weight="700">通訊協定老舊或未加密</text><text x="82" y="391" fill="#bac7df" font-size="17">無法直接升級傳輸安全</text><text x="402" y="375" fill="#fff" font-size="18">隔離區、加密隧道、通訊白名單</text><text x="786" y="375" fill="#fff" font-size="18">非必要東西向流量皆被拒絕</text>
+    <rect x="55" y="426" width="1090" height="88" rx="18" fill="#241f43" stroke="#665e91"/>
+    <text x="82" y="462" fill="#fff" font-size="19" font-weight="700">修補延遲或支援終止</text><text x="82" y="491" fill="#bac7df" font-size="17">認證、供應鏈或 EOL 限制</text><text x="402" y="475" fill="#fff" font-size="18">曝險收斂、虛擬修補、替換路線</text><text x="786" y="475" fill="#fff" font-size="18">例外期限、供應商承諾與退場里程碑</text>
+    <rect x="55" y="526" width="1090" height="88" rx="18" fill="#152b3f" stroke="#496f8f"/>
+    <text x="82" y="562" fill="#fff" font-size="19" font-weight="700">日誌不足或無狀態回報</text><text x="82" y="591" fill="#bac7df" font-size="17">事件調查容易形成盲點</text><text x="402" y="575" fill="#fff" font-size="18">網路遙測、資產基線、旁路偵測</text><text x="786" y="575" fill="#fff" font-size="18">異常通訊可被發現、分級與升級</text>
+    <rect x="55" y="626" width="1090" height="88" rx="18" fill="#241f43" stroke="#665e91"/>
+    <text x="82" y="662" fill="#fff" font-size="19" font-weight="700">隔離可能影響病人安全</text><text x="82" y="691" fill="#bac7df" font-size="17">安全動作與臨床可用性衝突</text><text x="402" y="675" fill="#fff" font-size="18">分級隔離、人工覆核、降級流程</text><text x="786" y="675" fill="#fff" font-size="18">演練證明安全切換、回復與資料核對</text>
+  </g>
+</svg>
