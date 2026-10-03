@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">醫療系統不安全預設值的風險控制與證據對照</title>
+  <desc id="desc">將共用預設憑證、暴露管理介面、非必要服務、弱通訊及日誌關閉，對應安全控制與驗收證據。</desc>
+  <defs><linearGradient id="bg"><stop stop-color="#071422"/><stop offset="1" stop-color="#111d3a"/></linearGradient></defs>
+  <rect width="1200" height="760" rx="32" fill="url(#bg)"/>
+  <text x="60" y="68" fill="#fff" font-size="32" font-weight="800">不安全預設值必須對應控制與可重現證據</text>
+  <text x="60" y="105" fill="#a8bad8" font-size="19">設定畫面不是驗收結果；需要測試輸出、集中紀錄與版本關聯</text>
+  <g font-family="Inter,Noto Sans TC,sans-serif">
+    <rect x="55" y="145" width="1090" height="64" rx="16" fill="#152640"/>
+    <text x="90" y="186" fill="#8fe8ff" font-size="20" font-weight="800">失敗模式</text><text x="420" y="186" fill="#8fe8ff" font-size="20" font-weight="800">必要控制</text><text x="810" y="186" fill="#8fe8ff" font-size="20" font-weight="800">驗收證據</text>
+    <g font-size="18">
+      <rect x="55" y="222" width="1090" height="88" rx="15" fill="#101f36" stroke="#304765"/><text x="90" y="258" fill="#ffb9c5" font-weight="700">共用預設憑證</text><text x="90" y="286" fill="#c5d3e8">批次設備形成共同弱點</text><text x="420" y="258" fill="#e8f0ff">唯一初始秘密、首次啟用重設、MFA／SSO</text><text x="810" y="258" fill="#d8e5f5">重複密碼測試失敗</text><text x="810" y="286" fill="#d8e5f5">帳號清冊與啟用紀錄</text>
+      <rect x="55" y="322" width="1090" height="88" rx="15" fill="#101f36" stroke="#304765"/><text x="90" y="358" fill="#ffcf93" font-weight="700">管理介面預設暴露</text><text x="90" y="386" fill="#c5d3e8">跨區或外網可直接到達</text><text x="420" y="358" fill="#e8f0ff">管理面隔離、來源限制、帶外存取</text><text x="810" y="358" fill="#d8e5f5">外部與跨區掃描</text><text x="810" y="386" fill="#d8e5f5">禁止路徑測試紀錄</text>
+      <rect x="55" y="422" width="1090" height="88" rx="15" fill="#101f36" stroke="#304765"/><text x="90" y="458" fill="#f6e68c" font-weight="700">非必要服務自動開啟</text><text x="90" y="486" fill="#c5d3e8">增加攻擊面與維護負擔</text><text x="420" y="458" fill="#e8f0ff">最小服務集、連接埠白名單、變更監測</text><text x="810" y="458" fill="#d8e5f5">連接埠差異報告</text><text x="810" y="486" fill="#d8e5f5">核准服務清冊</text>
+      <rect x="55" y="522" width="1090" height="88" rx="15" fill="#101f36" stroke="#304765"/><text x="90" y="558" fill="#aee8ff" font-weight="700">弱通訊或驗證降級</text><text x="90" y="586" fill="#c5d3e8">資料與指令可能遭竄改</text><text x="420" y="558" fill="#e8f0ff">安全協定、憑證驗證、禁止靜默降級</text><text x="810" y="558" fill="#d8e5f5">握手與憑證負向測試</text><text x="810" y="586" fill="#d8e5f5">封包與錯誤事件紀錄</text>
+      <rect x="55" y="622" width="1090" height="88" rx="15" fill="#101f36" stroke="#304765"/><text x="90" y="658" fill="#c7b8ff" font-weight="700">日誌預設關閉或留在本機</text><text x="90" y="686" fill="#c5d3e8">事件無法發現或還原</text><text x="420" y="658" fill="#e8f0ff">關鍵事件預設開啟、集中匯出、時間同步</text><text x="810" y="658" fill="#d8e5f5">事件觸發與 SIEM 收件</text><text x="810" y="686" fill="#d8e5f5">完整性與保留測試</text>
+    </g>
+  </g>
+</svg>

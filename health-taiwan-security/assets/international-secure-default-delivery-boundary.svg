@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療系統安全預設值交付邊界</title>
+  <desc id="desc">供應商交付的產品先通過醫院導入閘門，驗證身分、介面、通訊、日誌與更新預設值，再進入臨床服務區；證據另行保存。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#101c3c"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#52e5ff"/><stop offset="1" stop-color="#75a7ff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L10,3 L0,6 Z" fill="#78dfff"/></marker>
+  </defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <text x="64" y="72" fill="#f5f8ff" font-size="32" font-weight="800">安全預設值不是安裝後補強，而是交付前可驗證的基線</text>
+  <text x="64" y="108" fill="#a8bad8" font-size="19">Secure by Default · 導入閘門 · 臨床放行 · 獨立證據</text>
+
+  <g filter="url(#shadow)">
+    <rect x="58" y="176" width="275" height="310" rx="26" fill="#10233e" stroke="#506a94" stroke-width="2"/>
+    <text x="86" y="220" fill="#8fe8ff" font-size="20" font-weight="700">供應商交付區</text>
+    <text x="86" y="263" fill="#fff" font-size="26" font-weight="800">產品與版本</text>
+    <g fill="#c7d5ec" font-size="19">
+      <text x="88" y="310">• 初始帳號與憑證</text><text x="88" y="348">• 預設服務與連接埠</text>
+      <text x="88" y="386">• 加密與更新設定</text><text x="88" y="424">• 日誌與匯出能力</text>
+    </g>
+    <rect x="390" y="146" width="420" height="372" rx="30" fill="#0c2942" stroke="url(#cyan)" stroke-width="3"/>
+    <text x="600" y="195" text-anchor="middle" fill="#8fe8ff" font-size="20" font-weight="700">醫院導入閘門</text>
+    <text x="600" y="235" text-anchor="middle" fill="#fff" font-size="28" font-weight="800">先驗證安全預設，再接入臨床</text>
+    <g font-size="19" font-weight="700">
+      <rect x="432" y="274" width="150" height="66" rx="16" fill="#153957"/><text x="507" y="316" text-anchor="middle" fill="#e9f7ff">唯一身分</text>
+      <rect x="618" y="274" width="150" height="66" rx="16" fill="#153957"/><text x="693" y="316" text-anchor="middle" fill="#e9f7ff">介面最小化</text>
+      <rect x="432" y="362" width="150" height="66" rx="16" fill="#153957"/><text x="507" y="404" text-anchor="middle" fill="#e9f7ff">安全通訊</text>
+      <rect x="618" y="362" width="150" height="66" rx="16" fill="#153957"/><text x="693" y="404" text-anchor="middle" fill="#e9f7ff">日誌預設開啟</text>
+    </g>
+    <text x="600" y="474" text-anchor="middle" fill="#b8c8e2" font-size="18">負向測試｜例外核准｜臨床回歸｜回退條件</text>
+    <rect x="867" y="176" width="275" height="310" rx="26" fill="#102d35" stroke="#4fd7bd" stroke-width="2"/>
+    <text x="895" y="220" fill="#62f0d2" font-size="20" font-weight="700">臨床服務區</text>
+    <text x="895" y="263" fill="#fff" font-size="26" font-weight="800">受控放行</text>
+    <g fill="#d2e8e5" font-size="19">
+      <text x="897" y="310">• 指定信任區域</text><text x="897" y="348">• 最小必要連線</text>
+      <text x="897" y="386">• 集中監測告警</text><text x="897" y="424">• 可撤回與可復原</text>
+    </g>
+  </g>
+  <path d="M333 330 H382" stroke="#78dfff" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M810 330 H858" stroke="#78dfff" stroke-width="5" marker-end="url(#arrow)"/>
+
+  <rect x="150" y="568" width="900" height="92" rx="22" fill="#111d36" stroke="#9b8cff" stroke-width="2"/>
+  <text x="190" y="608" fill="#c4b9ff" font-size="20" font-weight="700">獨立證據面</text>
+  <text x="190" y="640" fill="#dbe5f6" font-size="18">基線清單　設定匯出　測試紀錄　偏離理由　責任人　期限　版本與變更歷程</text>
+</svg>
