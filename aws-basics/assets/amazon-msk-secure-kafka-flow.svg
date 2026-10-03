@@ -1,0 +1,37 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 920" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon MSK 安全事件串流使用情境示意圖</title>
+  <desc id="desc">Producer 經最小權限、私有網路、身分驗證與 TLS 寫入 Amazon MSK，多可用區 broker 依 topic partition 保存事件，再由 consumer group 冪等處理，搭配 KMS、監控、持久落地與跨區複寫。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#7be7ff"/></marker>
+    <style>.h{font:700 34px system-ui,sans-serif;fill:#fff}.t{font:700 23px system-ui,sans-serif;fill:#fff}.s{font:500 18px system-ui,sans-serif;fill:#c7d8ef}.box{fill:#112844;stroke:#416d96;stroke-width:2}.msk{fill:#382817;stroke:#ffae4d;stroke-width:3}.guard{fill:#102d2b;stroke:#48d7c7;stroke-width:2}.warn{fill:#321f2b;stroke:#ec75b9;stroke-width:2}.line{stroke:#7be7ff;stroke-width:4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="920" rx="36" fill="url(#bg)"/>
+  <text x="70" y="66" class="h">示意：Amazon MSK 必須治理 Kafka 分區、消費進度與跨區持續性</text>
+  <text x="70" y="103" class="s">受管叢集降低 broker 維運負擔；事件契約、權限、用戶端、冪等處理與災難復原仍由客戶負責</text>
+  <rect x="70" y="150" width="270" height="245" rx="24" class="box"/>
+  <text x="105" y="195" class="t">1. Producer 與事件</text>
+  <text x="105" y="235" class="s">應用、裝置與微服務</text><text x="105" y="268" class="s">Schema／版本／事件 ID</text><text x="105" y="301" class="s">高基數 message key</text><text x="105" y="334" class="s">逾時、重試與流量限制</text><text x="105" y="367" class="s">敏感資料最小化</text>
+  <rect x="395" y="150" width="270" height="245" rx="24" class="guard"/>
+  <text x="430" y="195" class="t">2. 私有安全入口</text>
+  <text x="430" y="235" class="s">IAM／mTLS／SASL-SCRAM</text><text x="430" y="268" class="s">MFA 與短期憑證</text><text x="430" y="301" class="s">VPC、SG、PrivateLink</text><text x="430" y="334" class="s">TLS 與 KMS 加密</text><text x="430" y="367" class="s">Secrets Manager 管理機密</text>
+  <rect x="720" y="135" width="610" height="280" rx="28" class="msk"/>
+  <text x="760" y="180" class="t">3. Amazon MSK：Provisioned 或 Serverless</text>
+  <text x="760" y="222" class="s">Topic → partition → 多可用區 broker；replication factor 與 ISR</text>
+  <text x="760" y="256" class="s">Message key 決定分區與局部順序，也可能形成 hot partition</text>
+  <text x="760" y="290" class="s">Retention、EBS／tiered storage、配額與 Kafka 相容性</text>
+  <text x="760" y="324" class="s">Consumer group、offset、rebalance 與 lag</text>
+  <text x="760" y="358" class="s">CloudWatch、Prometheus／broker logs、CloudTrail 與成本護欄</text>
+  <line x1="340" y1="273" x2="385" y2="273" class="line"/><line x1="665" y1="273" x2="710" y2="273" class="line"/>
+  <rect x="70" y="520" width="370" height="255" rx="24" class="box"/>
+  <text x="105" y="565" class="t">4. Consumer Groups</text>
+  <text x="105" y="605" class="s">Offset commit 與 lag 監控</text><text x="105" y="638" class="s">冪等鍵、去重與條件寫入</text><text x="105" y="671" class="s">Rebalance／毒性事件處理</text><text x="105" y="704" class="s">下游資料庫與 S3 落地</text><text x="105" y="737" class="s">Schema 相容與業務對帳</text>
+  <rect x="500" y="520" width="370" height="255" rx="24" class="warn"/>
+  <text x="535" y="565" class="t">5. 特有風險控制</text>
+  <text x="535" y="605" class="s">Hot partition／broker 偏斜</text><text x="535" y="638" class="s">ACL／IAM 權限過寬</text><text x="535" y="671" class="s">Offset 錯誤與重複交易</text><text x="535" y="704" class="s">Rebalance storm／lag 累積</text><text x="535" y="737" class="s">公開連線與相容性變更</text>
+  <rect x="930" y="520" width="400" height="255" rx="24" class="guard"/>
+  <text x="965" y="565" class="t">6. 持久性與跨區復原</text>
+  <text x="965" y="605" class="s">多 AZ 副本與 min ISR</text><text x="965" y="638" class="s">Amazon MSK Replicator</text><text x="965" y="671" class="s">S3 長期保存／可重播資料</text><text x="965" y="704" class="s">另一區域的叢集、KMS、網路</text><text x="965" y="737" class="s">切換、offset、去重與 RPO 演練</text>
+  <path d="M1025 415V465H255V510" class="line"/><path d="M440 647H490" class="line"/><path d="M870 647H920" class="line"/>
+  <text x="70" y="845" class="s">共同責任：AWS 維護受管 Kafka 基礎設施；客戶負責 topic、partition、用戶端、身分、資料、offset、結果、成本與跨區復原。</text>
+</svg>
