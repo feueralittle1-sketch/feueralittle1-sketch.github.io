@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon MQ：受管訊息代理、協定遷移與安全治理</title>
+  <meta name="description" content="理解 Amazon MQ 的 ActiveMQ、RabbitMQ、queue、topic、部署模式、成本、可用性、跨區復原與資安控制。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-04-amazon-mq-basics.html" />
+  <link rel="prev" href="./2026-10-03-amazon-msk-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon MQ：受管訊息代理、協定遷移與安全治理" />
+  <meta property="og:description" content="從 ActiveMQ、RabbitMQ、queue 與 topic，到私有連線、權限、KMS、監控、成本及跨區復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-04-amazon-mq-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-mq-secure-broker-flow.svg" />
+  <meta property="article:published_time" content="2026-10-04T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon MQ：受管訊息代理、協定遷移與安全治理" />
+  <meta name="twitter:description" content="掌握訊息代理選型、可靠投遞、私有網路、授權、KMS、可觀測性與跨區復原。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-mq-secure-broker-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon MQ：受管訊息代理、協定遷移與安全治理","description":"理解 Amazon MQ 的 ActiveMQ、RabbitMQ、queue、topic、部署模式、成本、可用性、跨區復原與資安控制。","datePublished":"2026-10-04T21:30:00+08:00","dateModified":"2026-10-04T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-04-amazon-mq-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-mq-secure-broker-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">受管訊息代理</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-04</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon MQ：受管訊息代理、協定遷移與安全治理</h1>
+<p class="text-xl leading-9 muted">Amazon MQ 是 Apache ActiveMQ Classic 與 RabbitMQ 的受管訊息代理服務，適合保留既有協定、用戶端與訊息模型並降低 broker 基礎設施維運負擔。AWS 管理代理主機與維護作業，但不會代替 queue／topic 設計、訊息生命週期、用戶授權、冪等處理、容量治理或災難復原。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-04</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>Amazon MQ</strong> 提供相容 Apache ActiveMQ Classic 與 RabbitMQ 的受管 broker。既有應用若已使用 AMQP、OpenWire、MQTT、STOMP 或 RabbitMQ AMQP 0-9-1 等訊息協定，可先評估在不大幅改寫訊息程式碼的前提下遷移。服務負責 broker 建立、底層主機、部分修補、故障替換與維護視窗；客戶仍須管理 broker engine 選型、版本相容、訊息拓撲、使用者、權限、連線、重試與資料治理。</p>
+<p>Amazon MQ 不是所有非同步工作負載的預設答案。若系統不需要既有 broker 協定或相容性，可同時比較 Amazon SQS、Amazon SNS、Amazon EventBridge、Amazon Kinesis Data Streams 與 Amazon MSK。受管不等於免維運：訊息積壓、poison message、連線風暴、未確認投遞、錯誤 acknowledgement、過大的訊息、queue 數量失控與錯誤授權仍會造成中斷或資料風險。</p>
+<h2>核心概念與服務選型</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">訊息代理與投遞模型</h3><ul>
+<li><strong>Broker：</strong>接收、保存、路由並交付訊息，是 producer 與 consumer 的中介。</li>
+<li><strong>Queue：</strong>通常由一個或多個 consumer 競爭取用；應明確定義 acknowledgement、重試、逾時與 dead-letter 流程。</li>
+<li><strong>Topic／Exchange：</strong>依訂閱、routing key 或 binding 將訊息分送至一個或多個目的地；兩種引擎的術語與行為不同。</li>
+<li><strong>持久性：</strong>durable destination、persistent message、複寫與儲存設定必須共同成立；不能只看單一選項。</li>
+<li><strong>至少一次語意：</strong>網路中斷、consumer 重啟或 acknowledgement 遺失都可能造成重送，下游須以穩定事件 ID 實作冪等。</li>
+<li><strong>流量控制：</strong>prefetch、publisher confirms、consumer concurrency、TTL、queue length 與 back pressure 共同影響記憶體和延遲。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">ActiveMQ 與 RabbitMQ</h3><ul>
+<li><strong>ActiveMQ：</strong>適合既有 JMS、OpenWire、AMQP、MQTT 或 STOMP 工作負載；可建立單一執行個體或 active／standby 部署。</li>
+<li><strong>RabbitMQ：</strong>適合既有 AMQP 0-9-1 生態、exchange／binding／vhost 與 RabbitMQ 用戶端；可建立單一執行個體或多可用區 cluster。</li>
+<li><strong>引擎不能只看名稱：</strong>須驗證協定、用戶端函式庫、plug-in、認證、授權、拓撲、message ordering、交易與管理 API 相容性。</li>
+<li><strong>版本：</strong>受支援版本與升級政策會變動；建立前確認官方支援表，維護前在測試環境驗證 client、reconnect 與 rollback。</li>
+<li><strong>部署模式：</strong>正式環境通常需要多可用區型態，但高可用不代表跨區復原，也不保證應用程式已正確重連。</li>
+<li><strong>跨區：</strong>ActiveMQ 可評估 Cross-Region Data Replication；其他情境須另行設計第二區域、訊息補償與切換程序。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>既有應用已依賴 ActiveMQ、RabbitMQ、JMS 或標準 broker 協定，希望降低自行維護 broker 叢集的負擔。</li>
+<li>企業整合、訂單工作流、背景作業與舊系統解耦需要 queue、topic、exchange、routing key 或 request／reply 模式。</li>
+<li>遷移計畫要求保留既有 client library、訊息格式與路由邏輯，再分階段改善架構。</li>
+<li>團隊需要控制 broker 引擎、版本、拓撲與授權，又希望 AWS 管理底層主機及部分維護工作。</li>
+<li>團隊能持續治理 queue depth、訊息年齡、連線、acknowledgement、重試、dead-letter、容量與復原。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>全新系統只需要簡單工作佇列或發佈／訂閱，且不需要 broker 協定相容性；可先比較 SQS 與 SNS。</li>
+<li>需要事件匯流排規則路由與大量 AWS 服務整合，但不依賴 broker；可比較 EventBridge。</li>
+<li>需要高吞吐 append-only 串流、分區重播或 Kafka 生態；可比較 Kinesis Data Streams 或 Amazon MSK。</li>
+<li>要求跨多個外部系統的 exactly-once 業務交易。Broker 無法取代資料庫唯一性、冪等、補償與對帳。</li>
+<li>希望多可用區部署自動等同跨區備援，卻沒有第二區域、DNS、應用程式、資料與演練計畫。</li>
+</ul>
+<h2>示意故事案例：保險理賠舊系統解耦</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家保險公司有數個使用 JMS 與 ActiveMQ 的既有理賠系統。前台送出案件後，文件辨識、規則審查、人工覆核與通知服務透過 queue 協作。團隊先盤點協定、client 版本、destination、selector、交易模式、訊息大小、尖峰速率、保留時間、可接受積壓、RPO／RTO 與月成本上限，再建立跨可用區 active／standby broker，並在非正式環境執行相容與故障測試。</p>
+<p>應用程式部署在私有 subnet，只允許核准的 security group 經必要 TLS 埠連線。AWS 管理 API 由聯合登入、MFA 與短期憑證控制；broker 使用者依 producer、consumer 與稽核角色分離，authorization map 僅開放必要 destination。憑證與密碼由 Secrets Manager 管理，一般端點與調校參數放入 Parameter Store。每筆理賠訊息帶有不可變事件 ID，下游以唯一鍵防止重複入帳；超過重試上限的訊息送至 dead-letter queue。CloudWatch 監控 queue size、訊息年齡、consumer 數、CPU、記憶體、儲存與連線，broker audit log 進入 CloudWatch Logs，CloudTrail 保存控制平面變更。第二區域建立 ActiveMQ 複寫與應用程式待命環境，並定期演練升級、故障轉移、重複訊息、資料缺口與切回。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-mq-secure-broker-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-mq-secure-broker-flow.svg" alt="示意：Producer 經私有網路、TLS、broker 身分驗證與最小授權送入 Amazon MQ，再由冪等 consumer 處理並搭配 dead-letter、監控、KMS 與跨區復原" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：受管 broker 的治理重點是協定相容、destination 授權、可靠投遞、積壓控制、用戶端重連與可演練的區域復原。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>建立訊息清冊：</strong>記錄 producer、consumer、協定、client、destination、routing、message schema、資料分類、大小、TTL 與擁有者。</li>
+<li><strong>量測工作負載：</strong>收集平均與尖峰訊息率、連線與 channel／session 數、queue depth、訊息年齡、處理時間、重試與成長率。</li>
+<li><strong>選擇服務邊界：</strong>確認確實需要 ActiveMQ 或 RabbitMQ 相容性；與 SQS、SNS、EventBridge、Kinesis 及 MSK 比較。</li>
+<li><strong>驗證引擎與版本：</strong>測試協定、client library、序列化、交易、selector、exchange、binding、vhost、management API 與升級相容性。</li>
+<li><strong>選擇部署模式：</strong>依正式度、RTO、容量與成本選擇 ActiveMQ active／standby 或 RabbitMQ cluster；單一執行個體僅用於可接受中斷的情境。</li>
+<li><strong>建立私有網路：</strong>選擇 VPC、subnet 與 security group，只開放實際使用的 TLS 協定埠及核准來源，避免不必要公開存取。</li>
+<li><strong>分離控制與資料平面：</strong>Amazon MQ API 使用 IAM 控制；broker 訊息存取依引擎與版本使用 ActiveMQ／RabbitMQ 使用者及授權，符合支援條件的 RabbitMQ 也可採 IAM 驗證與暫時憑證。</li>
+<li><strong>保護機密與資料：</strong>broker 憑證或密碼存於 Secrets Manager，一般參數存於 Parameter Store；選擇 KMS key 並建立停用與刪除保護。</li>
+<li><strong>設計可靠投遞：</strong>定義 persistent message、acknowledgement、publisher confirms、重試上限、dead-letter、TTL、最大 queue 長度與 back pressure。</li>
+<li><strong>實作冪等：</strong>以穩定事件 ID、唯一性限制、條件寫入或處理紀錄避免重送造成重複交易。</li>
+<li><strong>管理連線：</strong>使用連線池、適量 channel／session、指數退避與 jitter；測試 broker 切換、DNS、TLS 與自動重連。</li>
+<li><strong>建立可觀測性：</strong>監控積壓、最舊訊息、in-flight、未確認訊息、連線、CPU、記憶體、儲存、錯誤與認證失敗。</li>
+<li><strong>演練復原：</strong>測試 broker／AZ 故障、poison message、KMS 拒絕、容量耗盡、版本升級、區域切換、重複與缺口處理。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>Amazon MQ 成本主要來自 broker instance 執行時間、部署模式與儲存使用量，另可能包含標準資料傳輸、跨可用區或跨區流量、KMS、CloudWatch Logs、自訂指標、Secrets Manager、PrivateLink、NAT 與第二區域待命資源。ActiveMQ 可依需求選擇不同儲存類型；RabbitMQ 部署模式與節點數也會改變 instance 與儲存成本。實際單價、可用 instance 與區域支援會變動，部署前須以官方價格頁及負載測試重新估算。</p>
+<p>降低成本不能只縮小 broker。連線風暴、過大訊息、過多 queue、過高 prefetch、無限重試、過長 retention、未清理 dead-letter、低效率序列化與過量日誌都會放大容量需求。應用程式端若沒有 back pressure，broker 即使擴大仍可能因 consumer 落後而再次積壓。</p>
+<p>多可用區 active／standby 或 cluster 可降低單一節點與可用區故障影響，但用戶端必須能偵測斷線、自動重連並安全重試。維護與故障切換可能中斷既有連線；未確認訊息可能重送。跨區 RPO／RTO 需另行定義，不能以區域內高可用取代。正式上線前應量測切換時間、積壓恢復速度及重送比例。</p>
+<h2>Amazon MQ 特有資安風險與控制</h2><ul>
+<li><strong>控制平面與訊息平面混淆：</strong>管理 Amazon MQ 資源的 IAM 權限不應被視為自動取得所有 queue、topic、exchange 或 vhost 權限；訊息平面須依引擎、版本及所選驗證模式另行實施最小權限。</li>
+<li><strong>ActiveMQ 預設授權過寬：</strong>建立明確 authorization map，依群組限制 destination 與操作；測試未授權 send、consume 與管理介面。</li>
+<li><strong>RabbitMQ vhost 或 permission 過寬：</strong>依應用分離 vhost、使用者與 configure／write／read 權限，避免共用管理者帳號。</li>
+<li><strong>公開 broker 暴露：</strong>優先建立無 public accessibility 的 broker；security group 只允許核准來源與必要協定埠。</li>
+<li><strong>未使用協定擴大攻擊面：</strong>封鎖 AMQP、MQTT、OpenWire、STOMP、WebSocket 或管理埠中未使用的項目。</li>
+<li><strong>長期 broker 密碼：</strong>機密只存於 Secrets Manager，限制讀取與輪替；不得放入程式碼、映像、URL、標籤、名稱或日誌。</li>
+<li><strong>Web Console 或 Management UI 暴露：</strong>限制管理介面網路來源，使用獨立管理身分，避免與應用程式帳號共用。</li>
+<li><strong>TLS 驗證被停用：</strong>所有 client 驗證 broker hostname 與憑證鏈，不使用跳過驗證的測試設定進入正式環境。</li>
+<li><strong>KMS key 停用或 grant 撤銷：</strong>分離 key administrator 與使用者，限制 key policy，監控停用與刪除排程；誤撤銷可能使 broker 進入 degraded 狀態。</li>
+<li><strong>Poison message 無限重送：</strong>設定最大重試、dead-letter 與隔離分析，限制訊息大小及反序列化型別。</li>
+<li><strong>Acknowledgement 錯誤：</strong>明確選擇 ack 時機；consumer 寫入成功後再確認，並以冪等與對帳處理重送。</li>
+<li><strong>Queue 無界積壓：</strong>設定 TTL、max length、磁碟與記憶體告警、publisher confirms 及 back pressure；拒絕策略須由 producer 正確處理。</li>
+<li><strong>序列化攻擊：</strong>採允許清單、schema 驗證與大小限制，不直接反序列化不受信任物件或執行訊息內容。</li>
+<li><strong>監控盲區：</strong>CloudTrail 主要記錄 Amazon MQ API，不會代替 broker 內部訊息稽核；須同時啟用適用的 broker logs、audit logs 與 CloudWatch 指標。</li>
+<li><strong>維護造成連線中斷：</strong>用戶端實作 bounded retry、backoff、jitter、reconnect 與冪等，並在維護視窗演練。</li>
+<li><strong>跨區複寫擴大資料面：</strong>只複寫核准訊息，限制第二區域角色、KMS、網路與管理者；監控複寫延遲並驗證升降級流程。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Amazon MQ 受管服務及底層雲端基礎設施安全、broker 主機佈建、硬體故障替換與服務支援範圍內的維護。客戶仍負責引擎與版本選型、VPC 與 security group、IAM、broker 驗證模式與授權、KMS key、訊息內容、destination 拓撲、client、acknowledgement、重試、冪等、監控、成本及跨區復原。</p>
+<p>客戶須落實 IAM 最小權限、管理者 MFA 與短期憑證、私有網路隔離、避免不必要公開存取、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、dead-letter 與持久保存，以及第二區域復原演練。AWS 不會替客戶判斷某個使用者是否能讀取敏感 queue、訊息是否重複入帳、poison message 是否無限循環、consumer 是否能在故障後重連，或另一區域能否在 RTO 內接手。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已記錄所有 producer、consumer、協定、client、destination、schema、資料分類、TTL、RPO／RTO 與擁有者。</li>
+<li>□ Amazon MQ 與 SQS、SNS、EventBridge、Kinesis、MSK 的相容性、維運與成本差異已完成比較。</li>
+<li>□ ActiveMQ 或 RabbitMQ 的版本、協定、library、交易、routing、管理 API 與升級相容性已測試。</li>
+<li>□ 正式環境採適當多可用區部署，單一執行個體只用於可接受中斷的工作負載。</li>
+<li>□ 人員使用聯合登入、MFA 與短期憑證；建立、更新、刪除與讀取 broker 的 IAM 權限已分離。</li>
+<li>□ Broker 驗證模式符合引擎與版本支援；producer、consumer、管理與稽核權限已分離，destination／vhost 拒絕路徑已測試。</li>
+<li>□ Broker 無不必要公開存取；subnet、security group、DNS、協定埠、管理介面與 egress 均受限制。</li>
+<li>□ 所有 client 使用 TLS 並驗證 hostname 與憑證；未使用協定及 Web Console 來源已封鎖。</li>
+<li>□ 靜態資料使用核准 KMS key；key policy、grant、停用、刪除與復原程序已驗證。</li>
+<li>□ Broker 機密只存於 Secrets Manager，一般設定存於 Parameter Store；名稱、標籤、URL 與日誌無敏感資訊。</li>
+<li>□ Persistent message、durable destination、acknowledgement、publisher confirms、TTL、重試與 dead-letter 已定義。</li>
+<li>□ Consumer 使用穩定事件 ID、唯一鍵或條件寫入實作冪等，並有業務對帳。</li>
+<li>□ 已設定 queue depth、oldest message、unacked、連線、CPU、記憶體、儲存、錯誤與認證失敗告警。</li>
+<li>□ CloudTrail 已建立持續 trail；適用的 general／audit broker logs 已送至 CloudWatch Logs 並受保留與存取控制。</li>
+<li>□ 已執行訊息大小、尖峰吞吐、連線、積壓恢復、poison message、broker／AZ 故障與維護切換測試。</li>
+<li>□ 第二區域的 broker、KMS、網路、身分、應用與資料路徑已建立，並演練切換、重送、缺口、對帳與切回。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/" target="_blank" rel="noopener noreferrer">What is Amazon MQ?</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/working-with-activemq.html" target="_blank" rel="noopener noreferrer">Using Amazon MQ for ActiveMQ</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/rabbitmq-broker-architecture.html" target="_blank" rel="noopener noreferrer">Deployment options for Amazon MQ for RabbitMQ brokers</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-broker-architecture.html" target="_blank" rel="noopener noreferrer">Deployment options for Amazon MQ for ActiveMQ brokers</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-access.html" target="_blank" rel="noopener noreferrer">Authentication and authorization for Amazon MQ brokers</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/security_iam_service-with-iam.html" target="_blank" rel="noopener noreferrer">How Amazon MQ works with IAM</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/rabbitmq-iam-authentication.html" target="_blank" rel="noopener noreferrer">IAM authentication for Amazon MQ for RabbitMQ</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/using-amazon-mq-securely.html" target="_blank" rel="noopener noreferrer">Security best practices for Amazon MQ</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/data-protection.html" target="_blank" rel="noopener noreferrer">Data protection in Amazon MQ</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/infrastructure-security.html" target="_blank" rel="noopener noreferrer">Infrastructure security in Amazon MQ</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/security-logging-monitoring-cloudtrail.html" target="_blank" rel="noopener noreferrer">Logging Amazon MQ API calls using AWS CloudTrail</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/amazon-mq-monitoring-cloudwatch.html" target="_blank" rel="noopener noreferrer">Monitoring Amazon MQ brokers using Amazon CloudWatch</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/best-practices-broker-setup.html" target="_blank" rel="noopener noreferrer">RabbitMQ broker setup and connection best practices</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/rabbitmq-defaults.html" target="_blank" rel="noopener noreferrer">Amazon MQ for RabbitMQ broker defaults</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/network-of-brokers.html" target="_blank" rel="noopener noreferrer">Network of brokers for Amazon MQ for ActiveMQ</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/amazon-mq/latest/developer-guide/crdr.html" target="_blank" rel="noopener noreferrer">Cross-Region data replication for Amazon MQ for ActiveMQ</a>（查閱：2026-10-04）</li>
+<li><a href="https://aws.amazon.com/amazon-mq/pricing/" target="_blank" rel="noopener noreferrer">Amazon MQ pricing</a>（查閱：2026-10-04）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-10-04）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新引擎版本、區域支援、broker instance、配額、協定、認證方式、網路能力、價格、資料分類、組織政策與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-03-amazon-msk-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon MSK：受管 Kafka、事件串流與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
