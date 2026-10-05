@@ -1,0 +1,159 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon SES：可信寄件、送達治理與濫用防護</title>
+  <meta name="description" content="理解 Amazon SES 的寄件身分、DKIM、SPF、DMARC、沙盒與配額、事件回饋、成本、可用性及資安治理。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-05-amazon-ses-basics.html" />
+  <link rel="prev" href="./2026-10-04-amazon-mq-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon SES：可信寄件、送達治理與濫用防護" />
+  <meta property="og:description" content="從寄件身分、DKIM、SPF、DMARC 與配額，到退信投訴、抑制、監控、成本及跨區復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-05-amazon-ses-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-ses-secure-email-flow.svg" />
+  <meta property="article:published_time" content="2026-10-05T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon SES：可信寄件、送達治理與濫用防護" />
+  <meta name="twitter:description" content="掌握電子郵件身分驗證、名單品質、事件回饋、最小權限、送達率與可復原寄件架構。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-ses-secure-email-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon SES：可信寄件、送達治理與濫用防護","description":"理解 Amazon SES 的寄件身分、DKIM、SPF、DMARC、沙盒與配額、事件回饋、成本、可用性及資安治理。","datePublished":"2026-10-05T21:30:00+08:00","dateModified":"2026-10-05T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-05-amazon-ses-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-ses-secure-email-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">雲端電子郵件</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-05</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon SES：可信寄件、送達治理與濫用防護</h1>
+<p class="text-xl leading-9 muted">Amazon Simple Email Service（Amazon SES）是可透過 API 或 SMTP 提交郵件的受管服務，適合交易通知、系統郵件與經同意的批次寄送。AWS 管理寄信服務基礎設施，但不會代替寄件身分治理、名單品質、內容合規、退信與投訴處理、取消訂閱、速率控制或跨區復原。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-05</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>Amazon SES</strong> 提供高擴展性的寄信與收信能力；本文聚焦寄信。應用程式可使用 AWS SDK 呼叫 SES API，或以 SMTP 相容介面提交郵件。正式使用前須建立並驗證寄件網域或電子郵件身分、設定 DKIM，並依需求配置自訂 MAIL FROM、SPF、DMARC、Configuration set、事件目的地、抑制清單及寄送授權。</p>
+<p>SES 不是完整客戶關係管理、行銷自動化或同意管理平台，也不保證郵件必然進入收件匣。寄件信譽、內容品質、收件者互動、網域驗證、退信率、投訴率、ISP 政策與名單來源都會影響送達。若只需要應用事件通知，也應比較 Amazon SNS、EventBridge 或其他不依賴電子郵件的通道。</p>
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">寄件身分與驗證</h3><ul>
+<li><strong>Verified identity：</strong>可驗證整個網域或個別地址。驗證網域後，通常可由該網域的地址寄送，但仍須管理授權與防冒用。</li>
+<li><strong>DKIM：</strong>SES 可代表已驗證身分對郵件進行 DKIM 簽章；收件端以 DNS 公鑰驗證訊息完整性與寄件網域。</li>
+<li><strong>SPF 與 MAIL FROM：</strong>SPF 驗證 envelope sender 使用的 MAIL FROM 網域是否允許該寄件來源；自訂 MAIL FROM 有助於對齊品牌與 DMARC。</li>
+<li><strong>DMARC：</strong>以 SPF 或 DKIM alignment 判斷顯示寄件網域是否通過驗證，並透過 DNS 政策與報表逐步提高防冒用能力。</li>
+<li><strong>Sending authorization：</strong>身分擁有者可用政策授權另一個 AWS 主體代寄；必須限制來源、寄件地址與必要動作。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">寄送狀態與治理</h3><ul>
+<li><strong>Sandbox：</strong>新帳戶在各區域通常先受沙盒限制，只能寄給已驗證收件者或模擬器，且配額較低；Production access 需依區域申請。</li>
+<li><strong>Sending quota：</strong>包含 24 小時可寄數量與每秒傳送速率，皆以收件者數量計算；實際限制可能依區域與帳戶調整。</li>
+<li><strong>Configuration set：</strong>將事件、IP pool、追蹤、聲譽與其他寄件設定套用到特定郵件類型，便於分流治理。</li>
+<li><strong>Event publishing：</strong>投遞、退信、投訴、拒絕、延遲、開啟、點擊等事件可送往支援的事件目的地，以建立自動化處理。</li>
+<li><strong>Suppression：</strong>帳戶層或適用的全域端點抑制清單可避免重複寄送至已知退信或投訴地址；應另外維護業務取消訂閱與同意狀態。</li>
+<li><strong>Global endpoint：</strong>可將支援的兩個區域組成多區域寄件端點，應用透過 Endpoint ID 提交；兩區域仍須對齊寄件身分、Configuration set、配額及相依設定。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>網站或應用程式需要寄送註冊確認、密碼重設、付款收據、訂單狀態、警示及其他交易型郵件。</li>
+<li>企業有合法、可證明同意來源的會員名單，需要大量寄件、事件回饋、分流與自動停止機制。</li>
+<li>工作負載需要透過 SDK、API 或 SMTP 整合，並以 IAM、Configuration set、CloudWatch 及 CloudTrail 納入雲端治理。</li>
+<li>團隊能持續管理 DNS、DKIM、SPF、DMARC、退信、投訴、取消訂閱、配額、內容品質與寄件信譽。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>缺乏可證明同意的收件名單、購買名單或計畫寄送未經請求內容；技術上可送不代表符合政策與法規。</li>
+<li>需要完整顧客旅程、分眾、A/B 測試、偏好中心與多通路行銷，但沒有額外應用或平台支援。</li>
+<li>把電子郵件當成唯一緊急告警通道；收件端延遲、垃圾郵件判定或信箱故障都可能使通知失效。</li>
+<li>要求絕對一次寄送或保證進入收件匣。重試、逾時與不確定結果可能造成重複提交，收件端也有獨立政策。</li>
+<li>未建立退信、投訴、取消訂閱與濫用事件的自動處理，卻計畫直接提高寄件量。</li>
+</ul>
+<h2>示意故事案例：電商交易信與會員通知分流</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家電商同時寄送付款收據、物流通知與會員活動信。團隊將交易信與行銷信分成不同寄件子網域、Configuration set、事件管線與速率佇列。應用程式在私有 subnet 執行，使用工作負載 IAM role 與短期憑證呼叫區域 SES API；不在程式碼、映像或設定檔保存長期密鑰。寄件網域完成 DKIM，MAIL FROM 設定 SPF，DMARC 先以監控政策收集報表，再依驗證結果逐步提高處置強度。</p>
+<p>訂單事件先進入 queue，由寄件 worker 依 SES 配額進行 token-bucket 限速並附帶穩定訊息 ID。Configuration set 將投遞、退信、投訴、延遲與開啟事件送入事件處理流程。Hard bounce 與 complaint 立即停止後續寄送；會員取消訂閱同步回偏好中心。CloudWatch 監控寄送量、退信率、投訴率與事件管線失敗，CloudTrail 保存身分、政策及 Configuration set 變更。第二區域預先建立獨立的寄件身分、DKIM DNS 記錄、授權、配額、抑制同步與事件管線，演練切換時同時驗證去重，避免同一封交易信重複送出。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-ses-secure-email-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-ses-secure-email-flow.svg" alt="示意：應用以短期憑證與最小權限呼叫 Amazon SES，透過 DKIM、SPF、DMARC 與設定集寄信，再由退信投訴事件、抑制、監控、稽核及跨區計畫形成治理閉環" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：SES 的核心不是按下寄送，而是建立可驗證身分、可限制流量、可處理回饋、可停止濫用並可演練復原的完整寄件流程。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>分類郵件：</strong>分開交易信、營運通知、行銷信與安全告警，記錄擁有者、資料分類、合法基礎、保留期限、RTO 與最高寄送量。</li>
+<li><strong>選擇區域與端點：</strong>確認 SES 功能、收發能力、配額、資料路徑、延遲與法規要求；若採 Global endpoint，須確認支援的區域配對、Endpoint ID 與兩區域資源一致性。</li>
+<li><strong>建立寄件身分：</strong>優先驗證專用網域或子網域，設定 DKIM；依治理需求配置自訂 MAIL FROM、SPF 與 DMARC。</li>
+<li><strong>保護 DNS：</strong>限制 DNS 變更權限，對 DKIM、SPF、DMARC 與 MAIL FROM 記錄實施變更審核、監控及復原程序。</li>
+<li><strong>申請 Production access：</strong>說明寄件類型、名單來源、退信投訴與取消訂閱流程；依各區域實際核准配額設計容量。</li>
+<li><strong>選擇提交方式：</strong>新應用優先使用 AWS SDK 與 API；既有系統若使用 SMTP，將 SMTP 機密存入 Secrets Manager 並限制網路與輪替。</li>
+<li><strong>實施最小權限：</strong>工作負載使用 IAM role 與短期憑證，只允許必要的寄送動作、寄件身分、來源條件與標籤；人員使用聯合登入與 MFA。</li>
+<li><strong>建立 Configuration set：</strong>依郵件類型分流事件、追蹤、IP、聲譽及其他設定，避免所有流量共用不可區分的政策。</li>
+<li><strong>建立事件閉環：</strong>把退信、投訴、延遲、拒絕與投遞事件送至受監控目的地，實作抑制、取消訂閱、告警與人工調查。</li>
+<li><strong>控制速率與重試：</strong>依配額限速，對 throttling 或暫時失敗使用有上限的指數退避與 jitter；對不確定結果使用穩定 ID 及去重紀錄。</li>
+<li><strong>保護內容與機密：</strong>敏感資料最小化，不把密碼、驗證碼以外的機密、內部網路資訊或不必要個資放入郵件與標頭；範本參數須做輸入驗證與輸出編碼。</li>
+<li><strong>監控聲譽：</strong>追蹤退信率、投訴率、傳送量、延遲、事件遺失、取消訂閱及網域驗證狀態；超過內部門檻時自動降速或停止。</li>
+<li><strong>演練復原：</strong>測試 SES 節流、DNS 錯誤、DKIM 失效、事件目的地故障、濫用金鑰、區域切換、重複寄送與抑制清單不一致。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>SES 提供依用量計費的寄送、收信、資料量與附加功能項目；2026 年 7 月另推出 Essentials、Pro 與 Enterprise 分級方案，依寄件量與所需的送達、專用 IP、多區域韌性等能力選擇。其他成本可能包含附件、Global endpoint、專用 IP、Virtual Deliverability Manager、Mail Manager、事件目的地、SNS、Firehose、CloudWatch Logs、KMS、Secrets Manager、NAT 或 PrivateLink。免費額度、方案供應區域與單價會變動，估算時須以查閱當日的官方價格頁、實際區域、月寄件量與附件大小重新計算。</p>
+<p>降低單封郵件成本不能犧牲名單品質。重複寄送、無效地址、過大附件、過量事件、長期保存開啟點擊資料與未分流的專用 IP 都可能放大成本或傷害信譽。大量附件通常可改為經授權且具有效期的下載連結，同時評估資料外洩、連結轉寄與存取稽核。</p>
+<p>SES 的多數資源具有區域邊界，寄件身分、沙盒狀態、配額、Configuration set、事件目的地、SMTP 機密與帳戶層抑制清單不能假設自動一致。Global endpoint 可將支援的兩個區域納入多區域寄件，但仍須讓兩區域具備等效身分、Configuration set 與完整尖峰配額；事件目的地、MAIL FROM、政策、通知或其他相依設定可能需要手動補齊。若不採 Global endpoint，應用須自行切換區域端點。兩種方式都要處理佇列積壓、事件連續性、重試風暴與重複寄信。</p>
+<h2>Amazon SES 特有資安風險與控制</h2><ul>
+<li><strong>網域驗證後寄件範圍過寬：</strong>驗證網域不應讓所有工作負載任意使用任一寄件地址；以 IAM 條件、寄件授權政策、環境與子網域分隔限制寄件身分。</li>
+<li><strong>DKIM 私鑰或 DNS 控制遭濫用：</strong>限制 DNS 與 SES 身分管理權限，監控 DKIM 狀態及記錄變更；異常時停用相關身分並輪替 DKIM。</li>
+<li><strong>SPF、DKIM 與 DMARC 未對齊：</strong>分階段導入 DMARC，先收集報表確認所有合法寄件來源，再提高 policy，避免未盤點系統被誤擋。</li>
+<li><strong>長期 SMTP 機密外洩：</strong>新系統優先採 IAM role 與 API；必須使用 SMTP 時，機密存於 Secrets Manager、定期輪替、限制網路與使用範圍，日誌不得記錄。</li>
+<li><strong>寄件權限過大：</strong>限制 ses:SendEmail、ses:SendRawEmail、身分 ARN、From 地址與允許條件；分開管理身分、政策、事件設定與寄送權限。</li>
+<li><strong>寄件濫用或帳戶接管：</strong>使用人員 MFA、工作負載短期憑證、異常量告警、預算告警、速率上限與 circuit breaker；發現未授權寄件時立即停用來源並調查 CloudTrail。</li>
+<li><strong>公開網路路徑不受控：</strong>依架構評估 SES VPC endpoint 與 egress 控制；端點 policy、security group、DNS 與 IAM 必須共同限制，不能只建立 endpoint 就視為私有安全。</li>
+<li><strong>郵件標頭注入：</strong>From、To、Subject、Reply-To 與自訂標頭只接受允許格式，移除換行控制字元，避免攻擊者插入額外收件者或標頭。</li>
+<li><strong>HTML 範本注入與惡意連結：</strong>對動態內容輸入驗證及輸出編碼，不讓收件者資料直接形成 HTML、URL 或追蹤參數；敏感操作仍須回到受驗證網站完成。</li>
+<li><strong>個資與機密外洩：</strong>郵件內容、標題、地址、事件與標籤都可能進入第三方信箱或日誌；只寄必要資料，敏感附件採加密與受控下載。</li>
+<li><strong>未處理退信與投訴：</strong>Hard bounce、complaint 與取消訂閱必須快速抑制；事件管線故障時應降速或停止，而不是盲目繼續寄送。</li>
+<li><strong>追蹤資料治理不足：</strong>開啟與點擊追蹤可能涉及隱私與法規；只在具備適當告知、同意、保留與存取控制時啟用。</li>
+<li><strong>配置集未套用：</strong>應用若漏傳 Configuration set，可能失去事件與聲譽治理；在程式測試、部署政策與監控中驗證每類郵件確實套用。</li>
+<li><strong>CloudTrail 認知錯誤：</strong>CloudTrail 可記錄 SES API 活動，但不等於完整郵件內容或收件端行為稽核；寄件事件、應用紀錄與業務同意證據須另外保存。</li>
+<li><strong>重試造成郵件轟炸：</strong>設定有上限重試、全域去重鍵、單一收件者速率限制與人工停止開關，避免逾時或區域切換造成重複寄送。</li>
+<li><strong>Global endpoint 設定漂移：</strong>定期比對兩區域寄件身分、Configuration set、配額、事件目的地、政策與 MAIL FROM；切換前確認健康區域可承受完整流量。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 SES 受管服務及底層雲端基礎設施安全、服務端可用性與支援範圍內的維護。客戶仍負責寄件內容、收件名單及合法基礎、DNS、寄件身分、IAM、SMTP 機密、DKIM／SPF／DMARC、Configuration set、退信投訴、抑制、取消訂閱、監控、成本與跨區復原。</p>
+<p>客戶須落實 IAM 最小權限、人員 MFA 與工作負載短期憑證、網路隔離與 egress 控制、避免不必要公開管理介面、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、事件留存、資料備份及跨區復原。AWS 不會替客戶判斷名單是否取得同意、郵件是否含過量個資、某網域是否被冒用、退信投訴是否已停止、DMARC 是否涵蓋所有合法來源，或第二區域能否在 RTO 內安全接手。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已分開交易信、通知與行銷信，記錄擁有者、資料分類、合法基礎、保留期限、RTO 及最大寄送量。</li>
+<li>□ 已驗證專用網域或子網域，DKIM 正常，SPF、MAIL FROM 與 DMARC alignment 已在實際收件端測試。</li>
+<li>□ DNS 變更使用最小權限、MFA、審核與監控；DKIM、SPF、DMARC 記錄有復原程序。</li>
+<li>□ 各使用區域均確認沙盒或 Production access 狀態、每日配額、每秒速率及提高配額流程。</li>
+<li>□ 工作負載使用 IAM role 與短期憑證；寄送、身分管理、政策及事件設定權限已分離。</li>
+<li>□ 若使用 SMTP，機密僅存 Secrets Manager，已輪替並限制網路來源；程式碼、映像、日誌、URL、標籤均無敏感值。</li>
+<li>□ 寄件身分、From 地址、來源條件與 sending authorization 已限制，拒絕路徑已有測試。</li>
+<li>□ 已依郵件類型套用 Configuration set，並確認所有寄件路徑都會產生事件。</li>
+<li>□ 退信、投訴、延遲、拒絕及取消訂閱會自動抑制或停止，不依賴人工每日查看。</li>
+<li>□ 已建立收件者層與全域限速、bounded retry、backoff、jitter、去重鍵及 circuit breaker。</li>
+<li>□ 郵件標頭防注入，HTML 與 URL 參數完成輸入驗證、輸出編碼與安全連結設計。</li>
+<li>□ 敏感內容最小化；附件、下載連結、追蹤資料、事件日誌與保存期限符合資料治理要求。</li>
+<li>□ 已設定寄送量、退信率、投訴率、延遲、事件管線失敗、DKIM 狀態、異常成本與未授權 API 告警。</li>
+<li>□ CloudTrail 已建立持續 trail；CloudWatch 與事件目的地具備保留、加密、存取控制與失敗告警。</li>
+<li>□ 第二區域的身分、DKIM、IAM、Configuration set、事件目的地、配額、抑制同步及監控已建立。</li>
+<li>□ 若使用 Global endpoint，兩區域等效設定、Endpoint ID、完整流量配額、事件連續性及設定差異檢查均已驗證。</li>
+<li>□ 已演練 SMTP 機密外洩、權限濫用、DNS 錯誤、SES 節流、事件中斷、區域切換與重複寄信。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/Welcome.html" target="_blank" rel="noopener noreferrer">What is Amazon SES?</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-concepts-process.html" target="_blank" rel="noopener noreferrer">Email-sending process for Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/creating-identities.html" target="_blank" rel="noopener noreferrer">Creating and verifying identities in Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-dkim.html" target="_blank" rel="noopener noreferrer">Authenticating email with DKIM in Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-spf.html" target="_blank" rel="noopener noreferrer">Authenticating email with SPF in Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-authentication-dmarc.html" target="_blank" rel="noopener noreferrer">Complying with DMARC authentication protocol in Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/request-production-access.html" target="_blank" rel="noopener noreferrer">Moving out of the Amazon SES sandbox</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/manage-sending-quotas.html" target="_blank" rel="noopener noreferrer">Managing Amazon SES sending limits</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/sending-authorization.html" target="_blank" rel="noopener noreferrer">Using sending authorization with Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/monitor-using-event-publishing.html" target="_blank" rel="noopener noreferrer">Monitoring email sending using Amazon SES event publishing</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/sending-email-suppression-list.html" target="_blank" rel="noopener noreferrer">Using the Amazon SES account-level suppression list</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/send-email-set-up-vpc-endpoints.html" target="_blank" rel="noopener noreferrer">Setting up VPC endpoints with Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/control-user-access.html" target="_blank" rel="noopener noreferrer">Controlling access to Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/security-best-practices.html" target="_blank" rel="noopener noreferrer">Security best practices for Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/logging-using-cloudtrail.html" target="_blank" rel="noopener noreferrer">Logging Amazon SES API calls with AWS CloudTrail</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/monitor-sending-activity.html" target="_blank" rel="noopener noreferrer">Monitoring your Amazon SES sending activity</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/regions.html" target="_blank" rel="noopener noreferrer">Regions and Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/ses/latest/dg/global-endpoints.html" target="_blank" rel="noopener noreferrer">Using Global endpoints in Amazon SES</a>（查閱：2026-10-05）</li>
+<li><a href="https://aws.amazon.com/ses/pricing/" target="_blank" rel="noopener noreferrer">Amazon SES pricing</a>（查閱：2026-10-05）</li>
+<li><a href="https://aws.amazon.com/about-aws/whats-new/2026/07/amazon-ses-pricing-plans/" target="_blank" rel="noopener noreferrer">Amazon SES introduces pricing plans</a>（查閱：2026-10-05）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-10-05）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、沙盒狀態、配額、寄件政策、DNS、驗證方法、事件目的地、價格、資料分類、隱私與通訊法規及復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-04-amazon-mq-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon MQ：受管訊息代理、協定遷移與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
