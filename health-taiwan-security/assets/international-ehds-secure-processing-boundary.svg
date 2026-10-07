@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療資料再利用的安全處理環境邊界</title>
+  <desc id="desc">資料持有者經資料許可將最小必要資料送入隔離環境，核准使用者在環境內分析，只有通過輸出檢查的非個人結果可以離開。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071525"/><stop offset="1" stop-color="#101b39"/></linearGradient>
+    <linearGradient id="box" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#153252"/><stop offset="1" stop-color="#17284a"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e6ff"/></marker>
+  </defs>
+  <rect width="1200" height="720" rx="34" fill="url(#bg)"/>
+  <text x="70" y="72" fill="#f4f8ff" font-size="34" font-weight="800">資料不外流，分析在受控邊界內完成</text>
+  <text x="70" y="110" fill="#9fb3d9" font-size="20">安全處理環境（SPE）把許可、身分、活動紀錄與輸出檢查綁成同一條控制鏈</text>
+  <rect x="60" y="190" width="250" height="330" rx="28" fill="url(#box)" stroke="#446d99" stroke-width="2"/>
+  <text x="185" y="238" text-anchor="middle" fill="#8fe8ff" font-size="24" font-weight="700">資料持有者</text>
+  <text x="185" y="285" text-anchor="middle" fill="#ffffff" font-size="22">電子病歷</text><text x="185" y="322" text-anchor="middle" fill="#ffffff" font-size="22">影像與檢驗</text><text x="185" y="359" text-anchor="middle" fill="#ffffff" font-size="22">研究資料集</text>
+  <rect x="95" y="406" width="180" height="72" rx="18" fill="#0a1b31" stroke="#57f0c1"/><text x="185" y="437" text-anchor="middle" fill="#57f0c1" font-size="18" font-weight="700">資料最小化</text><text x="185" y="464" text-anchor="middle" fill="#c6d4eb" font-size="16">假名化／格式驗證</text>
+  <rect x="390" y="155" width="430" height="430" rx="34" fill="#0c2039" stroke="#63e6ff" stroke-width="3" filter="url(#glow)"/>
+  <text x="605" y="205" text-anchor="middle" fill="#ffffff" font-size="28" font-weight="800">安全處理環境 SPE</text>
+  <rect x="430" y="240" width="150" height="92" rx="18" fill="#173457" stroke="#8fe8ff"/><text x="505" y="277" text-anchor="middle" fill="#8fe8ff" font-size="18" font-weight="700">唯一身分</text><text x="505" y="305" text-anchor="middle" fill="#d8e5f7" font-size="16">逐人授權</text>
+  <rect x="630" y="240" width="150" height="92" rx="18" fill="#173457" stroke="#a997ff"/><text x="705" y="277" text-anchor="middle" fill="#c7baff" font-size="18" font-weight="700">許可範圍</text><text x="705" y="305" text-anchor="middle" fill="#d8e5f7" font-size="16">用途／資料集</text>
+  <rect x="430" y="372" width="150" height="92" rx="18" fill="#173457" stroke="#57f0c1"/><text x="505" y="409" text-anchor="middle" fill="#57f0c1" font-size="18" font-weight="700">活動稽核</text><text x="505" y="437" text-anchor="middle" fill="#d8e5f7" font-size="16">查詢／工具／時間</text>
+  <rect x="630" y="372" width="150" height="92" rx="18" fill="#173457" stroke="#ffbf69"/><text x="705" y="409" text-anchor="middle" fill="#ffcf8c" font-size="18" font-weight="700">輸出檢查</text><text x="705" y="437" text-anchor="middle" fill="#d8e5f7" font-size="16">重識別／小樣本</text>
+  <text x="605" y="525" text-anchor="middle" fill="#9fb3d9" font-size="18">原始個人資料不得由使用者直接下載</text>
+  <rect x="900" y="220" width="240" height="260" rx="28" fill="url(#box)" stroke="#446d99" stroke-width="2"/>
+  <text x="1020" y="270" text-anchor="middle" fill="#8fe8ff" font-size="24" font-weight="700">核准輸出</text>
+  <text x="1020" y="322" text-anchor="middle" fill="#ffffff" font-size="21">匿名統計</text><text x="1020" y="360" text-anchor="middle" fill="#ffffff" font-size="21">模型評估結果</text><text x="1020" y="398" text-anchor="middle" fill="#ffffff" font-size="21">可公開圖表</text>
+  <path d="M310 350H390" stroke="#63e6ff" stroke-width="5" marker-end="url(#arrow)"/><text x="350" y="330" text-anchor="middle" fill="#9fb3d9" font-size="16">依許可送入</text>
+  <path d="M820 350H900" stroke="#63e6ff" stroke-width="5" marker-end="url(#arrow)"/><text x="860" y="330" text-anchor="middle" fill="#9fb3d9" font-size="16">審查後匯出</text>
+  <rect x="200" y="625" width="800" height="54" rx="18" fill="#102943" stroke="#31587f"/><text x="600" y="659" text-anchor="middle" fill="#dce9fa" font-size="19">治理重點：資料許可 ≠ 下載許可；研究完成 ≠ 輸出自動放行</text>
+</svg>
