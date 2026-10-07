@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1400" role="img" aria-labelledby="title desc">
+<title id="title">Amazon SageMaker AI 安全機器學習生命週期手機版示意圖</title>
+<desc id="desc">垂直呈現資料治理、處理訓練、模型核准、部署推論、安全控制與監控回滾流程。</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071629"/><stop offset="1" stop-color="#10254a"/></linearGradient>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10z" fill="#62d7f5"/></marker>
+  <style>.h{font:700 30px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#fff}.s{font:700 23px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#fff}.t{font:18px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#c9d8ef}.small{font:16px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#a9bddc}.box{fill:#112844;stroke:#315879;stroke-width:2}.guard{fill:#112239;stroke:#ffb84d;stroke-width:2}.line{fill:none;stroke:#62d7f5;stroke-width:4;marker-end:url(#arrow)}</style>
+</defs>
+<rect width="720" height="1400" rx="30" fill="url(#bg)"/>
+<text x="40" y="62" class="h">SageMaker AI 安全生命週期</text><text x="40" y="94" class="small">示意｜每一步都要可追溯、可監控、可回滾</text>
+<g>
+<rect x="40" y="130" width="640" height="175" rx="22" class="box"/><rect x="40" y="130" width="10" height="175" rx="5" fill="#54d9ff"/><text x="75" y="172" class="s">1｜資料治理</text><text x="75" y="210" class="t">S3 受控資料區・用途授權・血緣</text><text x="75" y="242" class="t">Schema・標籤品質・KMS・保留期限</text><text x="75" y="276" class="small">先排除不必要敏感資料與時間洩漏</text>
+<path d="M360 305V338" class="line"/>
+<rect x="40" y="345" width="640" height="190" rx="22" class="box"/><rect x="40" y="345" width="10" height="190" rx="5" fill="#b992ff"/><text x="75" y="387" class="s">2｜處理與訓練</text><text x="75" y="425" class="t">Processing／Training・私有 ECR digest</text><text x="75" y="457" class="t">最小權限角色・VPC・network isolation</text><text x="75" y="489" class="t">程式、映像、資料快照與參數版本化</text><text x="75" y="518" class="small">容器供應鏈及輸出路徑都要受控</text>
+<path d="M360 535V568" class="line"/>
+<rect x="40" y="575" width="640" height="180" rx="22" class="box"/><rect x="40" y="575" width="10" height="180" rx="5" fill="#ffbf5c"/><text x="75" y="617" class="s">3｜評估與核准</text><text x="75" y="655" class="t">品質・偏差・對抗與邊界案例</text><text x="75" y="687" class="t">Model Registry・核准與部署職責分離</text><text x="75" y="725" class="small">未達門檻或缺少證據不得進入正式環境</text>
+<path d="M360 755V788" class="line"/>
+<rect x="40" y="795" width="640" height="200" rx="22" class="box"/><rect x="40" y="795" width="10" height="200" rx="5" fill="#66e3a4"/><text x="75" y="837" class="s">4｜受控部署與推論</text><text x="75" y="875" class="t">即時／Serverless／非同步／批次</text><text x="75" y="907" class="t">藍綠或 canary・驗證・租戶・速率限制</text><text x="75" y="939" class="t">多可用區・Auto Scaling・安全降級</text><text x="75" y="974" class="small">預測是受控訊號，不是自動決策授權</text>
+<path d="M360 995V1028" class="line"/>
+<rect x="40" y="1035" width="640" height="145" rx="22" class="guard"/><text x="75" y="1077" class="s">橫向安全控制</text><text x="75" y="1114" class="t">IAM 最小權限・MFA／短期憑證・KMS</text><text x="75" y="1146" class="t">私有網路・Secrets・稽核・預算・跨區復原</text>
+<path d="M360 1180V1213" class="line"/>
+<rect x="40" y="1220" width="640" height="135" rx="22" class="box"/><text x="75" y="1262" class="s">5｜監控與安全回滾</text><text x="75" y="1300" class="t">延遲・錯誤・分布・真實品質・成本・異常 API</text><text x="75" y="1332" class="small">超標 → 停止高風險自動化 → 回切核准版本</text>
+</g>
+</svg>

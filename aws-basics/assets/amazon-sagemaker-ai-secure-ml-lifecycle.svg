@@ -1,0 +1,32 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+<title id="title">Amazon SageMaker AI 安全機器學習生命週期示意圖</title>
+<desc id="desc">從資料治理、受控處理與訓練、模型評估核准，到安全部署、推論監控及回滾復原的流程。</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071629"/><stop offset="1" stop-color="#10254a"/></linearGradient>
+  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffcf75"/></linearGradient>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-color="#000" flood-opacity=".28"/></filter>
+  <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10z" fill="#62d7f5"/></marker>
+  <style>.h{font:700 30px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#fff}.s{font:600 19px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#fff}.t{font:16px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#c9d8ef}.small{font:14px system-ui,-apple-system,"Noto Sans TC",sans-serif;fill:#a9bddc}.box{fill:#112844;stroke:#315879;stroke-width:2}.guard{fill:#112239;stroke:#ffb84d;stroke-width:2}.line{fill:none;stroke:#62d7f5;stroke-width:4;marker-end:url(#arrow)}</style>
+</defs>
+<rect width="1400" height="900" rx="36" fill="url(#bg)"/>
+<circle cx="1220" cy="95" r="170" fill="#ff9900" opacity=".07"/><circle cx="150" cy="810" r="220" fill="#54d9ff" opacity=".05"/>
+<text x="70" y="72" class="h">Amazon SageMaker AI：安全機器學習生命週期</text>
+<text x="70" y="105" class="t">示意架構｜資料、程式、模型與核准證據必須能追溯、監控與回滾</text>
+<g filter="url(#shadow)">
+<rect x="70" y="155" width="250" height="235" rx="24" class="box"/><rect x="360" y="155" width="250" height="235" rx="24" class="box"/><rect x="650" y="155" width="250" height="235" rx="24" class="box"/><rect x="940" y="155" width="390" height="235" rx="24" class="box"/>
+</g>
+<rect x="70" y="155" width="250" height="10" rx="5" fill="#54d9ff"/><text x="95" y="205" class="s">1｜資料治理</text><text x="95" y="242" class="t">• S3 受控資料區</text><text x="95" y="272" class="t">• 用途授權與血緣</text><text x="95" y="302" class="t">• Schema／標籤品質</text><text x="95" y="332" class="t">• KMS 與保留期限</text><text x="95" y="362" class="small">先排除不必要敏感資料</text>
+<rect x="360" y="155" width="250" height="10" rx="5" fill="#b992ff"/><text x="385" y="205" class="s">2｜處理與訓練</text><text x="385" y="242" class="t">• Processing／Training</text><text x="385" y="272" class="t">• 私有 ECR + digest</text><text x="385" y="302" class="t">• 最小權限執行角色</text><text x="385" y="332" class="t">• VPC／network isolation</text><text x="385" y="362" class="small">程式、映像、資料快照皆版本化</text>
+<rect x="650" y="155" width="250" height="10" rx="5" fill="#ffbf5c"/><text x="675" y="205" class="s">3｜評估與核准</text><text x="675" y="242" class="t">• 品質與偏差測試</text><text x="675" y="272" class="t">• 對抗與邊界案例</text><text x="675" y="302" class="t">• Model Registry</text><text x="675" y="332" class="t">• 職責分離核准</text><text x="675" y="362" class="small">未達門檻不得進入正式部署</text>
+<rect x="940" y="155" width="390" height="10" rx="5" fill="#66e3a4"/><text x="965" y="205" class="s">4｜受控部署與推論</text><text x="965" y="242" class="t">• 即時／Serverless／非同步／批次</text><text x="965" y="272" class="t">• 藍綠或 canary 發布</text><text x="965" y="302" class="t">• 身分、租戶、輸入與速率限制</text><text x="965" y="332" class="t">• 多可用區、Auto Scaling、降級</text><text x="965" y="362" class="small">預測是受控訊號，不是自動決策授權</text>
+<path d="M320 272H348" class="line"/><path d="M610 272H638" class="line"/><path d="M900 272H928" class="line"/>
+<g filter="url(#shadow)"><rect x="70" y="445" width="1260" height="165" rx="24" class="guard"/></g>
+<text x="100" y="492" class="s">橫向安全控制</text>
+<g class="t"><text x="100" y="533">IAM 最小權限</text><text x="285" y="533">MFA／短期憑證</text><text x="500" y="533">私有網路與端點政策</text><text x="760" y="533">KMS／Secrets Manager</text><text x="1040" y="533">CloudTrail／CloudWatch</text></g>
+<g class="t"><text x="100" y="570">容器與套件供應鏈</text><text x="350" y="570">資料與模型血緣</text><text x="575" y="570">預算、配額與閒置清理</text><text x="870" y="570">備份、跨區重建與演練</text></g>
+<g filter="url(#shadow)"><rect x="70" y="665" width="1260" height="150" rx="24" class="box"/></g>
+<text x="100" y="710" class="s">5｜監控、真實品質與安全回滾</text><text x="100" y="748" class="t">平台：延遲、錯誤、節流、容量、成本　｜　模型：Schema、分布、輸出比例、真實結果　｜　安全：異常 API、映像、權限與資料存取</text>
+<rect x="100" y="775" width="290" height="15" rx="8" fill="url(#accent)"/><text x="420" y="790" class="small">超過門檻 → 停止高風險自動化 → 回切核准版本 → 保全證據 → 修正後重新評估</text>
+<path d="M1135 390V648" class="line"/>
+<path d="M690 665C690 635 690 625 690 615" class="line" transform="rotate(180 690 640)"/>
+</svg>
