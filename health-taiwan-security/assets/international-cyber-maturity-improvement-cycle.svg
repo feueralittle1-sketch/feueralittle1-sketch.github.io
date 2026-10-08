@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療資安自評到改善驗證的九十日循環</title>
+  <desc id="desc">由定義範圍、跨部門訪談、證據抽樣、差距排序、改善執行到臨床情境複測的六步流程。</desc>
+  <defs><linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#152453"/></linearGradient><marker id="a" markerWidth="11" markerHeight="11" refX="9" refY="5.5" orient="auto"><path d="M0 0L11 5.5 0 11z" fill="#8fe8ff"/></marker></defs>
+  <rect width="1200" height="720" rx="34" fill="url(#bg2)"/>
+  <text x="60" y="70" fill="#fff" font-size="36" font-weight="800">九十日改善循環：從回答轉成可關閉差距</text>
+  <text x="60" y="108" fill="#a8bad8" font-size="22">先做一個高影響範圍，完成證據與複測，再擴大到全院</text>
+  <g font-family="Inter,Noto Sans TC,sans-serif">
+    <g transform="translate(80 165)"><circle cx="105" cy="105" r="92" fill="#12314e" stroke="#63e6ff" stroke-width="4"/><text x="105" y="85" text-anchor="middle" fill="#63e6ff" font-size="25" font-weight="800">第 1–10 日</text><text x="105" y="125" text-anchor="middle" fill="#fff" font-size="24">定義範圍</text><text x="105" y="157" text-anchor="middle" fill="#bfcee4" font-size="18">系統／流程／院區</text></g>
+    <g transform="translate(340 165)"><circle cx="105" cy="105" r="92" fill="#1b2c55" stroke="#a997ff" stroke-width="4"/><text x="105" y="85" text-anchor="middle" fill="#c2b7ff" font-size="25" font-weight="800">第 11–25 日</text><text x="105" y="125" text-anchor="middle" fill="#fff" font-size="24">跨部門訪談</text><text x="105" y="157" text-anchor="middle" fill="#bfcee4" font-size="18">臨床／IT／應變</text></g>
+    <g transform="translate(600 165)"><circle cx="105" cy="105" r="92" fill="#123a48" stroke="#57f0c1" stroke-width="4"/><text x="105" y="85" text-anchor="middle" fill="#57f0c1" font-size="25" font-weight="800">第 26–40 日</text><text x="105" y="125" text-anchor="middle" fill="#fff" font-size="24">證據抽樣</text><text x="105" y="157" text-anchor="middle" fill="#bfcee4" font-size="18">紀錄／測試／日期</text></g>
+    <g transform="translate(860 165)"><circle cx="105" cy="105" r="92" fill="#473024" stroke="#ffbd70" stroke-width="4"/><text x="105" y="85" text-anchor="middle" fill="#ffbd70" font-size="25" font-weight="800">第 41–50 日</text><text x="105" y="125" text-anchor="middle" fill="#fff" font-size="24">差距排序</text><text x="105" y="157" text-anchor="middle" fill="#bfcee4" font-size="18">威脅 × 臨床影響</text></g>
+    <g transform="translate(245 455)"><rect width="300" height="145" rx="28" fill="#142b4b" stroke="#71a7ff" stroke-width="4"/><text x="150" y="48" text-anchor="middle" fill="#8fc0ff" font-size="25" font-weight="800">第 51–80 日</text><text x="150" y="88" text-anchor="middle" fill="#fff" font-size="25">改善與責任追蹤</text><text x="150" y="120" text-anchor="middle" fill="#bfcee4" font-size="19">工單、期限、例外與資源</text></g>
+    <g transform="translate(655 455)"><rect width="300" height="145" rx="28" fill="#173b3b" stroke="#57f0c1" stroke-width="4"/><text x="150" y="48" text-anchor="middle" fill="#57f0c1" font-size="25" font-weight="800">第 81–90 日</text><text x="150" y="88" text-anchor="middle" fill="#fff" font-size="25">臨床情境複測</text><text x="150" y="120" text-anchor="middle" fill="#bfcee4" font-size="19">驗證有效、關閉或再排程</text></g>
+  </g>
+  <g fill="none" stroke="#8fe8ff" stroke-width="4" marker-end="url(#a)"><path d="M285 270H332"/><path d="M545 270H592"/><path d="M805 270H852"/><path d="M965 375C965 420 900 430 850 447"/><path d="M655 528H555"/><path d="M395 455C310 405 220 410 185 370"/></g>
+  <text x="600" y="674" text-anchor="middle" fill="#91a8c9" font-size="20">下一輪只更新已變動範圍與高風險差距，避免每次重填整份問卷。</text>
+</svg>
