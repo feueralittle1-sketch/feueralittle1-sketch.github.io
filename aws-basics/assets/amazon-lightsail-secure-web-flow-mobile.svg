@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="680" height="1280" viewBox="0 0 680 1280" role="img" aria-labelledby="title desc">
+  <title id="title">Amazon Lightsail 安全網站部署與復原手機版示意圖</title>
+  <desc id="desc">由上而下顯示使用者、DNS 與 HTTPS、Lightsail 負載平衡器、跨可用區網站 instances、CDN 與私有物件儲存、高可用性資料庫、機密與短期權限，以及監控、網路控制和跨區復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102548"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffca80"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#55ddff"/><stop offset="1" stop-color="#8fa8ff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0 10 5 0 10Z" fill="#78dcff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eaf3ff}.m{font-family:Inter,'Noto Sans TC',sans-serif;fill:#a9bad5}.card{fill:#102440;stroke:#315173;stroke-width:2}.guard{fill:#0d2336;stroke:#36d5ba;stroke-width:2}.line{stroke:#78dcff;stroke-width:4;fill:none;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="680" height="1280" rx="30" fill="url(#bg)"/>
+  <text class="t" x="40" y="55" font-size="27" font-weight="800">示意｜Lightsail 安全網站流程</text>
+  <text class="m" x="40" y="88" font-size="15">簡化部署，仍要治理主機、網路、資料與復原</text>
+
+  <g filter="url(#shadow)"><rect class="card" x="75" y="130" width="530" height="92" rx="22"/><text class="t" x="340" y="169" text-anchor="middle" font-size="21" font-weight="800">使用者</text><text class="m" x="340" y="196" text-anchor="middle" font-size="14">Browser / Client</text></g>
+  <path class="line" d="M340 222V258"/>
+  <g filter="url(#shadow)"><rect class="card" x="75" y="270" width="530" height="108" rx="22"/><text class="t" x="340" y="311" text-anchor="middle" font-size="20" font-weight="800">DNS + HTTPS</text><text class="m" x="340" y="340" text-anchor="middle" font-size="14">憑證・受控入口・TLS</text></g>
+  <path class="line" d="M340 378V414"/>
+  <g filter="url(#shadow)"><rect class="card" x="75" y="426" width="530" height="108" rx="22"/><text class="t" x="340" y="467" text-anchor="middle" font-size="20" font-weight="800">Lightsail Load Balancer</text><text class="m" x="340" y="496" text-anchor="middle" font-size="14">健康檢查・流量分配・跨可用區</text></g>
+  <path class="line" d="M340 534V570"/>
+  <g filter="url(#shadow)"><rect class="card" x="75" y="582" width="530" height="142" rx="22"/><text class="t" x="340" y="620" text-anchor="middle" font-size="20" font-weight="800">可替換網站 Instances</text><rect x="125" y="645" width="180" height="54" rx="14" fill="#173253" stroke="#ffb14a"/><rect x="375" y="645" width="180" height="54" rx="14" fill="#173253" stroke="#55ddff"/><text class="t" x="215" y="678" text-anchor="middle" font-size="14" font-weight="800">AZ-A · Web 1</text><text class="t" x="465" y="678" text-anchor="middle" font-size="14" font-weight="800">AZ-B · Web 2</text><text class="m" x="340" y="714" text-anchor="middle" font-size="13">修補・強化・不保存唯一狀態</text></g>
+  <path class="line" d="M340 724V760"/>
+
+  <g filter="url(#shadow)"><rect class="card" x="45" y="772" width="270" height="118" rx="20"/><text class="t" x="180" y="811" text-anchor="middle" font-size="17" font-weight="800">CDN + 私有物件儲存</text><text class="m" x="180" y="842" text-anchor="middle" font-size="13">靜態內容・快取政策</text><rect x="110" y="861" width="140" height="7" rx="4" fill="url(#cyan)"/></g>
+  <g filter="url(#shadow)"><rect class="card" x="365" y="772" width="270" height="118" rx="20"/><text class="t" x="500" y="811" text-anchor="middle" font-size="17" font-weight="800">HA Managed Database</text><text class="m" x="500" y="842" text-anchor="middle" font-size="13">非公開・Primary + Standby</text><rect x="430" y="861" width="140" height="7" rx="4" fill="url(#orange)"/></g>
+  <g filter="url(#shadow)"><rect class="card" x="75" y="920" width="530" height="92" rx="22"/><text class="t" x="340" y="958" text-anchor="middle" font-size="19" font-weight="800">Secrets + IAM 最小權限 + MFA</text><text class="m" x="340" y="986" text-anchor="middle" font-size="13">機密不進映像、user data、版本庫或日誌</text></g>
+
+  <g filter="url(#shadow)"><rect class="guard" x="45" y="1050" width="180" height="156" rx="20"/><text class="t" x="135" y="1090" text-anchor="middle" font-size="16" font-weight="800">觀測與稽核</text><text class="m" x="135" y="1124" text-anchor="middle" font-size="12">Metrics</text><text class="m" x="135" y="1148" text-anchor="middle" font-size="12">Alarms</text><text class="m" x="135" y="1172" text-anchor="middle" font-size="12">CloudTrail</text></g>
+  <g filter="url(#shadow)"><rect class="guard" x="250" y="1050" width="180" height="156" rx="20"/><text class="t" x="340" y="1090" text-anchor="middle" font-size="16" font-weight="800">網路控制</text><text class="m" x="340" y="1124" text-anchor="middle" font-size="12">IPv4 + IPv6</text><text class="m" x="340" y="1148" text-anchor="middle" font-size="12">SSH 限源</text><text class="m" x="340" y="1172" text-anchor="middle" font-size="12">私有資料庫</text></g>
+  <g filter="url(#shadow)"><rect class="guard" x="455" y="1050" width="180" height="156" rx="20"/><text class="t" x="545" y="1090" text-anchor="middle" font-size="16" font-weight="800">復原演練</text><text class="m" x="545" y="1124" text-anchor="middle" font-size="12">跨區 snapshots</text><text class="m" x="545" y="1148" text-anchor="middle" font-size="12">資料庫另備援</text><text class="m" x="545" y="1172" text-anchor="middle" font-size="12">DNS 切換</text></g>
+  <text class="m" x="340" y="1250" text-anchor="middle" font-size="13">簡化的是起步流程，不是安全與可用性責任</text>
+</svg>

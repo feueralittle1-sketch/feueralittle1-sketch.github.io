@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon Lightsail：簡化雲端主機、網站部署與安全治理</title>
+  <meta name="description" content="理解 Amazon Lightsail 的執行個體、網路、負載平衡、資料庫、備份、成本、可用性與簡化雲端環境的安全治理。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-10-amazon-lightsail-basics.html" />
+  <link rel="prev" href="./2026-10-08-aws-batch-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon Lightsail：簡化雲端主機、網站部署與安全治理" />
+  <meta property="og:description" content="從固定方案、執行個體、靜態 IP、負載平衡與受管資料庫，理解 Lightsail 的使用邊界、安全責任、備份及跨區復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-10-amazon-lightsail-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-lightsail-secure-web-flow.svg" />
+  <meta property="article:published_time" content="2026-10-10T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon Lightsail：簡化雲端主機、網站部署與安全治理" />
+  <meta name="twitter:description" content="掌握 Lightsail 的快速部署、網路曝險、主機維運、資料保護、監控、成本與復原邊界。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-lightsail-secure-web-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon Lightsail：簡化雲端主機、網站部署與安全治理","description":"理解 Amazon Lightsail 的執行個體、網路、負載平衡、資料庫、備份、成本、可用性與簡化雲端環境的安全治理。","datePublished":"2026-10-10T21:30:00+08:00","dateModified":"2026-10-10T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-10-amazon-lightsail-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-lightsail-secure-web-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">簡化雲端主機</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-10</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon Lightsail：簡化雲端主機、網站部署與安全治理</h1>
+<p class="text-xl leading-9 muted">Amazon Lightsail 將虛擬主機、儲存、網路、DNS、負載平衡、受管資料庫、物件儲存與 CDN 等常用能力整理成較容易啟用的方案，適合範圍清楚的網站與小型應用。操作介面變簡單，不代表作業系統修補、帳號安全、網路曝險、資料保護、監控與復原責任消失。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-10</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>Amazon Lightsail</strong> 是面向快速起步與可預測方案成本的簡化雲端服務。團隊可從作業系統、WordPress、LAMP、Nginx 等映像建立執行個體，搭配靜態 IP、DNS、SSD 區塊儲存、負載平衡器、受管 MySQL／PostgreSQL、物件儲存、CDN distribution、容器服務及 snapshots，減少一開始組合多個 AWS 服務的設定量。</p>
+<p>Lightsail 不是「免維運主機」，也不是完整取代 Amazon EC2、Amazon VPC、Elastic Load Balancing、Amazon RDS、Amazon ECS 或企業級治理平台的抽象層。當工作負載需要精細網路拓樸、大規模自動擴縮、複雜多帳號治理、特殊執行個體、深度服務整合或嚴格合規控制時，應重新評估是否移轉至較完整的 AWS 服務組合。</p>
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">運算、網路與流量入口</h3><ul>
+<li><strong>Instance 與 bundle：</strong>方案通常整合 vCPU、記憶體、SSD 儲存與資料傳輸額度；執行個體內的作業系統、套件與應用仍由客戶維護。</li>
+<li><strong>Blueprint：</strong>可快速建立基礎作業系統或預先配置的應用程式堆疊；預裝不等於持續安全，部署後仍須盤點版本與更新來源。</li>
+<li><strong>Static IP：</strong>提供可重新指派的固定公有 IPv4，避免執行個體停止再啟動後動態公有位址改變；DNS 切換與復原程序仍須設計。</li>
+<li><strong>IPv4／IPv6 firewall：</strong>兩套規則彼此獨立，只控制進入公有 IP 的流量，且規則為允許式；出站流量與私有 IP 流量需由其他控制補足。</li>
+<li><strong>Load balancer：</strong>可將流量分配至多個 Lightsail instances，支援健康檢查與 HTTPS，並可跨可用區放置目標以提高可用性。</li>
+<li><strong>DNS 與 CDN：</strong>可管理網域解析並以 Lightsail distribution 加速靜態或快取內容；來源保護、憑證、快取政策與敏感資料排除仍須明確設定。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">資料、備份與整合</h3><ul>
+<li><strong>Block storage：</strong>可附加 SSD 磁碟擴充容量；檔案系統、掛載、資料一致性與應用層備份仍屬客戶責任。</li>
+<li><strong>Managed database：</strong>提供 MySQL 或 PostgreSQL 的標準與高可用性方案；高可用性方案以不同可用區的 standby 提供故障切換。</li>
+<li><strong>Object storage：</strong>適合圖片、影片與靜態檔案；bucket 與 object 預設為私有，但設定為公開後任何人都可能讀取內容。</li>
+<li><strong>Snapshots：</strong>可對 instance、database 與 disk 建立時間點快照；instance 與 disk snapshot 可跨區複製，database snapshot 不能直接跨區複製。</li>
+<li><strong>Monitoring：</strong>Lightsail 提供 instances、databases、load balancers、distributions、containers 與 buckets 的 metrics，並可建立門檻 alarms。</li>
+<li><strong>CloudTrail：</strong>記錄 Lightsail console 與 API 的控制面操作；主機內登入、檔案異動、應用交易及惡意行為仍須自行蒐集日誌。</li>
+<li><strong>VPC peering：</strong>可與同區域的預設 VPC 連接以使用其他 AWS 資源；路由、服務權限、DNS 與暴露面仍須逐項驗證。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>個人網站、作品集、部落格、小型內容網站、概念驗證與流量範圍可預估的應用。</li>
+<li>希望以固定方案快速取得 Linux／Windows 主機、儲存、DNS、監控與基本網路控制。</li>
+<li>小型團隊需要 WordPress、LAMP／LEMP 或簡單容器服務，且願意承擔主機與應用維運。</li>
+<li>服務可由少量 instances、Lightsail load balancer 與 managed database 組成，暫時不需要複雜 VPC 拓樸。</li>
+<li>團隊已建立修補、備份、告警、權限與復原流程，希望降低初始基礎設施設定量。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>需要多層私有子網、細緻路由、集中式網路檢查、複雜 security group 關係或大規模多帳號 Landing Zone。</li>
+<li>需求包含高度動態的自動擴縮、特殊運算硬體、廣泛執行個體選型或複雜容器編排。</li>
+<li>必須由平台自動完成作業系統修補、應用弱點修復、惡意程式防護與資料分類。</li>
+<li>單一 instance 即時寫入大量本機狀態，卻要求無資料遺失、跨區自動故障切換與接近零停機。</li>
+<li>使用簡化介面後忽略 IAM、MFA、公開連接埠、IPv6、主機帳號、Secrets、CloudTrail、監控及 snapshot 管理。</li>
+</ul>
+<h2>示意故事案例：小型會員網站的受控成長</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一個小型教育團隊要推出會員內容網站，初期使用兩台 Lightsail Linux instances 執行相同的網站版本，前方配置 Lightsail load balancer 與 HTTPS。網域解析指向負載平衡器，靜態圖片存放於預設私有的 object storage bucket，再透過受控的 CDN distribution 提供內容。</p>
+<p>網站 instances 分散於不同可用區，不直接保存會員資料。應用連接 Lightsail high availability managed database，資料庫維持非公開狀態；應用程式所需的第三方 API 機密存於 AWS Secrets Manager 或適用的 Parameter Store，透過最小權限與短期憑證存取，不寫入映像、版本庫或啟動腳本。IPv4 與 IPv6 firewall 只允許負載平衡器所需流量；SSH 僅在核准維護時段對固定管理來源開放。</p>
+<p>團隊每週套用作業系統與 WordPress／外掛更新，先在測試 instance 驗證，再輪替正式 instances。Lightsail metrics 與 alarms 監控 CPU、網路、HTTP 錯誤與資料庫狀態；CloudTrail 保存建立、刪除、快照、網路與 IAM 變更。Instance 與 disk snapshots 定期複製到第二區域，資料庫另以資料匯出或相容的資料層複寫流程建立跨區副本，並實際演練 DNS 切換與網站重建。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-lightsail-secure-web-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-lightsail-secure-web-flow.svg" alt="示意：使用者經 DNS、HTTPS 與 Lightsail 負載平衡器進入跨可用區網站 instances，靜態內容由 CDN 與私有物件儲存提供，資料寫入高可用性資料庫，並由身分、機密、監控、稽核及跨區快照形成安全治理閉環" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：Lightsail 可降低起步複雜度，但可靠服務仍需處理主機修補、雙協定防火牆、機密管理、資料分離、告警與跨區復原。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>界定工作負載：</strong>記錄流量、資料分類、可用性、RTO、RPO、作業系統、應用堆疊、成長預期與法規限制。</li>
+<li><strong>確認服務邊界：</strong>比較 Lightsail 與 EC2、ECS、RDS、CloudFront、Route 53 等完整服務，確認簡化方案能滿足網路、擴縮與治理需求。</li>
+<li><strong>建立身分控制：</strong>人員使用聯合登入、MFA 與短期工作階段；依角色限制建立、刪除、快照、網路、資料庫及 bucket 管理權限。</li>
+<li><strong>選擇區域與方案：</strong>依使用者位置、資料主權、bundle 資源、傳輸額度、服務可用性及第二區域復原能力決定部署位置。</li>
+<li><strong>建立測試環境：</strong>從核准 blueprint 建立 instance，盤點預裝套件、預設帳號、SSH keys、服務連接埠及更新狀態。</li>
+<li><strong>強化主機：</strong>停用不必要服務與帳號，更新套件，使用主機防火牆、檔案權限、惡意行為監測及集中日誌，禁止將機密寫入映像。</li>
+<li><strong>配置網路：</strong>分別檢查 IPv4 與 IPv6 firewall，只開放必要 inbound ports；SSH／RDP 限制來源，並補上出站與私有流量治理。</li>
+<li><strong>設計入口：</strong>單機服務使用 static IP；正式網站評估 load balancer、HTTPS、健康檢查、多可用區 instances 與受控 DNS。</li>
+<li><strong>分離資料：</strong>將資料庫與應用主機分開；物件儲存維持私有，只有明確公開內容才開放讀取，並配置版本或替代保護措施。</li>
+<li><strong>保護機密與加密：</strong>管理者不使用長期 Access Key；應用機密放入 Secrets Manager／Parameter Store。需要客戶管理 KMS key、細緻 key policy 或特定加密治理時，確認 Lightsail 資源是否支援，否則改用相符的完整 AWS 服務。</li>
+<li><strong>建立監控與稽核：</strong>設定 Lightsail metrics、alarms、應用 health check、主機與應用日誌；建立持續 CloudTrail trail 並保護日誌儲存。</li>
+<li><strong>建立備份：</strong>安排 automatic／manual snapshots，確認資料庫 point-in-time restore 與 manual snapshot 保留，避免刪除資源時連同可復原資料消失。</li>
+<li><strong>演練復原：</strong>從 snapshot 建立新 instance 與 disk，驗證應用、權限、DNS、憑證與資料一致性；跨區複製支援的 snapshots，資料庫另建立可測試的跨區程序。</li>
+<li><strong>設定成長門檻：</strong>當流量、團隊、法規、網路或自動化需求超過 Lightsail 邊界時，依計畫移轉至 EC2、RDS、ECS、完整 VPC 或其他適合服務。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>Lightsail 以方案化價格整合運算、記憶體、SSD 儲存與資料傳輸額度，執行個體依使用時間計費至每月方案上限。總成本仍可能包含額外 disks、snapshots、load balancers、managed databases、object storage、CDN distributions、DNS、超額資料傳輸、公有 IPv4、第二區域資源與相依 AWS 服務。停止但未刪除的資源、保留 snapshots、未使用 static IP 或大量對外傳輸都可能持續產生費用。</p>
+<p>單一 Lightsail instance 仍是單點故障。需要較高可用性時，應建立至少兩個可替換 instances、分散至不同可用區並放在 load balancer 後方；資料庫採 high availability plan，靜態內容外部化，部署流程可重建 instance。這些措施提升區域內韌性，但不會自動形成跨區服務。</p>
+<p>Instance 與 disk snapshots 可跨區複製，但 database snapshots 不能直接跨區複製。跨區復原須另行處理資料庫資料、object storage、DNS、憑證、機密、IAM、監控、應用版本與基礎設施設定。RTO 與 RPO 不能只用「已有 snapshot」推定，必須以實際還原時間、資料完整性與切換演練證明。</p>
+<h2>Amazon Lightsail 特有資安風險與控制</h2><ul>
+<li><strong>把簡化操作誤認為免維運：</strong>建立 OS、套件、CMS、外掛與應用修補清單，指定負責人與更新期限。</li>
+<li><strong>預設映像快速老化：</strong>部署後立即盤點版本、停用示範帳號與不必要服務，建立可重複的強化與重建流程。</li>
+<li><strong>IPv4／IPv6 規則不一致：</strong>兩套 firewall 分別審查；不可只縮限 IPv4，卻讓管理或資料庫連接埠經 IPv6 對外開放。</li>
+<li><strong>防火牆只管公網 inbound：</strong>Lightsail firewall 不控制 outbound，也不控制 private IP 流量；以主機防火牆、應用允許清單、DNS／代理或完整 VPC 架構補足。</li>
+<li><strong>SSH／RDP 對全球開放：</strong>限制固定來源與維護時段，使用個別金鑰、MFA 管理流程、登入告警與定期金鑰撤銷。</li>
+<li><strong>Static IP 造成長期攻擊面：</strong>只對必要服務使用固定公網位址，將網站置於 load balancer／CDN 後，避免直接暴露管理介面。</li>
+<li><strong>Object storage 誤設公開：</strong>維持 bucket 私有並啟用帳號層 Block Public Access；公開內容與私密內容分 bucket 管理，定期檢查 object 權限。</li>
+<li><strong>Bucket access key 權限過大：</strong>優先使用角色；若外掛只能使用 bucket access key，限制用途、集中保管、輪替並監控最後使用時間，外洩時立即撤銷。</li>
+<li><strong>機密寫入 blueprint、snapshot 或 user data：</strong>使用 Secrets Manager／Parameter Store；建立 snapshot 前清除暫存檔、歷史紀錄與部署殘留。</li>
+<li><strong>應用與資料庫共置：</strong>將正式資料庫移至 managed database，維持非公開存取，限制來源並避免在 instance 本機保存唯一資料副本。</li>
+<li><strong>高可用性誤判：</strong>Load balancer 不會自動修復應用資料一致性，database HA 也不是跨區備份；分別測試 instance、應用、資料庫與區域故障。</li>
+<li><strong>CloudTrail 覆蓋不足：</strong>CloudTrail 只提供控制面 API 證據；另收集 SSH、OS、Web、資料庫與應用稽核日誌，並避免敏感資料進入日誌。</li>
+<li><strong>告警過度單一：</strong>Lightsail alarm 監看單一 metric；結合外部可用性探測、應用錯誤、憑證期限、磁碟空間與安全事件監控。</li>
+<li><strong>復原受限於 snapshot：</strong>跨區保存支援的 instance／disk snapshots，另行保護資料庫與物件資料，定期從零重建並驗證 DNS 與憑證。</li>
+<li><strong>成長後仍留在不適合的平台：</strong>設定 CPU、流量、部署頻率、團隊人數、合規與網路需求門檻，超過門檻即執行移轉計畫。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Lightsail 受管服務及底層雲端基礎設施的安全。對 Lightsail instance 而言，客戶仍負責 guest OS、套件、應用程式、帳號、SSH keys、主機設定、資料、firewall rules、公開存取、監控、備份與復原。使用 managed database、load balancer、object storage 或 CDN 時，AWS 承擔的基礎設施管理範圍增加，但客戶仍須負責資料分類、權限、連線設定、加密需求、內容公開決策與業務復原。</p>
+<p>客戶須落實 IAM 最小權限、人員 MFA 與短期憑證、IPv4／IPv6 網路隔離、公開存取治理、適用的 KMS 加密要求、Secrets Manager／Parameter Store、CloudTrail 與 Lightsail／CloudWatch 觀測、資料備份及跨區復原。Lightsail 的固定方案與簡化介面不會替客戶判斷應用是否安全、公開連接埠是否合理、snapshot 是否可還原，或第二區域是否能達成目標 RTO／RPO。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已記錄服務擁有者、資料擁有者、區域、資料分類、RTO、RPO、容量與移轉門檻。</li>
+<li>□ 已比較 Lightsail 與 EC2／RDS／ECS／完整 VPC，確認簡化功能足以支援目前需求。</li>
+<li>□ 管理人員使用聯合登入、MFA 與短期憑證；root 不用於日常操作。</li>
+<li>□ IAM 已按查看、部署、網路、snapshot、database 與刪除權限分離，並套用資源與標籤條件。</li>
+<li>□ Blueprint、OS、CMS、外掛、套件與應用版本已盤點並完成修補，沒有預設或共用帳號。</li>
+<li>□ IPv4 與 IPv6 firewall 已分別檢查，只開放必要 ports；SSH／RDP 已限制來源與時間。</li>
+<li>□ 已評估 outbound 與 private IP 流量風險，不能控制時已使用主機或其他網路控制補足。</li>
+<li>□ 正式流量經 HTTPS；load balancer／CDN 的憑證、健康檢查、來源與快取政策已測試。</li>
+<li>□ Static IP、DNS 與故障切換程序已記錄，DNS TTL 與替換 instance 流程符合 RTO。</li>
+<li>□ 應用與資料庫已分離；正式資料庫採適合的 HA plan、非公開連線與有限來源。</li>
+<li>□ Object storage 維持私有；帳號層 Block Public Access、bucket 權限與公開 objects 已審查。</li>
+<li>□ 未使用不必要的 bucket access keys；必要 keys 已安全保存、輪替、盤點並設撤銷程序。</li>
+<li>□ 機密存於 Secrets Manager／Parameter Store，未出現在映像、user data、版本庫、snapshot 或日誌。</li>
+<li>□ 儲存與資料服務的加密能力符合資料分類；需要 customer-managed KMS key 時已確認服務支援或改用其他服務。</li>
+<li>□ Lightsail metrics 與 alarms 已配置，並有外部可用性、應用錯誤、磁碟與安全事件監控。</li>
+<li>□ CloudTrail 持續 trail 已啟用；主機、Web、資料庫與應用日誌另行集中保存並限制存取。</li>
+<li>□ Automatic／manual snapshots、database point-in-time restore 與保留期限已設定，刪除前會保留必要 manual snapshot。</li>
+<li>□ Instance／disk snapshots 已跨區複製；資料庫與 object storage 的跨區復原另有受控流程。</li>
+<li>□ 已從 snapshot 實際還原、驗證應用與資料，並完成第二區域 DNS、憑證、機密及監控切換演練。</li>
+<li>□ 已設定 Budget、成本異常監控、snapshot 清理、資料傳輸與閒置 static IP 檢查。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/what-is-amazon-lightsail.html" target="_blank" rel="noopener noreferrer">What is Amazon Lightsail?</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-bundles.html" target="_blank" rel="noopener noreferrer">Lightsail instance bundles</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-networking-resources-in-lightsail.html" target="_blank" rel="noopener noreferrer">Networking resources in Amazon Lightsail</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-firewall-and-port-mappings-in-amazon-lightsail.html" target="_blank" rel="noopener noreferrer">Control instance traffic with firewalls in Lightsail</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-lightsail-load-balancers.html" target="_blank" rel="noopener noreferrer">Distribute web traffic with Lightsail load balancers</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-databases.html" target="_blank" rel="noopener noreferrer">Create and manage relational databases in Lightsail</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-high-availability-databases.html" target="_blank" rel="noopener noreferrer">High availability databases in Lightsail</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-configuring-bucket-permissions.html" target="_blank" rel="noopener noreferrer">Manage Lightsail bucket access permissions</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/security_iam.html" target="_blank" rel="noopener noreferrer">Identity and access management for Amazon Lightsail</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/understanding-snapshots-in-amazon-lightsail.html" target="_blank" rel="noopener noreferrer">Snapshots in Amazon Lightsail</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-copying-snapshots-from-one-region-to-another.html" target="_blank" rel="noopener noreferrer">Copy Lightsail snapshots across AWS Regions</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/disaster-recovery-resiliency.html" target="_blank" rel="noopener noreferrer">Resilience in Amazon Lightsail</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/amazon-lightsail-resource-health-metrics.html" target="_blank" rel="noopener noreferrer">Monitor your Lightsail resource metrics</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/lightsail/latest/userguide/logging-lightsail-api-calls-using-aws-cloudtrail.html" target="_blank" rel="noopener noreferrer">Monitor Lightsail API activity with AWS CloudTrail</a>（查閱：2026-10-10）</li>
+<li><a href="https://aws.amazon.com/lightsail/pricing/" target="_blank" rel="noopener noreferrer">Amazon Lightsail pricing</a>（查閱：2026-10-10）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-10-10）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、方案、配額、價格、網路能力、映像版本、資料分類、合規要求與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-08-aws-batch-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Batch：容器批次運算、排程與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
