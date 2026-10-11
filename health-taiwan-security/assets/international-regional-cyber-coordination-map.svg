@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療資安事件的區域協調架構</title>
+  <desc id="desc">受影響醫院透過事件指揮與區域協調節點，共享服務狀態、病床容量與轉診條件，並連結急救、公共衛生及接收醫院。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071827"/><stop offset="1" stop-color="#142044"/></linearGradient>
+    <filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  </defs>
+  <rect width="1200" height="720" rx="36" fill="url(#bg)"/>
+  <text x="600" y="64" fill="#f5fbff" font-size="34" font-weight="800" text-anchor="middle">區域醫療資安事件協調圖</text>
+  <text x="600" y="102" fill="#a9bdd8" font-size="20" text-anchor="middle">把技術事故狀態轉成可共同採取的臨床與運量決策</text>
+  <rect x="60" y="180" width="270" height="270" rx="28" fill="#102b3d" stroke="#63e6ff" stroke-width="3"/>
+  <text x="195" y="225" fill="#63e6ff" font-size="27" font-weight="800" text-anchor="middle">受影響醫院</text>
+  <text x="95" y="278" fill="#e6eefc" font-size="21">• 事件範圍與服務狀態</text>
+  <text x="95" y="322" fill="#e6eefc" font-size="21">• 急診／住院／手術容量</text>
+  <text x="95" y="366" fill="#e6eefc" font-size="21">• 降級運作與轉診門檻</text>
+  <text x="95" y="410" fill="#e6eefc" font-size="21">• 聯絡窗口與更新時點</text>
+  <rect x="435" y="158" width="330" height="315" rx="34" fill="#172655" stroke="#b29cff" stroke-width="4" filter="url(#glow)"/>
+  <text x="600" y="214" fill="#d8ceff" font-size="29" font-weight="800" text-anchor="middle">區域協調節點</text>
+  <text x="600" y="252" fill="#a9bdd8" font-size="20" text-anchor="middle">HCC／衛生主管機關／災害應變機制</text>
+  <rect x="485" y="290" width="230" height="52" rx="16" fill="#23366f"/><text x="600" y="324" fill="#fff" font-size="21" font-weight="700" text-anchor="middle">共同情勢圖</text>
+  <rect x="485" y="358" width="230" height="52" rx="16" fill="#23366f"/><text x="600" y="392" fill="#fff" font-size="21" font-weight="700" text-anchor="middle">容量與資源配對</text>
+  <rect x="485" y="426" width="230" height="52" rx="16" fill="#23366f"/><text x="600" y="460" fill="#fff" font-size="21" font-weight="700" text-anchor="middle">決策與更新紀錄</text>
+  <rect x="870" y="150" width="270" height="110" rx="24" fill="#123143" stroke="#57f0c1" stroke-width="3"/><text x="1005" y="194" fill="#57f0c1" font-size="25" font-weight="800" text-anchor="middle">接收醫院</text><text x="1005" y="228" fill="#e6eefc" font-size="20" text-anchor="middle">床位、專科、隔離條件</text>
+  <rect x="870" y="305" width="270" height="110" rx="24" fill="#302442" stroke="#ff9ccf" stroke-width="3"/><text x="1005" y="349" fill="#ffb5db" font-size="25" font-weight="800" text-anchor="middle">EMS／轉運</text><text x="1005" y="383" fill="#e6eefc" font-size="20" text-anchor="middle">路線、優先序、交接</text>
+  <rect x="870" y="460" width="270" height="110" rx="24" fill="#332b18" stroke="#ffd166" stroke-width="3"/><text x="1005" y="504" fill="#ffd166" font-size="25" font-weight="800" text-anchor="middle">公共溝通</text><text x="1005" y="538" fill="#e6eefc" font-size="20" text-anchor="middle">替代入口與就醫指引</text>
+  <path d="M330 315H435" stroke="#63e6ff" stroke-width="5"/><path d="M765 230H870" stroke="#57f0c1" stroke-width="5"/><path d="M765 360H870" stroke="#ff9ccf" stroke-width="5"/><path d="M765 490H870" stroke="#ffd166" stroke-width="5"/>
+  <path d="M600 520V620H195V465" fill="none" stroke="#8fe8ff" stroke-width="4" stroke-dasharray="10 8"/>
+  <text x="600" y="660" fill="#8fe8ff" font-size="22" font-weight="700" text-anchor="middle">每次更新都回寫：誰決定、依據什麼、何時重新評估</text>
+</svg>

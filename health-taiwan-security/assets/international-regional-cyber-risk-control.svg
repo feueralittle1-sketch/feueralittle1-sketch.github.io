@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">區域醫療資安協作的風險與控制</title>
+  <desc id="desc">對照錯誤容量資訊、敏感資料過度共享、未確認接收、通訊中斷與過早恢復等風險，以及相應控制與驗收證據。</desc>
+  <rect width="1200" height="760" rx="36" fill="#071421"/>
+  <text x="600" y="62" fill="#f4f8ff" font-size="34" font-weight="800" text-anchor="middle">區域協作的五項失敗模式與關閉證據</text>
+  <rect x="55" y="105" width="1090" height="570" rx="28" fill="#0d2034" stroke="#294760" stroke-width="2"/>
+  <text x="190" y="155" fill="#ff9ccf" font-size="24" font-weight="800" text-anchor="middle">風險</text><text x="590" y="155" fill="#63e6ff" font-size="24" font-weight="800" text-anchor="middle">控制</text><text x="960" y="155" fill="#57f0c1" font-size="24" font-weight="800" text-anchor="middle">驗收證據</text>
+  <g font-size="20" fill="#e6eefc">
+    <rect x="75" y="180" width="1050" height="82" rx="18" fill="#14273c"/><text x="105" y="214">容量資訊過期</text><text x="420" y="214">時間戳、有效期、固定更新節奏</text><text x="825" y="214">最近更新時間＋責任人</text><text x="105" y="243" fill="#a9bdd8">病人送達後無床</text><text x="420" y="243" fill="#a9bdd8">超時自動降為「待確認」</text><text x="825" y="243" fill="#a9bdd8">抽查接收結果</text>
+    <rect x="75" y="276" width="1050" height="82" rx="18" fill="#101f32"/><text x="105" y="310">共享過多敏感資料</text><text x="420" y="310">只傳決策所需最小欄位</text><text x="825" y="310">欄位清單＋存取紀錄</text><text x="105" y="339" fill="#a9bdd8">擴大個資與攻擊面</text><text x="420" y="339" fill="#a9bdd8">識別資訊另走受控臨床通道</text><text x="825" y="339" fill="#a9bdd8">保存與刪除證明</text>
+    <rect x="75" y="372" width="1050" height="82" rx="18" fill="#14273c"/><text x="105" y="406">未取得接收確認</text><text x="420" y="406">雙向確認、拒收與替代路徑</text><text x="825" y="406">接收碼＋交接紀錄</text><text x="105" y="435" fill="#a9bdd8">轉診途中失配</text><text x="420" y="435" fill="#a9bdd8">高風險病人需臨床覆核</text><text x="825" y="435" fill="#a9bdd8">到院閉環率</text>
+    <rect x="75" y="468" width="1050" height="82" rx="18" fill="#101f32"/><text x="105" y="502">主要通訊失效</text><text x="420" y="502">帶外聯絡簿與替代頻道</text><text x="825" y="502">通聯演練＋聯絡成功率</text><text x="105" y="531" fill="#a9bdd8">事件期間無法協調</text><text x="420" y="531" fill="#a9bdd8">紙本最低資料包</text><text x="825" y="531" fill="#a9bdd8">演練缺失改善單</text>
+    <rect x="75" y="564" width="1050" height="82" rx="18" fill="#14273c"/><text x="105" y="598">系統過早恢復</text><text x="420" y="598">技術、資料與臨床三方放行</text><text x="825" y="598">回復核准＋回歸測試</text><text x="105" y="627" fill="#a9bdd8">錯誤資料重返流程</text><text x="420" y="627" fill="#a9bdd8">分階段恢復與回退門檻</text><text x="825" y="627" fill="#a9bdd8">異常監測結果</text>
+  </g>
+  <text x="600" y="716" fill="#ffd166" font-size="22" font-weight="700" text-anchor="middle">沒有時間戳、確認碼與複核紀錄的協作，只是口頭承諾，不是可驗收能力</text>
+</svg>
