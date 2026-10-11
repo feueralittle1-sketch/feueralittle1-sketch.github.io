@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Fargate：無伺服器容器運算、網路隔離與安全治理</title>
+  <meta name="description" content="理解 AWS Fargate 與 Amazon ECS、Amazon EKS 的關係，掌握容器任務、網路、成本、可用性、映像供應鏈、機密與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-11-aws-fargate-basics.html" />
+  <link rel="prev" href="./2026-10-10-amazon-lightsail-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Fargate：無伺服器容器運算、網路隔離與安全治理" />
+  <meta property="og:description" content="從 ECS task 與 EKS Pod 的運算邊界，理解 Fargate 的資源配置、網路、映像、機密、監控、成本與復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-11-aws-fargate-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-fargate-secure-container-flow.svg" />
+  <meta property="article:published_time" content="2026-10-11T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Fargate：無伺服器容器運算、網路隔離與安全治理" />
+  <meta name="twitter:description" content="掌握 Fargate 的 ECS／EKS 整合、最小權限、私有網路、可信映像、集中日誌、成本與多區復原。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-fargate-secure-container-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Fargate：無伺服器容器運算、網路隔離與安全治理","description":"理解 AWS Fargate 與 Amazon ECS、Amazon EKS 的關係，掌握容器任務、網路、成本、可用性、映像供應鏈、機密與共同責任。","datePublished":"2026-10-11T21:30:00+08:00","dateModified":"2026-10-11T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-11-aws-fargate-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-fargate-secure-container-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">無伺服器容器</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-11</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Fargate：無伺服器容器運算、網路隔離與安全治理</h1>
+<p class="text-xl leading-9 muted">AWS Fargate 為 Amazon ECS 與 Amazon EKS 提供受管容器運算容量。團隊不必配置或維護 EC2 叢集節點，但仍須對容器映像、應用程式、IAM 權限、網路、機密、日誌、資料與復原結果負責。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-11</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>AWS Fargate</strong> 是依工作負載需求配置運算資源的無伺服器容器運算引擎，可搭配 Amazon Elastic Container Service（Amazon ECS）或 Amazon Elastic Kubernetes Service（Amazon EKS）使用。使用 ECS 時，應用以 task definition、task 與 service 描述；使用 EKS 時，工作負載以 Kubernetes Pod 描述，再由 Fargate profile 決定哪些 Pod 在 Fargate 上執行。</p>
+<p>「無伺服器」代表 AWS 管理底層主機容量、主機作業系統與基礎設施修補，不代表容器本身免維運。客戶仍須建置可信映像、修補基底映像與套件、選擇 CPU／記憶體、限制權限、設計網路路徑、保護機密、集中日誌，並將需要持久化的狀態放在適合的資料服務。</p>
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">執行與調度</h3><ul>
+<li><strong>ECS task definition：</strong>定義容器映像、CPU、記憶體、port、環境設定、日誌、volume、task role 與 execution role。</li>
+<li><strong>ECS service：</strong>維持指定數量的 tasks，並可搭配負載平衡、部署策略與 Service Auto Scaling。</li>
+<li><strong>EKS Fargate profile：</strong>依 namespace 與 label selector 將符合條件的 Pods 排入 Fargate；profile 不等於應用授權政策。</li>
+<li><strong>隔離邊界：</strong>Fargate 工作負載執行於受管基礎設施，團隊沒有底層主機登入權限，也不應依賴主機層常駐代理。</li>
+<li><strong>資源選型：</strong>每個 task 或 Pod 依支援組合選擇 vCPU、記憶體、作業系統與 CPU 架構；配置不足會造成節流或終止，過度配置則增加成本。</li>
+<li><strong>暫存儲存：</strong>容器檔案系統與 ephemeral storage 適合暫時資料；需要跨重啟保存的狀態應外部化。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">網路、身分與資料</h3><ul>
+<li><strong>awsvpc 網路模式：</strong>Fargate task 取得自己的彈性網路介面與私有 IP，可套用 security group 並置於指定 subnet。</li>
+<li><strong>私有子網：</strong>可避免工作負載直接取得公有入口；拉取映像、寫入日誌與呼叫 AWS API 仍需要受控的 NAT 或 VPC endpoints。</li>
+<li><strong>Task role／Pod 身分：</strong>應用使用工作負載身分取得短期憑證；不可把 Access Key 寫入映像、環境檔或部署設定。</li>
+<li><strong>Execution role：</strong>ECS agent 使用它拉取私有映像、取得受管設定或傳送日誌；不應與應用所需 task role 混為同一個廣泛權限角色。</li>
+<li><strong>映像來源：</strong>常見做法是從 Amazon ECR 拉取不可變、已掃描且已核准的映像；部署時應以 digest 鎖定可追溯版本。</li>
+<li><strong>持久資料：</strong>資料庫、物件與佇列通常放在 RDS／Aurora、DynamoDB、S3、EFS 或其他受管服務，不依賴單一 task 的本機狀態。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>HTTP API、網站後端、背景工作、事件驅動 consumer 與可水平擴充的容器化服務。</li>
+<li>希望減少 EC2 叢集容量規劃、主機修補與節點生命週期管理的團隊。</li>
+<li>流量有波動，且工作負載可透過 ECS Service Auto Scaling、排程任務或事件啟動調整數量。</li>
+<li>容器可快速啟動、可被替換，狀態已放在外部受管資料服務。</li>
+<li>需要以 security group、私有 subnet、IAM role 與集中式日誌建立服務級隔離。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>需要直接管理底層主機、核心模組、特殊 daemon、主機檔案系統或完整特權容器的工作負載。</li>
+<li>需要 Fargate 當下未支援的硬體、作業系統、資源組合、網路能力或 Kubernetes 功能。</li>
+<li>高度穩定且長時間滿載的超大型工作負載，經成本評估後可能更適合 EC2、Savings Plans 或其他運算模式。</li>
+<li>無法容忍容器重啟，卻把唯一資料副本、工作進度或 session 保存在 task 本機。</li>
+<li>把 Fargate 誤當成映像弱點修補、應用授權、秘密輪替、DDoS 防護、備份與跨區復原的自動替代品。</li>
+</ul>
+<h2>示意故事案例：會員 API 的私有容器服務</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一個訂閱制內容平台將會員 API 打包成容器，映像由 CI 流程建置、產生軟體物料清單、執行弱點掃描並推送至私有 Amazon ECR。部署核准後，以映像 digest 更新 ECS task definition，ECS service 在兩個可用區的私有 subnets 啟動 Fargate tasks。</p>
+<p>外部流量先經 Amazon CloudFront、AWS WAF 與 Application Load Balancer，再由 security group 僅允許負載平衡器連入 tasks。Task role 只允許讀取指定的 DynamoDB 資料表、S3 路徑與 Secrets Manager secret；execution role 只負責拉取 ECR 映像與寫入 CloudWatch Logs。資料庫連線資訊不寫入映像或版本庫，輪替後以受控滾動部署建立新 tasks。</p>
+<p>服務依請求量與負載指標擴縮，健康檢查失敗的 tasks 由 ECS 替換。CloudTrail 保存控制面操作，CloudWatch 蒐集應用 metrics、logs 與 alarms，GuardDuty Runtime Monitoring 依適用性監看執行期異常。跨區復原不複製正在執行的 task，而是在第二區域重建 ECR 映像、IAM、網路、服務設定與資料層，再經 Route 53 或其他流量機制切換。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-fargate-secure-container-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-fargate-secure-container-flow.svg" alt="示意：使用者經 CloudFront、WAF 與負載平衡器進入跨可用區的私有 Fargate tasks，tasks 以最小權限存取機密與受管資料服務，並由可信映像、日誌監控、稽核與跨區重建形成治理閉環" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：Fargate 移除主機容量管理，但安全交付仍依賴可信映像、分離角色、私有網路、外部化狀態、監控稽核與可重建的跨區架構。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>界定工作負載：</strong>記錄協定、流量、啟動時間、CPU／記憶體、資料分類、持久化需求、RTO、RPO 與法規限制。</li>
+<li><strong>選擇編排平台：</strong>依團隊能力與相依生態選擇 ECS 或 EKS；不要只因已使用容器就引入不必要的 Kubernetes 複雜度。</li>
+<li><strong>建立映像基線：</strong>使用精簡且受支援的基底映像，固定版本、移除建置工具、以非 root 使用者執行，產生 SBOM 並掃描弱點。</li>
+<li><strong>建立映像倉庫：</strong>在 ECR 啟用適合的掃描與保留政策，限制跨帳號存取，部署使用 digest 或不可變 tag。</li>
+<li><strong>分離 IAM 角色：</strong>將部署者、ECS execution role、task role、EKS Pod 身分與人工維運權限分開，套用最小權限與條件限制。</li>
+<li><strong>設計私有網路：</strong>將 tasks／Pods 放入至少兩個可用區的私有 subnets，security group 只允許必要來源與目的地。</li>
+<li><strong>設計 AWS 服務出口：</strong>評估 ECR、S3、CloudWatch Logs、Secrets Manager、KMS 等 VPC endpoints，控制 NAT、DNS、出站與資料傳輸成本。</li>
+<li><strong>保護機密：</strong>使用 Secrets Manager 或 Parameter Store 與 KMS；禁止在 image、Dockerfile、task definition 明文、CI log 或程式碼中保存機密。</li>
+<li><strong>定義 task／Pod：</strong>設定 CPU、記憶體、ephemeral storage、read-only root filesystem、健康檢查、日誌、停止逾時與部署參數。</li>
+<li><strong>建立流量入口：</strong>對外服務使用受控負載平衡、TLS、WAF 與來源限制；內部服務優先使用私有服務發現或內部負載平衡器。</li>
+<li><strong>配置可用性：</strong>跨可用區執行多個副本，設定 deployment circuit breaker、最小健康比例、auto scaling 與下游限流。</li>
+<li><strong>集中可觀測性：</strong>將應用日誌、平台事件、metrics、traces 與告警送至受控目的地，避免把個資或機密寫入日誌。</li>
+<li><strong>驗證發布與回滾：</strong>以測試、canary／blue-green 或滾動部署驗證新映像，保留可立即回復的前一版 task definition 與映像 digest。</li>
+<li><strong>演練故障：</strong>測試 task 終止、可用區失效、映像拉取失敗、機密輪替、下游限流與第二區域重建。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>Fargate 主要依配置給工作負載的 vCPU、記憶體、作業系統、CPU 架構與執行時間計費；超過內含額度的 ephemeral storage 亦可能產生成本。總成本還包括負載平衡器、NAT Gateway、VPC endpoints、ECR 儲存與掃描、CloudWatch Logs、資料傳輸、EFS、KMS、WAF、備份與相依資料服務。大量小型 tasks、過度保留日誌、頻繁跨可用區／跨區傳輸與未使用的負載平衡器都可能讓帳單偏離單純的容器運算估算。</p>
+<p>Fargate task 是可替換的執行單元，不是高可用性本身。正式服務應跨至少兩個可用區維持多個副本，讓負載平衡器與編排服務移除不健康目標；同時為資料庫、快取、佇列與外部 API 設計逾時、重試、退避、熔斷與容量保護。Spot 容量可降低可中斷工作成本，但必須正確處理停止通知、冪等與工作續跑。</p>
+<p>跨區復原通常以「重新部署」而不是複製執行中容器完成。基礎設施程式碼、映像複寫、KMS key、IAM、網路、憑證、Secrets、資料層複寫、DNS 與監控都要在目標區域可用。RTO 與 RPO 應以實際演練結果證明，不能只因容器可快速啟動就假設應用已具備災難復原能力。</p>
+<h2>AWS Fargate 特有資安風險與控制</h2><ul>
+<li><strong>Execution role 與 task role 混用：</strong>分離平台啟動權限與應用資料權限，避免每個容器都繼承拉取映像、讀取所有 secrets 或寫入所有 log groups 的能力。</li>
+<li><strong>映像供應鏈遭竄改：</strong>限制 ECR push 權限，使用不可變 tag／digest、掃描、簽章與部署核准，保留來源 commit、SBOM 與建置證據。</li>
+<li><strong>基底映像過期：</strong>建立持續重建與重新部署節奏；AWS 修補底層主機不會修補客戶映像中的作業系統套件與函式庫。</li>
+<li><strong>容器以 root 或過大 Linux capabilities 執行：</strong>使用非 root 使用者、read-only root filesystem、最小 capabilities 與唯讀掛載，並驗證應用確實可運作。</li>
+<li><strong>公有 IP 與寬鬆 security group：</strong>預設使用私有 subnets，不直接暴露 task；只允許負載平衡器或核准服務來源，分離入口與資料層 security groups。</li>
+<li><strong>出站不受控：</strong>透過 VPC endpoints、受控 NAT、DNS、Network Firewall 或代理限制目的地，防止遭入侵容器任意外傳資料。</li>
+<li><strong>機密以環境變數暴露：</strong>限制描述 task、執行命令、讀取設定與日誌的權限；對高敏感資料評估執行期擷取、短期憑證與應用記憶體保護。</li>
+<li><strong>Secret 已輪替但舊 task 未更新：</strong>輪替後觸發新部署，確認舊 tasks 終止、連線重建且權限撤銷生效。</li>
+<li><strong>ECS Exec 或除錯通道被濫用：</strong>預設關閉不需要的互動存取；必要時使用 MFA、短期工作階段、最小權限、Session Manager 記錄與變更核准。</li>
+<li><strong>未蒐集應用與執行期訊號：</strong>CloudTrail 主要記錄控制面操作；另收集容器 stdout／stderr、應用稽核、流量、traces、ECS events 與適用的 GuardDuty Runtime Monitoring。</li>
+<li><strong>單一副本或單一可用區：</strong>使用多副本與跨可用區 subnets，驗證負載平衡健康檢查、部署最小健康比例與容量供應失敗行為。</li>
+<li><strong>本機暫存資料被誤當備份：</strong>將持久狀態外部化，對資料服務執行版本、快照、PITR、跨區複寫與還原演練。</li>
+<li><strong>平台限制未驗證：</strong>在部署前檢查區域、平台版本、CPU／記憶體、儲存、網路、架構與 ECS／EKS 功能相容性。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Fargate 底層實體設施、虛擬化層、受管運算主機與其平台維護。客戶負責容器映像、基底映像與套件弱點、應用程式、IAM、task／Pod 設定、security groups、subnets、公開入口、資料分類、加密選擇、機密、日誌、監控、備份與復原。</p>
+<p>客戶須落實 IAM 最小權限、管理人員 MFA 與短期憑證、task role／Pod 身分、網路隔離、公開存取治理、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、可信映像、資料備份與跨區重建。Fargate 降低的是主機管理工作，不會替客戶判斷容器是否安全、資料是否可公開、權限是否合理，或復原程序是否能達成業務目標。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已記錄服務擁有者、資料分類、流量、區域、RTO、RPO、容量與相依服務。</li>
+<li>□ 已比較 Fargate 與 ECS on EC2、EKS managed node groups、Lambda 等方案的功能與成本。</li>
+<li>□ 管理人員使用聯合登入、MFA 與短期憑證；root 不用於日常操作。</li>
+<li>□ 部署者、execution role、task role／Pod 身分與人工維運角色已分離並採最小權限。</li>
+<li>□ 映像來自受控 ECR repository，使用不可變版本或 digest，已完成掃描、SBOM 與核准。</li>
+<li>□ 基底映像與應用套件有固定修補期限，不把 AWS 管理底層主機誤當成容器修補。</li>
+<li>□ 容器使用非 root、最小 capabilities、read-only root filesystem，且沒有不必要的互動工具。</li>
+<li>□ Tasks／Pods 位於跨可用區私有 subnets，未直接配置不必要的 public IP。</li>
+<li>□ Security groups 只允許負載平衡器或核准服務；資料層不對 Internet 開放。</li>
+<li>□ ECR、S3、Logs、Secrets Manager、KMS 等出口已使用 VPC endpoints 或受控 NAT，並審查傳輸成本。</li>
+<li>□ 機密存於 Secrets Manager／Parameter Store，未出現在 image、task definition 明文、CI log 或程式碼。</li>
+<li>□ Secret 輪替會觸發新部署，舊 tasks、舊連線與舊權限可確實撤銷。</li>
+<li>□ 對外入口使用 TLS；WAF、DDoS 防護、rate limit、認證與授權依風險配置。</li>
+<li>□ CPU、記憶體、ephemeral storage、健康檢查、停止逾時與 auto scaling 已經負載測試。</li>
+<li>□ 正式服務至少有兩個副本並跨可用區；Spot 工作負載可處理中斷與冪等重試。</li>
+<li>□ CloudWatch metrics、logs、alarms、traces 與 ECS／EKS events 已集中，日誌不包含敏感資料。</li>
+<li>□ CloudTrail trail 已持續啟用並保護日誌；ECS Exec／維運工作階段有核准、MFA 與記錄。</li>
+<li>□ 持久資料已外部化並完成備份、PITR、跨區複寫與實際還原測試。</li>
+<li>□ 第二區域具備映像、IaC、IAM、KMS、Secrets、網路、資料與 DNS 切換程序，已演練 RTO／RPO。</li>
+<li>□ 已設定 Budget、成本異常監控、日誌保留、NAT／endpoint 與跨區傳輸檢查。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://aws.amazon.com/fargate/" target="_blank" rel="noopener noreferrer">AWS Fargate product page</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/AWS_Fargate.html" target="_blank" rel="noopener noreferrer">AWS Fargate for Amazon ECS</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/eks/latest/userguide/fargate.html" target="_blank" rel="noopener noreferrer">AWS Fargate for Amazon EKS</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-security-considerations.html" target="_blank" rel="noopener noreferrer">Security considerations for Fargate</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-networking.html" target="_blank" rel="noopener noreferrer">Fargate task networking</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task-iam-roles.html" target="_blank" rel="noopener noreferrer">Amazon ECS task IAM role</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/task_execution_IAM_role.html" target="_blank" rel="noopener noreferrer">Amazon ECS task execution IAM role</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html" target="_blank" rel="noopener noreferrer">Pass sensitive data to an Amazon ECS container</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/fargate-task-storage.html" target="_blank" rel="noopener noreferrer">Fargate task storage</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/ecs-exec.html" target="_blank" rel="noopener noreferrer">Using Amazon ECS Exec for debugging</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/guardduty/latest/ug/runtime-monitoring.html" target="_blank" rel="noopener noreferrer">GuardDuty Runtime Monitoring</a>（查閱：2026-10-11）</li>
+<li><a href="https://aws.amazon.com/fargate/pricing/" target="_blank" rel="noopener noreferrer">AWS Fargate pricing</a>（查閱：2026-10-11）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-10-11）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、平台版本、配額、價格、作業系統、CPU 架構、ECS／EKS 功能、資料分類、合規要求與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-10-amazon-lightsail-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon Lightsail：簡化雲端主機、網站部署與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

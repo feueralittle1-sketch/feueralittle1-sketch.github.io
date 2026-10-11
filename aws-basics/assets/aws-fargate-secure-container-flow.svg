@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+<title id="title">AWS Fargate 私有容器服務與安全治理流程</title>
+<desc id="desc">使用者流量經 CloudFront、WAF 和負載平衡器進入跨可用區的私有 Fargate tasks，工作負載以最小權限存取機密與受管資料服務，旁側由可信映像、監控稽核與跨區重建提供治理。</desc>
+<defs>
+ <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284a"/></linearGradient>
+ <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb347"/><stop offset="1" stop-color="#ff7a18"/></linearGradient>
+ <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#8fe8ff"/><stop offset="1" stop-color="#35a8ff"/></linearGradient>
+ <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".3"/></filter>
+ <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#8fe8ff"/></marker>
+ <style>.h{font:700 27px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:600 19px Inter,'Noto Sans TC',sans-serif;fill:#eaf4ff}.s{font:400 15px Inter,'Noto Sans TC',sans-serif;fill:#b8cae5}.box{fill:#10233e;stroke:#375a7d;stroke-width:2}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#ffb45e;stroke-width:3;stroke-dasharray:10 9;marker-end:url(#arrow)}</style>
+</defs>
+<rect width="1440" height="900" rx="32" fill="url(#bg)"/>
+<text x="720" y="58" text-anchor="middle" class="h">示意｜AWS Fargate 私有容器服務安全流程</text>
+<text x="720" y="88" text-anchor="middle" class="s">無伺服器運算不等於免治理：映像、角色、網路、資料與復原仍由客戶設計</text>
+<g filter="url(#shadow)">
+ <rect x="45" y="330" width="180" height="130" rx="22" class="box"/><circle cx="135" cy="370" r="23" fill="url(#cyan)"/><text x="135" y="416" text-anchor="middle" class="t">使用者／API</text><text x="135" y="442" text-anchor="middle" class="s">HTTPS request</text>
+ <rect x="280" y="285" width="205" height="220" rx="22" class="box"/><text x="382" y="330" text-anchor="middle" class="t">受控入口</text><rect x="315" y="352" width="135" height="38" rx="19" fill="#183653"/><text x="382" y="377" text-anchor="middle" class="s">CloudFront</text><rect x="315" y="402" width="135" height="38" rx="19" fill="#183653"/><text x="382" y="427" text-anchor="middle" class="s">AWS WAF</text><rect x="315" y="452" width="135" height="38" rx="19" fill="#183653"/><text x="382" y="477" text-anchor="middle" class="s">ALB + TLS</text>
+ <rect x="550" y="170" width="500" height="470" rx="28" fill="#0c1c32" stroke="#ff9f32" stroke-width="3"/><text x="800" y="214" text-anchor="middle" class="t">VPC 私有子網｜Amazon ECS Service on Fargate</text>
+ <rect x="590" y="250" width="200" height="230" rx="22" class="box"/><text x="690" y="288" text-anchor="middle" class="t">可用區 A</text><rect x="620" y="320" width="140" height="105" rx="18" fill="url(#orange)"/><text x="690" y="362" text-anchor="middle" class="t" fill="#071426">Fargate Task</text><text x="690" y="390" text-anchor="middle" class="s" fill="#13233a">private IP</text>
+ <rect x="810" y="250" width="200" height="230" rx="22" class="box"/><text x="910" y="288" text-anchor="middle" class="t">可用區 B</text><rect x="840" y="320" width="140" height="105" rx="18" fill="url(#orange)"/><text x="910" y="362" text-anchor="middle" class="t" fill="#071426">Fargate Task</text><text x="910" y="390" text-anchor="middle" class="s" fill="#13233a">private IP</text>
+ <rect x="620" y="520" width="360" height="82" rx="18" fill="#183653"/><text x="800" y="553" text-anchor="middle" class="t">Security Group + Task Role</text><text x="800" y="579" text-anchor="middle" class="s">最小權限・短期憑證・受控出站</text>
+ <rect x="1100" y="160" width="290" height="210" rx="22" class="box"/><text x="1245" y="202" text-anchor="middle" class="t">可信軟體供應鏈</text><text x="1245" y="238" text-anchor="middle" class="s">Source → CI checks → ECR</text><text x="1245" y="269" text-anchor="middle" class="s">掃描・SBOM・簽章／核准</text><text x="1245" y="300" text-anchor="middle" class="s">以 image digest 部署</text><rect x="1165" y="320" width="160" height="34" rx="17" fill="#183653"/><text x="1245" y="343" text-anchor="middle" class="s">不可變版本</text>
+ <rect x="1100" y="405" width="290" height="235" rx="22" class="box"/><text x="1245" y="448" text-anchor="middle" class="t">受管資料與機密</text><text x="1245" y="486" text-anchor="middle" class="s">Secrets Manager／Parameter Store</text><text x="1245" y="518" text-anchor="middle" class="s">KMS 加密</text><text x="1245" y="550" text-anchor="middle" class="s">RDS／DynamoDB／S3／EFS</text><text x="1245" y="582" text-anchor="middle" class="s">備份・PITR・跨區資料保護</text>
+ <rect x="120" y="705" width="430" height="130" rx="22" class="box"/><text x="335" y="748" text-anchor="middle" class="t">監控與稽核</text><text x="335" y="783" text-anchor="middle" class="s">CloudWatch metrics／logs／alarms・traces</text><text x="335" y="812" text-anchor="middle" class="s">CloudTrail・ECS events・Runtime Monitoring</text>
+ <rect x="710" y="705" width="560" height="130" rx="22" class="box"/><text x="990" y="748" text-anchor="middle" class="t">可用性與跨區重建</text><text x="990" y="783" text-anchor="middle" class="s">多副本・跨可用區・Auto Scaling・受控回滾</text><text x="990" y="812" text-anchor="middle" class="s">第二區域：IaC + ECR + IAM + Secrets + Data + DNS</text>
+</g>
+<path d="M225 395H278" class="line"/><path d="M485 395H548" class="line"/><path d="M1050 360H1095" class="line"/><path d="M1095 520H1050" class="line"/><path d="M800 640V700" class="line"/><path d="M1245 370V402" class="dash"/><path d="M335 705C360 650 520 630 590 590" class="dash"/>
+<text x="720" y="875" text-anchor="middle" class="s">原創流程圖｜Dr. William AWS 基礎介紹｜2026-10-11</text>
+</svg>
