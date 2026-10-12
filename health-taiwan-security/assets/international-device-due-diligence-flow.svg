@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療設備供應商盡職調查流程</title>
+  <desc id="desc">從臨床用途與資料流盤點開始，依序索取供應商證據、驗證控制、處理缺口、受控放行並持續重驗。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071521"/><stop offset="1" stop-color="#132a51"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e6ff"/></marker></defs>
+  <rect width="1200" height="720" rx="36" fill="url(#bg)"/>
+  <text x="60" y="72" fill="#fff" font-size="34" font-weight="700">六階段盡職調查：把供應商承諾轉成驗收證據</text>
+  <g font-family="sans-serif"><g fill="#102946" stroke="#63e6ff" stroke-width="2"><rect x="55" y="150" width="300" height="145" rx="24"/><rect x="450" y="150" width="300" height="145" rx="24"/><rect x="845" y="150" width="300" height="145" rx="24"/><rect x="845" y="420" width="300" height="145" rx="24"/><rect x="450" y="420" width="300" height="145" rx="24"/><rect x="55" y="420" width="300" height="145" rx="24"/></g>
+  <g fill="#63e6ff" font-size="22" font-weight="700"><text x="85" y="192">01 定義情境</text><text x="480" y="192">02 索取證據</text><text x="875" y="192">03 技術驗證</text><text x="875" y="462">04 缺口處置</text><text x="480" y="462">05 受控放行</text><text x="85" y="462">06 持續重驗</text></g>
+  <g fill="#d9e7fb" font-size="22"><text x="85" y="232">用途、資料、連線、</text><text x="85" y="264">故障後果與復原需求</text><text x="480" y="232">架構、SBOM、更新、</text><text x="480" y="264">揭露政策與支援期限</text><text x="875" y="232">隔離建置、身分、</text><text x="875" y="264">日誌、更新與回退測試</text><text x="875" y="502">補償控制、責任人、</text><text x="875" y="534">期限與風險接受</text><text x="480" y="502">版本基線、設定檔、</text><text x="480" y="534">SLA 與放行簽核</text><text x="85" y="502">重大變更、漏洞、</text><text x="85" y="534">年度演練與到期複核</text></g>
+  <g stroke="#63e6ff" stroke-width="5" fill="none" marker-end="url(#a)"><path d="M365 223H435"/><path d="M760 223H830"/><path d="M995 310V405"/><path d="M830 493H760"/><path d="M435 493H365"/></g>
+  <path d="M205 405V350C205 325 225 310 250 310H870" stroke="#9c8cff" stroke-width="4" fill="none" marker-end="url(#a)"/><text x="520" y="344" text-anchor="middle" fill="#cfc7ff" font-size="20">重大變更或證據失效時重新進入驗證</text>
+  <rect x="285" y="620" width="630" height="54" rx="18" fill="#091827" stroke="#57f0c1"/><text x="600" y="654" text-anchor="middle" fill="#dffcf3" font-size="23">關閉條件：控制有效、臨床可用、責任明確、證據可追溯</text></g>
+</svg>

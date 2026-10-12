@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療設備供應商安全證據邊界</title>
+  <desc id="desc">製造商以品質系統、產品安全設計與上市後維護證據，經醫院採購治理閘門轉成可驗收的院內控制。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071827"/><stop offset="1" stop-color="#10254a"/></linearGradient><filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="14" flood-opacity=".28"/></filter><marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="5" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#63e6ff"/></marker></defs>
+  <rect width="1200" height="720" rx="36" fill="url(#bg)"/>
+  <text x="60" y="72" fill="#fff" font-size="34" font-weight="700">供應商文件不等於院內已受控：必須通過治理閘門</text>
+  <g filter="url(#shadow)"><rect x="70" y="130" width="300" height="460" rx="28" fill="#10213b" stroke="#60779b"/><rect x="450" y="130" width="300" height="460" rx="28" fill="#12304a" stroke="#63e6ff" stroke-width="3"/><rect x="830" y="130" width="300" height="460" rx="28" fill="#10213b" stroke="#57f0c1"/></g>
+  <text x="220" y="185" text-anchor="middle" fill="#9c8cff" font-size="28" font-weight="700">製造商證據</text>
+  <text x="600" y="185" text-anchor="middle" fill="#63e6ff" font-size="28" font-weight="700">醫院採購閘門</text>
+  <text x="980" y="185" text-anchor="middle" fill="#57f0c1" font-size="28" font-weight="700">院內控制輸出</text>
+  <g fill="#d9e7fb" font-size="24"><text x="110" y="250">• 品質系統責任</text><text x="110" y="305">• 威脅模型與架構</text><text x="110" y="360">• SBOM／弱點處置</text><text x="110" y="415">• 更新與支援承諾</text><text x="110" y="470">• 安全使用文件</text></g>
+  <g fill="#e7f8ff" font-size="24"><text x="490" y="250">1. 適用性與範圍</text><text x="490" y="305">2. 證據真實性</text><text x="490" y="360">3. 臨床情境測試</text><text x="490" y="415">4. 缺口與補償控制</text><text x="490" y="470">5. 放行與到期日</text></g>
+  <g fill="#dffcf3" font-size="24"><text x="870" y="250">• 資產與版本清冊</text><text x="870" y="305">• 最小權限與分段</text><text x="870" y="360">• 更新／回退流程</text><text x="870" y="415">• 事件聯絡與 SLA</text><text x="870" y="470">• 退場與資料清除</text></g>
+  <path d="M380 360H435" stroke="#63e6ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M760 360H815" stroke="#63e6ff" stroke-width="5" marker-end="url(#arrow)"/>
+  <rect x="120" y="620" width="960" height="58" rx="20" fill="#081421" stroke="#7991b3"/><text x="600" y="658" text-anchor="middle" fill="#fff" font-size="24">驗收原則：文件可追溯、控制可測試、責任可交接、例外有期限</text>
+</svg>

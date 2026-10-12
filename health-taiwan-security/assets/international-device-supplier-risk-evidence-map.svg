@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療設備供應商風險與驗收證據對照</title>
+  <desc id="desc">將文件過期、責任模糊、更新中斷、遠端維護與退場資料殘留等風險，對應到可驗證控制與關閉證據。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071521"/><stop offset="1" stop-color="#122547"/></linearGradient></defs>
+  <rect width="1200" height="720" rx="36" fill="url(#bg)"/>
+  <text x="60" y="72" fill="#fff" font-size="34" font-weight="700">風險不是問卷分數：每一項都要有關閉證據</text>
+  <g font-family="sans-serif"><rect x="55" y="120" width="1090" height="72" rx="20" fill="#173252"/><text x="95" y="165" fill="#ffb4c4" font-size="25" font-weight="700">風險</text><text x="440" y="165" fill="#63e6ff" font-size="25" font-weight="700">控制</text><text x="820" y="165" fill="#57f0c1" font-size="25" font-weight="700">驗收證據</text>
+  <g font-size="22"><g fill="#0e2139" stroke="#2d4969"><rect x="55" y="210" width="1090" height="82" rx="16"/><rect x="55" y="305" width="1090" height="82" rx="16"/><rect x="55" y="400" width="1090" height="82" rx="16"/><rect x="55" y="495" width="1090" height="82" rx="16"/></g>
+  <g fill="#ffd5de"><text x="95" y="260">文件與版本不一致</text><text x="95" y="355">安全責任無人承接</text><text x="95" y="450">更新失敗影響臨床</text><text x="95" y="545">退役設備殘留資料</text></g>
+  <g fill="#d6f5ff"><text x="440" y="260">版本基線＋證據有效期</text><text x="440" y="355">RACI＋事件／漏洞 SLA</text><text x="440" y="450">分批更新＋回退＋降級</text><text x="440" y="545">資料清除＋憑證撤銷</text></g>
+  <g fill="#dffcf3"><text x="820" y="260">簽章清冊、日期、適用型號</text><text x="820" y="355">聯絡演練、工單與升級紀錄</text><text x="820" y="450">測試報告、回退時間、臨床簽核</text><text x="820" y="545">清除證明、撤權紀錄、交接單</text></g></g>
+  <rect x="180" y="620" width="840" height="58" rx="20" fill="#081421" stroke="#9c8cff"/><text x="600" y="657" text-anchor="middle" fill="#fff" font-size="23">未能驗證的控制，不應因契約文字或供應商品牌而視為有效</text></g>
+</svg>
