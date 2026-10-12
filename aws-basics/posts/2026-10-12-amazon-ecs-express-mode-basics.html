@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon ECS Express Mode：簡化容器部署、受管入口與安全治理</title>
+  <meta name="description" content="理解 Amazon ECS Express Mode 如何以容器映像與 IAM 角色建立 Fargate、HTTPS 負載平衡、自動擴縮、監控與 Canary 部署，並掌握其安全與責任邊界。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-12-amazon-ecs-express-mode-basics.html" />
+  <link rel="prev" href="./2026-10-11-aws-fargate-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon ECS Express Mode：簡化容器部署、受管入口與安全治理" />
+  <meta property="og:description" content="從容器映像到 Fargate、ALB、TLS、自動擴縮與 Canary 部署，理解 Express Mode 的便利、成本、風險與共同責任。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-12-amazon-ecs-express-mode-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-ecs-express-mode-secure-web-flow.svg" />
+  <meta property="article:published_time" content="2026-10-12T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon ECS Express Mode：簡化容器部署、受管入口與安全治理" />
+  <meta name="twitter:description" content="掌握 Express Mode 的 Fargate 運算、HTTPS 入口、IAM 角色、私有網路、機密、日誌、成本與復原邊界。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-ecs-express-mode-secure-web-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon ECS Express Mode：簡化容器部署、受管入口與安全治理","description":"理解 Amazon ECS Express Mode 如何以容器映像與 IAM 角色建立 Fargate、HTTPS 負載平衡、自動擴縮、監控與 Canary 部署，並掌握其安全與責任邊界。","datePublished":"2026-10-12T21:30:00+08:00","dateModified":"2026-10-12T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-12-amazon-ecs-express-mode-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-ecs-express-mode-secure-web-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">簡化容器平台</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-12</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon ECS Express Mode：簡化容器部署、受管入口與安全治理</h1>
+<p class="text-xl leading-9 muted">Amazon ECS Express Mode 以較少參數協調 Amazon ECS、AWS Fargate、Application Load Balancer、TLS、自動擴縮、CloudWatch 與 Canary 部署。它降低初始整合複雜度，但不代替容器映像、IAM、網路、機密、資料、日誌與復原治理。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-12</p>
+<div class="prose max-w-none mt-10">
+<h2>服務定位</h2>
+<p><strong>Amazon ECS Express Mode</strong> 是 Amazon Elastic Container Service 的簡化部署模式，適合把無狀態容器化 Web 應用程式或 API 快速部署到 AWS。建立服務時至少提供容器映像、task execution role 與 infrastructure role；Express Mode 再協調 Fargate 型 ECS service、HTTPS 負載平衡、網路、安全群組、自動擴縮、CloudWatch 日誌與監控，以及具告警回滾的 Canary 部署。</p>
+<p>Express Mode 不是另一套獨立容器平台。底層 ECS、Fargate、Application Load Balancer、ACM、CloudWatch 與網路資源均建立在客戶帳號內，仍可檢視與管理。這種透明度保留擴充彈性，也表示直接修改受 Express Mode 管理的資源可能造成設定漂移，甚至影響後續協調更新。</p>
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">Express Mode 自動協調</h3><ul>
+<li><strong>ECS service on Fargate：</strong>以受管 Fargate 容量執行 tasks，並依設定維持副本與可用區分散。</li>
+<li><strong>HTTPS 應用入口：</strong>建立或共用 Application Load Balancer、HTTPS listener、target groups、ACM certificate 與 AWS 提供的服務網域。</li>
+<li><strong>自動擴縮：</strong>建立 Application Auto Scaling target 與 target tracking policy；上下限與目標指標仍須依負載驗證。</li>
+<li><strong>部署保護：</strong>更新預設使用 Canary 流量移轉與 CloudWatch 告警回滾，降低一次全面切換的風險。</li>
+<li><strong>觀測性：</strong>建立服務專用 CloudWatch log group 與部署告警；應用指標、追蹤與日誌內容仍由團隊補足。</li>
+<li><strong>資源共用：</strong>同一 VPC 且網路條件相容時，可讓最多 25 個 Express Mode services 共用一個 ALB，以分攤固定成本。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">客戶仍需明確決策</h3><ul>
+<li><strong>容器映像：</strong>來源、弱點修補、SBOM、簽章、非 root 執行、映像 digest 與供應鏈核准。</li>
+<li><strong>三類角色：</strong>部署人員、infrastructure role、task execution role 與應用 task role 必須分離並採最小權限。</li>
+<li><strong>公開或私有：</strong>選擇 public／private subnets、Internet-facing／internal ALB、security groups、DNS 與出站路徑。</li>
+<li><strong>機密與資料：</strong>使用 Secrets Manager／Parameter Store 與 KMS；持久狀態應放入受管資料服務並另行備份。</li>
+<li><strong>監控保留：</strong>設定 log retention、ALB access logs、應用告警、CloudTrail、VPC Flow Logs 與資料保護。</li>
+<li><strong>高階需求：</strong>需要 sidecar、FireLens、Linux runtime 設定或標準化控制時，可評估自訂 task definition。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>已容器化的無狀態網站、HTTP API、內部 Web 工具與可水平擴充的應用。</li>
+<li>需要快速建立 HTTPS、負載平衡、Fargate、自動擴縮與安全更新流程，但不希望一開始整合大量服務參數的團隊。</li>
+<li>平台團隊需要提供標準化自助部署入口，同時保留對底層 ECS 與 AWS 資源的可視性。</li>
+<li>從簡化型容器服務遷移到 ECS 生態，並希望未來逐步使用自訂 task definition、CloudFormation、CDK 或 Terraform。</li>
+<li>多個中小型服務位於相容網路環境，可透過共用 ALB 分攤固定費用。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>非 HTTP／HTTPS 的長連線、特殊網路協定、批次任務或事件 worker，若無 Web 入口需求，標準 ECS、AWS Batch 或其他服務通常更直接。</li>
+<li>需要精細控制負載平衡器、部署控制器、服務網路、容量提供者或特殊平台能力，且 Express Mode 管理邊界無法滿足需求。</li>
+<li>需要直接管理主機、特殊核心功能、特權容器、GPU 或 Fargate 不支援的執行條件。</li>
+<li>將應用狀態、唯一檔案或 session 保存在單一 task 本機，卻沒有外部持久化與復原設計。</li>
+<li>把自動建立的 HTTPS、security group、CloudWatch 或 Canary 部署誤當成完整應用安全、資料保護與災難復原方案。</li>
+</ul>
+<h2>示意故事案例：預約查詢 API 的簡化上線</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一個預約平台把查詢 API 打包成容器。CI 流程使用固定基底映像，完成套件掃描、SBOM 與測試後，將核准映像推送到私有 Amazon ECR，部署時以不可變 tag 或 digest 指向版本。</p>
+<p>平台透過 Express Mode 在兩個可用區的私有 subnets 建立 Fargate tasks，建立 Internet-facing ALB 作為唯一公開入口，並由 ALB security group 僅把應用連接埠流量送到 service security group。應用 task role 只允許讀取指定 DynamoDB 資料表與 Secrets Manager secret；task execution role 僅負責拉取映像與傳送日誌；infrastructure role 只允許 ECS 協調必要的負載平衡與擴縮資源。</p>
+<p>新版本先透過 Canary 部署接收少量流量，再依健康檢查與 CloudWatch 告警決定繼續或回滾。ALB access logs、應用 logs、metrics、traces、CloudTrail 與 VPC Flow Logs 分別送往受控目的地。跨區復原則以 IaC、ECR 映像複寫、KMS、Secrets、資料層複寫與 DNS 切換重建，不把 Express Mode 當成自動跨區容錯。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-ecs-express-mode-secure-web-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-ecs-express-mode-secure-web-flow.svg" alt="示意：核准容器映像經 Express Mode 協調 ECS、Fargate、HTTPS 負載平衡、自動擴縮與 Canary 部署，應用以最小權限存取機密與資料，並由監控稽核及跨區重建形成治理閉環" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：Express Mode 簡化多服務整合，但映像信任、角色分離、私有網路、機密、資料、監控與復原仍須明確治理。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>界定工作負載：</strong>確認為 HTTP／HTTPS 應用，記錄流量、啟動時間、CPU／記憶體、資料分類、RTO、RPO、區域與合規需求。</li>
+<li><strong>建立映像基線：</strong>採精簡且受支援的基底映像，以非 root 執行，移除不必要工具，完成 SBOM、弱點掃描、簽章與部署核准。</li>
+<li><strong>建立 ECR 治理：</strong>限制 push／pull、啟用適當掃描與保留政策，使用不可變版本或 digest，規劃跨區映像複寫。</li>
+<li><strong>分離 IAM 角色：</strong>建立最小權限的 infrastructure role、task execution role 與應用 task role；人工管理者使用聯合登入、MFA 與短期憑證。</li>
+<li><strong>選擇網路入口：</strong>依公開或內部應用選擇 public／private subnets 與 Internet-facing／internal ALB，不依賴預設 VPC 作為正式環境設計。</li>
+<li><strong>限制網路路徑：</strong>Service security group 僅接受 ALB security group；出站透過 VPC endpoints、受控 NAT、DNS 與必要目的地。</li>
+<li><strong>建立服務：</strong>提供映像、角色、container port、health check、CPU、記憶體、subnets、security groups、擴縮上下限與標籤。</li>
+<li><strong>保護機密：</strong>將敏感設定存於 Secrets Manager 或 Parameter Store，使用 KMS 加密並限制 task role；不得放入映像、環境檔、程式碼或 CI 日誌。</li>
+<li><strong>設定可觀測性：</strong>指定 CloudWatch Logs 保留期，建立應用 metrics、traces、SLO 與告警，依風險啟用 ALB access logs、VPC Flow Logs 與集中式 CloudTrail。</li>
+<li><strong>驗證 Canary：</strong>確認 health check 能反映實際服務狀態，調整 bake time、流量比例與告警，不只依 4xx／5xx 判定業務正確性。</li>
+<li><strong>執行負載與故障測試：</strong>驗證擴縮上下限、啟動延遲、可用區失效、下游限流、機密輪替、錯誤版本回滾與依賴服務中斷。</li>
+<li><strong>管理漂移：</strong>以 IaC 與變更核准維護資源；若直接修改 ALB、security groups、task definition 或 scaling policy，須確認是否仍與 Express Mode 協調相容。</li>
+<li><strong>演練復原：</strong>測試從映像、設定、Secrets、KMS、資料備份與 DNS 在第二區域重建，依結果校正 RTO／RPO。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>Express Mode 本身不另收服務費，實際費用來自 Fargate vCPU／記憶體與執行時間、Application Load Balancer、LCU、CloudWatch logs／metrics、資料傳輸、NAT Gateway、VPC endpoints、ECR、ACM 以外的 DNS／憑證需求、KMS、WAF、備份及資料服務。ALB 可在相容條件下由最多 25 個 Express Mode services 共用，能降低每個小型服務的固定入口成本，但共用也需要評估配額、變更與故障影響範圍。</p>
+<p>自動擴縮不等於無限容量。最小 task 數影響基本成本與可用性，最大 task 數、Fargate／ENI／ALB 配額、映像拉取速度、應用啟動時間與下游容量都會限制擴縮效果。Canary 部署期間會同時執行新舊環境，短期增加 Fargate 與負載平衡相關用量。</p>
+<p>正式服務應跨多個可用區配置 subnets，使用多副本、健康檢查、逾時、退避、熔斷與下游容量保護。Express Mode 提供區域內高可用基礎元件，不會自動完成跨區資料複寫或 DNS 切換；跨區復原仍須設計、建置與演練。</p>
+<h2>Amazon ECS Express Mode 特有資安風險與控制</h2><ul>
+<li><strong>自動建立造成錯誤安全感：</strong>建立前先審核預設資源與公開面，建立後逐項檢查 ALB scheme、subnets、security groups、TLS、擴縮、日誌與告警。</li>
+<li><strong>預設公開入口：</strong>若在 default VPC 與 public subnets 建立，可能產生 Internet-facing ALB；敏感內部服務應明確選擇 private subnets 與 internal 入口。</li>
+<li><strong>角色權限過大：</strong>infrastructure role、task execution role、task role 與部署者不可共用廣泛權限；加入資源、條件、區域與標籤限制。</li>
+<li><strong>額外 security group 形成旁路：</strong>提供自訂 security group 時會增加服務可接受的入口路徑；每條規則都要驗證來源、port 與業務必要性。</li>
+<li><strong>預設出站過寬：</strong>Express Mode 建立的 service security group 可允許 Internet 出站；依資料風險限制 egress，優先使用 VPC endpoints 與受控 NAT。</li>
+<li><strong>ALB access logs 未啟用：</strong>依調查、稽核與個資要求啟用受保護的 access logs，設定 S3 bucket policy、KMS、保留與刪除規則。</li>
+<li><strong>日誌永久保留：</strong>自動建立的 CloudWatch log group 預設不過期，刪除 Express Mode service 後仍可能保留；設定 retention、KMS、資料遮罩與刪除責任。</li>
+<li><strong>HTTP desync 防護設定：</strong>Express Mode 建立的 ALB 預設 desync mitigation mode 需依官方文件與應用相容性重新評估，避免在未驗證下維持較弱設定。</li>
+<li><strong>映像標籤漂移：</strong>使用不可變 tag 或 digest，限制 ECR push，保留來源 commit、掃描、SBOM、簽章與核准證據。</li>
+<li><strong>機密誤放環境明文：</strong>以 Secrets Manager／Parameter Store 參照及 KMS 保護，限制讀取 principal，輪替後部署新 revision 並撤銷舊連線。</li>
+<li><strong>Canary 告警涵蓋不足：</strong>4xx／5xx 之外加入延遲、依賴錯誤、業務成功率與安全事件指標；低流量服務須確保 Canary 樣本足以判斷。</li>
+<li><strong>直接修改受管資源：</strong>限制非 Express Mode API 的變更權限，透過 IaC、AWS Config 與變更稽核偵測漂移，修改前確認後續更新相容性。</li>
+<li><strong>共用 ALB 擴大影響範圍：</strong>檢查 listener rule、host routing、憑證、WAF、配額與刪除行為，避免一個服務變更影響其他應用。</li>
+<li><strong>控制面與執行期證據不足：</strong>CloudTrail 記錄 Express Mode、ECS、ELB、IAM 與相關 API；CloudWatch、ALB logs、VPC Flow Logs、應用稽核及適用的 GuardDuty Runtime Monitoring補足執行期訊號。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 ECS、Fargate、Elastic Load Balancing、ACM、CloudWatch 等受管服務的底層基礎設施與服務可用性，Express Mode 負責依 API 參數協調建立與更新相關資源。客戶負責帳號治理、容器映像、應用程式、IAM 角色、網路選擇、公開存取、資料分類、加密、機密、日誌內容、成本、備份、復原與法規符合性。</p>
+<p>客戶須落實 IAM 最小權限、管理人員 MFA 與短期憑證、私有網路與受控出站、公開入口審查、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、映像供應鏈、資料備份及跨區重建。Express Mode 簡化配置，不會判斷應用漏洞、資料能否公開、角色是否過權、告警是否有效，或復原程序是否達成業務目標。</p>
+<h2>上線前可執行檢查清單</h2><ul>
+<li>□ 已確認工作負載適合 HTTP／HTTPS Express Mode，而非標準 ECS、Batch、Lambda 或其他運算模式。</li>
+<li>□ 已記錄服務擁有者、資料分類、區域、流量、RTO、RPO、可用性與相依服務。</li>
+<li>□ 管理人員使用聯合登入、MFA 與短期憑證；root 不用於日常操作。</li>
+<li>□ Infrastructure role、task execution role、task role 與部署者已分離並採最小權限。</li>
+<li>□ 映像來自受控 ECR，使用不可變版本或 digest，已完成掃描、SBOM、簽章與核准。</li>
+<li>□ 容器使用非 root、精簡基底映像與唯讀檔案系統等適用的強化設定。</li>
+<li>□ 已明確選擇 VPC、subnets、ALB scheme 與公開／私有服務邊界，不直接沿用未審核的 default VPC。</li>
+<li>□ Service security group 只接受 ALB security group；沒有額外寬鬆 security group 形成旁路。</li>
+<li>□ 出站目的地已限制；ECR、S3、Logs、Secrets Manager、KMS 等使用 VPC endpoints 或受控 NAT。</li>
+<li>□ TLS、憑證、DNS、WAF、rate limit、認證與授權依風險配置。</li>
+<li>□ 機密存於 Secrets Manager／Parameter Store 並使用 KMS，未出現在映像、程式碼、環境檔或日誌。</li>
+<li>□ Secret 輪替會觸發新 revision，舊 tasks、舊連線與舊權限可確實撤銷。</li>
+<li>□ CPU、記憶體、最小／最大 task 數、健康檢查、啟動時間與下游容量已經負載測試。</li>
+<li>□ Canary 流量、bake time 與回滾告警涵蓋技術及業務指標，低流量情境已另行驗證。</li>
+<li>□ CloudWatch log retention、KMS、資料遮罩、metrics、traces、dashboard 與 alarms 已設定。</li>
+<li>□ ALB access logs、VPC Flow Logs、CloudTrail 與應用稽核依風險集中保存並限制存取。</li>
+<li>□ 已評估 ALB 共用的路由隔離、配額、憑證、WAF、成本與共同故障影響。</li>
+<li>□ 直接修改底層 ECS／ALB／security group 前有變更核准、漂移偵測與回復方式。</li>
+<li>□ 持久資料已外部化並完成備份、PITR、跨區複寫與實際還原測試。</li>
+<li>□ 第二區域具備 IaC、映像、IAM、KMS、Secrets、網路、資料與 DNS 切換程序，已演練 RTO／RPO。</li>
+<li>□ 已設定 Budget、成本異常監控、日誌保留、NAT／endpoint、ALB LCU 與資料傳輸檢查。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-overview.html" target="_blank" rel="noopener noreferrer">Amazon ECS Express Mode overview</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-create-full.html" target="_blank" rel="noopener noreferrer">Creating an Amazon ECS Express Mode service</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-work.html" target="_blank" rel="noopener noreferrer">Resources created by Amazon ECS Express Mode services</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-getting-started.html" target="_blank" rel="noopener noreferrer">Create your first Express Mode service using the AWS CLI</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-update-full.html" target="_blank" rel="noopener noreferrer">Updating an Amazon ECS Express Mode service</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-best-practices.html" target="_blank" rel="noopener noreferrer">Best practices for Amazon ECS Express Mode services</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/express-service-advanced-customization.html" target="_blank" rel="noopener noreferrer">Updating resources outside of Express Mode</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/TemplateReference/aws-resource-ecs-expressgatewayservice.html" target="_blank" rel="noopener noreferrer">AWS::ECS::ExpressGatewayService</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/AmazonECS/latest/developerguide/specifying-sensitive-data.html" target="_blank" rel="noopener noreferrer">Pass sensitive data to an Amazon ECS container</a>（查閱：2026-10-12）</li>
+<li><a href="https://aws.amazon.com/about-aws/whats-new/2026/07/amazon-ecs-express-mode-custom-task-def/" target="_blank" rel="noopener noreferrer">Amazon ECS Express Mode supports custom task definitions</a>（查閱：2026-10-12）</li>
+<li><a href="https://aws.amazon.com/about-aws/whats-new/2025/11/announcing-amazon-ecs-express-mode/" target="_blank" rel="noopener noreferrer">Announcing Amazon ECS Express Mode</a>（查閱：2026-10-12）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-10-12）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、Express Mode API、Fargate 平台、配額、價格、網路、ALB、ECS task definition、資料分類、合規要求與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-11-aws-fargate-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Fargate：無伺服器容器運算、網路隔離與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
