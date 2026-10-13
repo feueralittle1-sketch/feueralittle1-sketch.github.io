@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 680" role="img" aria-labelledby="title desc">
+  <title id="title">醫療資安風險組合五階段流程</title>
+  <desc id="desc">從定義臨床服務、蒐集風險證據、使用共同尺度排序、配置控制到演練複測的閉環流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" x2="1"><stop stop-color="#061321"/><stop offset="1" stop-color="#121a39"/></linearGradient>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#69e4ff"/></marker>
+  </defs>
+  <rect width="1200" height="680" rx="34" fill="url(#bg)"/>
+  <text x="70" y="76" fill="#fff" font-size="34" font-weight="700">從風險清單走向可重驗的資源配置閉環</text>
+  <text x="70" y="116" fill="#a9bad8" font-size="21">每一階段都要留下範圍、責任、日期與可查驗證據</text>
+  <g font-family="Noto Sans TC, sans-serif">
+    <g transform="translate(70 180)"><rect width="190" height="260" rx="24" fill="#112e45" stroke="#45dcff" stroke-width="2"/><circle cx="42" cy="44" r="24" fill="#45dcff"/><text x="42" y="52" text-anchor="middle" fill="#062033" font-size="22" font-weight="700">1</text><text x="28" y="96" fill="#fff" font-size="25" font-weight="700">定義服務</text><text x="28" y="138" fill="#c6d4eb" font-size="19">• 關鍵臨床流程</text><text x="28" y="173" fill="#c6d4eb" font-size="19">• 容忍中斷時間</text><text x="28" y="208" fill="#c6d4eb" font-size="19">• 最低運作模式</text></g>
+    <g transform="translate(290 180)"><rect width="190" height="260" rx="24" fill="#172b50" stroke="#758eff" stroke-width="2"/><circle cx="42" cy="44" r="24" fill="#758eff"/><text x="42" y="52" text-anchor="middle" fill="#101838" font-size="22" font-weight="700">2</text><text x="28" y="96" fill="#fff" font-size="25" font-weight="700">蒐集證據</text><text x="28" y="138" fill="#c6d4eb" font-size="19">• 資產與依賴</text><text x="28" y="173" fill="#c6d4eb" font-size="19">• 現有控制能力</text><text x="28" y="208" fill="#c6d4eb" font-size="19">• 事件與演練結果</text></g>
+    <g transform="translate(510 180)"><rect width="190" height="260" rx="24" fill="#26254d" stroke="#b087ff" stroke-width="2"/><circle cx="42" cy="44" r="24" fill="#b087ff"/><text x="42" y="52" text-anchor="middle" fill="#24183b" font-size="22" font-weight="700">3</text><text x="28" y="96" fill="#fff" font-size="25" font-weight="700">共同排序</text><text x="28" y="138" fill="#c6d4eb" font-size="19">• 臨床衝擊</text><text x="28" y="173" fill="#c6d4eb" font-size="19">• 發生可能性</text><text x="28" y="208" fill="#c6d4eb" font-size="19">• 準備度缺口</text></g>
+    <g transform="translate(730 180)"><rect width="190" height="260" rx="24" fill="#173d42" stroke="#55efc1" stroke-width="2"/><circle cx="42" cy="44" r="24" fill="#55efc1"/><text x="42" y="52" text-anchor="middle" fill="#10362f" font-size="22" font-weight="700">4</text><text x="28" y="96" fill="#fff" font-size="25" font-weight="700">配置控制</text><text x="28" y="138" fill="#c6d4eb" font-size="19">• 共同防護能力</text><text x="28" y="173" fill="#c6d4eb" font-size="19">• 責任與期限</text><text x="28" y="208" fill="#c6d4eb" font-size="19">• 區域支援資源</text></g>
+    <g transform="translate(950 180)"><rect width="180" height="260" rx="24" fill="#3b3130" stroke="#ffba73" stroke-width="2"/><circle cx="42" cy="44" r="24" fill="#ffba73"/><text x="42" y="52" text-anchor="middle" fill="#3a2410" font-size="22" font-weight="700">5</text><text x="28" y="96" fill="#fff" font-size="25" font-weight="700">演練複測</text><text x="28" y="138" fill="#c6d4eb" font-size="19">• 技術測試</text><text x="28" y="173" fill="#c6d4eb" font-size="19">• 臨床情境演練</text><text x="28" y="208" fill="#c6d4eb" font-size="19">• 重新分配資源</text></g>
+  </g>
+  <path d="M260 310 H280 M480 310 H500 M700 310 H720 M920 310 H940" stroke="#69e4ff" stroke-width="4" marker-end="url(#arrow)"/>
+  <path d="M1040 455 C1040 575 160 575 160 455" fill="none" stroke="#69e4ff" stroke-width="4" stroke-dasharray="10 8" marker-end="url(#arrow)"/>
+  <text x="600" y="535" text-anchor="middle" fill="#fff" font-size="25" font-weight="700">驗收不是完成評分，而是證明高風險服務已降低中斷暴露</text>
+  <text x="600" y="575" text-anchor="middle" fill="#a9bad8" font-size="20">重大變更、事件或演練失敗後，重新進入服務定義與證據蒐集</text>
+</svg>

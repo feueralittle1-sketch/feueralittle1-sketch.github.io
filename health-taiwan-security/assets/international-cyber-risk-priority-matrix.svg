@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">醫療資安風險優先矩陣</title>
+  <desc id="desc">以臨床衝擊和準備度缺口形成四象限，對應立即補強、演練驗證、持續監控及接受或轉移四種治理動作。</desc>
+  <defs><linearGradient id="bg" x1="0" x2="1" y1="0" y2="1"><stop stop-color="#071421"/><stop offset="1" stop-color="#121a39"/></linearGradient></defs>
+  <rect width="1200" height="700" rx="34" fill="url(#bg)"/>
+  <text x="70" y="72" fill="#fff" font-size="34" font-weight="700">用共同尺度決定先做什麼，不用單一分數假裝精確</text>
+  <text x="70" y="112" fill="#a9bad8" font-size="21">矩陣輸入必須有資產、臨床情境與控制證據，不能只靠主觀勾選</text>
+  <g transform="translate(180 160)" font-family="Noto Sans TC, sans-serif">
+    <rect width="820" height="430" rx="24" fill="#0b1e32" stroke="#4f6c8d" stroke-width="2"/>
+    <rect x="0" y="0" width="410" height="215" fill="#5a2f35" opacity=".8"/><rect x="410" y="0" width="410" height="215" fill="#174a46" opacity=".88"/>
+    <rect x="0" y="215" width="410" height="215" fill="#353249" opacity=".9"/><rect x="410" y="215" width="410" height="215" fill="#203a58" opacity=".9"/>
+    <line x1="410" y1="0" x2="410" y2="430" stroke="#b9c7dc" stroke-width="2"/><line x1="0" y1="215" x2="820" y2="215" stroke="#b9c7dc" stroke-width="2"/>
+    <text x="205" y="55" text-anchor="middle" fill="#ffb0b7" font-size="27" font-weight="700">立即補強</text><text x="205" y="96" text-anchor="middle" fill="#fff" font-size="21">高衝擊 × 大缺口</text><text x="205" y="135" text-anchor="middle" fill="#dce7f7" font-size="19">先建立替代流程、隔離與復原能力</text><text x="205" y="170" text-anchor="middle" fill="#dce7f7" font-size="19">設定責任人、期限與高層風險接受</text>
+    <text x="615" y="55" text-anchor="middle" fill="#77f3d0" font-size="27" font-weight="700">演練驗證</text><text x="615" y="96" text-anchor="middle" fill="#fff" font-size="21">高衝擊 × 小缺口</text><text x="615" y="135" text-anchor="middle" fill="#dce7f7" font-size="19">避免紙面成熟度掩蓋真實失效</text><text x="615" y="170" text-anchor="middle" fill="#dce7f7" font-size="19">以切換、降級與恢復情境確認能力</text>
+    <text x="205" y="270" text-anchor="middle" fill="#c8b8ff" font-size="27" font-weight="700">接受或轉移</text><text x="205" y="311" text-anchor="middle" fill="#fff" font-size="21">低衝擊 × 大缺口</text><text x="205" y="350" text-anchor="middle" fill="#dce7f7" font-size="19">記錄邊界、補償控制與到期日</text><text x="205" y="385" text-anchor="middle" fill="#dce7f7" font-size="19">不得以低分直接忽略累積性風險</text>
+    <text x="615" y="270" text-anchor="middle" fill="#8fdcff" font-size="27" font-weight="700">持續監控</text><text x="615" y="311" text-anchor="middle" fill="#fff" font-size="21">低衝擊 × 小缺口</text><text x="615" y="350" text-anchor="middle" fill="#dce7f7" font-size="19">維持基線、例外與變更偵測</text><text x="615" y="385" text-anchor="middle" fill="#dce7f7" font-size="19">定期確認風險未因依賴變動而升高</text>
+  </g>
+  <text x="590" y="640" text-anchor="middle" fill="#9fb3d9" font-size="21">準備度缺口：大 → 小</text>
+  <text x="65" y="382" text-anchor="middle" transform="rotate(-90 65 382)" fill="#9fb3d9" font-size="21">臨床衝擊：低 → 高</text>
+  <text x="600" y="675" text-anchor="middle" fill="#fff" font-size="19">同分項目再以影響人口、外部依賴、可替代性與改善時間排序</text>
+</svg>
