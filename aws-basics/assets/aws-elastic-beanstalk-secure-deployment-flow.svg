@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">Elastic Beanstalk 安全部署與復原流程示意</title>
+  <desc id="desc">受控 CI 將核准版本部署至 Elastic Beanstalk，流量經負載平衡器進入跨可用區私有應用環境，再存取外部資料與機密服務，並由監控稽核、備份及跨區重建支援復原。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102848"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb454"/><stop offset="1" stop-color="#ff7b3d"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#73efff"/><stop offset="1" stop-color="#4c8dff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".32"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8fe8ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#f4f8ff}.h{font-size:34px;font-weight:800}.s{font-size:21px;font-weight:700}.b{font-size:17px;fill:#bed0e8}.k{font-size:15px;fill:#8fe8ff}.card{fill:#10243e;stroke:#ffffff;stroke-opacity:.16;stroke-width:2}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#ffbd70;stroke-width:3;stroke-dasharray:9 9;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1440" height="900" rx="34" fill="url(#bg)"/>
+  <circle cx="1230" cy="110" r="190" fill="#ff9900" opacity=".07"/><circle cx="170" cy="790" r="220" fill="#63e6ff" opacity=".07"/>
+  <text x="72" y="72" class="t h">Elastic Beanstalk：從核准版本到可復原環境</text>
+  <text x="72" y="110" class="t b">示意流程｜平台協調資源，客戶治理版本、身分、網路、資料與復原</text>
+
+  <g filter="url(#shadow)"><rect x="70" y="170" width="270" height="178" rx="26" class="card"/><rect x="70" y="170" width="270" height="12" rx="6" fill="url(#orange)"/>
+  <text x="98" y="222" class="t s">1. 受控 CI／版本門禁</text><text x="98" y="260" class="t b">測試・SBOM・弱點掃描</text><text x="98" y="291" class="t b">簽章・核准・唯一版本</text><text x="98" y="322" class="t k">MFA＋短期憑證＋PassRole 限制</text></g>
+
+  <g filter="url(#shadow)"><rect x="410" y="150" width="360" height="220" rx="28" class="card"/><rect x="410" y="150" width="360" height="12" rx="6" fill="url(#cyan)"/>
+  <text x="440" y="205" class="t s">2. Elastic Beanstalk 控制面</text><text x="440" y="244" class="t b">Application・Version・Environment</text><text x="440" y="277" class="t b">部署策略・容量・健康・平台更新</text><text x="440" y="314" class="t k">Service role 與 instance profile 分離</text><text x="440" y="344" class="t k">Standard：EC2｜Cluster：EKS</text></g>
+
+  <g filter="url(#shadow)"><rect x="850" y="150" width="520" height="220" rx="28" fill="#10243e" stroke="#ffbd70" stroke-opacity=".65" stroke-width="2"/>
+  <text x="882" y="202" class="t s">3. 多可用區應用環境</text>
+  <rect x="882" y="230" width="190" height="92" rx="18" fill="#182f4e" stroke="#8fe8ff" stroke-opacity=".4"/><text x="910" y="267" class="t b">Public ALB</text><text x="910" y="296" class="t k">TLS・health・WAF</text>
+  <rect x="1100" y="212" width="118" height="126" rx="18" fill="#122b46" stroke="#63e6ff" stroke-opacity=".45"/><text x="1123" y="252" class="t b">AZ A</text><text x="1117" y="284" class="t k">Private</text><text x="1125" y="309" class="t k">App</text>
+  <rect x="1235" y="212" width="105" height="126" rx="18" fill="#122b46" stroke="#63e6ff" stroke-opacity=".45"/><text x="1252" y="252" class="t b">AZ B</text><text x="1245" y="284" class="t k">Private</text><text x="1254" y="309" class="t k">App</text></g>
+
+  <path d="M340 260 C370 260 380 260 410 260" class="line"/><path d="M770 260 C810 260 815 260 850 260" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="90" y="475" width="390" height="210" rx="28" class="card"/><text x="122" y="528" class="t s">4. 外部化資料與機密</text><text x="122" y="571" class="t b">RDS Multi-AZ／S3／SQS</text><text x="122" y="607" class="t b">Secrets Manager／Parameter Store</text><text x="122" y="643" class="t k">KMS・最小權限・輪替・備份</text></g>
+
+  <g filter="url(#shadow)"><rect x="525" y="475" width="390" height="210" rx="28" class="card"/><text x="557" y="528" class="t s">5. 監控與稽核</text><text x="557" y="571" class="t b">Enhanced health／CloudWatch</text><text x="557" y="607" class="t b">應用與 proxy logs／CloudTrail</text><text x="557" y="643" class="t k">技術＋業務門檻決定推進或回復</text></g>
+
+  <g filter="url(#shadow)"><rect x="960" y="475" width="390" height="210" rx="28" class="card"/><text x="992" y="528" class="t s">6. 跨區重建與切換</text><text x="992" y="571" class="t b">IaC・版本・角色・平台設定</text><text x="992" y="607" class="t b">資料還原・Route 53 切換</text><text x="992" y="643" class="t k">依 RTO／RPO 定期演練</text></g>
+
+  <path d="M1090 370 C1050 425 420 410 360 475" class="dash"/><path d="M1120 370 C1050 440 785 420 720 475" class="dash"/><path d="M1150 370 C1170 415 1170 430 1170 475" class="dash"/>
+  <path d="M480 580 C500 580 505 580 525 580" class="line"/><path d="M915 580 C935 580 940 580 960 580" class="line"/>
+
+  <rect x="70" y="748" width="1300" height="92" rx="24" fill="#0b1d34" stroke="#ffffff" stroke-opacity=".13"/>
+  <text x="100" y="790" class="t s">共同責任重點</text><text x="335" y="790" class="t b">AWS 維護雲端基礎與服務控制面；客戶負責程式碼、IAM、公開面、資料、成本、備份與復原。</text><text x="335" y="820" class="t k">環境顯示綠色，不等於交易正確、安全控制完整或跨區復原已驗證。</text>
+</svg>

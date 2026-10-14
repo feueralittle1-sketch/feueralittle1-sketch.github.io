@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Elastic Beanstalk：應用部署、環境治理與安全邊界</title>
+  <meta name="description" content="理解 AWS Elastic Beanstalk Standard 與 Cluster 模式如何部署 Web 應用，並掌握版本、網路、IAM、機密、成本、可用性、監控與復原責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-14-aws-elastic-beanstalk-basics.html" />
+  <link rel="prev" href="./2026-10-13-aws-app-runner-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Elastic Beanstalk：應用部署、環境治理與安全邊界" />
+  <meta property="og:description" content="從應用版本到 EC2 或 EKS 執行環境，理解 Elastic Beanstalk 的部署模式、網路、IAM、機密、監控與共同責任。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-14-aws-elastic-beanstalk-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-elastic-beanstalk-secure-deployment-flow.svg" />
+  <meta property="article:published_time" content="2026-10-14T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Elastic Beanstalk：應用部署、環境治理與安全邊界" />
+  <meta name="twitter:description" content="掌握 Beanstalk Standard／Cluster、部署策略、VPC、最小權限、機密、日誌、成本與復原設計。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-elastic-beanstalk-secure-deployment-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Elastic Beanstalk：應用部署、環境治理與安全邊界","description":"理解 AWS Elastic Beanstalk Standard 與 Cluster 模式如何部署 Web 應用，並掌握版本、網路、IAM、機密、成本、可用性、監控與復原責任。","datePublished":"2026-10-14T21:30:00+08:00","dateModified":"2026-10-14T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-14-aws-elastic-beanstalk-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-elastic-beanstalk-secure-deployment-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">應用程式平台</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-14</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Elastic Beanstalk：應用部署、環境治理與安全邊界</h1>
+<p class="text-xl leading-9 muted">AWS Elastic Beanstalk 將應用程式版本部署到受管環境，協調運算、負載平衡、擴縮、健康監控與平台更新。服務可降低環境組裝工作，但底層資源仍位於客戶帳號，應用、身分、網路、資料、版本與復原責任不會因此消失。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-14</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>模式辨識：</strong>Elastic Beanstalk 目前提供 Standard 與 Cluster 兩種模式。Standard 將語言平台或 Docker 應用部署到 EC2，支援 web server／worker tier、單一執行個體或負載平衡環境；Cluster 將容器化應用部署到 Amazon EKS。兩者的設定命名空間、部署能力、成本結構與維運邊界不同，不能把 Standard 的設定直接套用到 Cluster。</div>
+<h2>服務定位</h2>
+<p><strong>AWS Elastic Beanstalk</strong> 是應用程式部署與環境協調服務。團隊提交原始碼套件或容器映像，選擇執行模式與環境設定後，Elastic Beanstalk 建立或使用必要的 EC2、EKS、Elastic Load Balancing、Auto Scaling、S3、CloudWatch 與網路資源，並追蹤環境健康。</p>
+<p>它不是只接收程式碼的完全抽象化平台。Standard 模式中的 EC2、load balancer、Auto Scaling group、security group 與相關資源可在客戶帳號中檢視；Cluster 模式則建立受管 EKS 基礎並執行容器工作負載。這種可見性增加客製能力，也表示底層資源成本、角色權限、網路路徑、平台版本與組態漂移必須持續治理。</p>
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">應用與環境模型</h3><ul>
+<li><strong>Application：</strong>邏輯容器，用來組織 application versions、environments 與設定。</li>
+<li><strong>Application version：</strong>可部署版本，通常指向存放於 S3 的 source bundle，應保留唯一版本標籤與來源追溯。</li>
+<li><strong>Environment：</strong>執行特定版本的一組 AWS 資源；正式與測試環境應分離。</li>
+<li><strong>Environment tier：</strong>Standard 可使用 web server tier 服務請求，或 worker tier 從 SQS 處理背景工作。</li>
+<li><strong>Platform／container：</strong>Standard 選擇受管語言或 Docker platform；Cluster 使用容器映像，底層為 EKS。</li>
+<li><strong>CNAME／DNS：</strong>環境取得可存取網域；自訂網域與正式切換通常搭配 Route 53、憑證與受控 TTL。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">受管能力與客戶決策</h3><ul>
+<li><strong>資源協調：</strong>服務建立、更新與監控環境資源；客戶仍決定容量、模式、區域與架構。</li>
+<li><strong>部署：</strong>Standard 可選 all at once、rolling、額外批次、immutable 或 traffic splitting；Cluster 使用 EKS rolling 參數。</li>
+<li><strong>健康：</strong>Enhanced health 綜合應用請求、主機與負載平衡訊號；健康狀態不等於業務正確性。</li>
+<li><strong>更新：</strong>Managed platform updates 可套用平台更新；相容性、維護窗口、驗證與回復仍需測試。</li>
+<li><strong>權限：</strong>service role、EC2 instance profile、部署者與應用 runtime 權限須分離。</li>
+<li><strong>資料：</strong>持久資料應放在環境外部並獨立備份，避免環境 rebuild／terminate 影響資料生命週期。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>傳統 Web 應用、REST API、後台系統或 SQS worker，需要標準化部署、負載平衡、擴縮與健康監控。</li>
+<li>團隊希望保留 EC2、VPC、security group、Auto Scaling 與平台設定的可見性，但不想自行拼裝完整部署控制面。</li>
+<li>既有應用符合 Elastic Beanstalk 支援的語言平台、Windows、Docker，或可封裝為 Cluster 模式使用的容器映像。</li>
+<li>正式環境需要 immutable 或 traffic splitting 等部署策略，並願意為並行資源支付部署期間成本。</li>
+<li>多個容器環境可共享 Cluster 模式的 EKS 基礎，以提高資源使用率，且團隊能治理容器、EKS 與觀測性。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>只需要單一靜態網站、短期函式或高度事件驅動工作，且不需要常駐應用平台。</li>
+<li>需要直接管理 Kubernetes API、複雜 operator、service mesh 或完整 EKS 平台工程，但不接受 Beanstalk Cluster 的抽象與限制。</li>
+<li>需要特殊主機 kernel、硬體、網路設備、長期固定主機狀態，或大量超出平台 hook／extension 邊界的客製化。</li>
+<li>把環境內 EC2 檔案系統當作唯一持久儲存，或把與環境耦合的資料庫當作可靠的生命週期隔離。</li>
+<li>認為平台會自動完成應用弱點修補、資料分類、IAM 最小權限、secret 輪替、跨區復原或業務交易驗證。</li>
+</ul>
+<h2>示意故事案例：會員入口的可回復部署</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一個會員服務團隊將 Node.js Web 應用部署到 Elastic Beanstalk Standard 的 load-balanced environment。公開 Application Load Balancer 位於兩個 public subnets，應用 EC2 instances 位於兩個 private subnets且不配置 public IP；instance security group 只接受 load balancer security group 的應用連接埠。</p>
+<p>CI 建立唯一 application version，完成測試、依賴掃描與核准後才部署。正式環境採 traffic splitting，先讓少量流量進入新版本，觀察登入成功率、5xx、延遲、下游錯誤與業務指標，再決定全量切換。部署者使用聯合登入、MFA 與短期憑證；Elastic Beanstalk service role、EC2 instance profile 與應用資源權限分離。</p>
+<p>資料庫獨立於環境生命週期，使用 Multi-AZ RDS、KMS 與自動備份。應用在啟動時從 Secrets Manager／Parameter Store 取得受控機密參照；輪替後依程序刷新環境，且日誌禁止輸出敏感值。CloudWatch 收集應用、proxy 與 enhanced health 訊號，CloudTrail 記錄控制面變更。團隊另外以 IaC 在第二區域保存可重建的 VPC、環境設定、角色與依賴清單，定期演練資料還原與 Route 53 切換。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-elastic-beanstalk-secure-deployment-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-elastic-beanstalk-secure-deployment-flow.svg" alt="示意：受控 CI 將核准的應用版本部署到 Elastic Beanstalk，經負載平衡器送到私有應用環境，再存取外部資料與機密服務，並由監控、稽核、備份與跨區重建保護" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：Elastic Beanstalk 協調部署與環境資源；版本門禁、最小權限、網路隔離、資料生命週期、監控與跨區復原仍由客戶治理。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>定義需求：</strong>記錄協定、runtime、容器、Windows／Linux、流量、背景工作、延遲、資料分類、區域、RTO、RPO、合規與預算。</li>
+<li><strong>選擇模式：</strong>少量或傳統應用、Windows 與受管語言平台通常評估 Standard；大量容器環境共享資源時再評估 Cluster 與 EKS 邊界。</li>
+<li><strong>分離帳號與環境：</strong>正式、測試與開發至少以獨立環境治理，高風險情境使用不同 AWS 帳號與 SCP／permission boundary。</li>
+<li><strong>建立版本門禁：</strong>鎖定依賴，執行測試、SAST、套件與映像掃描、SBOM、簽章及核准，為每個 application version 建立不可混淆的識別。</li>
+<li><strong>設計 IAM：</strong>部署者使用 IAM Identity Center、MFA 與短期憑證；限制 PassRole；service role、managed update role、instance profile 與應用權限分離。</li>
+<li><strong>設計 VPC：</strong>公開 Web 環境將 load balancer 放在 public subnets、instances 放在 private subnets；內部系統使用 internal load balancer 與 private connectivity。</li>
+<li><strong>縮小網路面：</strong>instance security group 僅接受 load balancer security group；資料庫只接受應用 security group；出站依目的地與連接埠限制。</li>
+<li><strong>保護設定與機密：</strong>非敏感組態可用 environment properties；敏感資料使用 Secrets Manager／Parameter Store 與 KMS，並限制 instance profile 只能讀取指定 ARN。</li>
+<li><strong>外部化狀態：</strong>資料庫、物件、session、佇列與檔案放在環境外部服務；資料庫 deletion policy、備份與還原程序獨立治理。</li>
+<li><strong>設定容量：</strong>決定 single instance 或 load balanced、min／max capacity、instance type、autoscaling trigger、健康檢查與下游容量上限。</li>
+<li><strong>選擇部署策略：</strong>開發環境可接受 all at once；正式環境依停機容忍度選 rolling with additional batch、immutable 或 traffic splitting，並設定健康與業務驗收。</li>
+<li><strong>管理平台更新：</strong>啟用 managed platform updates 前先建立維護窗口、更新層級、instance replacement、相容性測試與回復程序。</li>
+<li><strong>建立觀測性：</strong>串流 proxy、deployment、application 與 health logs，設定 retention、KMS、CloudWatch metrics／alarms、追蹤與集中 CloudTrail。</li>
+<li><strong>演練失敗：</strong>測試不健康版本、部署中止、instance replacement、AZ 失效、secret 輪替、資料庫故障、環境 rebuild 與跨區重建。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>Elastic Beanstalk 服務本身不另收費，客戶支付所建立或使用的 AWS 資源。Standard 的主要成本通常包括 EC2、load balancer、EBS、NAT Gateway、資料傳輸、S3、CloudWatch、KMS、Secrets Manager、Route 53 與資料服務；Cluster 另包含 Beanstalk 管理的 EKS foundation 與其工作負載資源費用。低流量環境中，固定 load balancer、NAT 與 EKS 基礎費用可能高於應用運算本身。</p>
+<p>Rolling with additional batch、immutable 與 traffic splitting 會在部署期間建立額外容量；immutable 與 traffic splitting 可能短暫維持兩組完整運算資源。成本評估應納入正常流量、尖峰容量、部署並行、log ingestion／retention、跨 AZ 流量、備份、掃描與跨區待命資源，而不是只估算單一 EC2 instance。</p>
+<p>Load-balanced Standard environment 可跨多個 Availability Zones，但區域內多 AZ 不等於跨區復原。應用必須無狀態化或將狀態外部化；資料服務需依 RTO／RPO 採 Multi-AZ、備份、PITR、跨區複寫或匯出。環境設定、平台版本、extensions、hooks、IAM 與網路應以 IaC 或可審查設定保存，才能在另一區域重建。</p>
+<h2>Elastic Beanstalk 特有資安風險與控制</h2><ul>
+<li><strong>抽象層造成錯誤安全感：</strong>把 Beanstalk application、environment 與底層 EC2／EKS／ELB／Auto Scaling 資源同時納入資產清冊、Config 規則與安全監控。</li>
+<li><strong>部署者可 PassRole 擴權：</strong>限制 iam:PassRole 的角色 ARN與可傳遞服務，分離建立環境、部署版本、變更網路與修改 IAM 的職責。</li>
+<li><strong>Service role 過寬：</strong>預設 managed policy 可能涵蓋廣泛操作；依環境需求建立專用角色、條件與權限邊界，定期以 Access Analyzer 與 CloudTrail 縮減。</li>
+<li><strong>Instance profile 成為橫向入口：</strong>應用若遭入侵可使用 instance role；只授予必要資源與動作，限制 secret、bucket、queue 與 KMS key，並避免共用高權限 profile。</li>
+<li><strong>Source bundle 洩漏：</strong>套件不得包含敏感值、私鑰、備份、測試資料或本機設定；CI 在上傳前執行 secret scanning 與內容清單驗證。</li>
+<li><strong>Environment properties 明文暴露：</strong>敏感資料改用 environment secrets 或應用直接呼叫 Secrets Manager／Parameter Store；限制讀取 ARN，並建立輪替與刷新程序。</li>
+<li><strong>Secret 輪替後未同步：</strong>環境變數型 secret 不會因來源值更新而自動刷新；輪替流程須明確觸發環境更新或 instance replacement 並撤銷舊值。</li>
+<li><strong>平台版本過舊：</strong>追蹤 platform branch 支援狀態與安全更新，先在 staging 驗證 managed update，再於維護窗口更新正式環境。</li>
+<li><strong>.ebextensions／platform hooks 供應鏈風險：</strong>將設定與 scripts 視為程式碼審查，禁止任意下載未驗證內容，固定來源與雜湊，限制執行權限。</li>
+<li><strong>公開 EC2 instances：</strong>正式 Web 架構優先讓 load balancer 公開、instances 私有且無 public IP；security group 僅允許 load balancer 到應用連接埠。</li>
+<li><strong>管理出站依賴 NAT：</strong>私有 instance 可使用 VPC endpoints 存取必要 AWS 服務，縮小 NAT 出站與資料外洩面；保留 DNS、NTP與更新來源需求。</li>
+<li><strong>錯誤健康檢查：</strong>健康 endpoint 不得只回固定成功，應驗證關鍵依賴且避免洩漏內部資訊；部署判定同時使用業務指標與 synthetic checks。</li>
+<li><strong>All at once 造成停機：</strong>正式環境依可用性需求採額外批次、immutable 或 traffic splitting；部署前驗證容量、配額與回復時間。</li>
+<li><strong>Traffic splitting 只看技術健康：</strong>canary 期間監控登入、付款、資料正確性與錯誤率；設定人工或自動中止門檻，不能只依綠色 environment health。</li>
+<li><strong>資料庫與環境耦合：</strong>正式資料庫獨立建立，設定 Retain／Snapshot、KMS、備份與 deletion protection；環境 rebuild／terminate 前驗證資料生命週期。</li>
+<li><strong>日誌外洩與消失：</strong>禁止記錄敏感資料，啟用 CloudWatch Logs、保留期、KMS與集中存取；環境終止時不要連帶刪除唯一稽核證據。</li>
+<li><strong>自訂網域懸空：</strong>環境交換 CNAME、終止或重建時同步清理 Route 53／第三方 DNS，監控失效 target 與憑證驗證記錄。</li>
+<li><strong>Cluster 模式誤套 Standard 控制：</strong>分別驗證 EKS rolling、container probes、ALB、pod／workload identity、image provenance、EKS 成本與 Cluster 專用設定。</li>
+<li><strong>環境重建不可重現：</strong>將 configuration、saved configuration、IaC、platform version、環境變數名稱、角色、VPC 與外部依賴版本化，定期從空白重建。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Elastic Beanstalk 服務控制面及 AWS 基礎設施安全，並依所選模式協調受管平台、EC2 或 EKS 相關資源。客戶負責應用程式碼、第三方依賴、容器映像、application versions、部署核准、帳號治理、IAM、網路、資料分類、公開存取、KMS、機密、日誌內容、成本、備份、復原與法規符合性。</p>
+<p>Standard 模式中，客戶仍需治理 EC2 instance profile、平台版本、作業系統與 runtime 更新時程、security groups、Auto Scaling、load balancer 與應用組態；Cluster 模式則增加容器供應鏈、EKS 基礎、部署探針、工作負載權限與共享叢集資源邊界。Elastic Beanstalk 的健康狀態與 managed updates 不會取代安全測試、業務驗收、資料備份或跨區演練。</p>
+<h2>上線與維運可執行檢查清單</h2><ul>
+<li>□ 已依 Windows／語言平台／容器、應用數量、控制需求與成本選擇 Standard 或 Cluster。</li>
+<li>□ 正式、測試與開發環境已分離，高風險環境使用獨立帳號或明確權限邊界。</li>
+<li>□ 部署者使用聯合登入、MFA 與短期憑證，root 不用於日常部署。</li>
+<li>□ iam:PassRole 僅允許核准角色與服務，service role、managed update role、instance profile、應用權限互相分離。</li>
+<li>□ Source bundle／container image 已完成測試、依賴鎖定、SBOM、弱點掃描、簽章、secret scanning 與核准。</li>
+<li>□ 每個 application version 具唯一識別、來源 commit、建置證據、部署紀錄與可回復版本。</li>
+<li>□ 公開 Web 架構的 load balancer 位於 public subnets，instances 位於 private subnets且不使用 public IP。</li>
+<li>□ Security groups 僅允許 load balancer 到應用、應用到核准資料服務，出站規則已縮小。</li>
+<li>□ VPC endpoints、NAT、DNS、NTP、套件更新與外部 API 路徑已按實際需求驗證。</li>
+<li>□ 敏感資料使用 Secrets Manager／Parameter Store 與 KMS，未放入 source bundle、一般設定檔、映像或日誌。</li>
+<li>□ Secret 來源 ARN、讀取權限、輪替、環境刷新／instance replacement 與舊值撤銷已測試。</li>
+<li>□ 資料庫與持久狀態已外部化，deletion policy、deletion protection、備份、PITR與還原演練符合 RTO／RPO。</li>
+<li>□ 正式部署策略已依停機容忍度選定，canary／health／業務指標與自動中止門檻已設定。</li>
+<li>□ Managed platform update 的維護窗口、更新層級、instance replacement、staging 驗證與回復程序已建立。</li>
+<li>□ Enhanced health、CloudWatch Logs、metrics、alarms、retention、KMS與集中 CloudTrail 已設定。</li>
+<li>□ 日誌、錯誤頁、health endpoint 與 deployment output 均未暴露敏感資料或內部除錯內容。</li>
+<li>□ Auto Scaling min／max、instance type、配額、資料庫連線、queue、第三方 API與預算已負載測試。</li>
+<li>□ 已估算 EC2／EKS foundation、ELB、EBS、NAT、資料傳輸、日誌、KMS、機密、備份與部署並行成本。</li>
+<li>□ CNAME、自訂網域、TLS、Route 53 與環境終止後的 DNS 清理程序已驗證。</li>
+<li>□ 環境設定、IaC、platform version、hooks、角色、網路與依賴可從空白重建。</li>
+<li>□ 已演練不健康版本回復、AZ 失效、環境 rebuild／terminate、資料還原與跨區 DNS 切換。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/" target="_blank" rel="noopener noreferrer">What is AWS Elastic Beanstalk?</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/beanstalk-standard.html" target="_blank" rel="noopener noreferrer">Beanstalk Standard</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/command-options-general-eks.html" target="_blank" rel="noopener noreferrer">Configuration options for Beanstalk Cluster environments</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts.html" target="_blank" rel="noopener noreferrer">AWS Elastic Beanstalk concepts</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/concepts-roles.html" target="_blank" rel="noopener noreferrer">Service roles, instance profiles, and user policies</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/iam-servicerole.html" target="_blank" rel="noopener noreferrer">Managing Elastic Beanstalk service roles</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/vpc.html" target="_blank" rel="noopener noreferrer">Using Elastic Beanstalk with Amazon VPC</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.rolling-version-deploy.html" target="_blank" rel="noopener noreferrer">Deployment policies and settings</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/environment-platform-update-managed.html" target="_blank" rel="noopener noreferrer">Managed platform updates</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/AWSHowTo.secrets.env-vars.html" target="_blank" rel="noopener noreferrer">Fetching secrets and parameters to environment variables</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/health-enhanced.html" target="_blank" rel="noopener noreferrer">Enhanced health reporting and monitoring</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/elasticbeanstalk/latest/dg/using-features.managing.db.html" target="_blank" rel="noopener noreferrer">Adding and decoupling a database</a>（查閱：2026-10-14）</li>
+<li><a href="https://aws.amazon.com/elasticbeanstalk/pricing/" target="_blank" rel="noopener noreferrer">AWS Elastic Beanstalk pricing</a>（查閱：2026-10-14）</li>
+<li><a href="https://docs.aws.amazon.com/wellarchitected/latest/security-pillar/shared-responsibility.html" target="_blank" rel="noopener noreferrer">AWS Well-Architected Security Pillar｜Shared responsibility</a>（查閱：2026-10-14）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新模式、區域、platform branch、runtime、EKS foundation、配額、價格、VPC、部署策略、資料分類、合規要求與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-13-aws-app-runner-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS App Runner：受管 Web 服務部署、使用邊界與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
