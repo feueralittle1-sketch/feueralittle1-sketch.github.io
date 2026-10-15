@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" role="img" aria-labelledby="title desc">
+  <title id="title">醫療人工智慧失效風險與韌性控制對照</title>
+  <desc id="desc">將不可用、錯誤輸出、資料或提示操弄、供應商變更四類風險，對照偵測、降級、恢復及驗收證據。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#132348"/></linearGradient></defs>
+  <rect width="1200" height="760" rx="36" fill="url(#bg)"/>
+  <text x="60" y="70" fill="#f6fbff" font-size="34" font-weight="800">四類 AI 失效，控制與驗收證據不同</text>
+  <text x="60" y="108" fill="#a9bddc" font-size="20">不能以單一可用率或模型準確率取代臨床韌性驗收</text>
+  <g font-family="Noto Sans TC, sans-serif">
+    <rect x="52" y="150" width="1096" height="62" rx="16" fill="#173654"/>
+    <g fill="#8ce9ff" font-size="20" font-weight="800" text-anchor="middle"><text x="170" y="190">失效情境</text><text x="410" y="190">優先偵測</text><text x="650" y="190">降級／阻斷</text><text x="900" y="190">驗收證據</text></g>
+    <g font-size="18">
+      <rect x="52" y="226" width="1096" height="108" rx="18" fill="#102b47" stroke="#3bcfea"/><text x="170" y="265" text-anchor="middle" fill="#7eeaff" font-weight="800">服務不可用</text><text x="170" y="298" text-anchor="middle" fill="#d7e5f6">API、模型或網路中斷</text><text x="410" y="278" text-anchor="middle" fill="#d7e5f6">延遲、錯誤率、相依服務</text><text x="650" y="278" text-anchor="middle" fill="#d7e5f6">人工流程、離線工具、停用</text><text x="900" y="278" text-anchor="middle" fill="#d7e5f6">切換時間與臨床完成率</text>
+      <rect x="52" y="350" width="1096" height="108" rx="18" fill="#162b4b" stroke="#8b86ff"/><text x="170" y="389" text-anchor="middle" fill="#b9b4ff" font-weight="800">錯誤或漂移</text><text x="170" y="422" text-anchor="middle" fill="#d7e5f6">不合理、過時或偏移輸出</text><text x="410" y="402" text-anchor="middle" fill="#d7e5f6">輸入分布、覆核差異、警示</text><text x="650" y="402" text-anchor="middle" fill="#d7e5f6">人工確認、門檻限制、回退版本</text><text x="900" y="402" text-anchor="middle" fill="#d7e5f6">負向測試與版本比較</text>
+      <rect x="52" y="474" width="1096" height="108" rx="18" fill="#20294a" stroke="#ef8dcc"/><text x="170" y="513" text-anchor="middle" fill="#ffafe1" font-weight="800">操弄與越權</text><text x="170" y="546" text-anchor="middle" fill="#d7e5f6">提示注入、資料污染、工具濫用</text><text x="410" y="526" text-anchor="middle" fill="#d7e5f6">異常輸入、工具呼叫、權限事件</text><text x="650" y="526" text-anchor="middle" fill="#d7e5f6">最小權限、隔離、人工核准</text><text x="900" y="526" text-anchor="middle" fill="#d7e5f6">攻擊情境與稽核軌跡</text>
+      <rect x="52" y="598" width="1096" height="108" rx="18" fill="#153648" stroke="#56dfb3"/><text x="170" y="637" text-anchor="middle" fill="#79efc6" font-weight="800">供應商變更</text><text x="170" y="670" text-anchor="middle" fill="#d7e5f6">模型、條款、資料流或終止</text><text x="410" y="650" text-anchor="middle" fill="#d7e5f6">版本通知、SBOM、契約事件</text><text x="650" y="650" text-anchor="middle" fill="#d7e5f6">凍結、替代供應商、匯出與退出</text><text x="900" y="650" text-anchor="middle" fill="#d7e5f6">退出演練與資料可攜性</text>
+    </g>
+    <path d="M290 160V700M530 160V700M770 160V700" stroke="#355273" stroke-width="2" opacity=".8"/>
+  </g>
+</svg>

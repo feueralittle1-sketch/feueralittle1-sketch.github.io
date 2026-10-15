@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療人工智慧韌性劇本六階段流程</title>
+  <desc id="desc">從辨識人工智慧觸點、評估臨床影響、設計控制、演練失效、受控恢復到證據重驗的循環流程。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#111d42"/></linearGradient><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#72ddff"/></marker></defs>
+  <rect width="1200" height="720" rx="36" fill="url(#bg)"/>
+  <text x="64" y="72" fill="#f6fbff" font-size="34" font-weight="800">AI 韌性劇本：先把失效轉成可演練流程</text>
+  <text x="64" y="108" fill="#a9bddc" font-size="20">每一階段都要留下責任、門檻、紀錄與回退條件</text>
+  <g font-family="Noto Sans TC, sans-serif">
+    <path d="M196 246H324M476 246H604M756 246H884" stroke="#72ddff" stroke-width="5" marker-end="url(#a)"/>
+    <path d="M960 320V430H808" stroke="#72ddff" stroke-width="5" fill="none" marker-end="url(#a)"/>
+    <path d="M656 498H528M376 498H248" stroke="#72ddff" stroke-width="5" marker-end="url(#a)"/>
+    <path d="M120 430V350" stroke="#72ddff" stroke-width="5" marker-end="url(#a)"/>
+    <g text-anchor="middle">
+      <rect x="44" y="170" width="220" height="150" rx="24" fill="#133453" stroke="#45d7ff" stroke-width="3"/><text x="154" y="214" fill="#76e7ff" font-size="22" font-weight="800">1 盤點觸點</text><text x="154" y="252" fill="#d8e6f8" font-size="18">用途、資料、模型</text><text x="154" y="284" fill="#d8e6f8" font-size="18">供應商與權限</text>
+      <rect x="324" y="170" width="220" height="150" rx="24" fill="#173050" stroke="#7ba7ff" stroke-width="3"/><text x="434" y="214" fill="#a8c4ff" font-size="22" font-weight="800">2 定義衝擊</text><text x="434" y="252" fill="#d8e6f8" font-size="18">病人安全、等待</text><text x="434" y="284" fill="#d8e6f8" font-size="18">錯誤與中斷門檻</text>
+      <rect x="604" y="170" width="220" height="150" rx="24" fill="#26305c" stroke="#a38cff" stroke-width="3"/><text x="714" y="214" fill="#c4b9ff" font-size="22" font-weight="800">3 配置控制</text><text x="714" y="252" fill="#d8e6f8" font-size="18">人工覆核、權限</text><text x="714" y="284" fill="#d8e6f8" font-size="18">隔離與監測</text>
+      <rect x="884" y="170" width="272" height="150" rx="24" fill="#293059" stroke="#ff9ad8" stroke-width="3"/><text x="1020" y="214" fill="#ffb6e2" font-size="22" font-weight="800">4 演練失效</text><text x="1020" y="252" fill="#d8e6f8" font-size="18">錯誤輸出、服務中斷</text><text x="1020" y="284" fill="#d8e6f8" font-size="18">資料污染、提示攻擊</text>
+      <rect x="656" y="430" width="272" height="150" rx="24" fill="#183d4a" stroke="#5be7ba" stroke-width="3"/><text x="792" y="474" fill="#7df1c9" font-size="22" font-weight="800">5 受控恢復</text><text x="792" y="512" fill="#d8e6f8" font-size="18">停用、回退、替代流程</text><text x="792" y="544" fill="#d8e6f8" font-size="18">分批恢復與臨床確認</text>
+      <rect x="376" y="430" width="220" height="150" rx="24" fill="#16384f" stroke="#5bd6ee" stroke-width="3"/><text x="486" y="474" fill="#7ee8fa" font-size="22" font-weight="800">6 證據重驗</text><text x="486" y="512" fill="#d8e6f8" font-size="18">版本、紀錄、成效</text><text x="486" y="544" fill="#d8e6f8" font-size="18">剩餘風險與期限</text>
+      <rect x="44" y="430" width="260" height="150" rx="24" fill="#102c49" stroke="#45d7ff" stroke-width="3"/><text x="174" y="474" fill="#76e7ff" font-size="22" font-weight="800">持續改版</text><text x="174" y="512" fill="#d8e6f8" font-size="18">事件、漂移與供應商</text><text x="174" y="544" fill="#d8e6f8" font-size="18">變更觸發下一輪</text>
+    </g>
+  </g>
+</svg>
