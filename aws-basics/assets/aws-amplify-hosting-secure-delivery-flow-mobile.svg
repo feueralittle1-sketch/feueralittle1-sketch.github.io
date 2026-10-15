@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1380" viewBox="0 0 720 1380" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Amplify Hosting 手機版安全交付與復原流程示意</title>
+  <desc id="desc">受控 Git 變更經測試及建置門禁進入 Amplify Hosting，發布至 WAF、全球 CDN 與受管 SSR，再連接後端控制、監控稽核及跨區重建。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102848"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb454"/><stop offset="1" stop-color="#ff6f61"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8fe8ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#f4f8ff}.h{font-size:31px;font-weight:800}.s{font-size:21px;font-weight:700}.b{font-size:17px;fill:#bed0e8}.k{font-size:15px;fill:#8fe8ff}.card{fill:#10243e;stroke:#fff;stroke-opacity:.16;stroke-width:2}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="720" height="1380" rx="30" fill="url(#bg)"/>
+  <circle cx="620" cy="80" r="150" fill="#ff9900" opacity=".07"/><circle cx="90" cy="1280" r="170" fill="#63e6ff" opacity=".07"/>
+  <text x="44" y="62" class="t h">Amplify Hosting 安全交付</text><text x="44" y="96" class="t b">示意流程｜來源、產物、公開面、監控與復原</text>
+
+  <g filter="url(#shadow)"><rect x="44" y="135" width="632" height="160" rx="25" class="card"/><rect x="44" y="135" width="632" height="11" rx="6" fill="url(#orange)"/><text x="72" y="186" class="t s">1. Git 與合併門禁</text><text x="72" y="224" class="t b">分支保護・審查・測試・依賴與敏感資料掃描</text><text x="72" y="260" class="t k">聯合登入＋MFA＋短期憑證</text></g>
+  <path d="M360 295 L360 335" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="44" y="345" width="632" height="185" rx="25" class="card"/><text x="72" y="397" class="t s">2. Amplify 建置與原子部署</text><text x="72" y="438" class="t b">版本化 build spec・鎖定依賴・完整產物</text><text x="72" y="473" class="t b">靜態檔・路由・SSR 定義・成功後切換</text><text x="72" y="505" class="t k">Service role 與 compute role 分離</text></g>
+  <path d="M360 530 L360 570" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="44" y="580" width="632" height="205" rx="25" fill="#10243e" stroke="#ffbd70" stroke-opacity=".65" stroke-width="2"/><text x="72" y="632" class="t s">3. 公開交付與執行邊界</text><rect x="72" y="660" width="168" height="82" rx="17" fill="#182f4e"/><text x="112" y="694" class="t b">AWS WAF</text><text x="95" y="722" class="t k">規則・速率・Bot</text><rect x="266" y="660" width="168" height="82" rx="17" fill="#122b46"/><text x="303" y="694" class="t b">全球 CDN</text><text x="288" y="722" class="t k">TLS・快取・標頭</text><rect x="460" y="660" width="168" height="82" rx="17" fill="#122b46"/><text x="496" y="694" class="t b">受管 SSR</text><text x="486" y="722" class="t k">最小權限角色</text></g>
+  <path d="M360 785 L360 825" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="44" y="835" width="632" height="150" rx="25" class="card"/><text x="72" y="885" class="t s">4. 後端與機密邊界</text><text x="72" y="923" class="t b">API 逐次驗證・Parameter Store・KMS</text><text x="72" y="956" class="t k">敏感資料不進 bundle、source map 或日誌</text></g>
+  <path d="M360 985 L360 1025" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="44" y="1035" width="632" height="150" rx="25" class="card"/><text x="72" y="1085" class="t s">5. 監控、稽核與回復</text><text x="72" y="1123" class="t b">CloudWatch・CloudTrail・WAF 與 SSR 日誌</text><text x="72" y="1156" class="t k">技術＋業務指標判定推進或回復</text></g>
+  <path d="M360 1185 L360 1225" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="44" y="1235" width="632" height="110" rx="25" class="card"/><text x="72" y="1281" class="t s">6. 跨區重建與 DNS 切換</text><text x="72" y="1318" class="t b">儲存庫鏡像・IaC・第二區域 app・後端資料復原</text></g>
+</svg>
