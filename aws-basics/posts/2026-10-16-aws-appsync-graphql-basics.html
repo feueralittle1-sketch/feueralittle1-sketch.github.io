@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS AppSync：受管 GraphQL API、即時資料與授權治理</title>
+  <meta name="description" content="理解 AWS AppSync 的 GraphQL schema、resolver、資料來源、訂閱、快取、授權、成本、可用性與安全責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-16-aws-appsync-graphql-basics.html" />
+  <link rel="prev" href="./2026-10-15-aws-amplify-hosting-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS AppSync：受管 GraphQL API、即時資料與授權治理" />
+  <meta property="og:description" content="從 schema、resolver 與資料來源，理解 GraphQL 查詢、即時訂閱、欄位授權、成本控制、監控與跨區重建。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-16-aws-appsync-graphql-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-appsync-secure-graphql-flow.svg" />
+  <meta property="article:published_time" content="2026-10-16T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS AppSync：受管 GraphQL API、即時資料與授權治理" />
+  <meta name="twitter:description" content="掌握 GraphQL schema、resolver、即時訂閱、最小權限、查詢成本、日誌稽核與跨區復原。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-appsync-secure-graphql-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS AppSync：受管 GraphQL API、即時資料與授權治理","description":"理解 AWS AppSync 的 GraphQL schema、resolver、資料來源、訂閱、快取、授權、成本、可用性與安全責任。","datePublished":"2026-10-16T21:30:00+08:00","dateModified":"2026-10-16T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-16-aws-appsync-graphql-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-appsync-secure-graphql-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">GraphQL 與即時 API</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-16</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS AppSync：受管 GraphQL API、即時資料與授權治理</h1>
+<p class="text-xl leading-9 muted">AWS AppSync 以受管 GraphQL 端點整合多種資料來源，並提供即時更新、快取、授權與觀測能力。它能減少 API 基礎設施工作，但 schema 邊界、resolver 權限、欄位授權、查詢成本、資料保護與復原驗證仍由客戶治理。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-16</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>範圍辨識：</strong>本文聚焦 AWS AppSync GraphQL API。AppSync Events 是另一種以 WebSocket 發布／訂閱事件的能力；兩者的 API 模型、授權與計費單位不同，評估時不可混為同一項服務。</div>
+<h2>服務定位</h2>
+<p><strong>AWS AppSync</strong> 是受管 GraphQL API 服務。團隊以 schema 定義資料型別與可執行操作，再以 resolver 將欄位連接到 DynamoDB、Lambda、OpenSearch Service、Amazon RDS、HTTP 端點或其他支援的資料來源。用戶端可在單次請求選取需要的欄位，也可透過 subscriptions 接收即時更新。</p>
+<p>AppSync 管理 GraphQL 端點、請求路由、WebSocket 連線、部分快取與服務層擴展。它不會替代資料模型、業務授權、輸入驗證、下游容量管理、資料備份或災難復原。GraphQL 的彈性若沒有欄位級授權、查詢限制與 resolver 最小權限，會放大資料越權與成本失控風險。</p>
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">GraphQL 執行模型</h3><ul>
+<li><strong>Schema：</strong>以 type、query、mutation 與 subscription 定義公開契約；變更應版本化、審查並測試相容性。</li>
+<li><strong>Resolver：</strong>把欄位轉換為資料來源操作；可使用 JavaScript runtime 或 VTL，並可組成 pipeline resolver。</li>
+<li><strong>Data source：</strong>承接實際資料讀寫；AppSync service role 只應具備 resolver 所需的最小動作與資源範圍。</li>
+<li><strong>Selection set：</strong>用戶端指定回傳欄位；便利性不代表可跳過每個欄位與物件的授權判斷。</li>
+<li><strong>Subscription：</strong>可由 mutation 觸發即時推送；連線身分、訂閱條件、過濾與撤銷都需驗證。</li>
+<li><strong>Cache：</strong>可降低延遲與下游負載；cache key 若缺少身分或租戶維度，可能把資料回給錯誤使用者。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">存取與網路模型</h3><ul>
+<li><strong>授權模式：</strong>可使用 API key、AWS IAM、Amazon Cognito user pools、OpenID Connect 或 AWS Lambda authorizer，並可設定額外模式。</li>
+<li><strong>欄位授權：</strong>不同 type 或 field 可套用不同授權模式；預設模式不等於所有欄位都適合相同信任層級。</li>
+<li><strong>公開 API：</strong>由網際網路可達，仍須執行身分驗證、授權、節流、查詢限制、WAF 與濫用監控。</li>
+<li><strong>Private API：</strong>可透過 interface VPC endpoint 存取；建立時即決定是否為 private，不能事後直接切換。</li>
+<li><strong>觀測：</strong>可整合 CloudWatch metrics、logs、enhanced metrics、X-Ray 與 CloudTrail；詳細日誌必須避免敏感資料。</li>
+<li><strong>加密：</strong>傳輸使用 TLS；下游資料、日誌、備份與機密仍應依各服務能力使用 KMS 與適當金鑰政策。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>Web、行動或多通路前端需要以同一 schema 聚合多個 AWS 資料來源，並減少過度或不足取數。</li>
+<li>儀表板、協作工具、狀態通知或聊天等情境需要受管 WebSocket 連線與即時資料推送。</li>
+<li>團隊能以明確 schema、resolver 測試、欄位授權與基礎設施即程式碼管理 API 生命週期。</li>
+<li>需要結合 Cognito、IAM、OIDC 或 Lambda authorizer，對不同欄位、租戶與操作建立細緻存取控制。</li>
+<li>希望以快取、批次處理與 resolver 設計減少後端往返，同時建立可觀測與成本門檻。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>API 契約高度依賴原始 HTTP 狀態碼、串流下載、任意二進位回應或非 GraphQL 協定，且無法接受轉接層。</li>
+<li>只需要少量固定 REST 路由，團隊沒有 GraphQL schema、resolver、查詢成本與用戶端快取治理能力。</li>
+<li>希望服務自動推導業務授權、資料列級隔離、租戶邊界或個資遮罩，而未在 resolver 與資料層明確實作。</li>
+<li>下游系統沒有容量保護，卻允許任意深度、高 fan-out、昂貴搜尋或大量即時訂閱。</li>
+<li>把 private API 誤當成完整授權機制；網路私有化不能取代身分、物件與欄位授權。</li>
+</ul>
+<h2>示意故事案例：多租戶維運看板與即時工單</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家設備維運平台提供多租戶看板。使用者透過 Cognito user pool 登入，token 只攜帶必要的租戶與角色識別。GraphQL schema 將公開摘要、租戶設備、工單細節與管理操作拆成不同欄位；resolver 每次都從已驗證身分取得租戶識別，不接受前端自行宣告的租戶值作為授權依據。</p>
+<p>AppSync 將設備摘要查詢送到 DynamoDB，把複雜報表交由具專用角色的 Lambda 處理，工單 mutation 寫入資料庫後觸發限定租戶與設備範圍的 subscription。AppSync service role 只能存取指定資料表、索引與函式；管理者使用聯合登入、MFA 與短期憑證部署 schema，不建立長期存取金鑰。</p>
+<p>公開端點關聯 AWS WAF，設定速率、已知惡意輸入與 Bot 控制；resolver 實作分頁、最大筆數、批次讀取與可接受的查詢成本。欄位日誌只在受控除錯期間開啟，並排除個資、驗證資料與完整 payload。CloudWatch 監控錯誤、延遲、節流、resolver 與訂閱連線，CloudTrail 稽核控制面變更。團隊以 IaC 保存 schema、resolver、角色與資料來源，在第二區域部署待命 API，並依下游資料的備份與複寫能力演練 DNS 切換。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-appsync-secure-graphql-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-appsync-secure-graphql-flow.svg" alt="示意：使用者經身分驗證、WAF 與查詢門禁進入 AppSync GraphQL API，再由欄位授權與最小權限 resolver 存取資料來源，並透過即時訂閱、監控稽核、備份與跨區重建維持安全及韌性" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：AppSync 管理 GraphQL 與即時連線；客戶仍須治理欄位授權、resolver 權限、查詢成本、資料來源、日誌與跨區復原。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>定義契約：</strong>盤點使用者、租戶、資料分類、查詢、mutation、subscription、延遲、RTO、RPO、合規與預算。</li>
+<li><strong>設計 schema：</strong>以最小必要欄位建立 type，區分公開、租戶、管理與敏感資料，不把內部資料模型原樣暴露。</li>
+<li><strong>選擇授權：</strong>依使用者與工作負載選擇 Cognito、IAM、OIDC 或 Lambda authorizer；API key 只用於可接受的低信任公開情境。</li>
+<li><strong>建立欄位邊界：</strong>在 type 與 field 明確配置授權模式，將物件、租戶與角色驗證放入可測試的 resolver 或資料層。</li>
+<li><strong>設計資料來源：</strong>確認 DynamoDB、Lambda、RDS、OpenSearch 或 HTTP 端點的容量、網路、交易、錯誤與重試邊界。</li>
+<li><strong>最小化 IAM：</strong>為 AppSync data source 建立專用 service role；管理者使用聯合登入、MFA 與短期憑證。</li>
+<li><strong>管理機密：</strong>不在 schema、resolver、環境設定或日誌寫入憑證；需要機密時由受控 Lambda 使用 Secrets Manager 或 Parameter Store 取得。</li>
+<li><strong>限制查詢成本：</strong>使用分頁、最大頁數、批次、快取、resolver timeout 與合理的 query depth／resolver count 限制。</li>
+<li><strong>保護入口：</strong>公開 API 評估 AWS WAF、速率限制與濫用防護；內部 API 評估 private API 與 VPC endpoint policy。</li>
+<li><strong>保護快取：</strong>只快取可安全重用的結果，cache key 納入身分、租戶與授權差異；敏感資料設定短 TTL 或不快取。</li>
+<li><strong>治理即時連線：</strong>限制可訂閱事件與過濾條件，測試 token 到期、權限撤銷、斷線重連、離線補償與大量連線。</li>
+<li><strong>建立觀測：</strong>設定 CloudWatch metrics、enhanced metrics、錯誤率、延遲、節流、resolver、subscription 與下游容量告警。</li>
+<li><strong>控制日誌：</strong>選擇必要的 field log level，關閉敏感 header／payload，設定 KMS、保留期、最小查閱與集中稽核。</li>
+<li><strong>版本化部署：</strong>以 IaC 保存 API、schema、resolver、data source、角色、WAF 與告警，執行 schema diff、授權及負載測試。</li>
+<li><strong>演練復原：</strong>備份與還原下游資料，於第二區域重建 API，驗證用戶端端點切換、subscription 重連與資料一致性。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>AppSync GraphQL API 的主要計費維度包括 query／data modification operations、real-time updates、connection minutes，以及選用的快取資源；資料傳輸、CloudWatch logs、X-Ray、WAF、Lambda 與各資料來源另行計費。一次 GraphQL 請求可能執行多個 resolver，實際成本不能只用 HTTP 請求數估算，應同時觀察 resolver 數量、回傳資料量、即時訊息、連線時間、日誌與下游讀寫。</p>
+<p>GraphQL 的 selection set 能減少不必要回傳，但深層查詢、巢狀關聯、逐筆 resolver 與未批次化存取可能形成 N+1 放大。應使用分頁、批次、快取、查詢限制、預算與異常流量告警，並測試尖峰下的 DynamoDB、Lambda、RDS 或 OpenSearch 容量。</p>
+<p>AppSync 是區域服務。受管端點與多可用區基礎能降低單一基礎設施故障，但不代表 schema、resolver、身分供應者、資料來源與狀態已跨區。跨區方案需重建 API、同步必要組態、準備資料層復原、設計 DNS 或用戶端切換，並測試 subscription 重新連線。</p>
+<h2>AppSync 特有資安風險與控制</h2><ul>
+<li><strong>API key 被當成使用者身分：</strong>API key 只代表持有者能呼叫允許欄位，不提供細緻使用者識別；敏感操作使用 Cognito、IAM、OIDC 或 Lambda authorizer。</li>
+<li><strong>預設授權覆蓋過廣：</strong>對 type 與 field 明確套用額外授權規則，測試匿名、一般使用者、跨租戶與管理角色的拒絕路徑。</li>
+<li><strong>租戶識別由前端提供：</strong>resolver 從已驗證 claims 或 IAM context 取得租戶邊界，並在資料鍵與條件表達式再次限制。</li>
+<li><strong>Resolver role 權限過大：</strong>每個資料來源使用專用角色，限制動作、表格、索引、函式、網域與條件，不授予管理型萬用權限。</li>
+<li><strong>欄位新增造成資料外洩：</strong>schema review 必須檢查欄位分類、授權、resolver、日誌與快取，新增欄位預設不公開。</li>
+<li><strong>GraphQL introspection 暴露結構：</strong>不要把關閉 introspection 當成授權；正式環境仍可依威脅模型限制 introspection，核心防線是欄位授權與最小資料暴露。</li>
+<li><strong>深層或高 fan-out 查詢耗盡資源：</strong>設定 query depth、resolver count、分頁與最大筆數，對昂貴欄位加上角色、配額或非同步流程。</li>
+<li><strong>N+1 resolver 放大下游負載：</strong>使用 BatchInvoke、批次讀取、pipeline 合併、快取與資料模型調整，並監控單請求 resolver 數。</li>
+<li><strong>Subscription 越權：</strong>訂閱建立與每次發布都驗證租戶、物件與事件範圍，不只依 mutation 名稱或前端 filter。</li>
+<li><strong>權限撤銷後連線仍存續：</strong>測試 token 到期、帳號停用與角色變更時的斷線和重新驗證，敏感事件採短生命週期憑證。</li>
+<li><strong>快取跨身分洩漏：</strong>cache key 納入授權差異，不快取高度敏感或快速變動結果，變更權限後處理失效。</li>
+<li><strong>Field-level logs 洩漏 payload：</strong>最小化 log level，避免記錄 token、cookie、個資與完整參數；集中加密並限制查閱。</li>
+<li><strong>HTTP resolver 對任意目的地發送資料：</strong>目的地採 allowlist、TLS 與請求簽署，驗證重新導向和回應，不讓使用者控制 URL。</li>
+<li><strong>Lambda authorizer 成為單點：</strong>限制函式權限、驗證 timeout 與 cache TTL，監控錯誤並設計拒絕優先的失敗行為。</li>
+<li><strong>Private API 被誤認為免授權：</strong>VPC endpoint policy、security group、API 授權與資料層授權並用，避免只靠網段信任。</li>
+<li><strong>公開 API 遭自動化濫用：</strong>使用 WAF、速率、查詢限制、異常成本告警與業務配額；WAF 不能取代 resolver 授權。</li>
+<li><strong>Schema 與 resolver 無法重建：</strong>以 IaC、版本控制與 artifact 保存設定，禁止只在主控台維護無法追蹤的正式變更。</li>
+<li><strong>只備份 API、不備份資料：</strong>依 DynamoDB、RDS、OpenSearch 等資料來源建立備份、PITR、快照或跨區策略並演練還原。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 AppSync 受管 GraphQL 與 WebSocket 服務、控制面、服務基礎與實體安全。客戶負責 schema、resolver 程式、資料來源、IAM service role、授權模式、欄位與物件權限、輸入驗證、查詢限制、WAF、快取鍵、日誌內容、下游加密、成本、備份與跨區復原。</p>
+<p>受管 GraphQL 端點不會自動理解租戶、病歷、訂單或工單的業務歸屬。每個 resolver 都應把呼叫者視為不可信輸入，重新驗證可執行操作與可讀取物件。AWS 帳號管理者與部署流程應採聯合登入、MFA、短期憑證與最小權限；正式 credential、Access Key、Secret Key、Token、密碼或 cookie 不得進入程式碼、schema、日誌或文件。</p>
+<h2>上線與維運可執行檢查清單</h2><ul>
+<li>□ schema 已按公開、租戶、管理與敏感資料分層，未直接暴露內部資料模型。</li>
+<li>□ query、mutation、subscription 與各 field 的授權模式均有允許和拒絕測試。</li>
+<li>□ 租戶與物件邊界取自已驗證身分，未信任前端自行提交的租戶識別。</li>
+<li>□ API key 僅用於可接受的低信任情境，具到期、輪替與使用量監控。</li>
+<li>□ 管理者使用聯合登入、MFA 與短期憑證，root 不用於日常操作。</li>
+<li>□ 每個 data source 的 AppSync service role 只允許必要動作與指定資源。</li>
+<li>□ schema、resolver、角色、data source、WAF、告警與 endpoint policy 已納入 IaC。</li>
+<li>□ resolver 不含 credential、Access Key、Secret Key、Token、密碼或 cookie。</li>
+<li>□ 必要機密由受控執行角色從 Secrets Manager 或 Parameter Store 取得。</li>
+<li>□ 公開 API 已評估 WAF、速率限制、Bot、query depth、resolver count 與最大頁數。</li>
+<li>□ private API 已驗證 VPC endpoint、endpoint policy、DNS、security group 與 API 授權。</li>
+<li>□ 昂貴查詢已採分頁、批次、快取或非同步處理，並完成尖峰負載測試。</li>
+<li>□ Cache key 含必要的身分與租戶維度，敏感結果未跨使用者重用。</li>
+<li>□ Subscription 已測試跨租戶拒絕、token 到期、權限撤銷、斷線與重連。</li>
+<li>□ CloudWatch 告警涵蓋錯誤、延遲、節流、resolver、連線、訊息與下游容量。</li>
+<li>□ CloudTrail 已集中保存控制面事件，正式變更可追溯到核准與部署紀錄。</li>
+<li>□ Field-level logs 只記必要欄位，未含敏感 payload，並設定 KMS、保留與最小查閱。</li>
+<li>□ 已估算 operation、real-time update、connection minute、cache、logs、WAF 與下游費用。</li>
+<li>□ DynamoDB、RDS、OpenSearch 或其他資料來源已有備份、還原與資料一致性驗證。</li>
+<li>□ 第二區域可由 IaC 重建 API，已演練端點切換、subscription 重連與 RTO／RPO。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/what-is-appsync.html" target="_blank" rel="noopener noreferrer">What is AWS AppSync?</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/security-authz.html" target="_blank" rel="noopener noreferrer">Authorization and authentication</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/using-private-apis.html" target="_blank" rel="noopener noreferrer">Using AWS AppSync Private APIs</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/resolver-components.html" target="_blank" rel="noopener noreferrer">Configuring resolvers</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/real-time-data.html" target="_blank" rel="noopener noreferrer">Real-time data</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/caching.html" target="_blank" rel="noopener noreferrer">Caching and compression</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/monitoring.html" target="_blank" rel="noopener noreferrer">Monitoring AWS AppSync</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/xray-tracing.html" target="_blank" rel="noopener noreferrer">Tracing with AWS X-Ray</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/security-waf.html" target="_blank" rel="noopener noreferrer">Integrating AWS AppSync with AWS WAF</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/data-protection.html" target="_blank" rel="noopener noreferrer">Data protection in AWS AppSync</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/shared-responsibility-model.html" target="_blank" rel="noopener noreferrer">AWS AppSync shared responsibility model</a>（查閱：2026-10-16）</li>
+<li><a href="https://docs.aws.amazon.com/appsync/latest/devguide/limits.html" target="_blank" rel="noopener noreferrer">AWS AppSync endpoints and quotas</a>（查閱：2026-10-16）</li>
+<li><a href="https://aws.amazon.com/appsync/pricing/" target="_blank" rel="noopener noreferrer">AWS AppSync Pricing</a>（查閱：2026-10-16）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新授權模式、區域、配額、價格、resolver runtime、資料來源、網路、WAF、資料分類、合規要求與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-15-aws-amplify-hosting-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Amplify Hosting：前端持續部署、邊緣交付與安全治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

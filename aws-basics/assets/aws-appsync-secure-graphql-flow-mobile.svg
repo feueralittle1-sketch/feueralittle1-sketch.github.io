@@ -1,0 +1,33 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1500" viewBox="0 0 720 1500" role="img" aria-labelledby="title desc">
+  <title id="title">AWS AppSync 安全 GraphQL 與即時資料流程手機版示意</title>
+  <desc id="desc">由身分與入口、AppSync 欄位門禁、最小權限資料來源、即時訂閱、監控稽核到跨區重建的直向流程。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102848"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb454"/><stop offset="1" stop-color="#ff6f61"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#73efff"/><stop offset="1" stop-color="#4c8dff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="8" stdDeviation="12" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#8fe8ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#f4f8ff}.h{font-size:30px;font-weight:800}.s{font-size:23px;font-weight:700}.b{font-size:18px;fill:#bed0e8}.k{font-size:16px;fill:#8fe8ff}.card{fill:#10243e;stroke:#fff;stroke-opacity:.16;stroke-width:2}.line{fill:none;stroke:#8fe8ff;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="720" height="1500" rx="30" fill="url(#bg)"/>
+  <circle cx="610" cy="90" r="150" fill="#ff9900" opacity=".07"/><circle cx="90" cy="1370" r="180" fill="#63e6ff" opacity=".07"/>
+  <text x="48" y="62" class="t h">AppSync 安全 GraphQL 流程</text>
+  <text x="48" y="98" class="t b">示意｜欄位、Resolver、即時資料與跨區韌性</text>
+
+  <g filter="url(#shadow)"><rect x="48" y="145" width="624" height="170" rx="25" class="card"/><rect x="48" y="145" width="624" height="10" rx="5" fill="url(#orange)"/><text x="78" y="198" class="t s">1. 身分與入口防護</text><text x="78" y="239" class="t b">Cognito・IAM・OIDC・Authorizer</text><text x="78" y="274" class="t k">WAF・速率・MFA・短期憑證</text></g>
+  <path d="M360 315 L360 350" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="48" y="365" width="624" height="190" rx="25" class="card"/><rect x="48" y="365" width="624" height="10" rx="5" fill="url(#cyan)"/><text x="78" y="418" class="t s">2. AppSync GraphQL 門禁</text><text x="78" y="459" class="t b">Schema・欄位授權・輸入驗證</text><text x="78" y="494" class="t b">分頁・Depth・Resolver count</text><text x="78" y="529" class="t k">Cache key 納入身分與租戶</text></g>
+  <path d="M360 555 L360 590" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="48" y="605" width="624" height="190" rx="25" class="card"/><text x="78" y="658" class="t s">3. 最小權限 Resolver</text><text x="78" y="699" class="t b">DynamoDB・Lambda・RDS・HTTP</text><text x="78" y="734" class="t b">專用角色・批次・條件・分頁</text><text x="78" y="769" class="t k">機密不進 Schema、程式與日誌</text></g>
+  <path d="M360 795 L360 830" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="48" y="845" width="624" height="170" rx="25" class="card"/><text x="78" y="898" class="t s">4. 即時更新與用戶端</text><text x="78" y="939" class="t b">受控 Subscription・斷線・重連</text><text x="78" y="974" class="t k">驗證租戶、物件、Token 到期與撤銷</text></g>
+  <path d="M360 1015 L360 1050" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="48" y="1065" width="624" height="170" rx="25" class="card"/><text x="78" y="1118" class="t s">5. 監控、稽核與成本</text><text x="78" y="1159" class="t b">CloudWatch・X-Ray・CloudTrail</text><text x="78" y="1194" class="t k">去敏日誌・KMS・配額與預算告警</text></g>
+  <path d="M360 1235 L360 1270" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="48" y="1285" width="624" height="160" rx="25" class="card"/><text x="78" y="1338" class="t s">6. 備份與跨區重建</text><text x="78" y="1379" class="t b">IaC・資料備份・第二區域 API</text><text x="78" y="1414" class="t k">端點切換＋Subscription 重連演練</text></g>
+</svg>
