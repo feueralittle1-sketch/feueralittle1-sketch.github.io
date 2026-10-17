@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="940" viewBox="0 0 1600 940" role="img" aria-labelledby="title desc">
+  <title id="title">AWS PrivateLink 跨帳號私有服務連線示意</title>
+  <desc id="desc">消費端工作負載經私有 DNS、端點安全群組與介面端點，透過 AWS PrivateLink 連接提供端 Network Load Balancer 與私有服務；下方顯示身分授權、加密機密、監控稽核和跨區復原控制。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071321"/><stop offset=".52" stop-color="#102844"/><stop offset="1" stop-color="#07101d"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffca80"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#48d7ff"/><stop offset="1" stop-color="#6ef4cf"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="12" stdDeviation="18" flood-color="#000" flood-opacity=".35"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0 12 6 0 12Z" fill="#78e6ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eef7ff}.muted{fill:#a9bdd5}.h{font-weight:800}.small{font-size:22px}.body{font-size:24px}.box{fill:#10253b;stroke:#315574;stroke-width:2}.control{fill:#0d2034;stroke:#294c69;stroke-width:2}</style>
+  </defs>
+  <rect width="1600" height="940" rx="42" fill="url(#bg)"/>
+  <circle cx="1410" cy="115" r="190" fill="#ff9900" opacity=".08"/><circle cx="165" cy="820" r="240" fill="#42dfff" opacity=".07"/>
+  <text x="80" y="84" class="t h" font-size="42">AWS PrivateLink：私有服務連線與分層控制</text>
+  <text x="80" y="122" class="muted" font-family="Inter,'Noto Sans TC',sans-serif" font-size="22">示意架構｜網路私有化不取代應用身分、資料授權與復原治理</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="168" width="620" height="476" rx="30" fill="#0a1d31" stroke="#2e6685" stroke-width="2"/>
+    <rect x="910" y="168" width="620" height="476" rx="30" fill="#0a1d31" stroke="#8c632b" stroke-width="2"/>
+  </g>
+  <text x="110" y="220" class="t h" font-size="28">消費端 VPC｜訂單系統帳號</text>
+  <text x="950" y="220" class="t h" font-size="28">提供端 VPC｜平台服務帳號</text>
+
+  <g filter="url(#shadow)"><rect class="box" x="112" y="264" width="230" height="126" rx="22"/><rect class="box" x="418" y="264" width="230" height="126" rx="22"/></g>
+  <text x="227" y="310" text-anchor="middle" class="t h body">私有工作負載</text><text x="227" y="346" text-anchor="middle" class="muted small">IAM role／短期憑證</text><text x="227" y="375" text-anchor="middle" class="muted small">應用層租戶授權</text>
+  <text x="533" y="310" text-anchor="middle" class="t h body">私有 DNS</text><text x="533" y="346" text-anchor="middle" class="muted small">固定服務名稱</text><text x="533" y="375" text-anchor="middle" class="muted small">TLS 名稱驗證</text>
+
+  <g filter="url(#shadow)"><rect x="285" y="452" width="320" height="146" rx="24" fill="#0e3045" stroke="#46dcfa" stroke-width="3"/></g>
+  <text x="445" y="498" text-anchor="middle" class="t h" font-size="25">Interface VPC Endpoint</text><text x="445" y="535" text-anchor="middle" class="muted small">Endpoint ENI／私有 IP</text><text x="445" y="567" text-anchor="middle" class="muted small">Security group＋endpoint policy</text>
+
+  <g filter="url(#shadow)"><rect x="952" y="274" width="250" height="140" rx="24" fill="#342716" stroke="#ffae3f" stroke-width="3"/><rect class="box" x="1240" y="274" width="240" height="140" rx="24"/></g>
+  <text x="1077" y="321" text-anchor="middle" class="t h body">Network Load Balancer</text><text x="1077" y="360" text-anchor="middle" class="muted small">Endpoint service</text><text x="1077" y="390" text-anchor="middle" class="muted small">健康檢查／容量</text>
+  <text x="1360" y="321" text-anchor="middle" class="t h body">私有 API</text><text x="1360" y="360" text-anchor="middle" class="muted small">身分與租戶授權</text><text x="1360" y="390" text-anchor="middle" class="muted small">輸入驗證／配額</text>
+
+  <g filter="url(#shadow)"><rect class="box" x="1005" y="474" width="410" height="116" rx="22"/></g>
+  <text x="1210" y="516" text-anchor="middle" class="t h body">資料與機密層</text><text x="1210" y="552" text-anchor="middle" class="muted small">KMS＋Secrets Manager＋備份</text><text x="1210" y="580" text-anchor="middle" class="muted small">最小權限 service role</text>
+
+  <path d="M342 327H407" stroke="#78e6ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M533 393V440H445" fill="none" stroke="#78e6ff" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M605 524H923" stroke="url(#cyan)" stroke-width="8" stroke-dasharray="16 10" marker-end="url(#arrow)"/>
+  <text x="762" y="492" text-anchor="middle" class="t h small">AWS PrivateLink</text><text x="762" y="552" text-anchor="middle" class="muted" font-family="Inter,'Noto Sans TC',sans-serif" font-size="19">無公開網際網路路徑／不建立完整 VPC 路由</text>
+  <path d="M1202 344H1228" stroke="#ffbd68" stroke-width="5" marker-end="url(#arrow)"/><path d="M1360 420V462H1210" fill="none" stroke="#ffbd68" stroke-width="5" marker-end="url(#arrow)"/>
+
+  <text x="80" y="706" class="t h" font-size="28">雙方共同控制面</text>
+  <g filter="url(#shadow)">
+    <rect class="control" x="70" y="738" width="340" height="132" rx="22"/><rect class="control" x="445" y="738" width="340" height="132" rx="22"/><rect class="control" x="820" y="738" width="340" height="132" rx="22"/><rect class="control" x="1195" y="738" width="335" height="132" rx="22"/>
+  </g>
+  <circle cx="112" cy="782" r="16" fill="url(#orange)"/><text x="145" y="790" class="t h body">接入與最小權限</text><text x="112" y="830" class="muted small">Allowed principals／Acceptance</text><text x="112" y="858" class="muted small">MFA／短期憑證／拒絕測試</text>
+  <circle cx="487" cy="782" r="16" fill="url(#cyan)"/><text x="520" y="790" class="t h body">網路與 DNS</text><text x="487" y="830" class="muted small">Security group／Private DNS</text><text x="487" y="858" class="muted small">TLS／多可用區／IP 容量</text>
+  <circle cx="862" cy="782" r="16" fill="url(#orange)"/><text x="895" y="790" class="t h body">監控與稽核</text><text x="862" y="830" class="muted small">Flow Logs／CloudWatch</text><text x="862" y="858" class="muted small">CloudTrail／NLB／應用日誌</text>
+  <circle cx="1237" cy="782" r="16" fill="url(#cyan)"/><text x="1270" y="790" class="t h body">復原與生命週期</text><text x="1237" y="830" class="muted small">IaC／跨區重建／DNS 切換</text><text x="1237" y="858" class="muted small">閒置端點盤點與刪除</text>
+  <text x="800" y="913" text-anchor="middle" class="muted" font-family="Inter,'Noto Sans TC',sans-serif" font-size="18">原創示意圖｜2026-10-17｜Dr. William · AWS 基礎介紹</text>
+</svg>
