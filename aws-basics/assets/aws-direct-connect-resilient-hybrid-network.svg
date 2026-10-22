@@ -1,0 +1,67 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 820" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Direct Connect 高韌性混合網路示意圖</title>
+  <desc id="desc">地端雙路由器經兩個不同 Direct Connect location 與專線連線，透過私有及 Transit VIF、Direct Connect gateway 連接多區域 VPC，並保留 VPN 備援、監控、加密與路由治理。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#0c2340"/></linearGradient>
+    <linearGradient id="aws" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffbf66"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#102943;stroke:#446684;stroke-width:2}.aws{fill:#2b2114;stroke:#ff9900;stroke-width:2}.guard{fill:#112c2d;stroke:#57d6a1;stroke-width:2}.warn{fill:#30231b;stroke:#ffb45a;stroke-width:2}.t{font:700 24px system-ui,sans-serif;fill:#fff}.s{font:500 17px system-ui,sans-serif;fill:#c4d6ec}.k{font:700 16px system-ui,sans-serif;fill:#ffbd70}.line{fill:none;stroke:#8fe8ff;stroke-width:5;marker-end:url(#arrow)}.dash{fill:none;stroke:#ffb45a;stroke-width:4;stroke-dasharray:12 10;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="820" rx="36" fill="url(#bg)"/>
+  <text x="700" y="55" text-anchor="middle" class="t" font-size="31">示意：AWS Direct Connect 高韌性混合網路</text>
+  <text x="700" y="84" text-anchor="middle" class="s">雙地點、雙設備、BGP 路由治理、加密與可驗證的 VPN 備援</text>
+
+  <g filter="url(#shadow)">
+    <rect x="55" y="135" width="310" height="500" rx="28" class="box"/>
+    <text x="210" y="180" text-anchor="middle" class="t">企業地端</text>
+    <rect x="92" y="220" width="236" height="90" rx="18" class="guard"/>
+    <text x="210" y="255" text-anchor="middle" class="t">邊界路由器 A</text><text x="210" y="283" text-anchor="middle" class="s">BGP · 路由過濾 · MACsec*</text>
+    <rect x="92" y="355" width="236" height="90" rx="18" class="guard"/>
+    <text x="210" y="390" text-anchor="middle" class="t">邊界路由器 B</text><text x="210" y="418" text-anchor="middle" class="s">不同電力／電信路徑</text>
+    <rect x="92" y="490" width="236" height="92" rx="18" class="warn"/>
+    <text x="210" y="525" text-anchor="middle" class="t">Site-to-Site VPN</text><text x="210" y="554" text-anchor="middle" class="s">加密備援與定期切換測試</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="485" y="145" width="330" height="210" rx="28" class="aws"/>
+    <text x="650" y="190" text-anchor="middle" class="t">Direct Connect location A</text>
+    <text x="650" y="225" text-anchor="middle" class="s">Dedicated／Hosted Connection</text>
+    <text x="650" y="258" text-anchor="middle" class="s">VLAN · BGP · VIF · CloudWatch</text>
+    <text x="650" y="306" text-anchor="middle" class="k">獨立實體路徑與設備</text>
+    <rect x="485" y="420" width="330" height="210" rx="28" class="aws"/>
+    <text x="650" y="465" text-anchor="middle" class="t">Direct Connect location B</text>
+    <text x="650" y="500" text-anchor="middle" class="s">不同地點／供應商／交叉連接</text>
+    <text x="650" y="533" text-anchor="middle" class="s">BGP failover · 容量監控</text>
+    <text x="650" y="581" text-anchor="middle" class="k">消除單一 location 失效</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="935" y="120" width="410" height="540" rx="28" class="box"/>
+    <text x="1140" y="165" text-anchor="middle" class="t">AWS 網路與工作負載</text>
+    <rect x="980" y="205" width="320" height="105" rx="18" class="aws"/>
+    <text x="1140" y="243" text-anchor="middle" class="t">Direct Connect gateway</text><text x="1140" y="275" text-anchor="middle" class="s">Private／Transit VIF · BGP</text>
+    <rect x="980" y="355" width="145" height="125" rx="18" class="guard"/>
+    <text x="1052" y="394" text-anchor="middle" class="t">區域 A</text><text x="1052" y="426" text-anchor="middle" class="s">VGW／TGW</text><text x="1052" y="454" text-anchor="middle" class="s">私有 VPC</text>
+    <rect x="1155" y="355" width="145" height="125" rx="18" class="guard"/>
+    <text x="1227" y="394" text-anchor="middle" class="t">區域 B</text><text x="1227" y="426" text-anchor="middle" class="s">VGW／TGW</text><text x="1227" y="454" text-anchor="middle" class="s">復原 VPC</text>
+    <rect x="980" y="525" width="320" height="88" rx="18" class="box"/>
+    <text x="1140" y="560" text-anchor="middle" class="t">CloudTrail · CloudWatch</text><text x="1140" y="590" text-anchor="middle" class="s">BGP、流量、錯誤、變更與告警</text>
+  </g>
+
+  <path d="M328 265 C400 265 410 250 485 250" class="line"/>
+  <path d="M328 400 C400 400 410 525 485 525" class="line"/>
+  <path d="M815 250 C875 250 885 258 980 258" class="line"/>
+  <path d="M815 525 C875 525 885 282 980 282" class="line"/>
+  <path d="M328 536 C610 730 885 640 980 590" class="dash"/>
+  <path d="M1140 310 V355" class="line"/>
+  <path d="M1140 310 C1140 330 1227 330 1227 355" class="line"/>
+
+  <g transform="translate(55 690)">
+    <rect width="1290" height="82" rx="20" class="guard"/>
+    <text x="25" y="32" class="t">控制重點</text>
+    <text x="180" y="32" class="s">IAM 最小權限／MFA 與短期憑證 · 明確前綴與 BGP 過濾 · TLS／IPsec／MACsec* · KMS 保護日誌</text>
+    <text x="180" y="59" class="s">Secrets Manager／Parameter Store · 雙 location 與雙設備 · VPN 備援 · 定期 failover 與跨區復原演練</text>
+  </g>
+  <text x="1340" y="800" text-anchor="end" class="s" font-size="13">* MACsec 僅適用支援的連線、速度與地點；仍需端到端加密。</text>
+</svg>
