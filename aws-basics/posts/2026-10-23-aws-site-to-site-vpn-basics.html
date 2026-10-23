@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Site-to-Site VPN：IPsec 隧道、BGP 路由與混合網路備援</title>
+  <meta name="description" content="理解 AWS Site-to-Site VPN 的 IPsec、IKE、雙隧道、BGP、Transit Gateway、成本、可用性、監控與混合網路安全治理。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-23-aws-site-to-site-vpn-basics.html" />
+  <link rel="prev" href="./2026-10-22-aws-direct-connect-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Site-to-Site VPN：IPsec 隧道、BGP 路由與混合網路備援" />
+  <meta property="og:description" content="從 IPsec、IKE、雙隧道與 BGP 理解混合網路連線、冗餘、監控、成本與責任邊界。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-23-aws-site-to-site-vpn-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-site-to-site-vpn-resilient-connectivity.svg" />
+  <meta property="article:published_time" content="2026-10-23T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Site-to-Site VPN：IPsec 隧道、BGP 路由與混合網路備援" />
+  <meta name="twitter:description" content="掌握 Customer Gateway、雙 IPsec 隧道、BGP、路由治理、Secrets Manager、監控與跨區復原。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-site-to-site-vpn-resilient-connectivity.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Site-to-Site VPN：IPsec 隧道、BGP 路由與混合網路備援","description":"理解 AWS Site-to-Site VPN 的 IPsec、IKE、雙隧道、BGP、Transit Gateway、成本、可用性、監控與混合網路安全治理。","datePublished":"2026-10-23T21:30:00+08:00","dateModified":"2026-10-23T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-23-aws-site-to-site-vpn-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-site-to-site-vpn-resilient-connectivity.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">混合網路與加密連線</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-23</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Site-to-Site VPN：IPsec 隧道、BGP 路由與混合網路備援</h1>
+<p class="text-xl leading-9 muted">AWS Site-to-Site VPN 透過 IPsec 在地端、分公司或其他網路與 AWS 之間建立加密連線。每條 VPN connection 具備兩條隧道，但真正的高可用仍取決於兩條隧道是否都完成設定、Customer Gateway 裝置是否冗餘、BGP 與路由是否可收斂，以及網際網路、電力與上游電信路徑是否存在共同故障點。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-23</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>範圍辨識：</strong>本文聚焦 Site-to-Site VPN connection、Customer Gateway、Virtual Private Gateway、Transit Gateway、IPsec、IKE、BGP、雙隧道、記錄與備援。VPN 提供網路層加密與可達性，不會代替應用授權、端點防護、WAF、資料分類、備份、DNS、機密治理或跨區應用復原。</div>
+<h2>服務定位</h2>
+<p><strong>AWS Site-to-Site VPN</strong> 是 AWS 管理端點的 IPsec VPN 服務，可把企業網路、辦公據點、資料中心或其他雲端網路連到 Amazon VPC。AWS 端目標可使用附掛單一 VPC 的 Virtual Private Gateway，或使用集中連接多個 VPC 與地端網路的 Transit Gateway；完整架構仍需在地端部署並管理相容的 Customer Gateway device。</p>
+<p>Site-to-Site VPN 常用於快速建立混合網路、作為 Direct Connect 的加密備援、連接中小型據點，或在專線交付前提供過渡路徑。它以公共或私有外層 IP 建立隧道，實際延遲與封包品質會受底層路徑影響；若需求重點是固定專用容量、極高傳輸量或更可預測的物理路徑，應評估 Direct Connect 或複合架構。</p>
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">連線與路由元件</h3><ul>
+<li><strong>VPN connection：</strong>地端 Customer Gateway 與 AWS target gateway 之間的邏輯連線；每條 connection 包含兩條 IPsec 隧道。</li>
+<li><strong>VPN tunnel：</strong>承載加密流量的 IPsec 通道，包含外層端點、內層 tunnel IP、IKE 與 IPsec 參數。</li>
+<li><strong>Customer Gateway resource：</strong>AWS 端用來描述地端裝置 IP、BGP ASN 與認證方式的資源。</li>
+<li><strong>Customer Gateway device：</strong>企業管理的實體或虛擬 VPN 裝置，負責 IKE、IPsec、BGP、路由、日誌與故障切換。</li>
+<li><strong>Virtual Private Gateway：</strong>附掛單一 VPC 的 AWS 端 VPN gateway，適合邊界較單純的架構。</li>
+<li><strong>Transit Gateway：</strong>集中連接多個 VPC、VPN 與 Direct Connect，支援路由表分段與較大規模混合網路。</li>
+<li><strong>動態路由：</strong>使用 BGP 交換前綴與路徑狀態，較適合故障收斂與多路徑治理。</li>
+<li><strong>靜態路由：</strong>人工指定遠端網段，適合範圍小且穩定的情境，但變更與故障切換彈性較低。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">安全、效能與觀測元件</h3><ul>
+<li><strong>IKEv2 與 IPsec：</strong>協商身分、金鑰與加密參數；應依裝置支援與政策停用不必要的舊演算法。</li>
+<li><strong>預先共用金鑰或私有憑證：</strong>隧道可使用 PSK，亦可依支援條件使用 AWS Private CA 的私有憑證。</li>
+<li><strong>Secrets Manager：</strong>可用於強化 PSK 儲存；地端裝置端仍需安全交付、保存與輪替。</li>
+<li><strong>雙隧道：</strong>每條 VPN connection 提供兩條 AWS 端隧道，應同時完成設定並驗證切換。</li>
+<li><strong>Accelerated VPN：</strong>Transit Gateway 架構可選用 AWS Global Accelerator 改善部分跨網際網路路徑；須另計費且有適用限制。</li>
+<li><strong>CloudWatch metrics：</strong>監控 TunnelState、TunnelDataIn 與 TunnelDataOut，建立中斷與異常流量告警。</li>
+<li><strong>Site-to-Site VPN logs：</strong>可送至 CloudWatch Logs，提供 IKE、IPsec、DPD、BGP 狀態與路由更新資訊。</li>
+<li><strong>CloudTrail：</strong>記錄相關 EC2／VPC 控制面 API，追蹤 VPN、gateway、路由與 tunnel option 變更。</li>
+</ul></section>
+</div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>需要在數小時或數天內建立地端到 AWS 的加密混合網路連線。</li>
+<li>分公司、門市、工廠或合作夥伴據點的流量可由相容 VPN 裝置承載。</li>
+<li>Direct Connect 尚未交付，或需要一條獨立於專線的加密備援路徑。</li>
+<li>多 VPC 架構需要透過 Transit Gateway 集中 VPN attachment 與路由分段。</li>
+<li>具備 BGP、IPsec、MTU、路由與防火牆故障排除能力，並能定期測試雙隧道。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>要求固定專用頻寬、極穩定延遲或不經公共網際網路的主要路徑；應評估 Direct Connect。</li>
+<li>只有單一 Customer Gateway device、單一 ISP 或單一電力來源，卻把 AWS 端雙隧道視為端到端高可用。</li>
+<li>地端與 VPC CIDR 重疊，且未先完成位址重整或經審查的轉換設計。</li>
+<li>應用無法容忍短暫路由收斂、重新協商或 session 中斷，又缺乏應用層重試與多路徑能力。</li>
+<li>需要精細的使用者遠端存取；員工端點連線通常應評估 AWS Client VPN 或其他零信任存取方案。</li>
+<li>把 IPsec 視為完整資安控制；VPN 不會驗證應用輸入、限制資料存取或阻擋已獲網路可達性的橫向移動。</li>
+</ul>
+<h2>示意故事案例：連鎖診所的雙據點混合網路</h2>
+<p><strong>以下為示意案例，不代表特定機構或正式部署。</strong> 一家連鎖診所將排程、影像索引與備份管理服務部署於 AWS，核心醫療設備仍位於兩個地端機房。團隊需要快速建立加密連線，並希望在單一防火牆或 ISP 維護時維持最低服務能力。</p>
+<p>每個地端機房部署兩部可獨立供電的 Customer Gateway devices，分別使用不同 ISP。主要連線與備援連線都建立至 Transit Gateway，每條 connection 的兩條 tunnel 全部設定 IKEv2 與 BGP。Transit Gateway 路由表將醫療系統、管理網路與備份網路分段，只交換核准 CIDR；AWS 工作負載位於私有子網路，安全群組與 Network Firewall 依必要流向限制存取。</p>
+<p>管理人員透過聯合登入、MFA 與短期憑證操作，PSK 使用 Secrets Manager 儲存並依維護窗口輪替，應用機密使用 Secrets Manager 或 Parameter Store，相關日誌與備份以 KMS 加密。CloudWatch 監控隧道狀態與流量，VPN logs 與 CloudTrail 集中保存。團隊每季中斷單一 tunnel、單一設備與單一 ISP，驗證 BGP 收斂、應用重試、警報與復原時間；第二 AWS 區域另保留可重建的網路、金鑰、機密、資料副本與執行手冊。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-site-to-site-vpn-resilient-connectivity-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-site-to-site-vpn-resilient-connectivity.svg" alt="示意：兩個地端據點以冗餘 Customer Gateway、不同 ISP、雙 IPsec 隧道與 BGP 連到 Transit Gateway，再以網路分段、KMS、Secrets Manager、CloudWatch、CloudTrail 和跨區復原保護工作負載" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：每條 Site-to-Site VPN connection 的雙隧道只消除部分 AWS 端單點；端到端韌性仍需冗餘地端設備、ISP、電力、路由與復原區域。</figcaption></figure>
+<h2>建置與運作流程</h2><ol>
+<li><strong>盤點需求：</strong>列出地端與 AWS CIDR、資料分類、流量方向、尖峰頻寬、延遲、RTO、RPO、IPv4／IPv6、合規與加密要求。</li>
+<li><strong>消除位址衝突：</strong>確認地端、分公司、VPC、Transit Gateway 與復原區域網段不重疊；不要把 NAT 當成未審查的永久補丁。</li>
+<li><strong>選擇 target gateway：</strong>單一 VPC 可評估 Virtual Private Gateway；多 VPC、集中路由或加速需求通常評估 Transit Gateway。</li>
+<li><strong>設計地端冗餘：</strong>使用不同 Customer Gateway devices、電力、ISP、邊界介面與路由程序，避免所有 tunnel 共用同一故障點。</li>
+<li><strong>選擇路由模式：</strong>裝置支援時優先評估 BGP；規劃 ASN、公告前綴、路由摘要、優先序、maximum-prefix 與不對稱路由處理。</li>
+<li><strong>建立 Customer Gateway：</strong>正確登錄外層 IP、BGP ASN 與認證方式；若位於 NAT 後方，確認 NAT-T 與裝置相容性。</li>
+<li><strong>建立 VPN connection：</strong>選擇 gateway、內外層 IP 版本、tunnel CIDR、IKE 版本、加密、完整性、DH group、生命週期與 DPD 行為。</li>
+<li><strong>保護隧道認證：</strong>採 PSK 時使用受控產生、Secrets Manager 儲存與輪替流程；採私有憑證時治理 Private CA、憑證生命週期與撤銷。</li>
+<li><strong>設定兩條隧道：</strong>在 Customer Gateway device 完整設定兩個 AWS endpoint，不只啟用第一條；核對 IKE、IPsec、BGP 與 tunnel IP。</li>
+<li><strong>設定 AWS 與地端路由：</strong>只交換必要 CIDR，限制 default route，核對 Transit Gateway route table association／propagation、VPC route table 與回程路徑。</li>
+<li><strong>設定網路控制：</strong>以私有子網路、安全群組、網路 ACL、AWS Network Firewall 或地端防火牆限制東西向與南北向流量。</li>
+<li><strong>收斂管理權限：</strong>VPN、Transit Gateway、路由、CloudWatch Logs 與 Secrets Manager 操作採 IAM 最小權限、MFA、短期憑證與變更審批。</li>
+<li><strong>啟用監控與稽核：</strong>建立 CloudWatch TunnelState／流量告警，啟用 VPN logs、CloudTrail、VPC Flow Logs、Transit Gateway Flow Logs 與地端設備日誌。</li>
+<li><strong>驗證 MTU 與應用：</strong>測試大型封包、MSS clamp、NAT-T、長連線、DNS、雙向流量、重試與應用健康；Site-to-Site VPN 不支援 Path MTU Discovery。</li>
+<li><strong>執行故障測試：</strong>分別停用 tunnel、Customer Gateway、ISP 與路由鄰居，量測 BGP 收斂、封包遺失、session 影響與告警時間。</li>
+<li><strong>建立復原方案：</strong>依業務需求準備第二 VPN connection、另一據點、Direct Connect 備援或第二 AWS 區域，並驗證資料與應用 RTO／RPO。</li>
+</ol>
+<h2>成本、可用性與維運考量</h2>
+<p>成本通常包含每條 VPN connection 的小時計費、AWS 資料傳出、公有 IPv4 位址、Transit Gateway attachment 與資料處理、CloudWatch Logs／metrics、CloudTrail、VPC Flow Logs、Secrets Manager、KMS、Network Firewall，以及地端設備、授權、ISP 與維運人力。Accelerated VPN 另包含 AWS Global Accelerator 小時費與資料傳輸加速費；不同頻寬型態、區域與功能支援須以查閱時的官方定價及配額確認。</p>
+<p>每條 connection 的兩條 tunnel 終止於不同 AWS 裝置，可降低 AWS 端維護或單點風險，但若地端兩條 tunnel 終止於同一防火牆、同一 ISP、同一線路或同一電力，端到端仍然是單點。重要服務應建立第二個 Customer Gateway 與第二條 VPN connection，並使用 BGP 與實際故障演練驗證切換。</p>
+<p>標準 VPN 的吞吐與實際效能受 tunnel 類型、封包大小、加密、裝置能力、網際網路路徑及是否使用 Transit Gateway／Cloud WAN 等因素影響。若需要較高頻寬，可評估支援條件下的 Large Bandwidth Tunnel；若跨網際網路路徑不穩定，可評估 Accelerated VPN；兩者都不能消除地端與應用瓶頸，也不應取代容量測試。</p>
+<p>跨區復原不是複製一條 VPN 即完成。第二區域仍需具備 VPC／Transit Gateway、路由、安全政策、KMS 金鑰、Secrets、DNS、應用容量、資料副本、監控與切換程序。備援 tunnel 若從未承載正式流量，也可能因參數、路由或 MTU 問題在事故時失效。</p>
+<h2>Site-to-Site VPN 特有資安風險與控制</h2><ul>
+<li><strong>只有一條 tunnel 上線：</strong>兩條 tunnel 都要配置、監控與定期切換；不能把「資源存在」當成「備援可用」。</li>
+<li><strong>地端設備單點：</strong>重要環境使用第二個 Customer Gateway device、不同電力與不同 ISP，建立第二條 VPN connection。</li>
+<li><strong>過時或過寬加密套件：</strong>優先評估 IKEv2、AES-GCM 或符合政策的 AES、SHA-2 與適當 DH group；只開啟雙方實際需要的參數。</li>
+<li><strong>PSK 外洩：</strong>使用高強度受控產生與輪替流程，優先評估 Secrets Manager 儲存；不得放入 Git、網頁、IaC 輸出、工單、聊天或日誌。</li>
+<li><strong>憑證治理不完整：</strong>採 Private CA 時管理簽發權限、效期、撤銷、根與中繼 CA 保護及裝置更新程序。</li>
+<li><strong>BGP route leak：</strong>只公告與接受核准前綴，使用 prefix filter、maximum-prefix、路由摘要與變更審批。</li>
+<li><strong>錯誤 default route：</strong>明確定義 VPN 是否可承載預設路由，避免把非預期網際網路或管理流量導入 AWS。</li>
+<li><strong>不對稱路由：</strong>核對雙 tunnel、雙設備、Transit Gateway appliance mode、防火牆狀態與回程路徑，避免 stateful 檢查失敗。</li>
+<li><strong>CIDR 重疊：</strong>建立組織級 IPAM 與位址審批；必要轉換須文件化、限制範圍並監控，不掩蓋長期技術債。</li>
+<li><strong>網路可達即過度信任：</strong>以私有子網路、安全群組、Network Firewall、主機防火牆、應用授權與微分段落實網路隔離並限制橫向移動。</li>
+<li><strong>管理權限過大：</strong>VPN、Customer Gateway、Transit Gateway、路由與 Secrets 權限分離，使用 IAM 最小權限、MFA、短期憑證與雙人覆核。</li>
+<li><strong>缺乏控制面稽核：</strong>集中 CloudTrail，對 VPN 建立、刪除、tunnel option、路由、gateway attachment 與 Secrets 存取變更告警。</li>
+<li><strong>缺乏 tunnel 細節：</strong>啟用 VPN logs，分析 IKE、IPsec、DPD、BGP 與 route status；CloudWatch 監控 TunnelState 與流量。</li>
+<li><strong>日誌包含敏感資料：</strong>地端設備與集中日誌不得記錄 credential、Access Key、Secret Key、Token、密碼、cookie、PSK 或敏感 payload；日誌使用 KMS 與最小權限保護。</li>
+<li><strong>MTU 黑洞：</strong>依 tunnel 類型與裝置調整 MTU／MSS，測試分段、NAT-T 與大型封包，不依賴未支援的 Path MTU Discovery。</li>
+<li><strong>備份只保留設定檔：</strong>備份並版本化核准的裝置設定與 IaC，但移除所有機密；定期從乾淨環境重建並驗證。</li>
+<li><strong>跨區復原未驗證：</strong>第二區域的網路、KMS、Secrets、資料與應用必須可實際啟動，並以演練證明 RTO／RPO。</li>
+</ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Site-to-Site VPN 服務的 AWS 端 endpoint、受管控制面與 AWS 全球基礎設施的安全。客戶負責 Customer Gateway device、地端網路、ISP、電力、作業系統或設備韌體、IPsec／IKE 參數、BGP、CIDR、路由、安全規則、機密、監控、容量與復原。使用 Transit Gateway、CloudWatch、CloudTrail、Secrets Manager、KMS 或 Network Firewall 時，各服務仍有各自的設定與資料治理責任。</p>
+<p>網路加密不等於身分授權。管理者應使用聯合登入、MFA、短期憑證與最小權限；工作負載仍需以角色取得短期權限，應用程式機密使用 Secrets Manager 或 Parameter Store，資料與日誌依需求使用 KMS。正式 credential、Access Key、Secret Key、Token、密碼、cookie 或 PSK 不得出現在程式碼、網頁、裝置備份、IaC state、標籤、日誌或文件。</p>
+<h2>上線與維運可執行檢查清單</h2><ul>
+<li>□ 已確認 Site-to-Site VPN 符合頻寬、延遲、交付時間、加密、RTO、RPO 與成本需求。</li>
+<li>□ 地端、VPC、Transit Gateway、其他雲端與復原區域 CIDR 已完成不重疊驗證。</li>
+<li>□ Virtual Private Gateway 或 Transit Gateway 的選擇符合單一 VPC、集中路由與擴展需求。</li>
+<li>□ 重要服務具備不同 Customer Gateway devices、電力、ISP 與外層 IP。</li>
+<li>□ 每條 VPN connection 的兩條 tunnel 都已完整設定並可承載流量。</li>
+<li>□ IKE、IPsec、加密、完整性、DH group、生命週期、DPD 與 NAT-T 參數已依政策收斂。</li>
+<li>□ PSK 已由受控流程產生、儲存與輪替，並評估 Secrets Manager；未出現在任何公開或版本控制內容。</li>
+<li>□ 採憑證驗證時，Private CA、簽發、效期、撤銷與裝置更新責任已明確。</li>
+<li>□ BGP ASN、公告前綴、prefix filter、maximum-prefix、路由優先序與回程路徑已驗證。</li>
+<li>□ Transit Gateway route table association／propagation 與 VPC route table 未造成跨環境旁路。</li>
+<li>□ 私有子網路、安全群組、Network Firewall／地端防火牆只允許必要來源、目的與連接埠。</li>
+<li>□ VPN 管理採 IAM 最小權限、MFA、短期憑證、權限分離與變更覆核。</li>
+<li>□ CloudWatch 已監控 TunnelState、TunnelDataIn、TunnelDataOut 並設定單隧道與全斷告警。</li>
+<li>□ VPN logs、CloudTrail、VPC／Transit Gateway Flow Logs 與地端設備日誌已集中並以 KMS 保護。</li>
+<li>□ 日誌、備份與設定匯出已確認不含 credential、Access Key、Secret Key、Token、密碼、cookie 或 PSK。</li>
+<li>□ 已測試 MTU、MSS、NAT-T、DNS、雙向流量、長連線、應用重試與大型封包。</li>
+<li>□ 已分別測試 tunnel、Customer Gateway device、ISP、電力與 BGP 鄰居故障。</li>
+<li>□ 已估算 VPN 小時費、IPv4、資料傳出、Transit Gateway、加速、日誌、KMS、Secrets 與地端成本。</li>
+<li>□ 備援容量可承載最低業務量，且監控能在路由收斂前後持續運作。</li>
+<li>□ 第二區域具備可重建的網路、路由、KMS、Secrets、DNS、應用、資料與經驗證的 RTO／RPO 程序。</li>
+</ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/VPC_VPN.html" target="_blank" rel="noopener noreferrer">What is AWS Site-to-Site VPN?</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/SetUpVPNConnections.html" target="_blank" rel="noopener noreferrer">Get started with AWS Site-to-Site VPN</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/VPNTunnels.html" target="_blank" rel="noopener noreferrer">Tunnel options for AWS Site-to-Site VPN</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-tunnel-authentication-options.html" target="_blank" rel="noopener noreferrer">Site-to-Site VPN tunnel authentication options</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/enhanced-security-storage.html" target="_blank" rel="noopener noreferrer">Pre-shared key storage with AWS Secrets Manager</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/vpn-redundant-connection.html" target="_blank" rel="noopener noreferrer">Redundant Site-to-Site VPN connections for failover</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/accelerated-vpn.html" target="_blank" rel="noopener noreferrer">Accelerated AWS Site-to-Site VPN connections</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/monitoring-cloudwatch-vpn.html" target="_blank" rel="noopener noreferrer">CloudWatch metrics for Site-to-Site VPN</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/monitoring-logs.html" target="_blank" rel="noopener noreferrer">AWS Site-to-Site VPN logs</a>（查閱：2026-10-23）</li>
+<li><a href="https://docs.aws.amazon.com/vpn/latest/s2svpn/HowToTestEndToEnd_Linux.html" target="_blank" rel="noopener noreferrer">Test a Site-to-Site VPN connection and tunnel failover</a>（查閱：2026-10-23）</li>
+<li><a href="https://aws.amazon.com/vpn/pricing/" target="_blank" rel="noopener noreferrer">AWS VPN pricing</a>（查閱：2026-10-23）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-10-23）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、gateway 類型、頻寬、IPv4／IPv6、裝置相容性、演算法、配額、定價、資料分類、法規、網路路徑與故障演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-22-aws-direct-connect-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Direct Connect：專線連線、BGP 路由與混合網路韌性</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

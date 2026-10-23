@@ -1,0 +1,77 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Site-to-Site VPN 高可用混合網路示意圖</title>
+  <desc id="desc">兩個地端據點使用冗餘 Customer Gateway、不同 ISP、雙 IPsec 隧道與 BGP 連到 AWS Transit Gateway，再由路由分段、加密、監控、稽核與跨區復原保護工作負載。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#0c2340"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="9" stdDeviation="11" flood-color="#000" flood-opacity=".3"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 10 5 0 10z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#102943;stroke:#446684;stroke-width:2}.aws{fill:#2b2114;stroke:#ff9900;stroke-width:2}.guard{fill:#112c2d;stroke:#57d6a1;stroke-width:2}.vpn{fill:#17283b;stroke:#8fe8ff;stroke-width:2}.warn{fill:#30231b;stroke:#ffb45a;stroke-width:2}.t{font:700 23px system-ui,sans-serif;fill:#fff}.s{font:500 16px system-ui,sans-serif;fill:#c4d6ec}.k{font:700 16px system-ui,sans-serif;fill:#ffbd70}.line{fill:none;stroke:#8fe8ff;stroke-width:5;marker-end:url(#arrow)}.line2{fill:none;stroke:#57d6a1;stroke-width:5;marker-end:url(#arrow)}.dash{fill:none;stroke:#ffb45a;stroke-width:4;stroke-dasharray:12 10;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="860" rx="36" fill="url(#bg)"/>
+  <text x="700" y="54" text-anchor="middle" class="t" font-size="31">示意：AWS Site-to-Site VPN 高可用混合網路</text>
+  <text x="700" y="84" text-anchor="middle" class="s">雙設備、雙 ISP、雙隧道、BGP 路由分段與可驗證的跨區復原</text>
+
+  <g filter="url(#shadow)">
+    <rect x="48" y="125" width="335" height="535" rx="28" class="box"/>
+    <text x="215" y="168" text-anchor="middle" class="t">企業地端與分支</text>
+    <rect x="82" y="205" width="267" height="92" rx="18" class="guard"/>
+    <text x="215" y="240" text-anchor="middle" class="t">Customer Gateway A</text><text x="215" y="270" text-anchor="middle" class="s">ISP A · IKEv2 · BGP</text>
+    <rect x="82" y="337" width="267" height="92" rx="18" class="guard"/>
+    <text x="215" y="372" text-anchor="middle" class="t">Customer Gateway B</text><text x="215" y="402" text-anchor="middle" class="s">ISP B · 獨立電力與路徑</text>
+    <rect x="82" y="474" width="267" height="130" rx="18" class="warn"/>
+    <text x="215" y="512" text-anchor="middle" class="t">地端控制</text>
+    <text x="215" y="544" text-anchor="middle" class="s">前綴過濾 · MTU／MSS</text>
+    <text x="215" y="574" text-anchor="middle" class="s">裝置修補 · 日誌 · 容量</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="455" y="135" width="380" height="515" rx="28" class="vpn"/>
+    <text x="645" y="178" text-anchor="middle" class="t">AWS Site-to-Site VPN</text>
+    <rect x="495" y="215" width="300" height="112" rx="18" class="aws"/>
+    <text x="645" y="252" text-anchor="middle" class="t">VPN connection A</text>
+    <text x="645" y="284" text-anchor="middle" class="s">Tunnel 1 ＋ Tunnel 2</text>
+    <text x="645" y="310" text-anchor="middle" class="s">IPsec · IKE · BGP · DPD</text>
+    <rect x="495" y="365" width="300" height="112" rx="18" class="aws"/>
+    <text x="645" y="402" text-anchor="middle" class="t">VPN connection B</text>
+    <text x="645" y="434" text-anchor="middle" class="s">Tunnel 1 ＋ Tunnel 2</text>
+    <text x="645" y="460" text-anchor="middle" class="s">不同裝置與 ISP</text>
+    <rect x="495" y="515" width="300" height="90" rx="18" class="guard"/>
+    <text x="645" y="550" text-anchor="middle" class="t">隧道機密與觀測</text>
+    <text x="645" y="581" text-anchor="middle" class="s">Secrets · VPN logs · CloudWatch</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="910" y="112" width="440" height="560" rx="28" class="box"/>
+    <text x="1130" y="155" text-anchor="middle" class="t">AWS 網路與工作負載</text>
+    <rect x="955" y="195" width="350" height="105" rx="18" class="aws"/>
+    <text x="1130" y="233" text-anchor="middle" class="t">AWS Transit Gateway</text>
+    <text x="1130" y="266" text-anchor="middle" class="s">Attachment · BGP · 路由表分段</text>
+    <rect x="955" y="345" width="160" height="135" rx="18" class="guard"/>
+    <text x="1035" y="385" text-anchor="middle" class="t">正式 VPC</text>
+    <text x="1035" y="418" text-anchor="middle" class="s">私有子網路</text>
+    <text x="1035" y="449" text-anchor="middle" class="s">SG · Firewall</text>
+    <rect x="1145" y="345" width="160" height="135" rx="18" class="guard"/>
+    <text x="1225" y="385" text-anchor="middle" class="t">復原區域</text>
+    <text x="1225" y="418" text-anchor="middle" class="s">網路與資料副本</text>
+    <text x="1225" y="449" text-anchor="middle" class="s">RTO／RPO 演練</text>
+    <rect x="955" y="525" width="350" height="100" rx="18" class="box"/>
+    <text x="1130" y="562" text-anchor="middle" class="t">CloudTrail · CloudWatch · KMS</text>
+    <text x="1130" y="595" text-anchor="middle" class="s">控制面、隧道、流量、日誌與告警</text>
+  </g>
+
+  <path d="M349 251 C405 251 416 271 495 271" class="line"/>
+  <path d="M349 383 C405 383 416 421 495 421" class="line2"/>
+  <path d="M795 271 C855 271 870 247 955 247" class="line"/>
+  <path d="M795 421 C855 421 870 274 955 274" class="line2"/>
+  <path d="M1130 300 V345" class="line"/>
+  <path d="M1130 300 C1130 325 1225 325 1225 345" class="line"/>
+  <path d="M349 539 C700 735 930 676 955 597" class="dash"/>
+
+  <g transform="translate(48 710)">
+    <rect width="1302" height="105" rx="22" class="guard"/>
+    <text x="25" y="38" class="t">控制重點</text>
+    <text x="180" y="37" class="s">IAM 最小權限／MFA／短期憑證 · PSK 儲存與輪替 · KMS 加密 · 私有子網路與網路隔離</text>
+    <text x="180" y="68" class="s">CloudTrail／CloudWatch／VPN logs · 兩條 tunnel 全設定 · 雙設備與雙 ISP · 定期 failover 與跨區復原演練</text>
+  </g>
+  <text x="1350" y="842" text-anchor="end" class="s" font-size="13">雙隧道不等於端到端雙路徑；共同電力、設備或 ISP 仍可能同時中斷。</text>
+</svg>

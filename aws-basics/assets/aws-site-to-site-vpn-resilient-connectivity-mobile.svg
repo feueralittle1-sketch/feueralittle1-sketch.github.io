@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 1380" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Site-to-Site VPN 高可用混合網路手機版示意圖</title>
+  <desc id="desc">冗餘 Customer Gateway 經不同 ISP、雙 IPsec 隧道與 BGP 連到 Transit Gateway，再連接正式 VPC 與復原區域，並使用 Secrets Manager、KMS、CloudWatch 與 CloudTrail 保護。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071527"/><stop offset="1" stop-color="#0c2340"/></linearGradient><marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 10 5 0 10z" fill="#8fe8ff"/></marker><style>.b{fill:#102943;stroke:#446684;stroke-width:2}.w{fill:#30231b;stroke:#ff9900;stroke-width:2}.g{fill:#112c2d;stroke:#57d6a1;stroke-width:2}.v{fill:#17283b;stroke:#8fe8ff;stroke-width:2}.t{font:700 24px system-ui,sans-serif;fill:#fff}.s{font:500 17px system-ui,sans-serif;fill:#c4d6ec}.l{fill:none;stroke:#8fe8ff;stroke-width:5;marker-end:url(#a)}.d{fill:none;stroke:#57d6a1;stroke-width:5;marker-end:url(#a)}</style></defs>
+  <rect width="760" height="1380" rx="30" fill="url(#bg)"/>
+  <text x="380" y="50" text-anchor="middle" class="t" font-size="29">Site-to-Site VPN 高可用示意</text><text x="380" y="82" text-anchor="middle" class="s">雙設備、雙 ISP、雙隧道與 BGP</text>
+
+  <rect x="65" y="120" width="630" height="250" rx="25" class="b"/><text x="380" y="160" text-anchor="middle" class="t">企業地端與分支</text>
+  <rect x="95" y="195" width="270" height="105" rx="18" class="g"/><text x="230" y="232" text-anchor="middle" class="t">Gateway A</text><text x="230" y="264" text-anchor="middle" class="s">ISP A · IKEv2 · BGP</text>
+  <rect x="395" y="195" width="270" height="105" rx="18" class="g"/><text x="530" y="232" text-anchor="middle" class="t">Gateway B</text><text x="530" y="264" text-anchor="middle" class="s">ISP B · 獨立電力</text>
+  <text x="380" y="340" text-anchor="middle" class="s">前綴過濾 · MTU／MSS · 裝置修補與日誌</text>
+  <path d="M230 300V425" class="l"/><path d="M530 300V425" class="d"/>
+
+  <rect x="65" y="425" width="630" height="325" rx="25" class="v"/><text x="380" y="468" text-anchor="middle" class="t">AWS Site-to-Site VPN</text>
+  <rect x="100" y="505" width="265" height="135" rx="18" class="w"/><text x="232" y="545" text-anchor="middle" class="t">Connection A</text><text x="232" y="579" text-anchor="middle" class="s">Tunnel 1 ＋ Tunnel 2</text><text x="232" y="610" text-anchor="middle" class="s">IPsec · IKE · BGP</text>
+  <rect x="395" y="505" width="265" height="135" rx="18" class="w"/><text x="528" y="545" text-anchor="middle" class="t">Connection B</text><text x="528" y="579" text-anchor="middle" class="s">Tunnel 1 ＋ Tunnel 2</text><text x="528" y="610" text-anchor="middle" class="s">不同裝置與 ISP</text>
+  <rect x="155" y="665" width="450" height="58" rx="17" class="g"/><text x="380" y="702" text-anchor="middle" class="s">Secrets · VPN logs · CloudWatch</text>
+  <path d="M280 750V835" class="l"/><path d="M480 750V835" class="d"/>
+
+  <rect x="105" y="835" width="550" height="145" rx="25" class="w"/><text x="380" y="880" text-anchor="middle" class="t">AWS Transit Gateway</text><text x="380" y="916" text-anchor="middle" class="s">VPN attachment · BGP · 路由表分段</text><text x="380" y="948" text-anchor="middle" class="s">只交換核准 CIDR</text>
+  <path d="M285 980V1050" class="l"/><path d="M475 980V1050" class="d"/>
+
+  <rect x="65" y="1050" width="295" height="155" rx="25" class="g"/><text x="212" y="1094" text-anchor="middle" class="t">正式 VPC</text><text x="212" y="1129" text-anchor="middle" class="s">私有子網路 · SG</text><text x="212" y="1162" text-anchor="middle" class="s">Firewall · KMS</text>
+  <rect x="400" y="1050" width="295" height="155" rx="25" class="g"/><text x="548" y="1094" text-anchor="middle" class="t">復原區域</text><text x="548" y="1129" text-anchor="middle" class="s">網路 · Secrets · 資料</text><text x="548" y="1162" text-anchor="middle" class="s">RTO／RPO 演練</text>
+
+  <rect x="65" y="1245" width="630" height="95" rx="25" class="b"/><text x="380" y="1280" text-anchor="middle" class="t">控制與證據</text><text x="380" y="1314" text-anchor="middle" class="s">最小權限 · MFA · CloudTrail · KMS · 定期 failover</text>
+  <text x="380" y="1365" text-anchor="middle" class="s" font-size="14">雙隧道仍需冗餘設備、ISP、電力與實際故障測試。</text>
+</svg>
