@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 700" role="img" aria-labelledby="title desc">
+  <title id="title">醫療系統安全基線與設定漂移治理架構</title>
+  <desc id="desc">將外部硬化參考、院內臨床需求、核准安全基線、持續漂移偵測與臨床回歸驗證串成治理閉環。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#112448"/></linearGradient><marker id="a" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto"><path d="M0 0L10 3 0 6Z" fill="#72ddff"/></marker></defs>
+  <rect width="1200" height="700" rx="32" fill="url(#bg)"/>
+  <text x="60" y="70" fill="#f5f8ff" font-size="34" font-weight="700">硬化不是一次性清單：基線必須連到臨床服務與持續驗證</text>
+  <text x="60" y="108" fill="#9eb7d8" font-size="21">外部參考提供起點；醫院依設備能力、工作流程與病人安全核准實際設定。</text>
+  <g font-family="sans-serif">
+    <rect x="55" y="165" width="250" height="190" rx="24" fill="#102d4b" stroke="#63e6ff" stroke-width="2"/>
+    <text x="180" y="210" text-anchor="middle" fill="#63e6ff" font-size="25" font-weight="700">外部硬化參考</text>
+    <text x="84" y="260" fill="#eef7ff" font-size="22">• NIST 檢查清單</text><text x="84" y="300" fill="#eef7ff" font-size="22">• 供應商安全指南</text><text x="84" y="340" fill="#eef7ff" font-size="22">• 威脅與事件經驗</text>
+    <rect x="350" y="165" width="250" height="190" rx="24" fill="#1a2952" stroke="#aa98ff" stroke-width="2"/>
+    <text x="475" y="210" text-anchor="middle" fill="#c5b8ff" font-size="25" font-weight="700">臨床與技術邊界</text>
+    <text x="380" y="260" fill="#eef7ff" font-size="22">• 預定用途與相容性</text><text x="380" y="300" fill="#eef7ff" font-size="22">• 停機與回退條件</text><text x="380" y="340" fill="#eef7ff" font-size="22">• 例外與補償控制</text>
+    <rect x="645" y="165" width="250" height="190" rx="24" fill="#123b3d" stroke="#57f0c1" stroke-width="2"/>
+    <text x="770" y="210" text-anchor="middle" fill="#77f5cf" font-size="25" font-weight="700">核准安全基線</text>
+    <text x="675" y="260" fill="#eef7ff" font-size="22">• 版本化設定</text><text x="675" y="300" fill="#eef7ff" font-size="22">• 責任人與期限</text><text x="675" y="340" fill="#eef7ff" font-size="22">• 自動化部署規則</text>
+    <rect x="940" y="165" width="205" height="190" rx="24" fill="#48293b" stroke="#ff9bc2" stroke-width="2"/>
+    <text x="1042" y="210" text-anchor="middle" fill="#ffb0cf" font-size="25" font-weight="700">漂移訊號</text>
+    <text x="966" y="260" fill="#eef7ff" font-size="21">• 設定差異</text><text x="966" y="300" fill="#eef7ff" font-size="21">• 未核准變更</text><text x="966" y="340" fill="#eef7ff" font-size="21">• 控制失效</text>
+    <path d="M305 260H340" stroke="#72ddff" stroke-width="5" marker-end="url(#a)"/><path d="M600 260H635" stroke="#72ddff" stroke-width="5" marker-end="url(#a)"/><path d="M895 260H930" stroke="#72ddff" stroke-width="5" marker-end="url(#a)"/>
+    <rect x="155" y="445" width="890" height="170" rx="28" fill="#0a1b31" stroke="#72ddff" stroke-width="2"/>
+    <text x="600" y="495" text-anchor="middle" fill="#fff" font-size="29" font-weight="700">治理輸出：設定差異 → 風險分流 → 受控修正 → 臨床回歸</text>
+    <text x="225" y="552" fill="#9fe9ff" font-size="23">自動回復低風險項目</text><text x="485" y="552" fill="#c7baff" font-size="23">人工核准高影響變更</text><text x="795" y="552" fill="#76f2ca" font-size="23">例外到期重驗</text>
+    <text x="600" y="590" text-anchor="middle" fill="#a9bdd9" font-size="20">每次結論保留資產、基線版本、差異、核准、測試與回退證據</text>
+  </g>
+</svg>
