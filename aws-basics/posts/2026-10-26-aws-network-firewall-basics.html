@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Network Firewall：VPC 流量檢查、規則與路由治理</title>
+  <meta name="description" content="理解 AWS Network Firewall 的防火牆端點、無狀態與有狀態規則、路由對稱、日誌、成本、可用性與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-26-aws-network-firewall-basics.html" />
+  <link rel="prev" href="./2026-10-25-aws-verified-access-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Network Firewall：VPC 流量檢查、規則與路由治理" />
+  <meta property="og:description" content="從防火牆端點、規則群組與對稱路由，理解 VPC 邊界檢查、集中稽核、成本及跨區復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-26-aws-network-firewall-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-network-firewall-inspection-flow.svg" />
+  <meta property="article:published_time" content="2026-10-26T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Network Firewall：VPC 流量檢查、規則與路由治理" />
+  <meta name="twitter:description" content="掌握防火牆端點、無狀態與有狀態規則、對稱路由、日誌、成本、安全控制與共同責任。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-network-firewall-inspection-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1120px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Network Firewall：VPC 流量檢查、規則與路由治理","description":"理解 AWS Network Firewall 的防火牆端點、無狀態與有狀態規則、路由對稱、日誌、成本、可用性與共同責任。","datePublished":"2026-10-26T21:30:00+08:00","dateModified":"2026-10-26T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-26-aws-network-firewall-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-network-firewall-inspection-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">VPC 網路防火牆</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-26</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Network Firewall：VPC 流量檢查、規則與路由治理</h1>
+<p class="text-xl leading-9 muted">AWS Network Firewall 是部署在 VPC 邊界的受管網路防火牆，透過每個可用區的防火牆端點、路由表、無狀態與有狀態規則檢查流量。服務可降低自建防火牆叢集的維運負擔，但安全成果仍取決於對稱路由、規則品質、網路分段、日誌、身分治理與復原設計。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-26</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>範圍辨識：</strong>本文聚焦 AWS Network Firewall 的 firewall、firewall policy、rule group、firewall endpoint、路由、記錄與多可用區設計。它不取代安全群組、網路 ACL、AWS WAF、Shield、應用授權、端點防護、弱點修補、資料備份或跨區災難復原。</div>
+
+<h2>服務定位</h2>
+<p><strong>AWS Network Firewall</strong> 是 VPC 的受管式網路流量檢查服務。建立防火牆時，服務會在選定的各個可用區建立防火牆端點；管理者再透過 VPC 路由表把網際網路出口、入口、東西向、Transit Gateway 或其他受支援路徑的流量導向端點。</p>
+<p>它適合需要集中執行 IP、連接埠、協定、網域與深度封包檢查規則，並希望由 AWS 管理底層擴展及基礎設施的環境。若需求只是在單一工作負載限制來源與目的，安全群組通常更直接；若需求是保護 HTTP／HTTPS 應用層請求，應使用 AWS WAF；若需要完整第三方安全設備功能、特定代理能力或未受支援的檢查模式，則應比較 Gateway Load Balancer 與合作夥伴設備。</p>
+
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">檢查元件</h3><ul>
+<li><strong>Firewall：</strong>部署於指定 VPC 與可用區子網路的受管防火牆資源，每個選定可用區建立一個 endpoint。</li>
+<li><strong>Firewall endpoint：</strong>路由表可指向的檢查目標；流量應優先送到同一可用區的端點，減少跨區費用與故障耦合。</li>
+<li><strong>Firewall policy：</strong>組合無狀態規則群組、有狀態規則群組、預設動作及其他檢查行為。</li>
+<li><strong>Stateless rules：</strong>逐封包比對來源、目的、連接埠與協定，可直接通過、丟棄或轉交有狀態引擎。</li>
+<li><strong>Stateful rules：</strong>追蹤連線狀態，可使用標準規則或 Suricata 相容規則描述網域、協定與更細緻條件。</li>
+<li><strong>Rule group capacity：</strong>規則群組具有容量配置，設計時要預留變更空間並管理配額。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">路由、記錄與治理</h3><ul>
+<li><strong>對稱路由：</strong>同一連線的往返流量必須經過一致的有狀態檢查路徑，否則可能被丟棄或繞過。</li>
+<li><strong>Firewall subnet：</strong>通常使用專用子網路承載 endpoint，不在其中放置一般工作負載。</li>
+<li><strong>Flow logs：</strong>記錄通過有狀態引擎的網路流量資訊，用於調查與基準分析。</li>
+<li><strong>Alert logs：</strong>記錄符合警示規則的流量，支援威脅監控與規則調校。</li>
+<li><strong>CloudTrail：</strong>記錄防火牆、政策與規則群組等控制面 API 活動。</li>
+<li><strong>區域邊界：</strong>防火牆與端點是區域資源；跨區持續服務需要第二區域的網路、規則、日誌及切換流程。</li>
+</ul></section>
+</div>
+
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>多個 VPC 或帳號需要一致的網際網路出口過濾、惡意網域阻擋與集中稽核。</li>
+<li>需要檢查從 Internet Gateway、NAT Gateway、Transit Gateway 或其他 VPC 路徑進出的指定流量。</li>
+<li>組織希望管理 Suricata 相容規則、自訂規則或受管規則群組，並保留變更與警示證據。</li>
+<li>工作負載橫跨多個可用區，需要每區建立 endpoint 並透過路由控制故障邊界。</li>
+<li>雲端平台團隊需要以 IaC、版本控制與集中治理維護防火牆政策。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>只需要限制 EC2、RDS 或負載平衡器的來源與連接埠，卻不需要深度檢查；安全群組可能更簡單。</li>
+<li>把 Network Firewall 當成 Web 應用防火牆，期待它理解登入、Cookie、SQL injection 或應用交易脈絡。</li>
+<li>沒有能力管理 VPC 路由、Transit Gateway 路由與回程路徑，無法持續驗證流量確實經過檢查。</li>
+<li>需要使用者身分或裝置健康狀態作為每次應用存取條件；應比較 Verified Access 或其他零信任方案。</li>
+<li>要求單一區域防火牆自動提供跨區災難復原；第二區域仍須另行建立與測試。</li>
+</ul>
+
+<h2>示意故事案例：多帳號平台的受控網際網路出口</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家軟體公司有開發、測試與正式環境，多個 VPC 透過 Transit Gateway 集中連線。各團隊原本自行建立 NAT Gateway 與出口規則，造成允許清單、日誌保存及惡意網域封鎖方式不一致。</p>
+<p>平台團隊建立專用 inspection VPC，在兩個可用區各配置 firewall subnet、AWS Network Firewall endpoint 與對應路由。工作負載的出口流量先經 Transit Gateway 送入同可用區端點，通過無狀態預篩選及有狀態規則後，才前往 NAT Gateway 與 Internet Gateway。回程路徑依相同連線方向經過檢查，避免非對稱路由。</p>
+<p>防火牆政策採預設拒絕與明確允許，規則變更由版本控制及同儕覆核管理。管理操作使用 IAM 最小權限、MFA 與短期憑證；需要的應用機密存於 Secrets Manager 或 Parameter Store。警示與流量日誌送往集中式帳號，以 KMS 保護、CloudWatch 告警並與 CloudTrail 事件關聯。第二區域保留 IaC、規則版本與復原路由，定期演練切換。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-network-firewall-inspection-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-network-firewall-inspection-flow.svg" alt="示意：網際網路與 VPC 流量由路由表送到各可用區自己的 AWS Network Firewall endpoint，經無狀態與有狀態規則檢查後前往目的地，並集中保存流量、警示與管理事件" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：防火牆規則只有在路由確實經過端點、往返保持對稱且周邊控制沒有旁路時才會生效。</figcaption></figure>
+
+<h2>建置與運作流程</h2><ol>
+<li><strong>盤點流量：</strong>列出來源、目的、協定、連接埠、網域、資料分類、信任區、尖峰吞吐、RTO、RPO 與目前路由。</li>
+<li><strong>選擇架構：</strong>決定分散式或集中式 inspection VPC，確認 Internet Gateway、NAT Gateway、Transit Gateway 與工作負載的相對位置。</li>
+<li><strong>規劃可用區：</strong>為每個承載流量的可用區建立專用 firewall subnet，避免把一般資源放入該子網路。</li>
+<li><strong>建立政策：</strong>定義無狀態預設動作、規則群組、有狀態規則順序、拒絕策略與例外期限。</li>
+<li><strong>建立防火牆：</strong>在目標 VPC 選定各可用區子網路，取得每區 endpoint 並確認狀態可用。</li>
+<li><strong>修改路由：</strong>讓受保護流量在同一可用區經過 endpoint；為入口、出口與回程分別驗證路由表。</li>
+<li><strong>封鎖旁路：</strong>移除不必要的直接 Internet Gateway、NAT、VPC peering、VPN 或 Transit Gateway 路徑。</li>
+<li><strong>保護管理面：</strong>政策、規則、路由、日誌與 KMS 採 IAM 最小權限、MFA、短期憑證、職責分離與變更審批。</li>
+<li><strong>管理機密：</strong>應用 credential 使用 Secrets Manager 或 Parameter Store；不得放入防火牆規則、標籤、日誌或 IaC 參數明文。</li>
+<li><strong>啟用記錄：</strong>依調查需求設定 flow 與 alert logs，送往 CloudWatch Logs、S3 或 Data Firehose，並啟用 CloudTrail。</li>
+<li><strong>建立監控：</strong>對丟棄率、警示類型、日誌中斷、規則變更、endpoint 狀態與路由漂移設定告警。</li>
+<li><strong>執行測試：</strong>驗證允許、拒絕、網域規則、協定例外、回程路由、單一可用區故障與規則回復。</li>
+<li><strong>準備復原：</strong>以 IaC 保存網路、政策、規則與日誌設定，在第二區域建立可重建、可切換、可驗證的流程。</li>
+</ol>
+
+<h2>成本、可用性與維運考量</h2>
+<p>Network Firewall 的主要成本通常包含每個防火牆 endpoint 的運作時間與處理資料量；架構還可能產生 NAT Gateway、Transit Gateway、跨可用區資料傳輸、CloudWatch Logs、S3、Data Firehose、CloudTrail 與 KMS 費用。規則數量不是唯一成本來源，繞路、重複檢查、跨區傳輸與大量日誌也可能顯著增加支出。正式估算應使用當期官方定價與實際流量模型。</p>
+<p>服務會管理防火牆基礎設施的擴展，但高可用性仍須由網路架構配合。每個承載流量的可用區應有 endpoint，並讓該區工作負載走同區端點；若全部流量集中到單一可用區，該區故障、跨區費用與路由複雜度都會放大。端點可用不代表 NAT Gateway、Transit Gateway、DNS、應用或資料層已完成多可用區設計。</p>
+<p>維運重點包含規則誤擋、規則陰影、容量不足、路由漂移、非對稱流量、日誌量與告警疲勞。規則應有擁有者、用途、到期日、測試、版本與回復程序；先在測試路徑或警示模式觀察，再分階段執行阻擋。</p>
+
+<h2>Network Firewall 特有資安風險與控制</h2><ul>
+<li><strong>路由繞過：</strong>以路由盤點、AWS Config、自動化測試與流量驗證確認所有指定路徑確實經過 endpoint。</li>
+<li><strong>非對稱路由：</strong>設計一致的往返路徑，特別檢查 NAT、Transit Gateway、Internet Gateway 與多網卡工作負載。</li>
+<li><strong>跨可用區集中：</strong>每個使用中的可用區配置 endpoint，讓流量優先走同區端點。</li>
+<li><strong>規則過度寬鬆：</strong>從預設拒絕與最小允許開始，限制來源、目的、協定、連接埠與必要網域。</li>
+<li><strong>無狀態預設動作錯誤：</strong>清楚決定封包是通過、丟棄或轉交有狀態引擎，避免不必要的旁路。</li>
+<li><strong>規則順序與陰影：</strong>使用測試案例驗證優先順序，避免前方廣泛規則讓後方精細規則永遠無法命中。</li>
+<li><strong>網域規則被高估：</strong>網域封鎖不等於完整內容安全；加密流量、直接 IP、替代 DNS 與應用層行為仍需其他控制。</li>
+<li><strong>TLS 檢查治理不足：</strong>若啟用 TLS inspection，應管理憑證信任、私鑰保護、例外、隱私、效能與失敗回退。</li>
+<li><strong>缺少網路分段：</strong>防火牆不取代安全群組與網路 ACL；工作負載之間仍採最小必要連線。</li>
+<li><strong>公開存取未收斂：</strong>公開 IP、Internet Gateway 路由與負載平衡器來源應逐一盤點，避免防火牆外的直接入口。</li>
+<li><strong>日誌中斷或未告警：</strong>監控 flow／alert logs 的交付、延遲與權限，對異常拒絕率與高風險規則命中告警。</li>
+<li><strong>日誌含敏感資訊：</strong>限制欄位、查詢權限與保存週期，依需求以 KMS 保護日誌目的地。</li>
+<li><strong>管理權限過大：</strong>分離 firewall、policy、rule group、route、KMS 與 log destination 權限，使用 MFA 與短期憑證。</li>
+<li><strong>機密寫入設定：</strong>credential、Access Key、Secret Key、Token、密碼與 cookie 不得出現在規則、註解、標籤、日誌或 IaC。</li>
+<li><strong>跨區僅複製規則：</strong>第二區域還需網路、端點、路由、NAT、Transit Gateway、日誌與應用資料，並執行切換演練。</li>
+</ul>
+
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Network Firewall 受管服務、底層基礎設施、防火牆引擎平台與服務端擴展的安全。客戶負責 VPC 與子網路設計、endpoint 可用區配置、路由、firewall policy、rule groups、預設動作、TLS 檢查設定、日誌目的地、IAM、KMS、規則測試、旁路封鎖、應用安全與跨區復原。</p>
+<p>通過防火牆不代表工作負載可信。安全群組、網路 ACL、IAM 最小權限、MFA、短期憑證、作業系統修補、端點防護、應用授權與資料加密仍須獨立落實。應用機密使用 Secrets Manager 或 Parameter Store；資料、備份與日誌依分類使用 KMS。備份應涵蓋 IaC、規則版本、設定與調查證據，並驗證第二區域能在 RTO／RPO 內重建。</p>
+
+<h2>上線與維運可執行檢查清單</h2><ul>
+<li>□ 已確認需要網路層深度檢查，而不是只用安全群組、AWS WAF 或 Verified Access。</li>
+<li>□ 已盤點來源、目的、協定、連接埠、網域、資料分類、吞吐、RTO 與 RPO。</li>
+<li>□ 每個承載流量的可用區都有專用 firewall subnet 與 endpoint。</li>
+<li>□ 流量優先走同一可用區 endpoint，未無故產生跨區繞送。</li>
+<li>□ 入口、出口與回程路由已逐條驗證，連線往返保持對稱。</li>
+<li>□ 已移除不必要的 IGW、NAT、Transit Gateway、VPN、peering 或公開 IP 旁路。</li>
+<li>□ 無狀態預設動作與轉交有狀態引擎的條件已明確測試。</li>
+<li>□ 有狀態規則採最小允許，具擁有者、用途、到期日、版本與回復程序。</li>
+<li>□ 規則順序、陰影、容量與配額已用正向及反向案例驗證。</li>
+<li>□ 若使用 TLS inspection，已完成憑證、私鑰、隱私、效能與失敗回退治理。</li>
+<li>□ 安全群組與網路 ACL 仍採最小必要連線，未把防火牆當成唯一控制。</li>
+<li>□ 公開入口、負載平衡器與工作負載公開 IP 均已盤點及限制。</li>
+<li>□ 管理操作採 IAM 最小權限、MFA、短期憑證、職責分離與變更審批。</li>
+<li>□ 應用機密使用 Secrets Manager 或 Parameter Store，未寫入規則、標籤或日誌。</li>
+<li>□ Flow logs、alert logs 與 CloudTrail 已集中保存，目的地依需求使用 KMS。</li>
+<li>□ 已對日誌中斷、拒絕暴增、高風險命中、規則與路由變更設定 CloudWatch 告警。</li>
+<li>□ 已估算 endpoint 時數、處理流量、NAT、Transit Gateway、跨區傳輸、日誌與 KMS 成本。</li>
+<li>□ 已測試單一可用區故障、endpoint 異常、規則回復與路由回復。</li>
+<li>□ 第二區域可由 IaC 重建防火牆、政策、規則、路由、日誌與監控。</li>
+<li>□ 備份與復原演練符合 RTO／RPO，且包含規則版本與稽核證據。</li>
+<li>□ 正式內容不含 credential、Access Key、Secret Key、Token、密碼或 cookie。</li>
+</ul>
+
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/what-is-aws-network-firewall.html" target="_blank" rel="noopener noreferrer">What is AWS Network Firewall?</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/how-it-works.html" target="_blank" rel="noopener noreferrer">How AWS Network Firewall works</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/arch-igw-ngw.html" target="_blank" rel="noopener noreferrer">Architecture with an internet gateway and a NAT gateway</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/firewall-policies.html" target="_blank" rel="noopener noreferrer">Firewall policies in AWS Network Firewall</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/rule-groups.html" target="_blank" rel="noopener noreferrer">Rule groups in AWS Network Firewall</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/suricata-compatible-ips-rules.html" target="_blank" rel="noopener noreferrer">Suricata compatible IPS rules</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/logging-cw-logs.html" target="_blank" rel="noopener noreferrer">Logging AWS Network Firewall activity</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/security.html" target="_blank" rel="noopener noreferrer">Security in AWS Network Firewall</a>（查閱：2026-10-26）</li>
+<li><a href="https://docs.aws.amazon.com/network-firewall/latest/developerguide/disaster-recovery-resiliency.html" target="_blank" rel="noopener noreferrer">Resilience in AWS Network Firewall</a>（查閱：2026-10-26）</li>
+<li><a href="https://aws.amazon.com/network-firewall/pricing/" target="_blank" rel="noopener noreferrer">AWS Network Firewall pricing</a>（查閱：2026-10-26）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-10-26）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新區域支援、規則引擎、TLS inspection 能力、路由模式、配額、定價、資料分類、法規與故障演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-25-aws-verified-access-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Verified Access：零信任應用存取、信任資料與政策控制</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

@@ -1,0 +1,44 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1280" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Network Firewall 手機版多可用區檢查流程示意</title>
+  <desc id="desc">流量由路由表送到每個可用區自己的 Network Firewall endpoint，經無狀態與有狀態規則檢查後前往目的地，並將日誌與管理事件集中保存。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284b"/></linearGradient>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8fe8ff"/></marker>
+    <style>.b{fill:#0d223d;stroke:#486b90;stroke-width:3}.o{fill:#322415;stroke:#ffb34f;stroke-width:3}.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eef7ff}.h{font-size:34px;font-weight:800}.m{font-size:25px}.s{font-size:21px;fill:#adc1dd}.l{fill:none;stroke:#8fe8ff;stroke-width:6;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="720" height="1280" rx="28" fill="url(#bg)"/>
+  <text x="48" y="70" class="t h">Network Firewall 檢查流程</text>
+  <text x="48" y="108" class="t s">示意｜同 AZ 導流、對稱路由、集中稽核</text>
+
+  <rect x="80" y="150" width="560" height="115" rx="22" class="b"/>
+  <text x="360" y="198" text-anchor="middle" class="t m">Internet／分支據點／工作負載</text>
+  <text x="360" y="233" text-anchor="middle" class="t s">路由表將指定流量送入檢查</text>
+  <path d="M360 265V320" class="l"/>
+
+  <rect x="70" y="330" width="580" height="370" rx="26" class="b"/>
+  <text x="360" y="378" text-anchor="middle" class="t h">檢查 VPC</text>
+  <rect x="105" y="415" width="230" height="210" rx="20" class="o"/>
+  <text x="220" y="460" text-anchor="middle" class="t m">AZ-A endpoint</text>
+  <text x="220" y="503" text-anchor="middle" class="t s">Stateless</text>
+  <text x="220" y="539" text-anchor="middle" class="t s">Stateful</text>
+  <text x="220" y="580" text-anchor="middle" class="t s">A 區路由</text>
+  <rect x="385" y="415" width="230" height="210" rx="20" class="o"/>
+  <text x="500" y="460" text-anchor="middle" class="t m">AZ-B endpoint</text>
+  <text x="500" y="503" text-anchor="middle" class="t s">IP／Domain</text>
+  <text x="500" y="539" text-anchor="middle" class="t s">協定／規則</text>
+  <text x="500" y="580" text-anchor="middle" class="t s">B 區路由</text>
+  <text x="360" y="670" text-anchor="middle" class="t s">往返路徑保持對稱；避免跨 AZ 繞送</text>
+  <path d="M360 700V755" class="l"/>
+
+  <rect x="80" y="765" width="560" height="130" rx="22" class="b"/>
+  <text x="360" y="816" text-anchor="middle" class="t m">核准目的地</text>
+  <text x="360" y="856" text-anchor="middle" class="t s">NAT／IGW／私有應用；安全群組仍生效</text>
+  <path d="M360 895V950" class="l"/>
+
+  <rect x="80" y="960" width="560" height="245" rx="22" class="b"/>
+  <text x="360" y="1012" text-anchor="middle" class="t h">治理與復原</text>
+  <text x="120" y="1064" class="t m">• Flow／Alert logs</text>
+  <text x="120" y="1105" class="t m">• CloudTrail／CloudWatch</text>
+  <text x="120" y="1146" class="t m">• KMS／最小權限／MFA</text>
+  <text x="120" y="1187" class="t m">• IaC、備份與跨區重建演練</text>
+</svg>
