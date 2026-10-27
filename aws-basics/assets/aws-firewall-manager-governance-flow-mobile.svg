@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1280" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Firewall Manager 手機版多帳號治理流程示意</title>
+  <desc id="desc">安全管理帳號透過 Firewall Manager 對 AWS Organizations 內的正式、共用網路與測試帳號套用政策，持續評估底層防火牆合規狀態、分階段修復並集中保存證據。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284b"/></linearGradient>
+    <marker id="a" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0L10 5L0 10Z" fill="#8fe8ff"/></marker>
+    <style>.b{fill:#0d223d;stroke:#486b90;stroke-width:3}.o{fill:#322415;stroke:#ffb34f;stroke-width:3}.g{fill:#153a35;stroke:#61dfb5;stroke-width:3}.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eef7ff}.h{font-size:34px;font-weight:800}.m{font-size:25px}.s{font-size:21px;fill:#adc1dd}.l{fill:none;stroke:#8fe8ff;stroke-width:6;marker-end:url(#a)}</style>
+  </defs>
+  <rect width="720" height="1280" rx="28" fill="url(#bg)"/>
+  <text x="48" y="70" class="t h">Firewall Manager 治理流程</text>
+  <text x="48" y="108" class="t s">示意｜跨帳號政策、合規、修復與證據</text>
+
+  <rect x="80" y="150" width="560" height="145" rx="22" class="o"/>
+  <text x="360" y="202" text-anchor="middle" class="t h">安全管理帳號</text>
+  <text x="360" y="246" text-anchor="middle" class="t m">政策範圍／例外／修復模式</text>
+  <text x="360" y="275" text-anchor="middle" class="t s">最小權限、MFA、短期憑證</text>
+  <path d="M360 295V350" class="l"/>
+
+  <rect x="70" y="360" width="580" height="440" rx="26" class="b"/>
+  <text x="360" y="410" text-anchor="middle" class="t h">AWS Organizations</text>
+  <rect x="105" y="450" width="510" height="92" rx="18" class="g"/>
+  <text x="360" y="490" text-anchor="middle" class="t m">正式 OU：WAF／安全群組</text>
+  <text x="360" y="520" text-anchor="middle" class="t s">既有與新資源持續納管</text>
+  <rect x="105" y="570" width="510" height="92" rx="18" class="g"/>
+  <text x="360" y="610" text-anchor="middle" class="t m">共用網路 OU：Network／DNS Firewall</text>
+  <text x="360" y="640" text-anchor="middle" class="t s">各區域與底層路由分別驗證</text>
+  <rect x="105" y="690" width="510" height="82" rx="18" class="o"/>
+  <text x="360" y="727" text-anchor="middle" class="t m">測試 OU：先稽核，再分批修復</text>
+  <text x="360" y="757" text-anchor="middle" class="t s">例外具擁有者、理由與到期日</text>
+  <path d="M360 800V855" class="l"/>
+
+  <rect x="80" y="865" width="560" height="265" rx="22" class="b"/>
+  <text x="360" y="915" text-anchor="middle" class="t h">證據與復原</text>
+  <text x="120" y="970" class="t m">• AWS Config／CloudTrail</text>
+  <text x="120" y="1012" class="t m">• CloudWatch／底層服務日誌</text>
+  <text x="120" y="1054" class="t m">• KMS／保存週期／權限控管</text>
+  <text x="120" y="1096" class="t m">• IaC、政策版本與跨區重建</text>
+  <path d="M360 1130V1170" class="l"/>
+  <text x="360" y="1215" text-anchor="middle" class="t h">合規後仍須驗證實際流量</text>
+</svg>

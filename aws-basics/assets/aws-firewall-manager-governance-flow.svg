@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Firewall Manager 多帳號政策治理與合規修復示意</title>
+  <desc id="desc">專用安全管理帳號透過 AWS Firewall Manager 將政策套用至 AWS Organizations 內不同組織單位與帳號，持續評估 WAF、安全群組、Network Firewall 與 DNS Firewall，分階段修復不合規資源並集中保存證據。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10284b"/></linearGradient>
+    <linearGradient id="orange" x1="0" x2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd28a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".35"/></filter>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0L10 5L0 10Z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#0d223d;stroke:#365b82;stroke-width:2}.zone{fill:#0a1b31;stroke:#486b90;stroke-width:2;stroke-dasharray:10 8}.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#eef7ff}.muted{fill:#a9bfdc}.small{font-size:20px}.body{font-size:24px}.head{font-size:31px;font-weight:800}.label{font-size:18px;font-weight:700;letter-spacing:1px}.line{fill:none;stroke:#8fe8ff;stroke-width:5;marker-end:url(#arrow)}.control{fill:#122c48;stroke:#ffb34f;stroke-width:2}.good{fill:#153a35;stroke:#61dfb5;stroke-width:2}.warn{fill:#3b2b19;stroke:#ffb34f;stroke-width:2}</style>
+  </defs>
+  <rect width="1440" height="900" rx="32" fill="url(#bg)"/>
+  <text x="72" y="74" class="t head">示意：AWS Firewall Manager 多帳號政策治理</text>
+  <text x="72" y="108" class="t muted small">組織範圍、先稽核後修復、底層服務驗證與跨區重建共同構成治理閉環</text>
+
+  <rect x="60" y="150" width="300" height="240" rx="24" class="control" filter="url(#shadow)"/>
+  <text x="210" y="198" text-anchor="middle" class="t label">安全管理帳號</text>
+  <text x="210" y="242" text-anchor="middle" class="t head">Firewall Manager</text>
+  <text x="210" y="284" text-anchor="middle" class="t body">政策範圍與例外</text>
+  <text x="210" y="321" text-anchor="middle" class="t body">合規評估與修復</text>
+  <text x="210" y="358" text-anchor="middle" class="t muted small">最小權限／MFA／短期憑證</text>
+
+  <rect x="425" y="135" width="955" height="465" rx="28" class="zone"/>
+  <text x="458" y="179" class="t label">AWS Organizations</text>
+  <rect x="465" y="210" width="270" height="320" rx="22" class="box"/>
+  <text x="600" y="252" text-anchor="middle" class="t head">正式 OU</text>
+  <rect x="495" y="280" width="210" height="72" rx="15" class="good"/>
+  <text x="600" y="325" text-anchor="middle" class="t body">AWS WAF</text>
+  <rect x="495" y="376" width="210" height="72" rx="15" class="good"/>
+  <text x="600" y="421" text-anchor="middle" class="t body">Security Groups</text>
+  <text x="600" y="489" text-anchor="middle" class="t muted small">既有與新資源持續納管</text>
+
+  <rect x="770" y="210" width="270" height="320" rx="22" class="box"/>
+  <text x="905" y="252" text-anchor="middle" class="t head">共用網路 OU</text>
+  <rect x="800" y="280" width="210" height="72" rx="15" class="good"/>
+  <text x="905" y="325" text-anchor="middle" class="t body">Network Firewall</text>
+  <rect x="800" y="376" width="210" height="72" rx="15" class="good"/>
+  <text x="905" y="421" text-anchor="middle" class="t body">DNS Firewall</text>
+  <text x="905" y="489" text-anchor="middle" class="t muted small">區域與路由分別驗證</text>
+
+  <rect x="1075" y="210" width="270" height="320" rx="22" class="box"/>
+  <text x="1210" y="252" text-anchor="middle" class="t head">測試 OU</text>
+  <rect x="1105" y="280" width="210" height="72" rx="15" class="warn"/>
+  <text x="1210" y="325" text-anchor="middle" class="t body">先稽核</text>
+  <rect x="1105" y="376" width="210" height="72" rx="15" class="warn"/>
+  <text x="1210" y="421" text-anchor="middle" class="t body">再分批修復</text>
+  <text x="1210" y="489" text-anchor="middle" class="t muted small">例外有擁有者與到期日</text>
+
+  <path d="M360 270H465" class="line"/>
+  <path d="M735 370H770" class="line"/>
+  <path d="M1040 370H1075" class="line"/>
+  <text x="380" y="250" class="t muted small">政策套用</text>
+
+  <rect x="425" y="650" width="955" height="170" rx="26" class="box"/>
+  <text x="465" y="695" class="t label">證據、監控與復原</text>
+  <text x="465" y="742" class="t body">AWS Config ＋ CloudTrail</text>
+  <text x="465" y="781" class="t muted small">資源組態、政策變更與 API 活動</text>
+  <text x="810" y="742" class="t body">CloudWatch ＋ KMS</text>
+  <text x="810" y="781" class="t muted small">底層日誌、告警、加密與保存</text>
+  <text x="1110" y="742" class="t body">IaC ＋ 第二區域</text>
+  <text x="1110" y="781" class="t muted small">政策版本與治理能力重建</text>
+  <path d="M905 530V650" class="line"/>
+
+  <rect x="60" y="650" width="300" height="170" rx="22" fill="url(#orange)" opacity=".94"/>
+  <text x="210" y="704" text-anchor="middle" fill="#142033" class="head">關鍵門禁</text>
+  <text x="210" y="747" text-anchor="middle" fill="#142033" class="body">合規不等於流量安全</text>
+  <text x="210" y="783" text-anchor="middle" fill="#142033" class="small">必須驗證底層防護效果</text>
+  <path d="M360 735H425" class="line"/>
+</svg>
