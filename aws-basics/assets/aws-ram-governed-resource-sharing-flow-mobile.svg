@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1500" viewBox="0 0 720 1500" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Resource Access Manager 跨帳號資源共享與治理流程手機版</title>
+  <desc id="desc">由中央資源擁有帳號建立受支援資源，透過 AWS RAM resource share、受管權限與指定主體分享，接收帳號再以 IAM 使用資源，並持續稽核及準備跨區重建。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#0c2440"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffbf69"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#30c9e8"/><stop offset="1" stop-color="#8fe8ff"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".35"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6 0 12Z" fill="#8fe8ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#f7fbff}.h{font-size:32px;font-weight:800}.sh{font-size:24px;font-weight:800}.b{font-size:20px;fill:#d5e4f4}.s{font-size:17px;fill:#a9bfd8}.box{fill:#102943;stroke:#375875;stroke-width:2}.line{fill:none;stroke:#8fe8ff;stroke-width:5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="720" height="1500" rx="30" fill="url(#bg)"/>
+  <text x="44" y="66" class="t h">AWS RAM 資源共享</text>
+  <text x="44" y="104" class="t b">共享關係、IAM 與服務控制缺一不可</text>
+
+  <g filter="url(#shadow)">
+    <rect x="44" y="150" width="632" height="300" rx="26" class="box"/>
+    <rect x="44" y="150" width="632" height="72" rx="26" fill="#173754"/><rect x="44" y="195" width="632" height="27" fill="#173754"/>
+    <circle cx="86" cy="186" r="18" fill="url(#orange)"/><text x="118" y="194" class="t sh">1. 中央資源擁有帳號</text>
+    <text x="78" y="267" class="t b">建立受支援資源並保留所有權</text>
+    <rect x="78" y="292" width="564" height="55" rx="14" fill="#0c1d31" stroke="#ffb34d"/><text x="100" y="326" class="t b">VPC 子網路／Transit Gateway 等資源</text>
+    <rect x="78" y="365" width="564" height="55" rx="14" fill="#0c1d31" stroke="#ffb34d"/><text x="100" y="399" class="t b">生命週期、配額、網路、KMS、備份</text>
+  </g>
+  <path d="M360 450V505" class="line"/>
+
+  <g filter="url(#shadow)">
+    <rect x="44" y="505" width="632" height="350" rx="26" class="box"/>
+    <rect x="44" y="505" width="632" height="72" rx="26" fill="#213653"/><rect x="44" y="550" width="632" height="27" fill="#213653"/>
+    <circle cx="86" cy="541" r="18" fill="url(#cyan)"/><text x="118" y="549" class="t sh">2. AWS Resource Access Manager</text>
+    <text x="78" y="622" class="t b">Resource share 組合三項治理元素</text>
+    <rect x="78" y="648" width="564" height="55" rx="14" fill="#0c1d31" stroke="#66dcf5"/><text x="100" y="682" class="t b">① 資源：不複製、不轉移所有權</text>
+    <rect x="78" y="721" width="564" height="55" rx="14" fill="#0c1d31" stroke="#66dcf5"/><text x="100" y="755" class="t b">② 權限：最小必要並追蹤版本</text>
+    <rect x="78" y="794" width="564" height="35" rx="14" fill="#0c1d31" stroke="#66dcf5"/><text x="100" y="819" class="t s">③ 主體：帳號／Organization／OU</text>
+  </g>
+  <path d="M360 855V910" class="line"/>
+
+  <g filter="url(#shadow)">
+    <rect x="44" y="910" width="632" height="300" rx="26" class="box"/>
+    <rect x="44" y="910" width="632" height="72" rx="26" fill="#173754"/><rect x="44" y="955" width="632" height="27" fill="#173754"/>
+    <circle cx="86" cy="946" r="18" fill="url(#orange)"/><text x="118" y="954" class="t sh">3. 接收帳號與工作負載</text>
+    <text x="78" y="1027" class="t b">IAM 與服務條件再次限制操作</text>
+    <rect x="78" y="1052" width="564" height="55" rx="14" fill="#0c1d31" stroke="#ffb34d"/><text x="100" y="1086" class="t b">工作負載角色：MFA／短期憑證</text>
+    <rect x="78" y="1125" width="564" height="55" rx="14" fill="#0c1d31" stroke="#ffb34d"/><text x="100" y="1159" class="t b">安全群組、資料使用與退出測試</text>
+  </g>
+  <path d="M360 1210V1265" class="line"/>
+
+  <g filter="url(#shadow)">
+    <rect x="44" y="1265" width="632" height="185" rx="26" fill="#0b1c31" stroke="#385b78" stroke-width="2"/>
+    <text x="78" y="1313" class="t sh">4. 持續治理與復原</text>
+    <text x="78" y="1352" class="t b">CloudTrail／CloudWatch／Config</text>
+    <text x="78" y="1384" class="t s">監控共享、權限、主體與設定漂移</text>
+    <text x="78" y="1420" class="t b">第二區域 IaC 重建資源與共享</text>
+  </g>
+</svg>
