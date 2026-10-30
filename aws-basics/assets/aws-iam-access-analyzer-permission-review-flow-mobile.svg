@@ -1,0 +1,46 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1450" viewBox="0 0 760 1450" role="img" aria-labelledby="title desc">
+  <title id="title">AWS IAM Access Analyzer 權限分析與修復流程手機版</title>
+  <desc id="desc">政策與活動資料進入 IAM Access Analyzer，產生外部、內部及未使用存取發現，經判讀、修復、政策驗證與持續監控形成治理閉環。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10254a"/></linearGradient>
+    <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd18a"/></linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#67e8f9"/></marker>
+    <style>.box{fill:#10233f;stroke:#385273;stroke-width:2}.secure{fill:#172a42;stroke:#ffb454;stroke-width:2}.t{font-family:Arial,'Noto Sans TC',sans-serif;fill:#f8fbff}.h{font-size:28px;font-weight:700}.p{font-size:21px;fill:#c8d7eb}.small{font-size:18px;fill:#a9bdd7}.line{fill:none;stroke:#67e8f9;stroke-width:5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="760" height="1450" rx="34" fill="url(#bg)"/>
+  <text x="50" y="65" class="t h">示意｜權限分析治理閉環</text>
+  <text x="50" y="102" class="t small">發現不會自動阻擋存取，仍須人工修復與驗證</text>
+
+  <rect x="55" y="145" width="650" height="190" rx="26" class="box"/>
+  <text x="90" y="195" class="t h">1. 分析輸入</text>
+  <text x="90" y="240" class="t p">信任區域 · 資源／身分政策</text>
+  <text x="90" y="280" class="t p">SCP／RCP · CloudTrail 活動</text>
+  <path d="M380 335V385" class="line"/>
+
+  <rect x="55" y="395" width="650" height="300" rx="26" class="secure"/>
+  <rect x="95" y="430" width="570" height="58" rx="16" fill="url(#accent)"/>
+  <text x="380" y="469" text-anchor="middle" style="font:700 25px Arial,'Noto Sans TC',sans-serif;fill:#111827">IAM Access Analyzer</text>
+  <text x="95" y="535" class="t p">外部存取：公開／跨信任區域</text>
+  <text x="95" y="578" class="t p">內部存取：有效權限路徑</text>
+  <text x="95" y="621" class="t p">未使用存取：閒置角色與權限</text>
+  <text x="95" y="664" class="t small">政策驗證 · 自訂檢查 · 預覽 · 產生</text>
+  <path d="M380 695V745" class="line"/>
+
+  <rect x="55" y="755" width="650" height="175" rx="26" class="box"/>
+  <text x="90" y="805" class="t h">2. 分類發現</text>
+  <text x="90" y="850" class="t p">Active · Archived · Resolved</text>
+  <text x="90" y="890" class="t p">依資源、主體、條件與風險排序</text>
+  <path d="M380 930V980" class="line"/>
+
+  <rect x="55" y="990" width="650" height="185" rx="26" class="box"/>
+  <text x="90" y="1040" class="t h">3. 判讀與修復</text>
+  <text x="90" y="1085" class="t p">確認必要性與例外期限</text>
+  <text x="90" y="1125" class="t p">移除公開存取、閒置角色與過寬權限</text>
+  <path d="M380 1175V1225" class="line"/>
+
+  <rect x="55" y="1235" width="650" height="155" rx="26" class="box"/>
+  <text x="90" y="1285" class="t h">4. 驗證與監控</text>
+  <text x="90" y="1330" class="t p">政策檢查 · Access Preview · CI 門禁</text>
+  <text x="90" y="1370" class="t p">CloudTrail · CloudWatch · 定期複核</text>
+  <text x="380" y="1425" text-anchor="middle" class="t small">最小權限 · 短期憑證 · 分層控制 · 復原演練</text>
+</svg>
