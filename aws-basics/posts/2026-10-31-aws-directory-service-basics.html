@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Directory Service：受管 Active Directory 與混合身分連接</title>
+  <meta name="description" content="理解 AWS Directory Service 的 AWS Managed Microsoft AD、AD Connector、Simple AD 選型、網路、成本、可用性、安全控制與共同責任。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-10-31-aws-directory-service-basics.html" />
+  <link rel="prev" href="./2026-10-30-aws-iam-access-analyzer-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Directory Service：受管 Active Directory 與混合身分連接" />
+  <meta property="og:description" content="從目錄模式、網路與驗證路徑，理解 AWS Directory Service 的選型、維運、成本、資安與復原責任。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-10-31-aws-directory-service-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-directory-service-hybrid-identity-flow.svg" />
+  <meta property="article:published_time" content="2026-10-31T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Directory Service：受管 Active Directory 與混合身分連接" />
+  <meta name="twitter:description" content="掌握 AWS Managed Microsoft AD、AD Connector、Simple AD、混合連線、監控與復原治理。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-directory-service-hybrid-identity-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1180px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Directory Service：受管 Active Directory 與混合身分連接","description":"理解 AWS Directory Service 的 AWS Managed Microsoft AD、AD Connector、Simple AD 選型、網路、成本、可用性、安全控制與共同責任。","datePublished":"2026-10-31T21:30:00+08:00","dateModified":"2026-10-31T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-10-31-aws-directory-service-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-directory-service-hybrid-identity-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">目錄與混合身分</span><span class="chip rounded-full px-3 py-1 text-sm">2026-10-31</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Directory Service：受管 Active Directory 與混合身分連接</h1>
+<p class="text-xl leading-9 muted">AWS Directory Service 提供在 AWS 使用 Microsoft Active Directory 或相容目錄的多種方式。架構重點不是只建立一個目錄，而是先確認需要完整受管 AD、既有目錄代理，或基本相容功能，再把 DNS、網路、特權管理、日誌、快照與跨區復原納入同一條驗證路徑。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-10-31</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>範圍辨識：</strong>AWS Directory Service 是目錄與驗證基礎設施，不等同 IAM 授權、客戶身分平台或完整零信任方案。使用者成功通過 AD 驗證後，仍須由 IAM、應用角色、檔案權限、資料庫權限與網路控制決定實際可存取資源。</div>
+
+<h2>服務定位</h2>
+<p><strong>AWS Directory Service</strong> 讓 AD 相容工作負載在 AWS 使用受管或既有的目錄。主要模式包括 AWS Managed Microsoft AD、AD Connector 與 Simple AD。AWS Managed Microsoft AD 由實際 Microsoft Active Directory 技術提供，適合需要網域加入、群組原則、信任關係、Windows 整合及多種 AWS 服務整合的工作負載；AD Connector 是代理閘道，不在 AWS 複製或快取使用者憑證，驗證仍回到既有自管 AD；Simple AD 以 Samba 4 提供基本相容功能，功能與整合範圍較小。</p>
+<p>Directory Service 可支援 EC2、Amazon FSx for Windows File Server、RDS 的部分資料庫引擎、Amazon WorkSpaces 與其他 AD 感知應用。它不取代 IAM Identity Center 的多帳號 AWS 人員存取治理，也不取代 Amazon Cognito 的大量應用程式終端使用者身分管理。</p>
+
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">目錄模式</h3><ul>
+<li><strong>AWS Managed Microsoft AD：</strong>AWS 維運網域控制站底層、監控、修補與復原；客戶管理使用者、群組、組織單位、群組原則、信任與應用整合。</li>
+<li><strong>Standard Edition：</strong>適合較小規模的新受管網域，物件容量與規模上限低於 Enterprise。</li>
+<li><strong>Enterprise Edition：</strong>支援較大物件容量，並可使用多區域複寫等進階能力。</li>
+<li><strong>Hybrid Edition：</strong>用於把既有自管 AD 延伸至 AWS，由 AWS 管理部署在 AWS 的網域控制站；應確認區域、功能與既有森林條件。</li>
+<li><strong>AD Connector：</strong>將 AWS 應用的驗證請求轉送至既有 AD，依賴至自管網域控制站的網路、DNS 與可用性。</li>
+<li><strong>Simple AD：</strong>提供基本 AD 相容功能，但不支援完整 Microsoft AD 能力；使用前必須逐項驗證應用需求。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">驗證與治理邊界</h3><ul>
+<li><strong>目錄驗證：</strong>確認使用者或電腦身分，不自動決定所有 AWS API、檔案、資料庫與應用權限。</li>
+<li><strong>DNS 依賴：</strong>網域加入、服務探索、Kerberos 與信任高度依賴正確 DNS、時間同步、路由及連接埠。</li>
+<li><strong>VPC 關聯：</strong>建立目錄時選擇 VPC 與跨不同可用區的子網路；工作負載必須能解析並連線至目錄 DNS。</li>
+<li><strong>信任關係：</strong>可連接既有 AD 森林或網域，但信任方向、名稱解析、路由與防火牆必須一致設計。</li>
+<li><strong>控制面與資料面：</strong>CloudTrail 記錄 Directory Service API；網域控制站安全事件須另設定轉送至 CloudWatch Logs。</li>
+<li><strong>共享目錄：</strong>跨 AWS 帳號分享可降低重複目錄，但會擴大治理邊界，必須明確管理帳號、VPC、服務與撤銷流程。</li>
+</ul></section>
+</div>
+
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>Windows 工作負載需要網域加入、群組原則、Kerberos、LDAP 或既有 AD 管理工具。</li>
+<li>FSx for Windows File Server、RDS for SQL Server、WorkSpaces 或 AD 感知應用需要中央目錄。</li>
+<li>企業要把部分 AD 工作負載遷移至 AWS，並與既有自管 AD 建立信任或延伸部署。</li>
+<li>多個 AWS 帳號或 VPC 需要共用受治理目錄，並能建立清楚的網路及責任邊界。</li>
+<li>全球應用需要在適用版本下使用 AWS Managed Microsoft AD 多區域複寫，降低遠端驗證延遲。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>只需要 AWS 帳號的人員單一登入與權限集；應優先評估 IAM Identity Center。</li>
+<li>面向大量消費者或 SaaS 訂閱者的註冊、社群登入與權杖；應評估 Amazon Cognito 或專用 CIAM。</li>
+<li>希望 AD Connector 在自管 AD 中斷時繼續驗證；Connector 本身不取代自管網域控制站的高可用。</li>
+<li>需要 Simple AD 未支援的信任、完整 PowerShell AD 能力、LDAPS、結構延伸或特定應用整合。</li>
+<li>把目錄驗證誤當成應用授權、網路隔離、資料加密、機密管理、備份或事件偵測。</li>
+</ul>
+
+<h2>示意故事案例：把內部 Windows 應用遷移至 AWS</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家公司準備把檔案伺服器、SQL Server 報表與數個 Windows 內部系統移至 AWS。既有自管 AD 仍服務辦公室裝置，但機房網路只有單一路徑，且多個服務共用高權限服務帳號。若直接使用 AD Connector，AWS 端驗證會持續依賴機房 AD 與連線；若建立獨立目錄，又會增加帳號同步與雙重治理。</p>
+<p>團隊比較 AWS Managed Microsoft AD 與 AD Connector 後，選擇在兩個私有子網路建立 AWS Managed Microsoft AD，透過冗餘 VPN 或 Direct Connect 與既有 AD 建立信任。FSx、RDS 與 EC2 使用目錄 DNS；管理者以受控工作站和短期 AWS 憑證管理 Directory Service 控制面，AD 特權帳號與一般帳號分離。服務帳號改用群組受管服務帳號或最小權限專用帳號，應用程式機密放入 Secrets Manager 或 Parameter Store。</p>
+<p>團隊把 Directory Service API 留存在組織級 CloudTrail，將網域控制站安全日誌轉送到 CloudWatch Logs，對特權群組變更、重複登入失敗與日誌停送告警。上線前執行網路斷線、單一可用區故障、DNS 失效、快照還原與信任撤銷演練；跨區需求則另評估 Enterprise Edition 多區域複寫及應用層復原。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-directory-service-hybrid-identity-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-directory-service-hybrid-identity-flow.svg" alt="示意：企業使用者經 AWS Managed Microsoft AD、AD Connector 或 Simple AD 驗證後存取 AWS 工作負載，並以私有網路、最小權限、CloudTrail、CloudWatch、快照與跨區復原治理" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：目錄模式決定驗證資料位置與維運責任；網路、權限、日誌及復原仍須分層設計。</figcaption></figure>
+
+<h2>建置與運作流程</h2><ol>
+<li><strong>盤點需求：</strong>列出應用、使用者與電腦數、AD 功能、LDAP／Kerberos、信任、區域、法規、RTO 與 RPO。</li>
+<li><strong>選擇模式與版本：</strong>比較 AWS Managed Microsoft AD Standard、Enterprise、Hybrid、AD Connector 與 Simple AD，逐項驗證相容性。</li>
+<li><strong>規劃名稱：</strong>決定網域、DNS 命名、組織單位、群組、服務帳號與既有森林關係，避免使用不可路由或衝突名稱。</li>
+<li><strong>設計網路：</strong>在不同可用區配置私有子網路，確認 CIDR、DNS、路由、安全群組、網路 ACL、VPN 或 Direct Connect。</li>
+<li><strong>建立最小管理權限：</strong>限制建立、分享、刪除、信任、快照、日誌與多區域操作；管理者使用 MFA 與短期憑證。</li>
+<li><strong>部署目錄：</strong>建立目錄後驗證網域控制站、DNS 位址、子網路與服務狀態，不把建立成功視為應用已可用。</li>
+<li><strong>建立管理工作站：</strong>使用私有且受管的 Windows 主機安裝 AD 管理工具，限制來源、補丁、剪貼簿與管理通道。</li>
+<li><strong>設定帳號治理：</strong>建立分層管理群組、密碼與鎖定政策、服務帳號週期、離職停權及定期存取複核。</li>
+<li><strong>整合既有目錄：</strong>若使用信任或 AD Connector，先驗證雙向 DNS、時間、路由、連接埠與冗餘路徑。</li>
+<li><strong>整合工作負載：</strong>分批加入 EC2、FSx、RDS、WorkSpaces 或應用，逐一測試登入、服務帳號與權限。</li>
+<li><strong>啟用安全傳輸：</strong>依應用能力使用 LDAPS、Kerberos 與加密連線，禁止未受保護的管理與驗證通道。</li>
+<li><strong>集中機密：</strong>不把 credential、Access Key、Secret Key、Token、密碼或 cookie 寫入映像、腳本、標籤或日誌；使用 Secrets Manager 或 Parameter Store。</li>
+<li><strong>啟用稽核：</strong>以 CloudTrail 記錄控制面操作，將目錄安全日誌送至 CloudWatch Logs，建立告警與保留政策。</li>
+<li><strong>驗證復原：</strong>確認自動快照、手動快照限制、還原影響及演練程序；多區域需求評估版本與區域限制。</li>
+<li><strong>持續維運：</strong>追蹤容量、驗證延遲、複寫、信任、DNS、費用、特權群組與未使用帳號。</li>
+</ol>
+
+<h2>成本、可用性與維運考量</h2>
+<p>AWS Managed Microsoft AD 依版本、區域與網域控制站數量計費；額外網域控制站、多區域複寫及共享可能增加費用。AD Connector 與 Simple AD 依大小與運行時間計費；WorkSpaces 等服務在特定條件下可能有價格抵扣或不同計費規則。CloudWatch Logs、CloudTrail trail、KMS、VPN、Direct Connect、資料傳輸、管理 EC2 與備份周邊也會產生費用。實際金額須以查閱日定價頁、選定區域及帳單驗證。</p>
+<p>AWS Managed Microsoft AD 建立時會把網域控制站配置在不同可用區，能降低單一可用區故障風險，但應用仍可能因 DNS、路由、安全群組、信任或自管 AD 中斷而失敗。增加網域控制站可改善容量與冗餘，不代表所有依賴服務都自動具備相同可用性。AD Connector 的可用性尤其取決於自管 AD、RADIUS、網路與 DNS 的端到端設計。</p>
+<p>AWS Managed Microsoft AD 提供自動每日快照及有限數量的手動快照，可用於時間點還原；還原會影響快照後的目錄變更，必須在非正式環境演練。Enterprise Edition 可在支援區域配置多區域複寫，但仍須確認主要區域條件、區域限制、應用資料的跨區策略與故障切換程序。</p>
+
+<h2>AWS Directory Service 特有資安風險與控制</h2><ul>
+<li><strong>高權限目錄帳號遭濫用：</strong>管理帳號與日常帳號分離，限制特權群組，使用受控工作站、MFA、雙人覆核與定期複核。</li>
+<li><strong>控制面權限過大：</strong>Directory Service API 權限採 IAM 最小權限，AWS 管理者使用 IAM Identity Center、MFA 與短期憑證。</li>
+<li><strong>共用服務帳號：</strong>每個應用使用獨立最小權限帳號或適用的群組受管服務帳號，設定輪替、停用與擁有者。</li>
+<li><strong>網路暴露：</strong>目錄部署於私有子網路，安全群組只允許必要來源與 AD 連接埠，不公開管理主機或 LDAP 介面。</li>
+<li><strong>未加密 LDAP：</strong>支援時使用 LDAPS 或 Kerberos，驗證憑證信任與到期日，逐步淘汰明文 LDAP 綁定。</li>
+<li><strong>DNS 汙染或設定錯誤：</strong>限制 DNS 管理權，監控轉送器、條件轉送與記錄變更，測試名稱解析及故障行為。</li>
+<li><strong>信任邊界過寬：</strong>選擇必要的信任方向與範圍，限制路由、名稱解析及可驗證主體，定期檢查未使用信任。</li>
+<li><strong>AD Connector 單點依賴：</strong>自管 AD、RADIUS、VPN／Direct Connect 與 DNS 都需多路徑、多網域控制站及故障測試。</li>
+<li><strong>共享目錄擴大影響：</strong>記錄共享帳號與 VPC，限制可整合服務，建立撤銷、事件隔離與帳號退出程序。</li>
+<li><strong>日誌不足：</strong>CloudTrail 僅涵蓋服務 API；另將目錄安全日誌送至 CloudWatch Logs，保護留存與告警設定。</li>
+<li><strong>機密外洩：</strong>credential、Access Key、Secret Key、Token、密碼與 cookie 不得出現在程式、映像、工單或日誌；應使用 Secrets Manager 或 Parameter Store。</li>
+<li><strong>加密責任混淆：</strong>確認服務管理的加密能力、傳輸保護、應用資料 KMS 加密與金鑰政策，不能只依賴目錄本身。</li>
+<li><strong>快照還原覆蓋新資料：</strong>建立核准、影響評估、還原演練與驗證清單，保存快照後重要變更的獨立紀錄。</li>
+<li><strong>跨區複寫誤當完整災難復原：</strong>目錄複寫不包含所有應用資料；另設計 AWS Backup、資料庫、檔案與應用的跨區復原。</li>
+<li><strong>惡意或異常登入未偵測：</strong>對特權群組變更、鎖定、失敗登入、信任變更與日誌停送建立 CloudWatch 或 SIEM 告警。</li>
+</ul>
+
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Directory Service 受管服務與底層基礎設施安全；對 AWS Managed Microsoft AD，AWS 也管理受管網域控制站的部署、監控、修補與部分復原作業。客戶負責選擇正確目錄模式與版本、VPC 與連線、使用者和群組、組織單位、群組原則、信任、特權帳號、應用授權、日誌、快照使用、復原演練及法規符合性。</p>
+<p>AD Connector 下，自管 AD 的網域控制站、補丁、備份、容量、可用性與憑證仍由客戶負責。所有模式都必須共同落實 IAM 最小權限、MFA／短期憑證、網路隔離、公開存取防護、適用的 KMS 加密、Secrets Manager 或 Parameter Store、CloudTrail／CloudWatch，以及備份與跨區復原。</p>
+
+<h2>上線與維運可執行檢查清單</h2><ul>
+<li>□ 已盤點應用、物件數、AD 功能、區域、整合服務、RTO 與 RPO。</li>
+<li>□ 已比較 Managed Microsoft AD、AD Connector、Simple AD 與其他身分服務，未因名稱相似誤選。</li>
+<li>□ 版本、物件容量、應用相容性、多區域及區域限制已依官方文件驗證。</li>
+<li>□ 目錄位於不同可用區的私有子網路，CIDR、DNS、路由與安全群組已測試。</li>
+<li>□ VPN 或 Direct Connect、自管 AD、RADIUS 與 DNS 均有冗餘路徑及中斷演練。</li>
+<li>□ Directory Service 控制面權限採最小權限，管理者使用 MFA 與短期憑證。</li>
+<li>□ AD 特權帳號與日常帳號分離，特權群組有擁有者、核准與定期複核。</li>
+<li>□ 管理工作站位於受控網路，已限制遠端來源、補丁、軟體與資料外流通道。</li>
+<li>□ 密碼、鎖定、服務帳號、離職停權與緊急帳號程序已建立並測試。</li>
+<li>□ 信任方向、DNS 轉送、名稱解析、路由、連接埠與撤銷程序已文件化。</li>
+<li>□ 公開網路無法直接連線到目錄或管理介面，網路規則只允許必要來源。</li>
+<li>□ 適用的 LDAP 流量使用 LDAPS，憑證信任、輪替與到期告警正常。</li>
+<li>□ 應用機密使用 Secrets Manager 或 Parameter Store，未放入程式、映像、標籤、工單或日誌。</li>
+<li>□ 應用資料與日誌依分類使用 KMS，金鑰政策與跨帳號權限已驗證。</li>
+<li>□ 組織級 CloudTrail 可查到 Directory Service API，日誌集中保存且有刪除保護。</li>
+<li>□ 目錄安全日誌已送至 CloudWatch Logs 或 SIEM，特權與異常事件有告警。</li>
+<li>□ 自動與手動快照狀態正常，還原影響、核准與演練紀錄完整。</li>
+<li>□ 多區域需求已驗證版本與主要區域限制，應用資料另有跨區復原方案。</li>
+<li>□ 已監控目錄容量、驗證延遲、DNS、信任、網路、網域控制站與費用。</li>
+<li>□ 正式內容與設定紀錄不含任何真實 credential、Access Key、Secret Key、Token、密碼或 cookie 值。</li>
+</ul>
+
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/" target="_blank" rel="noopener noreferrer">What is AWS Directory Service?</a>（查閱：2026-10-31）</li>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_getting_started.html" target="_blank" rel="noopener noreferrer">Getting started with AWS Managed Microsoft AD</a>（查閱：2026-10-31）</li>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/security.html" target="_blank" rel="noopener noreferrer">Security in AWS Directory Service</a>（查閱：2026-10-31）</li>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/logging-using-cloudtrail-ads.html" target="_blank" rel="noopener noreferrer">Logging Directory Service API calls using AWS CloudTrail</a>（查閱：2026-10-31）</li>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_directory_logs.html" target="_blank" rel="noopener noreferrer">Understanding AWS Managed Microsoft AD directory logs</a>（查閱：2026-10-31）</li>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_mfa.html" target="_blank" rel="noopener noreferrer">Enabling MFA for AWS Managed Microsoft AD</a>（查閱：2026-10-31）</li>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/ms_ad_snapshots.html" target="_blank" rel="noopener noreferrer">Restoring AWS Managed Microsoft AD with snapshots</a>（查閱：2026-10-31）</li>
+<li><a href="https://docs.aws.amazon.com/directoryservice/latest/admin-guide/multi-region-how-it-works.html" target="_blank" rel="noopener noreferrer">Configure Multi-Region replication for AWS Managed Microsoft AD</a>（查閱：2026-10-31）</li>
+<li><a href="https://aws.amazon.com/directoryservice/pricing/" target="_blank" rel="noopener noreferrer">AWS Directory Service pricing</a>（查閱：2026-10-31）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-10-31）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新版本、區域、定價、服務整合、目錄規模、網路條件、法規與復原測試結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-10-30-aws-iam-access-analyzer-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS IAM Access Analyzer：權限路徑分析與最小權限治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
