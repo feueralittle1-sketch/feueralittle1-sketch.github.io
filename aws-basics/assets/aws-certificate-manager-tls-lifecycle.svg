@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1400 860" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Certificate Manager TLS 憑證生命週期示意圖</title>
+  <desc id="desc">網域擁有者向 AWS Certificate Manager 申請公有或私有憑證，完成 DNS 驗證後部署到 CloudFront、負載平衡器與 API Gateway，再以 IAM、CloudTrail、EventBridge 與外部檢查治理續期與事件。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102b48"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd08a"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#77d9f7"/></marker>
+    <style>.h{font:700 30px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:700 23px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 18px Inter,'Noto Sans TC',sans-serif;fill:#bed0e8}.tiny{font:600 16px Inter,'Noto Sans TC',sans-serif;fill:#d8e7f7}.box{fill:#122c47;stroke:#4b7596;stroke-width:2}.accent{fill:#3a250e;stroke:#ffad3d;stroke-width:2}.line{fill:none;stroke:#77d9f7;stroke-width:4;marker-end:url(#arrow)}.dash{fill:none;stroke:#8aa3b9;stroke-width:3;stroke-dasharray:10 9;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="860" rx="36" fill="url(#bg)"/>
+  <text x="70" y="72" class="h">示意：AWS Certificate Manager 的 TLS 憑證生命週期</text>
+  <text x="70" y="108" class="s">名稱盤點 → 網域驗證 → 區域部署 → 續期與事件監控 → 實際端點驗證</text>
+
+  <g filter="url(#shadow)"><rect x="60" y="170" width="280" height="220" rx="24" class="box"/></g>
+  <text x="95" y="218" class="t">網域與信任需求</text>
+  <text x="95" y="258" class="s">• 公開網站／API</text><text x="95" y="292" class="s">• 內部服務／裝置</text><text x="95" y="326" class="s">• 區域與擁有者</text>
+  <rect x="95" y="350" width="210" height="12" rx="6" fill="url(#orange)"/>
+
+  <g filter="url(#shadow)"><rect x="420" y="140" width="500" height="300" rx="28" class="accent"/></g>
+  <text x="460" y="192" class="t">ACM 申請與驗證</text>
+  <rect x="460" y="220" width="420" height="60" rx="15" class="box"/><text x="485" y="258" class="tiny">公有憑證：DNS／電子郵件驗證</text>
+  <rect x="460" y="296" width="420" height="60" rx="15" class="box"/><text x="485" y="334" class="tiny">私有憑證：AWS Private CA 信任鏈</text>
+  <rect x="460" y="372" width="420" height="48" rx="12" fill="#26384c"/><text x="485" y="403" class="tiny">匯入／匯出：客戶負責私鑰與部署</text>
+
+  <g filter="url(#shadow)"><rect x="1000" y="155" width="330" height="250" rx="24" class="box"/></g>
+  <text x="1035" y="205" class="t">TLS 服務端點</text>
+  <text x="1035" y="248" class="s">CloudFront：us-east-1</text><text x="1035" y="282" class="s">ALB／NLB：工作區域</text><text x="1035" y="316" class="s">API Gateway 等整合服務</text><text x="1035" y="350" class="s">主機／容器：匯出或 ACME</text>
+  <path d="M340 280h65" class="line"/><path d="M920 280h65" class="line"/>
+
+  <g filter="url(#shadow)"><rect x="85" y="535" width="350" height="220" rx="24" class="box"/></g>
+  <text x="120" y="582" class="t">權限與私鑰保護</text>
+  <text x="120" y="622" class="s">• IAM 最小權限與 MFA</text><text x="120" y="656" class="s">• DNS 變更審核</text><text x="120" y="690" class="s">• Export API 告警</text><text x="120" y="724" class="s">• KMS 與受控機密儲存</text>
+
+  <g filter="url(#shadow)"><rect x="525" y="535" width="350" height="220" rx="24" class="box"/></g>
+  <text x="560" y="582" class="t">續期與事件處理</text>
+  <text x="560" y="622" class="s">• 保留 DNS 驗證記錄</text><text x="560" y="656" class="s">• EventBridge／AWS Health</text><text x="560" y="690" class="s">• CloudTrail API 稽核</text><text x="560" y="724" class="s">• 續期後重新部署</text>
+
+  <g filter="url(#shadow)"><rect x="965" y="535" width="350" height="220" rx="24" class="box"/></g>
+  <text x="1000" y="582" class="t">端到端驗證與復原</text>
+  <text x="1000" y="622" class="s">• 主機名稱、鏈與到期日</text><text x="1000" y="656" class="s">• TLS 政策與應用健康</text><text x="1000" y="690" class="s">• 私鑰事件與撤銷演練</text><text x="1000" y="724" class="s">• 多區域憑證清冊</text>
+
+  <path d="M660 440v60H260v20" class="dash"/><path d="M670 440v80" class="dash"/><path d="M680 440v60h460v20" class="dash"/>
+  <text x="70" y="820" class="s">共同責任：AWS 維運 ACM 與管理型私鑰；客戶負責網域控制、權限、區域、TLS 政策、續期監控與實際端點驗證。</text>
+</svg>

@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1340" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Certificate Manager 行動版 TLS 憑證生命週期示意圖</title>
+  <desc id="desc">從網域與信任需求開始，經 ACM 申請與 DNS 驗證，部署至 TLS 服務端點，再以最小權限、私鑰保護、續期事件與外部檢查持續治理。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#102b48"/></linearGradient><marker id="a" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#77d9f7"/></marker><style>.h{font:700 29px Inter,'Noto Sans TC',sans-serif;fill:#fff}.t{font:700 24px Inter,'Noto Sans TC',sans-serif;fill:#fff}.s{font:500 19px Inter,'Noto Sans TC',sans-serif;fill:#c8d8eb}.b{fill:#122c47;stroke:#547b9a;stroke-width:2}.o{fill:#3a250e;stroke:#ffad3d;stroke-width:2}.l{stroke:#77d9f7;stroke-width:4;marker-end:url(#a)}</style></defs>
+  <rect width="720" height="1340" rx="30" fill="url(#bg)"/>
+  <text x="45" y="62" class="h">示意：TLS 憑證生命週期</text><text x="45" y="96" class="s">名稱 → 驗證 → 部署 → 續期 → 端點檢查</text>
+  <rect x="70" y="140" width="580" height="130" rx="22" class="b"/><text x="105" y="190" class="t">1. 網域與信任需求</text><text x="105" y="230" class="s">公開網站／API、內部服務、區域與擁有者</text>
+  <line x1="360" y1="270" x2="360" y2="325" class="l"/>
+  <rect x="45" y="340" width="630" height="235" rx="24" class="o"/><text x="80" y="390" class="t">2. ACM 申請與驗證</text><text x="80" y="438" class="s">公有憑證：DNS／電子郵件驗證</text><text x="80" y="480" class="s">私有憑證：AWS Private CA</text><text x="80" y="522" class="s">匯入／匯出：客戶保護私鑰與部署</text><text x="80" y="555" class="s">限制名稱、驗證方式與匯出權限</text>
+  <line x1="360" y1="575" x2="360" y2="630" class="l"/>
+  <rect x="70" y="645" width="580" height="165" rx="22" class="b"/><text x="105" y="695" class="t">3. 部署至 TLS 端點</text><text x="105" y="737" class="s">CloudFront：us-east-1</text><text x="105" y="775" class="s">ALB／NLB／API Gateway：對應區域</text>
+  <line x1="360" y1="810" x2="360" y2="865" class="l"/>
+  <rect x="45" y="880" width="630" height="125" rx="22" class="b"/><text x="80" y="926" class="t">4. 權限與私鑰保護</text><text x="80" y="966" class="s">IAM 最小權限、MFA、DNS 審核、KMS、Export 告警</text>
+  <rect x="45" y="1030" width="630" height="125" rx="22" class="b"/><text x="80" y="1076" class="t">5. 續期與事件處理</text><text x="80" y="1116" class="s">保留驗證記錄、EventBridge、CloudTrail、重新部署</text>
+  <rect x="45" y="1180" width="630" height="115" rx="22" class="b"/><text x="80" y="1226" class="t">6. 端到端驗證與復原</text><text x="80" y="1266" class="s">名稱、鏈、TLS 政策、到期日、應用健康與事件演練</text>
+</svg>
