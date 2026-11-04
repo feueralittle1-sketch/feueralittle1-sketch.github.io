@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 720" role="img" aria-labelledby="title desc">
+  <title id="title">醫療資安評估資料的分層彙總邊界</title>
+  <desc id="desc">三家醫療機構先在院內保存原始證據，只輸出範圍、期間與共同指標，經去識別與品質檢查後形成區域彙總與改善優先序。</desc>
+  <defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10264a"/></linearGradient><filter id="glow"><feGaussianBlur stdDeviation="5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>
+  <rect width="1200" height="720" rx="32" fill="url(#bg)"/>
+  <text x="60" y="70" fill="#f8fbff" font-size="34" font-weight="800">跨院比較先對齊範圍，再彙總分數</text>
+  <text x="60" y="108" fill="#9fb9dc" font-size="20">原始證據留在院內；跨院層只交換最小必要的共同欄位</text>
+  <g font-family="Arial, Noto Sans TC, sans-serif">
+    <g fill="#132d51" stroke="#4edff5" stroke-width="2"><rect x="60" y="160" width="245" height="145" rx="22"/><rect x="60" y="330" width="245" height="145" rx="22"/><rect x="60" y="500" width="245" height="145" rx="22"/></g>
+    <g fill="#fff" font-size="24" font-weight="700"><text x="91" y="205">醫院 A</text><text x="91" y="375">醫院 B</text><text x="91" y="545">醫院 C</text></g>
+    <g fill="#bcd0ec" font-size="18"><text x="91" y="243">原始證據、資產明細</text><text x="91" y="270">例外與改善計畫</text><text x="91" y="413">原始證據、資產明細</text><text x="91" y="440">例外與改善計畫</text><text x="91" y="583">原始證據、資產明細</text><text x="91" y="610">例外與改善計畫</text></g>
+    <rect x="395" y="210" width="300" height="380" rx="28" fill="#102b45" stroke="#9c8cff" stroke-width="3"/>
+    <text x="435" y="260" fill="#fff" font-size="27" font-weight="800">院內評估閘門</text>
+    <g fill="#d4dff2" font-size="20"><text x="435" y="315">1. 對齊服務與系統範圍</text><text x="435" y="360">2. 固定評估期間與版本</text><text x="435" y="405">3. 驗證證據與計分依據</text><text x="435" y="450">4. 移除病人與設備明細</text><text x="435" y="495">5. 標記缺漏與不確定性</text><text x="435" y="540">6. 核准最小必要輸出</text></g>
+    <rect x="790" y="175" width="350" height="190" rx="28" fill="#12374a" stroke="#57f0c1" stroke-width="3"/>
+    <text x="830" y="225" fill="#fff" font-size="27" font-weight="800">區域／體系彙總</text>
+    <g fill="#c9f8e8" font-size="20"><text x="830" y="275">• 共同指標分布與趨勢</text><text x="830" y="315">• 規模與服務類型分層</text><text x="830" y="355">• 不公開單院弱點明細</text></g>
+    <rect x="790" y="425" width="350" height="190" rx="28" fill="#2c2349" stroke="#ffb86b" stroke-width="3"/>
+    <text x="830" y="475" fill="#fff" font-size="27" font-weight="800">治理輸出</text>
+    <g fill="#ffe0b5" font-size="20"><text x="830" y="525">• 共通能力缺口</text><text x="830" y="565">• 教育、演練與投資優先序</text><text x="830" y="605">• 下期重測與改善責任</text></g>
+    <g stroke="#63e6ff" stroke-width="4" fill="none" marker-end="url(#arrow)"><path d="M305 232H390"/><path d="M305 402H390"/><path d="M305 572H390"/><path d="M695 320H785"/><path d="M695 500H785"/></g>
+  </g>
+  <defs><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="3" orient="auto"><path d="M0,0 L0,6 L9,3 z" fill="#63e6ff"/></marker></defs>
+</svg>
