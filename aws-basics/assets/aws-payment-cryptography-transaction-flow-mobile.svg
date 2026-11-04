@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="760" height="1280" viewBox="0 0 760 1280" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Payment Cryptography 手機版支付交易流程示意圖</title>
+  <desc id="desc">由上而下呈現收單端、私有支付 API、AWS Payment Cryptography、發卡端、金鑰管理、稽核監控與備援區域。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10294a"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffca7a"/></linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#8fe8ff"/></marker>
+    <style>.box{fill:#10243f;stroke:#31577d;stroke-width:2}.label{font:700 25px 'Noto Sans TC',sans-serif;fill:#fff}.small{font:500 18px 'Noto Sans TC',sans-serif;fill:#c6d6ed}.tiny{font:600 16px 'Noto Sans TC',sans-serif;fill:#ffcf91}.flow{fill:none;stroke:#8fe8ff;stroke-width:5;marker-end:url(#arrow)}.dash{fill:none;stroke:#ffb347;stroke-width:4;stroke-dasharray:10 8;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="760" height="1280" rx="30" fill="url(#bg)"/>
+  <text x="42" y="58" class="label" font-size="30">支付交易與金鑰治理</text>
+  <text x="42" y="90" class="small">示意流程｜服務、稽核與復原分層</text>
+
+  <rect x="90" y="135" width="580" height="120" rx="22" class="box"/>
+  <circle cx="150" cy="195" r="29" fill="url(#orange)"/>
+  <text x="202" y="187" class="label">收單端</text><text x="202" y="221" class="small">加密 PIN 區塊＋交易識別</text>
+  <path d="M380 255V300" class="flow"/>
+
+  <rect x="90" y="305" width="580" height="155" rx="22" class="box"/>
+  <text x="132" y="354" class="label">私有支付 API</text>
+  <text x="132" y="394" class="small">IAM 最小權限 · 冪等 · 交易授權</text>
+  <text x="132" y="428" class="tiny">Private Subnet → VPC 端點</text>
+  <path d="M380 460V505" class="flow"/>
+
+  <rect x="70" y="510" width="620" height="205" rx="25" fill="#152a43" stroke="url(#orange)" stroke-width="4"/>
+  <text x="112" y="561" class="label">AWS Payment Cryptography</text>
+  <text x="112" y="607" class="small">資料面：PIN／CVV／EMV／MAC</text>
+  <text x="112" y="643" class="small">用途受限金鑰與 Alias</text>
+  <text x="112" y="682" class="tiny">支付專用 HSM · 明文金鑰不離開 HSM</text>
+  <path d="M380 715V760" class="flow"/>
+
+  <rect x="90" y="765" width="580" height="115" rx="22" class="box"/>
+  <text x="132" y="815" class="label">發卡端</text><text x="132" y="849" class="small">驗證、授權與交易結果</text>
+
+  <rect x="48" y="935" width="205" height="220" rx="20" class="box"/>
+  <text x="76" y="982" class="label" font-size="21">金鑰治理</text>
+  <text x="76" y="1022" class="small">MFA／短期憑證</text>
+  <text x="76" y="1055" class="small">雙人核准</text>
+  <text x="76" y="1088" class="small">TR-31／TR-34</text>
+  <text x="76" y="1121" class="small">Alias 輪替</text>
+
+  <rect x="278" y="935" width="205" height="220" rx="20" class="box"/>
+  <text x="306" y="982" class="label" font-size="21">稽核監控</text>
+  <text x="306" y="1022" class="small">CloudTrail</text>
+  <text x="306" y="1055" class="small">CloudWatch</text>
+  <text x="306" y="1088" class="small">交易對帳</text>
+  <text x="306" y="1121" class="small">事件應變</text>
+
+  <rect x="508" y="935" width="205" height="220" rx="20" fill="#132c49" stroke="#86f7d4" stroke-width="3"/>
+  <text x="536" y="982" class="label" font-size="21">備援區域</text>
+  <text x="536" y="1022" class="small">金鑰複本</text>
+  <text x="536" y="1055" class="small">應用與資料</text>
+  <text x="536" y="1088" class="small">端點與路由</text>
+  <text x="536" y="1121" class="small">切換演練</text>
+  <path d="M180 925C215 870 270 850 315 880" class="dash"/><path d="M570 925C535 870 490 850 445 880" class="dash"/>
+  <text x="45" y="1215" class="small">共同責任：AWS 維護服務與 HSM；客戶治理交易、</text>
+  <text x="45" y="1247" class="small">IAM、網路、金鑰用途、PCI 證據與完整災難復原。</text>
+</svg>
