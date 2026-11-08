@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜Amazon Security Lake：集中安全資料湖與 OCSF</title>
+  <meta name="description" content="理解 Amazon Security Lake 如何以 OCSF 集中 AWS、SaaS、地端與自訂安全資料，並治理跨帳號查詢、訂閱者、成本、權限與證據保留。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-11-08-amazon-security-lake-basics.html" />
+  <link rel="prev" href="./2026-11-07-amazon-detective-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="Amazon Security Lake：集中安全資料湖與 OCSF" />
+  <meta property="og:description" content="從 OCSF 正規化、跨帳號彙整、訂閱者存取到生命週期與安全治理，建立可控的安全資料湖。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-11-08-amazon-security-lake-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/amazon-security-lake-governance-flow.svg" />
+  <meta property="article:published_time" content="2026-11-08T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Amazon Security Lake：集中安全資料湖與 OCSF" />
+  <meta name="twitter:description" content="掌握安全資料來源、OCSF、跨帳號治理、訂閱者、成本、保留與共同責任。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/amazon-security-lake-governance-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1180px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}code{overflow-wrap:anywhere}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon Security Lake：集中安全資料湖與 OCSF","description":"理解 Amazon Security Lake 如何以 OCSF 集中 AWS、SaaS、地端與自訂安全資料，並治理跨帳號查詢、訂閱者、成本、權限與證據保留。","datePublished":"2026-11-08T21:30:00+08:00","dateModified":"2026-11-08T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-11-08-amazon-security-lake-basics.html","image":"https://www.2gwine.com/aws-basics/assets/amazon-security-lake-governance-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">安全資料湖</span><span class="chip rounded-full px-3 py-1 text-sm">2026-11-08</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">Amazon Security Lake：集中安全資料湖與 OCSF</h1>
+<p class="text-xl leading-9 muted">Amazon Security Lake 將 AWS 原生安全紀錄、第三方安全資料與自訂來源集中到客戶帳號中的 Amazon S3 資料湖，並以 Open Cybersecurity Schema Framework（OCSF）正規化資料。服務可降低跨來源蒐集與格式轉換的負擔，但不會自動完成威脅判定、法遵證據保全、資料品質驗證或事件處置。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-11-08</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>範圍辨識：</strong>Security Lake 是安全資料集中、正規化與分享的基礎層，不是單獨的 SIEM、威脅偵測引擎或事件應變平台。資料只有在來源、區域、帳號、OCSF 映射、生命週期與訂閱者權限都正確時，才能形成可信的分析基礎。</div>
+
+<h2>服務定位</h2>
+<p><strong>Amazon Security Lake</strong> 會在選定 AWS 區域建立與管理安全資料湖，把支援的 AWS 來源轉換為 OCSF 格式並以 Apache Parquet 儲存於 Amazon S3。來源可包含 AWS CloudTrail 管理與資料事件、Amazon VPC Flow Logs、Amazon Route 53 Resolver query logs、AWS Security Hub findings，以及其他受支援的 AWS 安全資料；第三方產品與自訂來源也能在符合 OCSF 與寫入規則後納入。</p>
+<p>服務適合處理「安全資料分散在多帳號、多區域與多種工具」「同一事件需要跨網路、身分與資源紀錄關聯」「多個分析工具需要受控取得同一份安全資料」等問題。Security Lake 負責資料湖與標準化基礎，不保證每筆來源資料完整、每個 OCSF 欄位語意正確，也不替代 SIEM 查詢規則、威脅獵捕、事件分級及人工判斷。</p>
+
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4">
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">資料與儲存</h3><ul>
+<li><strong>OCSF：</strong>以供應商中立的安全事件綱要統一事件類別、欄位與語意，降低各來源格式差異。</li>
+<li><strong>Data lake：</strong>資料保存在客戶帳號的 S3 儲存貯體；服務管理必要的彙整、分割區與中繼資料流程。</li>
+<li><strong>Rollup Region：</strong>可將一個或多個貢獻區域的資料彙整到指定區域，支援集中分析與保留。</li>
+<li><strong>Lifecycle：</strong>可依來源與區域設定 S3 儲存類別轉換及到期規則，平衡查詢需求與長期成本。</li>
+<li><strong>Custom source：</strong>第三方或自建系統可提供符合 OCSF 的資料，但資料品質與欄位映射由提供方負責。</li>
+</ul></section>
+<section class="chip rounded-2xl p-5"><h3 class="mt-0">治理與取用</h3><ul>
+<li><strong>Delegated administrator：</strong>可透過 AWS Organizations 指定委派管理員，集中設定組織內帳號與來源。</li>
+<li><strong>Subscriber：</strong>獲授權的 AWS 帳號可透過資料查詢或資料存取模式使用特定來源；授權需限制來源與目的。</li>
+<li><strong>Lake Formation：</strong>協助治理資料目錄、資料表與跨帳號查詢權限，不能只依賴 S3 bucket policy。</li>
+<li><strong>Glue Data Catalog：</strong>提供資料表與分割區中繼資料，讓 Athena 或相容工具查詢。</li>
+<li><strong>Security Hub 整合：</strong>Security Hub findings 可成為資料來源；Security Lake 本身不產生 finding 結論。</li>
+</ul></section>
+</div>
+
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul>
+<li>多帳號、多區域環境需要將網路、身分、DNS 與安全 findings 集中到受控資料湖。</li>
+<li>資安營運中心需要以 Athena、SIEM、分析平台或訂閱者工具進行跨來源查詢與威脅獵捕。</li>
+<li>組織希望以 OCSF 降低不同工具的欄位轉換成本，並建立共用的安全資料契約。</li>
+<li>安全資料需要分層保存，近期資料維持快速查詢，較舊資料轉至較低成本儲存類別。</li>
+<li>第三方安全產品需要在明確授權下取得指定來源，而非直接取得整個日誌帳號或所有 S3 物件。</li>
+</ul>
+<h3>不適合或不能單獨完成</h3><ul>
+<li>只有單一工作負載與少量日誌，沒有跨來源分析需求，導入後的治理複雜度高於實際價值。</li>
+<li>期待啟用 Security Lake 後自動得到完整偵測規則、事件優先順序與處置流程。</li>
+<li>來源沒有穩定時間戳、帳號、區域、資源識別或 OCSF 映射，卻直接把資料視為可信證據。</li>
+<li>需要毫秒級即時阻擋或線上交易決策；Security Lake 的角色是分析資料層，不是流量內聯控制。</li>
+<li>把資料湖當成唯一證據庫，沒有原始來源保留、完整性控制、法律保存與復原驗證。</li>
+</ul>
+
+<h2>示意故事案例：跨帳號異常資料存取調查</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家線上服務公司在多個 AWS 帳號執行網站、資料分析與後台管理。安全團隊收到 Security Hub finding，指出某個角色在非預期時間讀取大量 S3 物件。分析人員需要同時確認角色 API 活動、來源網路、DNS 查詢與受影響資源。</p>
+<p>組織已在獨立安全帳號啟用 Security Lake，將 CloudTrail、VPC Flow Logs、Route 53 Resolver query logs 與 Security Hub findings 彙整到指定區域。調查人員透過短期工作階段與受限查詢角色，在 Athena 查詢相同時間窗的 OCSF 資料，找到角色工作階段、來源 IP、DNS 解析與 S3 存取事件的共同識別，再回到原始 CloudTrail 與 S3 資料事件驗證細節。</p>
+<p>團隊沒有把查詢結果直接當成定案，而是保存查詢語句、時間範圍、資料分割區與原始證據位置，依核准程序撤銷工作階段、縮限 IAM、檢查公開存取與機密使用情況。復原後重新查詢相同控制條件，並驗證備份、跨區復原與監控告警仍可運作。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/amazon-security-lake-governance-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/amazon-security-lake-governance-flow.svg" alt="示意：AWS 與自訂安全資料經 OCSF 正規化進入 Amazon Security Lake，再由受控訂閱者查詢、驗證原始證據並執行事件處置與復原" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：資料集中不等於事件結論；來源品質、最小權限、證據驗證與生命週期必須共同治理。</figcaption></figure>
+
+<h2>建置與運作流程</h2><ol>
+<li><strong>定義分析問題：</strong>先列出需要回答的事件問題、必要來源、保存期限、查詢延遲、區域與法遵限制。</li>
+<li><strong>建立安全帳號：</strong>以 AWS Organizations 指定獨立安全帳號為 Security Lake 委派管理員，避免工作負載帳號自行管理全域安全資料。</li>
+<li><strong>盤點來源與區域：</strong>確認各帳號實際使用的 CloudTrail、VPC、Route 53 Resolver、Security Hub 及第三方來源，避免只依組織清單推定資料存在。</li>
+<li><strong>選擇彙整架構：</strong>設定貢獻區域與 rollup Region，評估資料駐留、跨區複寫、查詢位置、區域中斷與復原要求。</li>
+<li><strong>啟用 AWS 來源：</strong>逐一啟用必要來源與版本，記錄帳號、區域、來源類別、事件時間與預期每日資料量。</li>
+<li><strong>驗證 OCSF：</strong>抽樣檢查事件類別、時間戳、actor、resource、network endpoint、severity 與原始事件參照，避免欄位存在但語意錯誤。</li>
+<li><strong>納入自訂來源：</strong>要求提供方遵循 OCSF、Parquet、分割區與寫入規格，使用專用角色與最小權限，不在程式碼或資料列存放任何機密值。</li>
+<li><strong>設定資料治理：</strong>以 Lake Formation、Glue Data Catalog、S3 policy 與 KMS key policy 限制資料表、來源、帳號與查詢角色。</li>
+<li><strong>建立訂閱者：</strong>依用途授權查詢或資料存取，只開放必要來源；記錄擁有者、到期日、接收系統與撤銷程序。</li>
+<li><strong>設定生命週期：</strong>依調查熱度與法遵設定 S3 儲存類別轉換、到期、保留與刪除核准，避免所有資料永久保留。</li>
+<li><strong>建立查詢基準：</strong>保存已核准的 Athena 或 SIEM 查詢，測試時間欄位、分割區裁剪、跨帳號識別與重複事件處理。</li>
+<li><strong>監控管理活動：</strong>以 CloudTrail 稽核 Security Lake、Lake Formation、Glue、S3 與 KMS 管理操作，以 CloudWatch／EventBridge 監控失敗、異常用量與權限變更。</li>
+<li><strong>串接事件流程：</strong>將查詢結果送入工單或 SIEM 時只傳必要欄位，不傳入憑證、Token、密碼、cookie 或完整敏感資料。</li>
+<li><strong>驗證原始證據：</strong>重要結論回到原始 CloudTrail、應用程式紀錄或來源系統，保存查詢範圍、版本與完整性資訊。</li>
+<li><strong>演練復原：</strong>測試來源中斷、彙整區域不可用、訂閱者失效、KMS 權限錯誤、資料表損壞與跨區事件的替代流程。</li>
+</ol>
+
+<h2>成本、可用性與維運考量</h2>
+<p>Security Lake 的主要服務費用與匯入及正規化的安全資料量有關；底層 S3 儲存、資料請求、生命週期轉換、跨區傳輸、Athena 掃描、Glue、Lake Formation、KMS、CloudTrail、CloudWatch、SIEM 與第三方訂閱者可能另外產生成本。成本估算應按來源、帳號、區域與每日資料量拆分，不能只以總儲存容量判斷。</p>
+<p>Parquet、OCSF 與分割區設計有助降低掃描量，但查詢若沒有時間、區域、帳號與來源條件，仍可能掃描大量資料。應建立查詢預算、工作群組限制、異常用量告警與保留分層，並定期找出高量但低價值的來源。成本優化不能直接停用關鍵稽核資料，應先調整重複來源、無效查詢與不合理保留。</p>
+<p>Security Lake 按區域運作，rollup Region 可集中多區資料，但不能把單一彙整區域視為沒有失效風險。事件應變計畫應保留原始來源的替代查詢方式，並驗證資料延遲、來源狀態、跨區傳輸、KMS 權限與訂閱者可用性。S3 的耐久性不等同完整備份策略；誤刪、錯誤生命週期、權限變更與加密金鑰失效仍需防護與復原程序。</p>
+
+<h2>Amazon Security Lake 特有資安風險與控制</h2><ul>
+<li><strong>集中後的爆炸半徑：</strong>安全資料湖包含跨帳號活動與網路關係；管理帳號、查詢角色、訂閱者與 KMS 管理者必須職責分離。</li>
+<li><strong>來源涵蓋被高估：</strong>持續比對 Organizations、啟用區域、來源狀態與實際資料分割區，對新帳號與無資料來源告警。</li>
+<li><strong>OCSF 映射錯誤：</strong>以抽樣、契約測試與原始事件對照驗證事件類別、時間、主體、資源與嚴重度，不能只驗證欄位可解析。</li>
+<li><strong>自訂來源投毒：</strong>自訂提供者使用專用寫入角色、限制前綴與來源識別，驗證檔案格式、大小、時間窗與異常事件量。</li>
+<li><strong>訂閱者權限過大：</strong>每個訂閱者只取得必要來源與模式，設定擁有者、用途、到期日、定期複核與立即撤銷程序。</li>
+<li><strong>Lake Formation 與 S3 權限不一致：</strong>同時檢查資料目錄、資料表、資源連結、bucket policy、IAM 與 KMS key policy，避免任一層形成旁路。</li>
+<li><strong>公開存取：</strong>S3 啟用 Block Public Access，禁止公開 ACL 與公開 bucket policy，並以 AWS Config 或等效控制持續檢查。</li>
+<li><strong>長期人員憑證：</strong>管理與查詢人員使用 IAM Identity Center、MFA 與短期憑證，禁止共用帳號與長期 Access Key。</li>
+<li><strong>機密進入安全紀錄：</strong>應用程式與自訂來源不得記錄 credential、Access Key、Secret Key、Token、密碼或 cookie；既有資料需遮罩或以 [REDACTED] 取代。</li>
+<li><strong>KMS 可用性與權限：</strong>限制金鑰管理與解密權，監控 key policy、grant、停用與排程刪除；復原程序需考慮金鑰依賴。</li>
+<li><strong>查詢結果二次外洩：</strong>Athena 結果、SIEM 匯出與工單附件使用獨立加密儲存、最小保留、公開存取阻擋及細粒度權限。</li>
+<li><strong>生命週期誤刪：</strong>重要來源的轉換與到期規則需變更審核、測試、保留例外與復原演練，不能由單一管理者直接修改。</li>
+<li><strong>CloudTrail 稽核缺口：</strong>集中記錄 Security Lake、S3、Lake Formation、Glue、KMS 與訂閱者管理操作，重要異動送至獨立監控。</li>
+<li><strong>只有集中沒有偵測：</strong>Security Lake 必須搭配 SIEM、GuardDuty、Security Hub、CloudWatch 或其他偵測與事件工作流程。</li>
+<li><strong>單區依賴：</strong>保留原始來源、替代查詢與跨區復原設計，定期演練 rollup Region 或訂閱者不可用的情境。</li>
+</ul>
+
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Amazon Security Lake 受管服務的底層基礎設施、支援 AWS 來源的蒐集與 OCSF 正規化流程，以及服務與 S3、Lake Formation、Glue、Organizations 等 AWS 服務的整合。AWS 也負責雲端基礎設施的實體安全與受管服務本身的維護。</p>
+<p>客戶負責選擇帳號、區域、來源、rollup Region、生命週期、訂閱者與分析工具，驗證 OCSF 資料品質，落實 IAM 最小權限、MFA／短期憑證、網路隔離、公開存取阻擋、KMS 加密、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、備份與跨區復原。自訂來源的正確性、敏感資料最小化、查詢結果保護、事件判定與依法保存也屬客戶責任。</p>
+
+<h2>上線與維運可執行檢查清單</h2><ul>
+<li>□ 已列出安全分析問題、必要來源、帳號、區域、保存期限、資料駐留與責任人。</li>
+<li>□ 已指定獨立安全帳號為 Security Lake 委派管理員，並完成職責分離。</li>
+<li>□ 所有管理與查詢人員均使用 IAM Identity Center、MFA 與短期憑證。</li>
+<li>□ 已逐帳號、逐區域確認 AWS 來源啟用狀態與實際資料到達。</li>
+<li>□ rollup Region、貢獻區域、跨區傳輸與區域中斷替代方案已有文件與演練。</li>
+<li>□ OCSF 事件類別、時間、主體、資源、網路端點與嚴重度已抽樣對照原始事件。</li>
+<li>□ 自訂來源使用專用角色、受限 S3 前綴與格式驗證，未使用共用寫入身分。</li>
+<li>□ 資料湖、查詢結果與匯出儲存區已啟用 S3 Block Public Access。</li>
+<li>□ Lake Formation、Glue、S3、IAM 與 KMS 權限已共同檢查，沒有繞過路徑。</li>
+<li>□ 每個訂閱者都有用途、來源範圍、模式、擁有者、核准、到期日與撤銷程序。</li>
+<li>□ KMS key policy、grant、停用與刪除操作均受限並由 CloudTrail 監控。</li>
+<li>□ 自訂來源與應用程式紀錄不含 credential、Access Key、Secret Key、Token、密碼或 cookie。</li>
+<li>□ Secrets Manager／Parameter Store 用於管理整合所需機密，且讀取與輪替權限分離。</li>
+<li>□ CloudTrail 已記錄 Security Lake、Lake Formation、Glue、S3、KMS 與訂閱者管理活動。</li>
+<li>□ CloudWatch／EventBridge 已監控來源中斷、管理異動、異常資料量、查詢成本與整合失敗。</li>
+<li>□ Athena 工作群組、查詢條件、掃描量限制與成本預算告警已設定。</li>
+<li>□ S3 生命週期、保留與刪除規則已經變更審核，且不會誤刪法律保存資料。</li>
+<li>□ 重要調查結論會回查原始來源，並保存查詢、時間窗、分割區與證據位置。</li>
+<li>□ SIEM、工單、聊天與匯出資料只包含必要欄位，完整安全資料不會任意複製。</li>
+<li>□ 已演練來源中斷、KMS 權限錯誤、訂閱者失效、誤刪與跨區復原。</li>
+</ul>
+
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/what-is-security-lake.html" target="_blank" rel="noopener noreferrer">What is Amazon Security Lake?</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/source-management.html" target="_blank" rel="noopener noreferrer">Source management in Amazon Security Lake</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/subscriber-management.html" target="_blank" rel="noopener noreferrer">Subscriber management in Amazon Security Lake</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/custom-sources.html" target="_blank" rel="noopener noreferrer">Collecting data from custom sources</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/region-management.html" target="_blank" rel="noopener noreferrer">Region management in Amazon Security Lake</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/lifecycle-management.html" target="_blank" rel="noopener noreferrer">Lifecycle management in Amazon Security Lake</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/security-iam.html" target="_blank" rel="noopener noreferrer">Identity and access management for Amazon Security Lake</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/security-data-protection.html" target="_blank" rel="noopener noreferrer">Data protection in Amazon Security Lake</a>（查閱：2026-11-08）</li>
+<li><a href="https://docs.aws.amazon.com/security-lake/latest/userguide/logging-using-cloudtrail.html" target="_blank" rel="noopener noreferrer">Logging Amazon Security Lake API calls using AWS CloudTrail</a>（查閱：2026-11-08）</li>
+<li><a href="https://aws.amazon.com/security-lake/pricing/" target="_blank" rel="noopener noreferrer">Amazon Security Lake pricing</a>（查閱：2026-11-08）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-11-08）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際部署仍須依最新支援區域、來源版本、OCSF 規格、資料量、訂閱者、儲存生命週期、定價、法遵與復原演練結果調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-11-07-amazon-detective-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon Detective：行為圖譜與事件調查</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
