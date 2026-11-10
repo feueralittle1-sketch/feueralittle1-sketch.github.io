@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="1280" viewBox="0 0 720 1280" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Artifact 合規佐證治理流程手機版</title>
+  <desc id="desc">合規需求透過 AWS Artifact 取得報告、管理協議與產生附引用回答，再經專業覆核後進入受控證據庫並交付稽核。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071323"/><stop offset="1" stop-color="#102848"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd38a"/></linearGradient>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#78ddff"/></marker>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="14" flood-color="#000" flood-opacity=".34"/></filter>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#f7fbff}.m{font-family:Inter,'Noto Sans TC',sans-serif;fill:#afc4df}.h{font-size:32px;font-weight:800}.s{font-size:21px}.k{font-size:17px;font-weight:700;letter-spacing:.06em}.box{fill:#10233d;stroke:#ffffff22;stroke-width:2}.line{fill:none;stroke:#78ddff;stroke-width:5;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="720" height="1280" rx="30" fill="url(#bg)"/>
+  <circle cx="70" cy="90" r="170" fill="#ff9900" opacity=".08"/><circle cx="670" cy="1160" r="220" fill="#55d8ff" opacity=".07"/>
+  <text x="42" y="66" class="t h">AWS Artifact</text><text x="42" y="104" class="t h">合規佐證治理流程</text>
+  <text x="42" y="142" class="m s">示意：需求 → 佐證 → 覆核 → 交付</text>
+  <g filter="url(#shadow)"><rect class="box" x="42" y="184" width="636" height="184" rx="24"/><text x="70" y="226" class="t k">01 合規需求與範圍</text>
+    <text x="70" y="280" class="t s">法規／問卷 · AWS 服務 · 區域 · 期間</text><text x="70" y="322" class="t s">先定義需要證明的控制與責任邊界</text><text x="70" y="350" class="m" style="font-size:17px;font-family:Inter,'Noto Sans TC',sans-serif">避免用一份報告概括整個工作負載</text></g>
+  <path class="line" d="M360 368V414"/>
+  <g filter="url(#shadow)"><rect x="42" y="414" width="636" height="218" rx="24" fill="#122b49" stroke="#ffb657" stroke-width="2"/><rect x="70" y="446" width="580" height="8" rx="4" fill="url(#orange)"/><text x="70" y="504" class="t h">02 AWS Artifact</text><text x="70" y="550" class="t s">AWS／第三方報告 · 帳號／組織協議</text><text x="70" y="594" class="t s">Assurance Assistant · 更新事件</text></g>
+  <path class="line" d="M360 632V678"/>
+  <g filter="url(#shadow)"><rect class="box" x="42" y="678" width="636" height="244" rx="24"/><text x="70" y="722" class="t k">03 法律、資安與控制覆核</text><text x="70" y="776" class="t s">核對服務、區域、期間與分享條款</text><text x="70" y="818" class="t s">逐條回查引用 · 分離客戶端證據</text><text x="70" y="864" class="m s">取得文件不等於合規認證</text><text x="70" y="898" class="m" style="font-size:17px;font-family:Inter,'Noto Sans TC',sans-serif">保留核准、版本與責任矩陣</text></g>
+  <path class="line" d="M360 922V968"/>
+  <g filter="url(#shadow)"><rect class="box" x="42" y="968" width="636" height="148" rx="24"/><text x="70" y="1012" class="t k">04 保護、監控與稽核交付</text><text x="70" y="1062" class="t s">受控證據庫 · 稽核軌跡 · 期限型分享</text><text x="70" y="1100" class="m s">版本、到期、撤銷、備份與復原</text></g>
+  <g transform="translate(42 1150)"><rect width="636" height="88" rx="22" fill="#0d1f35" stroke="#62e5c6" stroke-width="2"/><text x="24" y="34" class="t k">持續控制面</text><text x="24" y="66" class="m" style="font-size:18px;font-family:Inter,'Noto Sans TC',sans-serif">IAM · MFA · KMS · S3 · 稽核 · 通知 · 備份復原</text></g>
+</svg>
