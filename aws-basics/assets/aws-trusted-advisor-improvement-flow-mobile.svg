@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="1320" viewBox="0 0 390 1320" role="img" aria-labelledby="title desc">
+<title id="title">AWS Trusted Advisor 最佳實務改善閉環手機版示意圖</title>
+<desc id="desc">AWS 環境經六類 Trusted Advisor 檢查，再進入風險分級、分派核准、受控修復、交叉驗證與例外治理。</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071425"/><stop offset="1" stop-color="#102746"/></linearGradient><marker id="a" markerWidth="9" markerHeight="9" refX="7" refY="4.5" orient="auto"><path d="M0 0L9 4.5L0 9Z" fill="#65d9ff"/></marker></defs>
+<rect width="390" height="1320" rx="26" fill="url(#bg)"/><text x="24" y="48" fill="#fff" font-size="22" font-weight="700" font-family="Arial,'Noto Sans TC',sans-serif">Trusted Advisor 改善閉環</text><text x="24" y="76" fill="#9fb6d6" font-size="13" font-family="Arial,'Noto Sans TC',sans-serif">示意｜建議須經核准、修復與驗證</text>
+<g font-family="Arial,'Noto Sans TC',sans-serif"><rect x="24" y="105" width="342" height="120" rx="18" fill="#112b49" stroke="#315779"/><text x="45" y="138" fill="#8fe8ff" font-size="18" font-weight="700">1. AWS 環境範圍</text><text x="45" y="170" fill="#dce9fb" font-size="14">Organizations / OU / 帳號 / 區域</text><text x="45" y="197" fill="#dce9fb" font-size="14">資源擁有者與資料分級</text>
+<path d="M195 225V255" stroke="#65d9ff" stroke-width="3" marker-end="url(#a)"/>
+<rect x="24" y="265" width="342" height="190" rx="18" fill="#172b45" stroke="#ffad36"/><text x="45" y="299" fill="#ffcb8a" font-size="18" font-weight="700">2. 六類最佳實務檢查</text><g fill="#dce9fb" font-size="14"><text x="45" y="334">成本最佳化　效能　安全</text><text x="45" y="364">容錯　服務配額　營運卓越</text><text x="45" y="400">輸出：資源、狀態、條件與建議</text><text x="45" y="428" fill="#a8bad8">狀態不是企業風險等級</text></g>
+<path d="M195 455V485" stroke="#65d9ff" stroke-width="3" marker-end="url(#a)"/>
+<rect x="24" y="495" width="342" height="150" rx="18" fill="#112b49" stroke="#315779"/><text x="45" y="529" fill="#8fe8ff" font-size="18" font-weight="700">3. 企業風險分級</text><g fill="#dce9fb" font-size="14"><text x="45" y="561">外部暴露 / 敏感資料 / 法規</text><text x="45" y="590">可用性 / 成本 / 修復複雜度</text><text x="45" y="619">確認刷新時間並交叉檢查</text></g>
+<path d="M195 645V675" stroke="#65d9ff" stroke-width="3" marker-end="url(#a)"/>
+<rect x="24" y="685" width="342" height="150" rx="18" fill="#112b49" stroke="#315779"/><text x="45" y="719" fill="#8fe8ff" font-size="18" font-weight="700">4. 分派、核准與回復計畫</text><g fill="#dce9fb" font-size="14"><text x="45" y="752">責任人 / 期限 / 驗收證據</text><text x="45" y="781">資安或 FinOps 覆核</text><text x="45" y="810">測試、維護時段與回復方法</text></g>
+<path d="M195 835V865" stroke="#65d9ff" stroke-width="3" marker-end="url(#a)"/>
+<rect x="24" y="875" width="342" height="170" rx="18" fill="#102a44" stroke="#57d39b"/><text x="45" y="909" fill="#7ff0b6" font-size="18" font-weight="700">5. 受控修復與驗證</text><g fill="#dce9fb" font-size="14"><text x="45" y="942">Config / Security Hub CSPM</text><text x="45" y="971">CloudWatch / 服務原生指標</text><text x="45" y="1000">等待刷新後確認並關閉工單</text><text x="45" y="1027" fill="#a8bad8">重大變更不直接自動執行</text></g>
+<path d="M195 1045V1075" stroke="#65d9ff" stroke-width="3" marker-end="url(#a)"/>
+<rect x="24" y="1085" width="342" height="160" rx="18" fill="#102a44" stroke="#ffbd70"/><text x="45" y="1119" fill="#ffcb8a" font-size="18" font-weight="700">6. 例外與持續治理</text><g fill="#dce9fb" font-size="14"><text x="45" y="1152">理由 / 擁有者 / 補償控制 / 到期日</text><text x="45" y="1181">EventBridge / CloudTrail / 工單</text><text x="45" y="1210">KMS 私有報告、備份與復原</text></g>
+<rect x="24" y="1262" width="342" height="40" rx="13" fill="#091728" stroke="#294c6c"/><text x="195" y="1287" text-anchor="middle" fill="#c9dbef" font-size="12">AWS 提供建議；客戶負責判讀與改善結果</text></g>
+</svg>
