@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 720 1320" role="img" aria-labelledby="title desc">
+<title id="title">AWS Cost Explorer 成本分析與治理流程手機版</title>
+<desc id="desc">示意成本資料經組織語意整理、Cost Explorer 分析、決策與改善驗證形成閉環。</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071525"/><stop offset="1" stop-color="#102849"/></linearGradient><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#d8e6fa"/></marker></defs>
+<rect width="720" height="1320" rx="34" fill="url(#bg)"/><text x="45" y="70" fill="#fff" font-family="Arial,'Noto Sans TC',sans-serif" font-size="30" font-weight="700">示意｜Cost Explorer 治理閉環</text><text x="45" y="108" fill="#9fb7d7" font-family="Arial,'Noto Sans TC',sans-serif" font-size="18">從帳務資料到可驗證的改善行動</text>
+<g font-family="Arial,'Noto Sans TC',sans-serif">
+<rect x="70" y="165" width="580" height="175" rx="26" fill="#10243d" stroke="#4dd8ff" stroke-width="3"/><text x="105" y="215" fill="#8fe8ff" font-size="25" font-weight="700">1. 成本與用量資料</text><text x="105" y="260" fill="#fff" font-size="21">帳號・服務・區域・用量類型</text><text x="105" y="300" fill="#fff" font-size="21">標籤・折扣・退款・費用</text>
+<path d="M360 340v55" stroke="#d8e6fa" stroke-width="6" marker-end="url(#arrow)"/>
+<rect x="70" y="410" width="580" height="175" rx="26" fill="#25203c" stroke="#c58cff" stroke-width="3"/><text x="105" y="460" fill="#d9b7ff" font-size="25" font-weight="700">2. 組織語意與權限</text><text x="105" y="505" fill="#fff" font-size="21">成本配置標籤・Cost Categories</text><text x="105" y="545" fill="#fff" font-size="21">Billing View・最小必要可見範圍</text>
+<path d="M360 585v55" stroke="#d8e6fa" stroke-width="6" marker-end="url(#arrow)"/>
+<rect x="70" y="655" width="580" height="210" rx="26" fill="#3a2815" stroke="#ff9900" stroke-width="4"/><text x="105" y="708" fill="#ffbd70" font-size="26" font-weight="700">3. AWS Cost Explorer</text><text x="105" y="754" fill="#fff" font-size="21">篩選・群組・比較・歷史趨勢</text><text x="105" y="794" fill="#fff" font-size="21">預測・儲存報告・API 查詢</text><text x="105" y="834" fill="#fff" font-size="21">辨識成本驅動因素，不直接改資源</text>
+<path d="M360 865v55" stroke="#d8e6fa" stroke-width="6" marker-end="url(#arrow)"/>
+<rect x="70" y="935" width="580" height="270" rx="26" fill="#17362f" stroke="#55e0ad" stroke-width="3"/><text x="105" y="988" fill="#83f0c8" font-size="25" font-weight="700">4. 決策與驗證</text><text x="105" y="1034" fill="#fff" font-size="21">責任分派 → 核准變更 → 觀測</text><text x="105" y="1074" fill="#fff" font-size="21">帳單複核 → 保存證據 → 定期回顧</text><text x="105" y="1124" fill="#ffcb8a" font-size="19">IAM・MFA・CloudTrail・KMS</text><text x="105" y="1160" fill="#ffcb8a" font-size="19">私有匯出・備份・跨區復原</text>
+<path d="M110 1205v45h500v-45" fill="none" stroke="#55e0ad" stroke-width="4"/>
+</g></svg>
