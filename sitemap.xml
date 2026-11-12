@@ -1137,4 +1137,9 @@
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
+  <url>
+    <loc>https://www.2gwine.com/health-taiwan-security/posts/2026-11-12-international-medical-device-cyber-risk-register.html</loc>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
 </urlset>
