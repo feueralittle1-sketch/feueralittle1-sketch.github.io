@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="390" height="1180" viewBox="0 0 390 1180" role="img" aria-labelledby="title desc">
+<title id="title">AWS Budgets 預算治理流程手機版示意圖</title>
+<desc id="desc">帳務資料經預算門檻判斷、通知與核准後執行受限動作，再以稽核、服務健康及成本資料驗證。</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071525"/><stop offset="1" stop-color="#102746"/></linearGradient><marker id="arrow" markerWidth="10" markerHeight="10" refX="8" refY="5" orient="auto"><path d="M0 0L10 5 0 10z" fill="#7fe4ff"/></marker></defs>
+<rect width="390" height="1180" rx="24" fill="url(#bg)"/><text x="24" y="48" fill="#fff" font-family="Inter,Noto Sans TC,sans-serif" font-size="24" font-weight="800">AWS Budgets 治理流程</text><text x="24" y="78" fill="#a9bdd8" font-family="Inter,Noto Sans TC,sans-serif" font-size="14">示意｜通知、核准、回復、驗證</text>
+<g font-family="Inter,Noto Sans TC,sans-serif">
+<rect x="24" y="112" width="342" height="142" rx="20" fill="#122b49" stroke="#2e577a"/><text x="46" y="148" fill="#ffbd70" font-size="15" font-weight="800">01｜資料與責任範圍</text><text x="46" y="184" fill="#fff" font-size="21" font-weight="800">成本與用量資料</text><text x="46" y="216" fill="#c6d4eb" font-size="15">帳號 · 服務 · 標籤 · 成本類別</text>
+<path d="M195 254V282" stroke="#7fe4ff" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="24" y="294" width="342" height="142" rx="20" fill="#122b49" stroke="#2e577a"/><text x="46" y="330" fill="#ffbd70" font-size="15" font-weight="800">02｜AWS Budgets</text><text x="46" y="366" fill="#fff" font-size="21" font-weight="800">實際／預測門檻</text><text x="46" y="398" fill="#c6d4eb" font-size="15">成本 · 用量 · RI · Savings Plans</text>
+<path d="M195 436V464" stroke="#7fe4ff" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="24" y="476" width="342" height="142" rx="20" fill="#122b49" stroke="#2e577a"/><text x="46" y="512" fill="#ffbd70" font-size="15" font-weight="800">03｜責任分派</text><text x="46" y="548" fill="#fff" font-size="21" font-weight="800">通知與工單</text><text x="46" y="580" fill="#c6d4eb" font-size="15">電子郵件 · SNS · 擁有者 · 期限</text>
+<path d="M195 618V646" stroke="#7fe4ff" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="24" y="658" width="342" height="158" rx="20" fill="#18314b" stroke="#ff9900" stroke-width="2"/><text x="46" y="694" fill="#ffbd70" font-size="15" font-weight="800">04｜核准與受限動作</text><text x="46" y="730" fill="#fff" font-size="21" font-weight="800">先核准，再執行</text><text x="46" y="762" fill="#c6d4eb" font-size="15">IAM · SCP · EC2／RDS</text><text x="46" y="790" fill="#c6d4eb" font-size="14">排除正式、安全、備份與復原資源</text>
+<path d="M195 816V844" stroke="#7fe4ff" stroke-width="4" marker-end="url(#arrow)"/>
+<rect x="24" y="856" width="342" height="238" rx="20" fill="#0d2139" stroke="#2e577a"/><text x="46" y="895" fill="#fff" font-size="21" font-weight="800">05｜驗證與治理閉環</text><text x="46" y="935" fill="#ffbd70" font-size="16" font-weight="800">稽核證據</text><text x="46" y="960" fill="#c6d4eb" font-size="14">CloudTrail · 工單 · 核准紀錄</text><text x="46" y="1000" fill="#ffbd70" font-size="16" font-weight="800">服務健康</text><text x="46" y="1025" fill="#c6d4eb" font-size="14">CloudWatch · 容量 · 可用性</text><text x="46" y="1065" fill="#ffbd70" font-size="16" font-weight="800">成本結果</text><text x="46" y="1090" fill="#c6d4eb" font-size="14">等待更新後比對預算與帳單</text>
+<rect x="24" y="1120" width="342" height="38" rx="19" fill="#ffb14a"/><text x="195" y="1145" text-anchor="middle" fill="#241200" font-size="13" font-weight="900">預算事件不是即時斷路器</text>
+</g></svg>
