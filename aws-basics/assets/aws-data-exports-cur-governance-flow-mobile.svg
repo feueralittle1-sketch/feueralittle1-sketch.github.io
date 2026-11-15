@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="780" height="1560" viewBox="0 0 780 1560" role="img" aria-labelledby="title desc">
+<title id="title">AWS Data Exports 與 CUR 2.0 手機版成本資料治理流程</title>
+<desc id="desc">垂直流程呈現帳務資料、匯出定義、私有 S3、Manifest 驗證、分權分析、治理監控及對帳復原。</desc>
+<defs><linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset="1" stop-color="#10254a"/></linearGradient><marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#8fe8ff"/></marker></defs>
+<rect width="780" height="1560" rx="36" fill="url(#bg)"/><text x="48" y="70" fill="#fff" font-family="system-ui,sans-serif" font-size="31" font-weight="800">AWS Data Exports</text><text x="48" y="110" fill="#a8bad8" font-family="system-ui,sans-serif" font-size="19">成本資料匯出與治理｜示意流程</text>
+<g font-family="system-ui,sans-serif">
+<g><rect x="48" y="155" width="684" height="150" rx="24" fill="#132b4d" stroke="#ffbd70" stroke-width="3"/><text x="78" y="200" fill="#ffbd70" font-size="18" font-weight="800">01　帳務與成本資料</text><text x="78" y="243" fill="#fff" font-size="25" font-weight="800">CUR 2.0／FOCUS／最佳化建議</text><text x="78" y="276" fill="#c6d4eb" font-size="17">先確認資料表、帳務期間與責任人</text></g>
+<path d="M390 305V340" stroke="#8fe8ff" stroke-width="5" marker-end="url(#arrow)"/>
+<g><rect x="48" y="350" width="684" height="150" rx="24" fill="#132b4d" stroke="#8fe8ff" stroke-width="3"/><text x="78" y="395" fill="#8fe8ff" font-size="18" font-weight="800">02　資料表＋SQL 匯出定義</text><text x="78" y="438" fill="#fff" font-size="25" font-weight="800">選欄位、篩資料列、定格式</text><text x="78" y="471" fill="#c6d4eb" font-size="17">資料最小化，避免全量分享</text></g>
+<path d="M390 500V535" stroke="#8fe8ff" stroke-width="5" marker-end="url(#arrow)"/>
+<g><rect x="48" y="545" width="684" height="150" rx="24" fill="#132b4d" stroke="#70efbd" stroke-width="3"/><text x="78" y="590" fill="#70efbd" font-size="18" font-weight="800">03　私有 Amazon S3</text><text x="78" y="633" fill="#fff" font-size="25" font-weight="800">公開阻擋、唯一 prefix、版本</text><text x="78" y="666" fill="#c6d4eb" font-size="17">限制 SourceArn／SourceAccount 與讀取角色</text></g>
+<path d="M390 695V730" stroke="#8fe8ff" stroke-width="5" marker-end="url(#arrow)"/>
+<g><rect x="48" y="740" width="684" height="150" rx="24" fill="#132b4d" stroke="#c8a6ff" stroke-width="3"/><text x="78" y="785" fill="#c8a6ff" font-size="18" font-weight="800">04　Manifest 完整性閘門</text><text x="78" y="828" fill="#fff" font-size="25" font-weight="800">驗證檔案、欄位、期間與總額</text><text x="78" y="861" fill="#c6d4eb" font-size="17">攝取必須冪等，可安全重跑當期資料</text></g>
+<path d="M390 890V925" stroke="#8fe8ff" stroke-width="5" marker-end="url(#arrow)"/>
+<g><rect x="48" y="935" width="684" height="150" rx="24" fill="#132b4d" stroke="#8fe8ff" stroke-width="3"/><text x="78" y="980" fill="#8fe8ff" font-size="18" font-weight="800">05　分權分析</text><text x="78" y="1023" fill="#fff" font-size="25" font-weight="800">Athena／BI／資料湖</text><text x="78" y="1056" fill="#c6d4eb" font-size="17">財務與工程使用不同角色、視圖與結果位置</text></g>
+<path d="M390 1085V1120" stroke="#8fe8ff" stroke-width="5" marker-end="url(#arrow)"/>
+<g><rect x="48" y="1130" width="684" height="150" rx="24" fill="#132b4d" stroke="#ffbd70" stroke-width="3"/><text x="78" y="1175" fill="#ffbd70" font-size="18" font-weight="800">06　治理監控</text><text x="78" y="1218" fill="#fff" font-size="25" font-weight="800">IAM／CloudTrail／CloudWatch</text><text x="78" y="1251" fill="#c6d4eb" font-size="17">最小權限、短期憑證、變更與失敗告警</text></g>
+<path d="M390 1280V1315" stroke="#8fe8ff" stroke-width="5" marker-end="url(#arrow)"/>
+<g><rect x="48" y="1325" width="684" height="150" rx="24" fill="#132b4d" stroke="#70efbd" stroke-width="3"/><text x="78" y="1370" fill="#70efbd" font-size="18" font-weight="800">07　對帳與復原</text><text x="78" y="1413" fill="#fff" font-size="25" font-weight="800">月結、備份、跨區、重建測試</text><text x="78" y="1446" fill="#c6d4eb" font-size="17">匯出成功仍須驗證資料品質與財務調整</text></g>
+</g>
+<text x="390" y="1520" text-anchor="middle" fill="#ffe1b8" font-family="system-ui,sans-serif" font-size="17" font-weight="700">資料最小化 → 私有交付 → 驗證 → 分權 → 稽核復原</text>
+</svg>
