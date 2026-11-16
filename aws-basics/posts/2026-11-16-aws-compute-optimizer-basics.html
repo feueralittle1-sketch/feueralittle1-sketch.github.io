@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Compute Optimizer：資源規模建議與安全治理</title>
+  <meta name="description" content="理解 AWS Compute Optimizer 如何分析資源組態與使用指標，產生適型化及閒置資源建議，並以驗證、分權與變更控制安全落地。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-11-16-aws-compute-optimizer-basics.html" />
+  <link rel="prev" href="./2026-11-15-aws-data-exports-cur-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Compute Optimizer：資源規模建議與安全治理" />
+  <meta property="og:description" content="從指標品質、建議偏好、效能風險、試行驗證到自動化護欄，建立可稽核的資源最佳化流程。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-11-16-aws-compute-optimizer-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-compute-optimizer-governance-flow.svg" />
+  <meta property="article:published_time" content="2026-11-16T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Compute Optimizer：資源規模建議與安全治理" />
+  <meta name="twitter:description" content="掌握適型化建議、資料邊界、效能驗證、S3 匯出與自動化變更控制。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-compute-optimizer-governance-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1180px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}code{overflow-wrap:anywhere}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Compute Optimizer：資源規模建議與安全治理","description":"理解 AWS Compute Optimizer 如何分析資源組態與使用指標，產生適型化及閒置資源建議，並以驗證、分權與變更控制安全落地。","datePublished":"2026-11-16T21:30:00+08:00","dateModified":"2026-11-16T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-11-16-aws-compute-optimizer-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-compute-optimizer-governance-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">FinOps 與治理</span><span class="chip rounded-full px-3 py-1 text-sm">2026-11-16</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Compute Optimizer：資源規模建議與安全治理</h1>
+<p class="text-xl leading-9 muted">AWS Compute Optimizer 分析 AWS 資源組態與使用指標，產生適型化、效能與閒置資源建議。建議不是免審核的變更命令；可靠落地仍需要完整指標、工作負載脈絡、效能風險驗證、權限分離、變更窗口與回復程序。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-11-16</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>範圍辨識：</strong>Compute Optimizer 是資源最佳化與建議服務，不等同容量承諾、SLA 驗證、即時自動擴展或財務核准。預設分析通常使用最近 14 天指標；啟用付費的 enhanced infrastructure metrics 後，適用資源可分析最長 93 天。推薦結果仍須在實際尖峰、故障、批次與季節性情境中驗證。</div>
+
+<h2>服務定位</h2>
+<p><strong>AWS Compute Optimizer</strong> 以 Amazon CloudWatch 指標、資源組態與支援的定價資訊，判斷資源是否最佳化、過度配置、配置不足或閒置，並提供近期與預估使用量圖表、效能風險及候選規格。支援範圍會隨服務更新，應以查閱日官方 supported resources 文件為準。</p>
+<p>Cost Explorer 回答「費用花在哪裡」；Budgets 管理門檻與通知；Cost Anomaly Detection 找出異常支出；Compute Optimizer 則回答「目前規格是否貼近實際需求」。Auto Scaling 依即時或排程需求調整容量，Compute Optimizer 不取代 Auto Scaling、壓力測試、容量規劃或架構審查。</p>
+
+<h2>核心概念與服務邊界</h2>
+<div class="grid md:grid-cols-2 gap-4"><section class="chip rounded-2xl p-5"><h3 class="mt-0">分析與建議</h3><ul><li><strong>Opt in：</strong>啟用後建立 service-linked role，讓服務讀取必要資源組態與 CloudWatch 指標。</li><li><strong>Lookback period：</strong>預設以近期資料分析；付費進階指標可延長觀察期間。</li><li><strong>Finding：</strong>以最佳化狀態、閒置狀態或不可用原因呈現分析結果。</li><li><strong>Recommendation options：</strong>列出候選規格、預估價格、效能風險與預估使用量。</li><li><strong>Preferences：</strong>可調整 CPU／記憶體餘裕、門檻、觀察期間、執行個體家族與 Graviton 偏好。</li><li><strong>External metrics：</strong>適用時可納入外部可觀測平台的 EC2 記憶體指標。</li></ul></section><section class="chip rounded-2xl p-5"><h3 class="mt-0">治理與執行</h3><ul><li><strong>組織視角：</strong>管理帳號或 delegated administrator 可在授權範圍內檢視成員帳號。</li><li><strong>Recommendation export：</strong>可將 CSV 與 JSON metadata 匯出至指定的私有 S3 bucket。</li><li><strong>人工變更：</strong>多數建議須在對應服務中完成規格調整、停止、刪除或遷移。</li><li><strong>Automation：</strong>支援的 recommended actions 可直接套用或以規則排程執行，必須另設嚴格護欄。</li><li><strong>證據鏈：</strong>保存建議、核准、測試、變更、監控與回復結果，才能證明最佳化有效。</li><li><strong>建議時效：</strong>資源行為、價格、折扣與偏好改變後，舊建議可能不再適用。</li></ul></section></div>
+<p>Compute Optimizer 依可觀測到的資料計算。未發布的記憶體指標、低頻尖峰、月底批次、災難復原容量、授權限制、延遲 SLO 與業務成長計畫若未納入驗證，縮小規格可能造成效能或可用性風險。</p>
+
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul><li>盤點 EC2、Auto Scaling、EBS、Lambda、ECS on Fargate、RDS／Aurora 等支援資源的適型化機會。</li><li>找出長期低使用、閒置或規格與工作負載不匹配的資源。</li><li>比較候選規格、預估節省與效能風險，建立變更優先序。</li><li>跨帳號、跨區域彙整最佳化機會，提供 FinOps 與平台團隊共同審查。</li><li>將建議匯出至私有 S3，建立歷史趨勢、核准與稽核證據。</li><li>對低風險、可回復且已標記的動作建立受控自動化。</li></ul>
+<h3>不適合或不能單獨完成</h3><ul><li>直接把最低成本候選視為正式環境的唯一正確規格。</li><li>取代壓力測試、故障演練、容量模型、SLO 或應用程式效能監控。</li><li>在資料不足、季節性尚未涵蓋或指標缺漏時自動縮容。</li><li>保證 Reserved Instances、Savings Plans、軟體授權或資料傳輸的最終節省。</li><li>把建議匯出到公開 S3，或以長期 Access Key 交給外部分析工具。</li><li>未定義排除標籤、維護窗口、回復條件與責任人就啟用 Automation。</li></ul>
+
+<h2>示意故事案例：電商 API 的保守適型化</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家電商以多個 AWS 帳號分隔正式、測試與資料平台。平台團隊發現部分 EC2 與 RDS 資源長期低使用，但正式環境每月有一次結帳尖峰，年底活動也會提高流量。團隊先在 Organizations 設定 delegated administrator，再以唯讀角色檢視跨帳號建議。</p>
+<p>團隊沒有直接套用最便宜規格，而是先確認 CloudWatch 指標完整、記憶體資料已納入、觀察期間涵蓋月底批次，並以 recommendation preferences 保留 CPU 與記憶體餘裕。候選變更先在測試環境執行壓力測試，再於一小部分正式資源進行 canary，持續比較延遲、錯誤率、排隊深度、資料庫連線與成本。</p>
+<p>通過驗證的變更才進入核准窗口；失敗即依預定門檻回復。Recommendation export 交付至私有 S3，保留建議快照、核准單與結果。Automation 只允許低風險且有明確標籤的 EBS 動作，高關鍵性與災難復原資源以排除標籤隔離，避免演算法建議跨越業務可用性邊界。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-compute-optimizer-governance-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-compute-optimizer-governance-flow.svg" alt="示意：AWS 資源與 CloudWatch 指標進入 Compute Optimizer 分析，經偏好設定、風險審查、測試、核准、受控變更、監控與回復形成治理閉環" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：建議先經資料品質與效能風險門禁，再進入測試、核准與可回復變更。</figcaption></figure>
+
+<h2>建置與運作流程</h2><ol><li>定義最佳化目標、資源範圍、資料擁有者、風險分級與不得變更的業務邊界。</li><li>確認 Organizations 管理帳號、delegated administrator、帳號與區域涵蓋方式。</li><li>以 IAM Identity Center／聯合身分、MFA 與短期憑證授予 opt in、唯讀、偏好管理、匯出及 Automation 分離權限。</li><li>啟用 Compute Optimizer，確認 service-linked role 與 trusted access 符合組織政策。</li><li>盤點支援資源及其 metric requirements，確認 CloudWatch 指標連續且涵蓋典型與尖峰週期。</li><li>適用時部署 CloudWatch Agent 或外部可觀測整合補足 EC2 記憶體資料。</li><li>設定 recommendation preferences，包括觀察期間、CPU／記憶體餘裕、門檻、家族與 Graviton 偏好。</li><li>按帳號、區域、服務、環境、擁有者、風險與節省機會分群建議。</li><li>檢查 finding reason、效能風險、候選規格、預估使用量與定價假設。</li><li>以 SLO、壓力測試、事件紀錄、排程批次、季節性與災難復原需求補充服務看不到的脈絡。</li><li>將低風險候選放入測試或 canary，設定前後比較基準與明確回復門檻。</li><li>經技術、服務擁有者、FinOps 與變更管理核准後，在維護窗口執行。</li><li>持續監控 CloudWatch 指標、應用程式遙測、成本與使用者體驗，失敗時立即回復。</li><li>Recommendation export 僅交付私有 S3，限制 bucket policy、prefix、SourceArn 與 SourceAccount。</li><li>若啟用 Automation，先定義排除標籤、範圍、頻率、動作類型、最大變更量與人工覆核點。</li><li>以 CloudTrail 記錄偏好、匯出、Automation 與相關資源管理活動，透過 CloudWatch／EventBridge 告警未核准操作。</li><li>保存建議、測試、核准、執行、結果與回復證據，定期重新驗證偏好及資源範圍。</li></ol>
+
+<h2>成本、可用性與維運考量</h2>
+<p>Compute Optimizer 的預設建議不另收服務費，但相關 CloudWatch 指標、進階監控、S3 匯出、CloudTrail、KMS、外部可觀測平台與變更後資源仍可能產生費用。Enhanced infrastructure metrics 是付費功能；2026-11-16 查閱的官方定價頁列出適用資源按執行小時計費，正式採用前應重新查閱所在區域與最新價格。</p>
+<p>建議通常需要累積足夠指標，分析結果不保證即時。預設 14 天可能看不到季度、年度活動或罕見故障負載；延長至 93 天仍不能取代長期容量模型。Recommendation export 也可能需要時間完成，跨區域與資源類型有獨立工作與目的地限制。</p>
+<p>縮容帶來的節省必須扣除測試、遷移、停機、授權、資料傳輸、快照、工程工時與回復成本。可用性評估應同時檢查多可用區容量、Auto Scaling 上下限、資料庫連線、儲存 IOPS／throughput、Lambda concurrency、容器資源限制與災難復原保留容量。</p>
+
+<h2>AWS Compute Optimizer 特有資安風險與控制</h2><ul><li><strong>建議被誤當命令：</strong>所有變更先經工作負載擁有者、SLO、測試、核准與回復門禁；高關鍵資源不得只憑節省估算縮容。</li><li><strong>指標盲區：</strong>確認記憶體、應用延遲、佇列、連線、批次與季節性資料完整；資料不足時維持原規格或延長觀察。</li><li><strong>跨帳號可見性過大：</strong>delegated administrator 與檢視角色依 IAM 最小權限授權，搭配 SCP、permission boundary 與定期 access review。</li><li><strong>長期憑證：</strong>人員使用聯合身分、MFA 與短期憑證；工作負載使用角色，不建立長期 Access Key。</li><li><strong>Service-linked role 濫用或遺留：</strong>監控角色建立與政策變更；停用服務後依官方程序處理不再需要的角色。</li><li><strong>Automation 擴大變更半徑：</strong>將查看建議、建立規則、核准與執行權限分離；限制支援動作、標籤、區域、排程與最大批次。</li><li><strong>錯誤刪除 EBS：</strong>只對明確標記、已驗證無依賴且可回復的未掛載磁碟套用；核對快照、IaC drift、保留期限與復原演練。</li><li><strong>公開匯出：</strong>S3 bucket 不得公開，啟用 Block Public Access、停用 ACL、限制 prefix、SourceArn、SourceAccount 與讀取主體。</li><li><strong>KMS 邊界錯置：</strong>Recommendation export 使用符合分類要求的 SSE-S3 或 SSE-KMS；若使用客戶管理金鑰，限制 key policy、grant 與跨帳號解密。</li><li><strong>敏感標籤與自由文字：</strong>不得把客戶資料、credential、Access Key、Secret Key、Token、密碼、cookie 或含認證資訊的 URL 寫入標籤與名稱欄位。</li><li><strong>第三方外部指標：</strong>外部可觀測平台的整合、資料範圍、帳號層級選擇、停用與供應商風險須獨立審查。</li><li><strong>網路與管理面：</strong>工作負載資料面維持私有子網路與必要安全群組；管理 Compute Optimizer 的人員與自動化從受控環境呼叫 AWS API，限制未授權網路出口與主體。</li><li><strong>機密管理：</strong>自動化若需要外部整合機密，存於 Secrets Manager／Parameter Store 並輪替，不寫入程式碼、標籤、規則名稱或日誌。</li><li><strong>稽核不足：</strong>以 CloudTrail 記錄 enrollment、偏好、匯出、Automation 與資源變更，透過 CloudWatch／EventBridge 告警未核准操作。</li><li><strong>復原準備不足：</strong>變更前保留必要快照、設定與 IaC 版本；定義跨區復原容量不參與一般縮容，定期測試回復。</li></ul>
+
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Compute Optimizer 受管服務、分析平台、支援的建議能力、服務端基礎設施安全，以及依客戶設定讀取必要組態與指標。AWS 提供 finding、建議、效能風險、偏好、匯出與支援動作；這些結果不構成客戶工作負載的容量或可用性保證。</p>
+<p>客戶負責選擇是否 opt in、設定 Organizations 與 delegated administrator、IAM 最小權限、MFA／短期憑證、網路隔離、公開存取、KMS、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、S3 匯出、外部指標、標籤與 Automation 規則；同時負責驗證業務週期、SLO、測試、核准、備份、跨區復原、變更與回復結果。</p>
+
+<h2>上線與維運可執行檢查清單</h2><ul><li>□ 最佳化目標、風險分級、資源擁有者與不可變更邊界已核准。</li><li>□ 支援資源、帳號、區域與 metric requirements 已依官方文件確認。</li><li>□ Organizations trusted access 與 delegated administrator 範圍符合治理要求。</li><li>□ Opt in、檢視、偏好、匯出、Automation 與資源變更權限已分離。</li><li>□ 人員使用 IAM Identity Center／聯合身分、MFA 與短期憑證。</li><li>□ Service-linked role 與相關管理政策已納入持續監控。</li><li>□ CloudWatch 指標完整，記憶體、延遲、錯誤率、佇列與批次脈絡已補足。</li><li>□ 觀察期間涵蓋典型、尖峰、月底、季節性或其他重要工作週期。</li><li>□ Recommendation preferences 的餘裕、門檻、家族與架構選擇已記錄。</li><li>□ 每項建議均檢查 finding reason、效能風險、預估使用量與價格假設。</li><li>□ Reserved Instances、Savings Plans、授權、傳輸與變更成本另行驗證。</li><li>□ 測試與 canary 有前後基準、成功條件、停止條件與回復程序。</li><li>□ 高關鍵、災難復原與法規保留資源已透過標籤或流程排除自動變更。</li><li>□ Automation 僅涵蓋核准的動作、標籤、區域、頻率與最大批次。</li><li>□ EBS 刪除前已確認無依賴、快照可用、IaC drift 與復原測試。</li><li>□ Recommendation export bucket 保持私有，Block Public Access 已啟用。</li><li>□ Bucket policy 已限制 prefix、SourceArn、SourceAccount 與必要讀取者。</li><li>□ SSE-S3／SSE-KMS、key policy、生命週期、版本與跨帳號解密已審查。</li><li>□ credential、Access Key、Secret Key、Token、密碼與 cookie 未出現在標籤、名稱、URL、程式碼或日誌。</li><li>□ 外部整合機密存於 Secrets Manager／Parameter Store 並定期輪替。</li><li>□ CloudTrail 已記錄管理事件，CloudWatch／EventBridge 可告警未核准操作。</li><li>□ 變更後持續監控效能、錯誤、容量、成本與使用者體驗。</li><li>□ 備份、回復、跨區容量與復原演練未因一般節省目標被移除。</li><li>□ 建議、核准、測試、執行、結果與回復證據已保存並定期覆核。</li></ul>
+
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://aws.amazon.com/compute-optimizer/" target="_blank" rel="noopener noreferrer">AWS Compute Optimizer 產品頁</a>（查閱：2026-11-16）</li>
+<li><a href="https://aws.amazon.com/compute-optimizer/pricing/" target="_blank" rel="noopener noreferrer">AWS Compute Optimizer Pricing</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/what-is-compute-optimizer.html" target="_blank" rel="noopener noreferrer">What is AWS Compute Optimizer?</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/getting-started.html" target="_blank" rel="noopener noreferrer">Getting started with AWS Compute Optimizer</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/supported-resources.html" target="_blank" rel="noopener noreferrer">AWS resources supported by Compute Optimizer</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/metrics.html" target="_blank" rel="noopener noreferrer">Metrics analyzed by AWS Compute Optimizer</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/requirements.html" target="_blank" rel="noopener noreferrer">Resource requirements</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/viewing-recommendations.html" target="_blank" rel="noopener noreferrer">Viewing resource recommendations</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/viewing-recommendation-preferences.html" target="_blank" rel="noopener noreferrer">Compute Optimizer recommendation preferences</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/external-metrics-ingestion.html" target="_blank" rel="noopener noreferrer">External metrics ingestion</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/exporting-recommendations.html" target="_blank" rel="noopener noreferrer">Exporting AWS Compute Optimizer recommendations</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/create-s3-bucket-policy-for-compute-optimizer.html" target="_blank" rel="noopener noreferrer">Specifying an existing S3 bucket for recommendations export</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/security-iam.html" target="_blank" rel="noopener noreferrer">Identity and Access Management for AWS Compute Optimizer</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/using-service-linked-roles.html" target="_blank" rel="noopener noreferrer">Using service-linked roles for AWS Compute Optimizer</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/data-protection.html" target="_blank" rel="noopener noreferrer">Data protection in AWS Compute Optimizer</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/automation.html" target="_blank" rel="noopener noreferrer">Apply optimization recommendations using Automation</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/automation-rec.html" target="_blank" rel="noopener noreferrer">Recommended actions</a>（查閱：2026-11-16）</li>
+<li><a href="https://docs.aws.amazon.com/compute-optimizer/latest/ug/logging-using-cloudtrail.html" target="_blank" rel="noopener noreferrer">Logging Compute Optimizer Automation API calls using CloudTrail</a>（查閱：2026-11-16）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-11-16）</li>
+</ul>
+<h2>內容說明</h2><p>本文依查閱日可用的 AWS 官方文件整理，作為基礎學習與架構討論材料；實際作業仍須依最新支援資源、區域、指標需求、偏好、Automation 動作、定價、IAM、Organizations、S3、KMS、CloudTrail／CloudWatch 及組織變更管理程序調整。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-11-15-aws-data-exports-cur-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Data Exports 與 CUR 2.0：成本資料匯出與治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

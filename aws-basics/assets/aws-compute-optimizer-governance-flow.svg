@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">AWS Compute Optimizer 資源最佳化治理流程</title>
+<desc id="desc">AWS 資源與 CloudWatch 指標經資料品質檢查、Compute Optimizer 分析、偏好與風險審查、測試核准、受控變更、監控回復及稽核形成閉環。</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10264a"/></linearGradient>
+  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd38a"/></linearGradient>
+  <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".3"/></filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#70d9ff"/></marker>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<circle cx="1380" cy="100" r="220" fill="#ff9900" opacity=".06"/><circle cx="170" cy="780" r="250" fill="#70d9ff" opacity=".06"/>
+<text x="80" y="82" fill="#fff" font-family="Arial, Noto Sans TC, sans-serif" font-size="42" font-weight="700">Compute Optimizer：從建議到可回復變更</text>
+<text x="80" y="126" fill="#a9bddc" font-family="Arial, Noto Sans TC, sans-serif" font-size="22">示意流程｜建議不直接等於執行，先通過資料、效能與治理門禁</text>
+<g font-family="Arial, Noto Sans TC, sans-serif" filter="url(#shadow)">
+  <g transform="translate(70 190)"><rect width="270" height="190" rx="24" fill="#112946" stroke="#49769b"/><rect width="270" height="12" rx="6" fill="#70d9ff"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">1. 資源與指標</text><text x="24" y="94" fill="#c9d8ec" font-size="20">EC2 · EBS · Lambda</text><text x="24" y="124" fill="#c9d8ec" font-size="20">ECS · RDS / Aurora</text><text x="24" y="154" fill="#c9d8ec" font-size="20">CloudWatch / 外部指標</text></g>
+  <g transform="translate(420 190)"><rect width="300" height="190" rx="24" fill="#112946" stroke="#49769b"/><rect width="300" height="12" rx="6" fill="#70d9ff"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">2. 資料品質門禁</text><text x="24" y="94" fill="#c9d8ec" font-size="20">完整觀察期間</text><text x="24" y="124" fill="#c9d8ec" font-size="20">記憶體與尖峰脈絡</text><text x="24" y="154" fill="#c9d8ec" font-size="20">季節性 / DR 保留容量</text></g>
+  <g transform="translate(800 190)"><rect width="330" height="190" rx="24" fill="#1b304a" stroke="#ffb454"/><rect width="330" height="12" rx="6" fill="url(#accent)"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">3. 建議與偏好</text><text x="24" y="94" fill="#ffe2bd" font-size="20">finding · 候選規格</text><text x="24" y="124" fill="#ffe2bd" font-size="20">效能風險 · 預估節省</text><text x="24" y="154" fill="#ffe2bd" font-size="20">餘裕 · 家族 · 觀察期間</text></g>
+  <g transform="translate(1210 190)"><rect width="320" height="190" rx="24" fill="#112946" stroke="#49769b"/><rect width="320" height="12" rx="6" fill="#70d9ff"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">4. 風險審查</text><text x="24" y="94" fill="#c9d8ec" font-size="20">SLO / 壓力測試</text><text x="24" y="124" fill="#c9d8ec" font-size="20">授權 / 折扣 / 相依性</text><text x="24" y="154" fill="#c9d8ec" font-size="20">排除高關鍵資源</text></g>
+  <path d="M340 285H405" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M720 285H785" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M1130 285H1195" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/>
+  <g transform="translate(155 500)"><rect width="330" height="190" rx="24" fill="#112946" stroke="#49769b"/><text x="24" y="52" fill="#fff" font-size="27" font-weight="700">5. 測試與核准</text><text x="24" y="94" fill="#c9d8ec" font-size="20">測試環境 / canary</text><text x="24" y="124" fill="#c9d8ec" font-size="20">成功與停止條件</text><text x="24" y="154" fill="#c9d8ec" font-size="20">責任人與變更窗口</text></g>
+  <g transform="translate(635 500)"><rect width="330" height="190" rx="24" fill="#1b304a" stroke="#ffb454"/><text x="24" y="52" fill="#fff" font-size="27" font-weight="700">6. 受控變更</text><text x="24" y="94" fill="#ffe2bd" font-size="20">人工執行或 Automation</text><text x="24" y="124" fill="#ffe2bd" font-size="20">最小權限 · 限定標籤</text><text x="24" y="154" fill="#ffe2bd" font-size="20">小批次 · 可立即回復</text></g>
+  <g transform="translate(1115 500)"><rect width="330" height="190" rx="24" fill="#112946" stroke="#49769b"/><text x="24" y="52" fill="#fff" font-size="27" font-weight="700">7. 監控與證據</text><text x="24" y="94" fill="#c9d8ec" font-size="20">效能 · 成本 · 體驗</text><text x="24" y="124" fill="#c9d8ec" font-size="20">CloudTrail / CloudWatch</text><text x="24" y="154" fill="#c9d8ec" font-size="20">回復 · S3 匯出 · 覆核</text></g>
+  <path d="M1370 395V450H320V485" fill="none" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M485 595H620" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M965 595H1100" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M1280 705V780H245V705" fill="none" stroke="#ffb454" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#arrow)"/>
+  <text x="515" y="825" fill="#ffcf91" font-size="22" font-weight="700">結果回饋：重新評估偏好、指標、風險與下一輪候選</text>
+</g>
+<g font-family="Arial, Noto Sans TC, sans-serif"><rect x="80" y="740" width="390" height="86" rx="18" fill="#0c2038" stroke="#355d7b"/><text x="102" y="773" fill="#fff" font-size="20" font-weight="700">持續護欄</text><text x="102" y="805" fill="#a9bddc" font-size="17">IAM 最小權限 · MFA · KMS · 私有 S3</text><rect x="1130" y="740" width="390" height="86" rx="18" fill="#0c2038" stroke="#355d7b"/><text x="1152" y="773" fill="#fff" font-size="20" font-weight="700">復原底線</text><text x="1152" y="805" fill="#a9bddc" font-size="17">快照 · IaC · 回復門檻 · 跨區容量</text></g>
+</svg>
