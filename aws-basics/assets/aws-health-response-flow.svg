@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 900" role="img" aria-labelledby="title desc">
+<title id="title">AWS Health 跨帳號事件應變流程</title>
+<desc id="desc">AWS Health 帳號與組織事件經 EventBridge 分級、去重、責任分派、範圍驗證、受控處置、監控及證據封存形成事件應變閉環。</desc>
+<defs>
+  <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10264a"/></linearGradient>
+  <linearGradient id="accent" x1="0" y1="0" x2="1" y2="0"><stop stop-color="#ff9900"/><stop offset="1" stop-color="#ffd38a"/></linearGradient>
+  <filter id="shadow"><feDropShadow dx="0" dy="10" stdDeviation="12" flood-color="#000" flood-opacity=".3"/></filter>
+  <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#70d9ff"/></marker>
+</defs>
+<rect width="1600" height="900" fill="url(#bg)"/>
+<circle cx="1370" cy="90" r="220" fill="#ff9900" opacity=".06"/><circle cx="160" cy="800" r="250" fill="#70d9ff" opacity=".06"/>
+<text x="80" y="82" fill="#fff" font-family="Arial, Noto Sans TC, sans-serif" font-size="42" font-weight="700">AWS Health：從事件訊號到可驗證復原</text>
+<text x="80" y="126" fill="#a9bddc" font-family="Arial, Noto Sans TC, sans-serif" font-size="22">示意流程｜跨帳號彙整、至少一次傳遞、分級去重與受控應變</text>
+<g font-family="Arial, Noto Sans TC, sans-serif" filter="url(#shadow)">
+  <g transform="translate(60 190)"><rect width="280" height="190" rx="24" fill="#112946" stroke="#49769b"/><rect width="280" height="12" rx="6" fill="#70d9ff"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">1. Health 事件</text><text x="24" y="94" fill="#c9d8ec" font-size="20">服務問題 · 帳號通知</text><text x="24" y="124" fill="#c9d8ec" font-size="20">預定變更 · 公開事件</text><text x="24" y="154" fill="#c9d8ec" font-size="20">受影響帳號 / 資源</text></g>
+  <g transform="translate(400 190)"><rect width="300" height="190" rx="24" fill="#112946" stroke="#49769b"/><rect width="300" height="12" rx="6" fill="#70d9ff"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">2. 跨帳號彙整</text><text x="24" y="94" fill="#c9d8ec" font-size="20">Organizational view</text><text x="24" y="124" fill="#c9d8ec" font-size="20">Delegated administrator</text><text x="24" y="154" fill="#c9d8ec" font-size="20">管理帳號保持隔離</text></g>
+  <g transform="translate(760 190)"><rect width="350" height="190" rx="24" fill="#1b304a" stroke="#ffb454"/><rect width="350" height="12" rx="6" fill="url(#accent)"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">3. EventBridge 門禁</text><text x="24" y="94" fill="#ffe2bd" font-size="20">類別 · 服務 · actionability</text><text x="24" y="124" fill="#ffe2bd" font-size="20">區域規則 + us-east-1</text><text x="24" y="154" fill="#ffe2bd" font-size="20">SQS 緩衝 · DLQ · 重試</text></g>
+  <g transform="translate(1170 190)"><rect width="360" height="190" rx="24" fill="#112946" stroke="#49769b"/><rect width="360" height="12" rx="6" fill="#70d9ff"/><text x="24" y="55" fill="#fff" font-size="27" font-weight="700">4. 分級與去重</text><text x="24" y="94" fill="#c9d8ec" font-size="20">事件版本 · 帳號 · 實體</text><text x="24" y="124" fill="#c9d8ec" font-size="20">營運 / 安全 / 帳務</text><text x="24" y="154" fill="#c9d8ec" font-size="20">責任人 · 工單 · 升級</text></g>
+  <path d="M340 285H385" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M700 285H745" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M1110 285H1155" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/>
+  <g transform="translate(120 500)"><rect width="350" height="190" rx="24" fill="#112946" stroke="#49769b"/><text x="24" y="52" fill="#fff" font-size="27" font-weight="700">5. 範圍驗證</text><text x="24" y="94" fill="#c9d8ec" font-size="20">CloudWatch / SLO / 交易</text><text x="24" y="124" fill="#c9d8ec" font-size="20">資源依賴 · 期限 · 衝擊</text><text x="24" y="154" fill="#c9d8ec" font-size="20">備份與回復條件</text></g>
+  <g transform="translate(625 500)"><rect width="350" height="190" rx="24" fill="#1b304a" stroke="#ffb454"/><text x="24" y="52" fill="#fff" font-size="27" font-weight="700">6. 受控處置</text><text x="24" y="94" fill="#ffe2bd" font-size="20">測試 · 核准 · 分批執行</text><text x="24" y="124" fill="#ffe2bd" font-size="20">停止條件 · 自動回復</text><text x="24" y="154" fill="#ffe2bd" font-size="20">跨區切換 / 替代方案</text></g>
+  <g transform="translate(1130 500)"><rect width="350" height="190" rx="24" fill="#112946" stroke="#49769b"/><text x="24" y="52" fill="#fff" font-size="27" font-weight="700">7. 驗證與封存</text><text x="24" y="94" fill="#c9d8ec" font-size="20">SLO 恢復 · 結案確認</text><text x="24" y="124" fill="#c9d8ec" font-size="20">CloudTrail / 稽核證據</text><text x="24" y="154" fill="#c9d8ec" font-size="20">私有 S3 · KMS · 生命週期</text></g>
+  <path d="M1350 395V450H295V485" fill="none" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M470 595H610" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/><path d="M975 595H1115" stroke="#70d9ff" stroke-width="5" marker-end="url(#arrow)"/>
+  <path d="M1305 705V790H295V705" fill="none" stroke="#ffb454" stroke-width="4" stroke-dasharray="12 10" marker-end="url(#arrow)"/>
+  <text x="520" y="835" fill="#ffcf91" font-size="22" font-weight="700">演練結果回饋：修正規則、責任、處置手冊與復原目標</text>
+</g>
+<g font-family="Arial, Noto Sans TC, sans-serif"><rect x="70" y="735" width="410" height="92" rx="18" fill="#0c2038" stroke="#355d7b"/><text x="94" y="770" fill="#fff" font-size="20" font-weight="700">持續安全護欄</text><text x="94" y="803" fill="#a9bddc" font-size="17">IAM 最小權限 · MFA · KMS · 私有通道</text><rect x="1110" y="735" width="420" height="92" rx="18" fill="#0c2038" stroke="#355d7b"/><text x="1134" y="770" fill="#fff" font-size="20" font-weight="700">可靠性底線</text><text x="1134" y="803" fill="#a9bddc" font-size="17">冪等 · 多區域 · DLQ · 備份 · 跨區復原</text></g>
+</svg>
