@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Transform MGN：伺服器重新託管遷移基礎</title>
+  <meta name="description" content="理解 AWS Transform MGN 的區塊層持續複寫、暫存區、測試與切換流程，以及伺服器重新託管遷移的成本、可用性與資安控制。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-11-20-aws-transform-mgn-basics.html" />
+  <link rel="prev" href="./2026-11-19-aws-proton-deprecation-migration-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Transform MGN：伺服器重新託管遷移基礎" />
+  <meta property="og:description" content="從來源伺服器、持續複寫、暫存區、測試執行個體到正式切換，整理重新託管遷移與安全控制。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-11-20-aws-transform-mgn-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-transform-mgn-migration-flow.svg" />
+  <meta property="article:published_time" content="2026-11-20T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Transform MGN：伺服器重新託管遷移基礎" />
+  <meta name="twitter:description" content="掌握 MGN 複寫、測試、切換、回復界線、最小權限、網路隔離、KMS、稽核與備份。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-transform-mgn-migration-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1180px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}.warning{border-left:4px solid #fb7185;background:rgba(251,113,133,.09)}code{overflow-wrap:anywhere}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Transform MGN：伺服器重新託管遷移基礎","description":"理解 AWS Transform MGN 的區塊層持續複寫、暫存區、測試與切換流程，以及伺服器重新託管遷移的成本、可用性與資安控制。","datePublished":"2026-11-20T21:30:00+08:00","dateModified":"2026-11-20T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-11-20-aws-transform-mgn-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-transform-mgn-migration-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">遷移與重新託管</span><span class="chip rounded-full px-3 py-1 text-sm">2026-11-20</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Transform MGN：伺服器重新託管遷移基礎</h1>
+<p class="text-xl leading-9 muted">AWS Transform MGN 原名 AWS Application Migration Service，透過來源端複寫、AWS 暫存區與可重複測試，把實體或虛擬伺服器重新託管到 Amazon EC2。服務降低資料搬移與切換工具的自建負擔，但應用相依性、網路、身分、資料一致性、測試、回復與遷移後治理仍由客戶負責。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-11-20</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>名稱更新：</strong>AWS Application Migration Service 已於 2026 年 6 月更名為 AWS Transform MGN。既有 MGN API 與複寫引擎延續使用；本文採目前官方名稱，並聚焦直接操作 MGN 控制台的重新託管流程。</div>
+
+<h2>服務定位</h2>
+<p><strong>AWS Transform MGN</strong> 是伺服器重新託管工具。來源伺服器可位於資料中心、其他雲端、VMware 或其他虛擬化環境，也可以是實體主機。安裝 AWS Replication Agent 後，來源磁碟的區塊變更會持續送往目標 AWS 區域內的暫存區；MGN 再依 EC2 launch template 建立測試或切換執行個體。</p>
+<p>重新託管的目標是先保留作業系統、已安裝軟體與主要磁碟內容，將伺服器搬到 EC2，再視需要進行現代化。它不是自動完成應用重構、資料庫轉換、程式碼修正或零停機保證的服務。若系統依賴固定 IP、硬體設備、共享儲存、低延遲網路、授權伺服器或未盤點的外部介面，仍需額外設計。</p>
+<p>AWS Transform 的遷移工作流程可用 MGN 作為重新託管引擎，協助大規模盤點與波次執行；需要精細控制複寫設定、launch template、測試與切換時，也可直接使用 MGN 控制台。</p>
+
+<h2>核心概念與適用邊界</h2>
+<div class="grid md:grid-cols-2 gap-4"><section class="chip rounded-2xl p-5"><h3 class="mt-0">資料與執行流程</h3><ul><li><strong>來源伺服器：</strong>待遷移的實體機或虛擬機。</li><li><strong>Replication Agent：</strong>從作業系統層讀取磁碟區塊變更並持續複寫。</li><li><strong>Staging area subnet：</strong>放置複寫伺服器與暫存 EBS 磁碟的專用子網路。</li><li><strong>Replication server：</strong>由 MGN 管理的 EC2 資源，接收來源資料並寫入暫存磁碟。</li><li><strong>Launch template：</strong>定義測試與切換 EC2 的執行個體、網路、儲存與安全設定。</li><li><strong>Test／cutover instance：</strong>分別用於正式切換前驗證，以及承接正式工作負載。</li></ul></section><section class="chip rounded-2xl p-5"><h3 class="mt-0">管理與風險邊界</h3><ul><li><strong>Migration wave：</strong>依相依性、風險與維護時段分批搬移。</li><li><strong>Continuous replication：</strong>初始同步後持續傳送變更，切換前仍須確認複寫健康與延遲。</li><li><strong>Crash consistency：</strong>複寫結果可達當機一致性；應用一致性仍需客戶停寫、沖刷或使用服務專屬程序。</li><li><strong>Post-launch actions：</strong>可在啟動後執行驗證或設定，但腳本與權限必須受控。</li><li><strong>Finalize cutover：</strong>會停止複寫並清除複寫資源，不應在回復條件未結束前過早執行。</li><li><strong>Rehost 不等於 DR：</strong>持續災難復原應另評估 AWS Elastic Disaster Recovery 與復原治理。</li></ul></section></div>
+
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul><li>需要把大量 Windows 或 Linux 伺服器先搬到 EC2，再分階段優化。</li><li>來源為 VMware、其他虛擬化平台、實體機或其他雲端，且可安裝複寫代理程式。</li><li>希望透過持續區塊複寫縮短最終資料同步時間，並可重複建立測試執行個體。</li><li>應用架構短期內不宜重寫，但有明確的 EC2、VPC、身分、監控與維運目標。</li><li>可依系統相依性建立遷移波次，安排停寫、驗證、DNS 或流量切換與回復窗口。</li></ul>
+<h3>不適合或不能單獨完成</h3><ul><li>目標是直接將單體應用拆成容器、無伺服器或雲端原生資料服務。</li><li>來源作業系統、磁碟配置或硬體相依性不在支援範圍，且沒有替代路徑。</li><li>無法安裝代理程式，也不符合可用的無代理複寫條件；官方已停止對新部署提供 agentless replication。</li><li>要求應用層零資料遺失，卻沒有停寫、交易沖刷、資料庫原生複寫或一致性驗證。</li><li>只搬移主機，卻未盤點 DNS、憑證、Active Directory、共享檔案、排程、監控與外部整合。</li><li>把一次性遷移當成長期災難復原方案，未建立備份、跨區副本與定期復原演練。</li></ul>
+
+<h2>示意故事案例：將訂單系統分波次搬到 EC2</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家零售公司有六台虛擬伺服器：兩台網站、兩台應用、兩台自管資料庫。團隊先用流量紀錄、連線清冊與業務訪談確認網站依賴應用層、應用層依賴資料庫、AD、DNS 與外部付款介面，因此沒有把六台主機拆成互不相關的單機任務。</p>
+<p>目標帳號先建立專用 staging subnet、VPC endpoint、受限安全群組、CloudTrail、CloudWatch 與 KMS 金鑰。人員透過聯合身分、MFA 與短期工作階段操作；安裝代理程式所需權限限縮到遷移範圍，安裝完成後撤銷。來源資料經加密傳輸到暫存 EBS，測試與切換執行個體則依 launch template 進入私有應用子網路。</p>
+<p>團隊先移轉網站與應用測試波次，驗證 TLS、DNS、SSM 管理、日誌、效能與外部介面；資料庫波次在切換窗口停止寫入、完成最後同步並執行應用一致性檢查。新環境通過訂單建立、付款回呼與報表驗證後才切換流量。回復觀察期結束前不 finalize cutover；完成後才停止複寫、清理暫存資源，並把 EC2 納入 AWS Backup 與跨區復原演練。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-transform-mgn-migration-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-transform-mgn-migration-flow.svg" alt="示意：來源伺服器透過 AWS Transform MGN 將磁碟變更持續複寫到隔離暫存區，再由受控 launch template 建立測試與切換 EC2，完成驗證後切換流量並納入監控備份" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：先建立身分、網路、加密與稽核邊界，再持續複寫；測試波次通過後才進入停寫、切換、觀察與清理。</figcaption></figure>
+
+<h2>建置與運作流程</h2><ol><li>建立應用、主機、磁碟、網路、身分、DNS、憑證、排程、共享儲存與外部介面的相依性清冊。</li><li>確認來源作業系統、磁碟大小、網路與目標 AWS 區域受 MGN 支援，並記錄配額與波次規模。</li><li>定義 RTO、RPO、可接受停機、資料一致性方法、切換核准人與回復截止點。</li><li>建立遷移專用帳號或明確隔離範圍，啟用 Organizations／SCP、CloudTrail 與安全監控。</li><li>建立專用 staging area subnet；決定私有複寫路徑、NAT 或必要 VPC endpoint，限制路由與安全群組。</li><li>在每個目標區域初始化 MGN，檢查自動建立的服務角色與受管政策，分離管理、操作與唯讀權限。</li><li>設定 replication template，包括暫存子網路、路由、節流、EBS 類型、加密與資源標籤。</li><li>以核准流程安裝 Replication Agent；完成後撤銷不再需要的安裝權限並確認來源端服務狀態。</li><li>等待初始同步完成，監控 replication health、lag、stalled event、網路吞吐與暫存容量。</li><li>逐台檢查 EC2 launch template：執行個體類型、私有子網路、安全群組、IAM role、EBS、KMS、標籤與 deletion behavior。</li><li>以最小權限建立測試執行個體；避免連到正式排程、寄信、付款、批次或其他會產生副作用的介面。</li><li>執行作業系統、應用、資料、網路、身分、效能、監控、備份、弱點與法遵驗證。</li><li>修正後重複測試；把通過條件、失敗證據與 launch template 版本固定到遷移波次。</li><li>切換前確認 replication state 健康且無不可接受延遲，建立最終備份並通知相關責任人。</li><li>停止或凍結來源端寫入，完成應用一致性程序，再啟動 cutover instance。</li><li>驗證資料時間點、服務健康、DNS／負載平衡、憑證、外部整合與監控後，才逐步導入流量。</li><li>在回復觀察期內保留來源端與必要複寫能力；任何重大錯誤依既定條件回復。</li><li>觀察期通過後 finalize cutover、斷開來源、封存紀錄並清理 replication server、暫存 EBS、測試執行個體與過期權限。</li><li>將新 EC2 納入 Patch Manager、Inspector、CloudWatch、Config、AWS Backup、成本標籤與跨區復原演練。</li></ol>
+
+<h2>成本、可用性與維運考量</h2>
+<p>MGN 對每台來源伺服器提供有限期間的免費使用時數；官方快速入門目前說明為 2,160 小時，也就是連續使用約 90 天。即使仍在服務免費期間，複寫伺服器、暫存 EBS、快照、資料傳輸、NAT Gateway、VPC endpoint、測試與切換 EC2、CloudWatch、KMS 及備份仍可能計費。測試執行個體若未終止，也會持續產生成本。</p>
+<p>暫存磁碟類型會影響成本與同步速度。來源磁碟變更率高或切換期限緊迫時，較高效能的 EBS 可能縮短同步；低變更率工作負載可評估較低成本選項。大量波次同時複寫時，還要評估網路頻寬、複寫伺服器比例、EBS 配額、API 配額、NAT 流量及測試環境並行成本。</p>
+<p>MGN 降低搬移工具的建置負擔，不會自動替目標工作負載建立 Multi-AZ 或跨區高可用。重新託管後的 EC2 若仍是單一執行個體、單一可用區與單一資料庫，原有單點故障只會被搬到雲端。可用性設計應在遷移前決定最低目標，並在遷移後逐步導入負載平衡、Auto Scaling、Multi-AZ 資料服務、備份與跨區復原。</p>
+
+<h2>AWS Transform MGN 特有資安風險與控制</h2><ul><li><strong>初始化權限過大：</strong>官方主控台初始化流程需要高權限；應在受控時段由專責角色執行，記錄 CloudTrail，完成後回收日常不需要的管理權限。</li><li><strong>安裝用權限殘留：</strong>代理程式安裝完成後撤銷或刪除安裝專用權限，不把長期存取方式留在來源伺服器。</li><li><strong>來源代理程式具磁碟讀取能力：</strong>限制可安裝的人員、套件來源與主機範圍，監控代理程式狀態，遷移完成後確認卸載。</li><li><strong>複寫伺服器暴露：</strong>使用專用 staging subnet、安全群組與私有路徑；只開放必要來源與連接埠，不允許任意入站管理。</li><li><strong>公開 IP 與網際網路路徑：</strong>能透過 VPN、Direct Connect、VPC peering 或 endpoint 完成時優先使用私有連線；確需公開路徑時限制來源並持續監控。</li><li><strong>暫存資料未妥善加密：</strong>所有暫存與目標 EBS 啟用加密；使用客戶管理 KMS 金鑰時，縮限 key policy 與 grant，驗證服務角色可用後再開始複寫。</li><li><strong>KMS 設定變更觸發重複同步：</strong>官方說明複寫開始後反轉加密選項會重新開始複寫；應在波次前固定金鑰與授權，避免切換窗口失準。</li><li><strong>launch template 漂移：</strong>把執行個體、IAM role、網卡、安全群組、EBS、KMS、標籤與 user data 納入版本化審查；每次測試前比對。</li><li><strong>測試環境誤連正式系統：</strong>測試波次使用隔離子網路、測試 DNS 與受控出口，封鎖正式付款、郵件、批次與資料寫入介面。</li><li><strong>測試資料外洩：</strong>對敏感資料採遮罩或限制存取；測試執行個體、快照與 EBS 仍依正式資料等級保護。</li><li><strong>機密進入腳本或日誌：</strong>機密存於 Secrets Manager；一般設定可用 Parameter Store。來源動作腳本不應嵌入敏感值，輸出也不得暴露機密。</li><li><strong>自訂來源動作被濫用：</strong>限制可寫入指定 Parameter Store 前綴的人員，雙人審查腳本，保持可重複執行，並以 CloudTrail 稽核 SSM 操作。</li><li><strong>切換時資料分岔：</strong>切換前停止來源寫入、確認複寫健康與延遲、執行資料庫或應用一致性程序，避免新舊環境同時接受交易。</li><li><strong>Active Directory 與 DNS 失聯：</strong>正式啟動前驗證目標 VPC 到網域控制站的連線與 DNS 解析；MGN 轉換會讓目標使用 DHCP，來源主機的個別 DNS 覆寫不會自動保留。</li><li><strong>CloudTrail 覆蓋不足：</strong>集中記錄 MGN、EC2、IAM、KMS、SSM、EBS、VPC 與 cutover 操作，建立異常角色承擔與高風險變更告警。</li><li><strong>CloudWatch 只看主機存活：</strong>同時監控 replication lag、stalled event、應用交易、錯誤率、延遲、資源容量與外部介面。</li><li><strong>過早 finalize cutover：</strong>finalize 會停止複寫並清除複寫資料；必須先完成業務驗證與回復觀察期，再由核准人執行。</li><li><strong>遷移後沒有備份：</strong>切換完成即納入 AWS Backup 或服務原生備份，建立跨帳號／跨區副本、保留鎖定與定期還原測試。</li></ul>
+
+<h2>共同責任邊界</h2>
+<p>AWS 負責 MGN 受管控制面、服務軟體與其底層雲端基礎設施，管理服務建立的複寫與轉換元件，並加密 MGN 控制面傳輸。官方文件說明 MGN 儲存的是設定與日誌資料，複寫資料保留在客戶自己的 VPC；資料傳輸會加密。</p>
+<p>客戶負責來源伺服器與代理程式安裝授權、IAM 最小權限、MFA 與短期工作階段、staging subnet、路由與公開存取、launch template、EC2 作業系統與應用修補、KMS、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、資料一致性、切換與回復、備份、跨區復原、授權與法遵。MGN 能建立 EC2 不代表應用已通過功能、安全、效能或業務驗收。</p>
+
+<h2>上線與維運可執行檢查清單</h2><ul><li>□ 來源主機、應用、資料、DNS、AD、憑證、共享儲存與外部介面清冊完整。</li><li>□ 來源作業系統、磁碟、區域、網路與配額符合 MGN 支援條件。</li><li>□ RTO、RPO、停機窗口、資料一致性、切換與回復條件已核准。</li><li>□ 遷移波次依相依性排序，未把同一交易鏈拆成無關主機。</li><li>□ 操作人員使用聯合身分、MFA 與短期工作階段。</li><li>□ 初始化、管理、執行切換與唯讀角色已分離；日常權限符合最小權限。</li><li>□ 代理程式安裝權限在完成後已撤銷，來源端未留下不必要的長期授權。</li><li>□ staging area 使用專用子網路、安全群組與受控路由。</li><li>□ 公開 IP 與網際網路路徑已有明確必要性；可行時改用私有連線或 VPC endpoint。</li><li>□ 暫存與目標 EBS 已加密，KMS key policy、grant 與跨帳號需求完成實測。</li><li>□ 未把任何敏感值寫入腳本、user data、標籤、URL、日誌或匯出檔。</li><li>□ Secrets Manager／Parameter Store 的存取、加密與輪替責任已定義。</li><li>□ CloudTrail 已集中記錄 MGN、IAM、EC2、EBS、KMS、SSM 與網路變更。</li><li>□ CloudWatch／EventBridge 已監控複寫停滯、延遲、啟動工作與應用健康。</li><li>□ 每台來源伺服器的 launch template 已檢查網路、IAM、EBS、KMS、標籤與刪除行為。</li><li>□ 測試執行個體與正式外部介面隔離，不會誤送信、扣款或執行正式批次。</li><li>□ 測試涵蓋功能、資料、身分、DNS、憑證、效能、安全、監控與備份。</li><li>□ 切換前 replication state 健康、延遲可接受，且已建立最終備份。</li><li>□ 切換期間可停止來源寫入，並有應用或資料庫一致性程序。</li><li>□ 回復觀察期與 finalize cutover 核准人已明確定義。</li><li>□ 測試 EC2、暫存 EBS、複寫資源、過期快照與權限有清理清單。</li><li>□ 遷移後 EC2 已納入修補、弱點管理、Config、監控、成本與標籤治理。</li><li>□ AWS Backup 或原生備份已建立跨帳號／跨區副本並完成還原測試。</li><li>□ 長期災難復原方案已與一次性 MGN 遷移流程分開設計與演練。</li></ul>
+
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://aws.amazon.com/about-aws/whats-new/2026/06/aws-transform-mgn-rebrand/" target="_blank" rel="noopener noreferrer">AWS Application Migration Service is now AWS Transform MGN</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/what-is-mgn.html" target="_blank" rel="noopener noreferrer">What is AWS Transform MGN?</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/General-Questions-FAQ.html" target="_blank" rel="noopener noreferrer">AWS Transform MGN General Questions</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/quick-start-guide-gs.html" target="_blank" rel="noopener noreferrer">Quick start guide for AWS Transform MGN</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/preparing-environments.html" target="_blank" rel="noopener noreferrer">Network requirements for MGN</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/replication-server-settings.html" target="_blank" rel="noopener noreferrer">Replication template reference</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/Replication-Related-FAQ.html" target="_blank" rel="noopener noreferrer">AWS Transform MGN Replication Questions</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/mgn-initialize-console.html" target="_blank" rel="noopener noreferrer">Initializing MGN with the console</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/infrastructure-security.html" target="_blank" rel="noopener noreferrer">Infrastructure security in AWS Transform MGN</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/ebs-storage.html" target="_blank" rel="noopener noreferrer">Amazon EBS configuration for AWS Transform MGN</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/detailed-considerations.html" target="_blank" rel="noopener noreferrer">Full launch template setting review</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/migration-dashboard.html" target="_blank" rel="noopener noreferrer">Monitor the server in the migration lifecycle</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/source-actions-intro.html" target="_blank" rel="noopener noreferrer">Source actions overview and security prerequisites</a>（查閱：2026-11-20）</li>
+<li><a href="https://docs.aws.amazon.com/mgn/latest/ug/mgn-release-notes.html" target="_blank" rel="noopener noreferrer">AWS Transform MGN release notes</a>（查閱：2026-11-20）</li>
+<li><a href="https://aws.amazon.com/application-migration-service/pricing/" target="_blank" rel="noopener noreferrer">AWS Transform MGN Pricing</a>（查閱：2026-11-20）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-11-20）</li>
+</ul>
+<h2>內容說明</h2><p>本文依 2026-11-20 可查閱的 AWS 官方文件整理。MGN 的支援作業系統、區域、網路需求、配額、複寫方法與功能會更新；正式遷移前應以目標區域的最新文件、實際來源清冊、複寫健康狀態與測試結果為準。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-11-19-aws-proton-deprecation-migration-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Proton：服務退場與平台工程遷移治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

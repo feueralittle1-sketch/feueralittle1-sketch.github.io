@@ -7,6 +7,7 @@
   <meta name="description" content="理解 AWS Proton 原有的平台工程模型、2026 年 10 月 7 日終止支援後的影響，以及如何盤點模板、管線、權限與已部署資源並安全遷移。" />
   <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-11-19-aws-proton-deprecation-migration-basics.html" />
   <link rel="prev" href="./2026-11-18-aws-service-catalog-basics.html" />
+  <link rel="next" href="./2026-11-20-aws-transform-mgn-basics.html" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="AWS Proton：服務退場與平台工程遷移治理" />
   <meta property="og:description" content="從環境與服務模板、佈建方法、權限、管線到替代方案，整理 AWS Proton 終止支援後的遷移與安全控制。" />
@@ -83,7 +84,7 @@
 </ul>
 <h2>內容說明</h2><p>本文依 2026-11-19 可查閱的 AWS 官方文件整理。AWS Proton 已在查閱日前終止支援，因此實際遷移應以現存 CloudFormation stack、Terraform state、儲存庫、管線、IAM、KMS、CloudTrail、CloudWatch、備份與工作負載狀態為準，並在任何破壞性操作前完成可還原備份與隔離環境驗證。</p>
 </div>
-<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-11-18-aws-service-catalog-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Service Catalog：核准產品與自助部署治理</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-11-18-aws-service-catalog-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Service Catalog：核准產品與自助部署治理</strong></a><a class="glass rounded-2xl p-5 block sm:text-right" href="./2026-11-20-aws-transform-mgn-basics.html" rel="next"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">AWS Transform MGN：伺服器重新託管遷移基礎</strong></a></nav>
 </article></main>
 <footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
 </body></html>
