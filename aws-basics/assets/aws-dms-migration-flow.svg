@@ -1,0 +1,35 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1440" height="900" viewBox="0 0 1440 900" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Database Migration Service 安全資料庫遷移流程</title>
+  <desc id="desc">示意來源資料庫先完成盤點、備份與網路隔離，再由 AWS DMS 複寫執行個體執行全量載入與持續變更複寫，經驗證後切換目標資料庫並保留稽核與復原能力。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#07111f"/><stop offset=".55" stop-color="#10213b"/><stop offset="1" stop-color="#07111f"/></linearGradient>
+    <linearGradient id="orange" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#ffb347"/><stop offset="1" stop-color="#ff7a18"/></linearGradient>
+    <linearGradient id="cyan" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#83f1ff"/><stop offset="1" stop-color="#3b82f6"/></linearGradient>
+    <filter id="shadow"><feDropShadow dx="0" dy="14" stdDeviation="18" flood-color="#000" flood-opacity=".35"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0l12 6-12 6z" fill="#8fe8ff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',system-ui,sans-serif;fill:#fff}.muted{fill:#a8bad8}.box{fill:#0d1a2e;stroke:#ffffff22;stroke-width:2}.small{font-size:21px}.label{font-size:25px;font-weight:800}.num{font-size:20px;font-weight:900;fill:#07111f}.line{stroke:#8fe8ff;stroke-width:5;fill:none;marker-end:url(#arrow)}.dash{stroke:#ffb347;stroke-width:3;stroke-dasharray:10 10;fill:none}</style>
+  </defs>
+  <rect width="1440" height="900" rx="40" fill="url(#bg)"/>
+  <circle cx="1260" cy="80" r="240" fill="#ff9900" opacity=".08"/><circle cx="170" cy="820" r="260" fill="#63e6ff" opacity=".06"/>
+  <text x="80" y="78" class="t" font-size="38" font-weight="900">AWS DMS 資料庫遷移：先隔離、持續複寫、驗證後切換</text>
+  <text x="80" y="118" class="t muted" font-size="22">原創示意｜全量載入與 CDC 是遷移管線，不是備份、零停機或自動完整轉換保證</text>
+
+  <g filter="url(#shadow)">
+    <rect x="70" y="185" width="250" height="210" rx="28" class="box"/><circle cx="118" cy="233" r="24" fill="url(#orange)"/><text x="111" y="241" class="t num">1</text><text x="105" y="291" class="t label">來源資料庫</text><text x="105" y="330" class="t muted small">盤點結構與相依性</text><text x="105" y="364" class="t muted small">先備份並凍結變更規則</text>
+    <rect x="405" y="185" width="300" height="210" rx="28" class="box"/><circle cx="453" cy="233" r="24" fill="url(#orange)"/><text x="446" y="241" class="t num">2</text><text x="440" y="291" class="t label">隔離遷移網路</text><text x="440" y="330" class="t muted small">私有子網路與安全群組</text><text x="440" y="364" class="t muted small">TLS、KMS、短期憑證</text>
+    <rect x="790" y="185" width="300" height="210" rx="28" class="box"/><circle cx="838" cy="233" r="24" fill="url(#orange)"/><text x="831" y="241" class="t num">3</text><text x="825" y="291" class="t label">DMS 複寫任務</text><text x="825" y="330" class="t muted small">全量載入 + CDC</text><text x="825" y="364" class="t muted small">監控延遲、錯誤與容量</text>
+    <rect x="1175" y="185" width="195" height="210" rx="28" class="box"/><circle cx="1223" cy="233" r="24" fill="url(#orange)"/><text x="1216" y="241" class="t num">4</text><text x="1210" y="291" class="t label">目標端</text><text x="1210" y="330" class="t muted small">受限帳號</text><text x="1210" y="364" class="t muted small">不公開暴露</text>
+  </g>
+  <path d="M320 290H405" class="line"/><path d="M705 290H790" class="line"/><path d="M1090 290H1175" class="line"/>
+
+  <g filter="url(#shadow)">
+    <rect x="95" y="495" width="300" height="240" rx="30" class="box"/><text x="130" y="550" class="t label">A. 遷移前閘門</text><text x="130" y="595" class="t muted small">• Schema 轉換與物件清冊</text><text x="130" y="633" class="t muted small">• RTO／RPO／停寫窗口</text><text x="130" y="671" class="t muted small">• 來源與目標可還原備份</text>
+    <rect x="455" y="495" width="300" height="240" rx="30" class="box"/><text x="490" y="550" class="t label">B. 複寫驗證</text><text x="490" y="595" class="t muted small">• Table statistics 與日誌</text><text x="490" y="633" class="t muted small">• 資料驗證與業務對帳</text><text x="490" y="671" class="t muted small">• CDC 延遲與失敗告警</text>
+    <rect x="815" y="495" width="300" height="240" rx="30" class="box"/><text x="850" y="550" class="t label">C. 受控切換</text><text x="850" y="595" class="t muted small">• 停止來源寫入</text><text x="850" y="633" class="t muted small">• 等待變更追平再對帳</text><text x="850" y="671" class="t muted small">• 切換連線並保留回復點</text>
+    <rect x="1175" y="495" width="195" height="240" rx="30" class="box"/><text x="1210" y="550" class="t label">D. 收尾</text><text x="1210" y="595" class="t muted small">CloudTrail</text><text x="1210" y="633" class="t muted small">CloudWatch</text><text x="1210" y="671" class="t muted small">備份／跨區</text>
+  </g>
+  <path d="M395 615H455" class="line"/><path d="M755 615H815" class="line"/><path d="M1115 615H1175" class="line"/>
+  <path d="M245 495V430H1270V495" class="dash"/>
+  <rect x="80" y="790" width="1280" height="68" rx="20" fill="#ff990015" stroke="#ffb34766"/>
+  <text x="110" y="833" class="t" font-size="22" font-weight="800">安全底線：IAM 最小權限｜MFA 與短期工作階段｜私有路徑｜KMS｜Secrets Manager｜稽核告警｜可還原備份</text>
+</svg>
