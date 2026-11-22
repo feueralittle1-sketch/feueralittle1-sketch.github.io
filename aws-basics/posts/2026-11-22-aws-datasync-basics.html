@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS DataSync：受控資料傳輸與驗證基礎</title>
+  <meta name="description" content="理解 AWS DataSync 的位置、任務、代理程式、傳輸模式、資料驗證、排程、成本、可用性與資安控制。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-11-22-aws-datasync-basics.html" />
+  <link rel="prev" href="./2026-11-21-aws-dms-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS DataSync：受控資料傳輸與驗證基礎" />
+  <meta property="og:description" content="從來源與目的位置、代理程式、增量傳輸、驗證到受控切換，整理 DataSync 的安全資料搬移方法。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-11-22-aws-datasync-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-datasync-secure-transfer-flow.svg" />
+  <meta property="article:published_time" content="2026-11-22T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS DataSync：受控資料傳輸與驗證基礎" />
+  <meta name="twitter:description" content="掌握位置、任務、代理程式、增量傳輸、資料驗證、最小權限、KMS、監控與復原治理。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-datasync-secure-transfer-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1180px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}.warning{border-left:4px solid #fb7185;background:rgba(251,113,133,.09)}code{overflow-wrap:anywhere}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS DataSync：受控資料傳輸與驗證基礎","description":"理解 AWS DataSync 的位置、任務、代理程式、傳輸模式、資料驗證、排程、成本、可用性與資安控制。","datePublished":"2026-11-22T21:30:00+08:00","dateModified":"2026-11-22T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-11-22-aws-datasync-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-datasync-secure-transfer-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">資料傳輸</span><span class="chip rounded-full px-3 py-1 text-sm">2026-11-22</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS DataSync：受控資料傳輸與驗證基礎</h1>
+<p class="text-xl leading-9 muted">AWS DataSync 是受管線上資料傳輸服務，可在自建儲存、邊緣環境、其他雲端與 AWS 儲存服務之間搬移大量檔案或物件。它能自動化傳輸、排程、重試、監控與資料驗證，但不會自動完成應用相容性、資料分類、法遵核准、最終切換或災難復原設計。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-11-22</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>使用邊界：</strong>DataSync 負責在已授權的位置之間傳輸資料。來源與目的端的檔案語意、應用一致性、保留政策、敏感資料資格、加密金鑰、存取權限、備份與正式切換仍由客戶設計及驗收。</div>
+
+<h2>服務定位</h2>
+<p><strong>AWS DataSync</strong> 適合執行一次性遷移、週期性同步、歸檔匯入、資料湖匯入、跨儲存服務搬移與部分持續資料分發。常見來源或目的包含 NFS、SMB、HDFS、物件儲存、Amazon S3、Amazon EFS 與適用的 Amazon FSx 檔案系統；實際支援組合、區域與功能必須依官方文件核對。</p>
+<p>DataSync 以「位置」描述來源與目的端，以「任務」定義兩端、選取規則、傳輸模式、驗證、頻寬、排程與記錄設定。連接自建或其他網路環境時，通常需要部署 DataSync agent；AWS 儲存服務彼此之間的部分傳輸可由服務直接執行。</p>
+<p>它不是資料庫交易複寫工具、區塊層伺服器遷移工具、備份保留系統、同步衝突解決引擎，也不是離線大量資料搬運設備。若需要資料庫 CDC、伺服器重建、離線運輸或正式備份，應分別評估 AWS DMS、AWS Transform MGN、AWS Snow Family、AWS Backup 或服務原生能力。</p>
+
+<h2>核心概念</h2>
+<div class="grid md:grid-cols-2 gap-4"><section class="chip rounded-2xl p-5"><h3 class="mt-0">資料傳輸元件</h3><ul><li><strong>Location：</strong>來源或目的儲存端點及其存取設定。</li><li><strong>Task：</strong>把兩個位置與傳輸、驗證、排程及日誌規則組合成可執行工作。</li><li><strong>Agent：</strong>部署於來源附近的虛擬機器或適用環境，代表 DataSync 存取非 AWS 儲存。</li><li><strong>Task execution：</strong>單次任務執行，具有狀態、統計、錯誤與監控資料。</li><li><strong>Include／exclude filters：</strong>限制要搬移的路徑與物件，降低越界傳輸風險。</li></ul></section><section class="chip rounded-2xl p-5"><h3 class="mt-0">傳輸與驗證</h3><ul><li><strong>Basic mode：</strong>適合一般資料集，提供可配置的準備、傳輸與驗證流程。</li><li><strong>Enhanced mode：</strong>針對支援位置提供較高擴充性與簡化執行模式；支援範圍需依文件確認。</li><li><strong>Incremental transfer：</strong>重複執行時比較來源與目的，只傳輸需要更新的資料。</li><li><strong>Verification：</strong>依設定驗證傳輸內容或目的端資料；驗證範圍與成本需明確選擇。</li><li><strong>Bandwidth control：</strong>以固定上限或排程限制傳輸對既有網路的影響。</li></ul></section></div>
+
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul><li>把大型 NFS 或 SMB 檔案集遷移到 Amazon S3、EFS 或適用的 FSx 檔案系統。</li><li>以排程方式把分公司、研究設備或內容製作環境的資料集中到 AWS。</li><li>把 S3、EFS 或 FSx 之間的資料移動流程標準化，並需要統一監控、重試與驗證。</li><li>建立資料湖匯入管線，且可先完成資料分類、目的 bucket policy、KMS 與生命週期設計。</li><li>需要在切換前反覆執行增量傳輸，縮短最後一次停寫與同步窗口。</li></ul>
+<h3>不適合或不能單獨完成</h3><ul><li>要求資料庫交易順序、低延遲 CDC 或應用雙寫一致性；這類需求應使用資料庫或串流複寫能力。</li><li>來源無法提供穩定網路頻寬，且資料量適合離線運輸，卻仍強迫使用線上傳輸。</li><li>把雙向同步當成自動衝突解決；兩端同時修改相同檔案時仍需明確權威來源與衝突政策。</li><li>來源應用持續寫入，卻沒有快照、停寫、檔案封存或最終同步程序來建立一致性點。</li><li>希望 DataSync 取代備份、版本保留、不可變副本、還原演練與跨區災難復原。</li><li>未確認檔案 metadata、ACL、擁有者、符號連結、大小寫、特殊字元與目的檔案系統語意差異。</li></ul>
+
+<h2>示意故事案例：將影像檔案庫遷移到 Amazon S3</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家影像製作公司準備把自建 NFS 檔案庫移到 Amazon S3，供媒體處理與歸檔流程使用。團隊先盤點 420 TB 資料、每日新增量、檔案大小分布、目錄權限、未完成檔案、個人資料、版權資料與應用讀寫模式，並確認 S3 物件模型不等同於原有 POSIX 檔案系統。</p>
+<p>DataSync agent 部署在來源附近的受控虛擬化環境，管理介面只允許指定管理網段，對外連線依官方網路需求縮限。目的 S3 bucket 關閉公開存取，以最小權限 IAM role 寫入指定 prefix，使用 KMS 金鑰加密；操作人員透過聯合身分、MFA 與短期工作階段管理。CloudTrail 記錄控制面操作，CloudWatch Logs 與指標集中監控任務。</p>
+<p>團隊先以代表性目錄測試檔名、metadata、效能、驗證與應用讀取，再執行多輪增量傳輸。正式切換時停止來源寫入，完成最後一次同步與完整驗證，核對檔案數量、總容量、抽樣雜湊、權限映射與媒體處理結果。原始檔案庫在核准觀察期內維持唯讀與可還原狀態，S3 另建立版本、生命週期、跨區複寫或備份策略，不把 DataSync 任務本身視為復原機制。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-datasync-secure-transfer-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-datasync-secure-transfer-flow.svg" alt="示意：自建檔案庫經盤點與一致性控制，由隔離的 DataSync agent 以受限網路傳輸到使用 KMS 加密且阻擋公開存取的 S3，完成驗證、監控、切換與跨區復原" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：安全傳輸需要先界定資料、身分與網路，再執行增量搬移、驗證、受控切換，最後納入備份與跨區復原。</figcaption></figure>
+
+<h2>建置與運作流程</h2><ol><li>盤點來源與目的儲存類型、區域、容量、檔案數、平均與最大檔案大小、每日變更量及 metadata。</li><li>分類資料敏感度、所有權、保留年限、資料落地區域與跨境限制，排除未核准資料。</li><li>確認來源與目的位置組合、區域、模式、配額、檔案系統語意及支援限制。</li><li>定義 RTO、RPO、允許停寫時間、網路窗口、驗證門檻、切換與回復條件。</li><li>依傳輸量與期限估算所需有效吞吐，完成 WAN、VPN、Direct Connect、DNS、防火牆與 MTU 測試。</li><li>連接自建儲存時，在來源附近部署 agent；依官方需求設定 CPU、記憶體、儲存、時間同步與網路。</li><li>限制 agent 管理面與網路規則，避免不必要的公開管理入口；只允許必要目的與連接埠。</li><li>使用聯合身分、MFA 與短期工作階段管理 DataSync；建立任務管理、執行、監看與核准角色。</li><li>為目的端建立專用 IAM role，限制到指定 bucket、prefix、檔案系統與 KMS 金鑰。</li><li>建立來源與目的 location，測試連線、掛載、DNS、TLS、權限與讀寫能力。</li><li>建立 task，選擇 Basic 或適用的 Enhanced mode，設定傳輸、覆寫、刪除、metadata 與驗證行為。</li><li>使用 include／exclude filter 明確限制資料範圍；先在測試位置驗證規則。</li><li>設定 CloudWatch Logs、EventBridge 或告警，監控失敗、跳過、驗證錯誤、耗時與吞吐。</li><li>以代表性資料執行試傳，核對內容、metadata、權限、應用行為與費用估算。</li><li>安排首次完整傳輸，必要時以頻寬限制避免影響正式系統。</li><li>重複執行增量傳輸，觀察變更率、剩餘時間、錯誤模式與來源負載。</li><li>切換前凍結未核准的路徑、權限與 Schema 類變更，確認目的端容量、加密、生命週期及備份。</li><li>停止來源寫入或建立一致性快照，執行最後一次同步與既定驗證。</li><li>完成檔案數、容量、抽樣雜湊、權限、應用讀取與業務結果對帳後才切換。</li><li>觀察期保留來源唯讀副本、操作紀錄與回復程序；異常時依門檻回復。</li><li>完成後停用不需要的 task、agent、臨時 IAM 權限與網路規則，避免閒置成本與攻擊面。</li><li>將目的資料納入 CloudTrail、CloudWatch、Config、KMS、版本、備份、跨帳號／跨區復原與定期還原演練。</li></ol>
+
+<h2>成本、可用性與維運考量</h2>
+<p>DataSync 成本通常與傳輸或處理的資料量、任務模式及目的服務有關；另可能包含 S3 請求與儲存、EFS 或 FSx、KMS 請求、CloudWatch Logs、VPC endpoint、NAT Gateway、Direct Connect、跨區或跨雲資料傳輸等費用。重複執行完整驗證、頻繁掃描大量小檔案或搬移不必要資料，都可能增加時間與費用。</p>
+<p>總工期受檔案數量、平均檔案大小、來源儲存效能、agent 容量、網路延遲、封包遺失、可用頻寬、目的服務配額與驗證方式影響。大量小檔案常比少量大檔案需要更多列舉與 metadata 處理，不能只用總 TB 數估算。</p>
+<p>DataSync 是受管傳輸服務，但端到端可用性仍取決於來源儲存、agent、虛擬化平台、網路、DNS、目的儲存與 KMS。單一 agent 或單一路徑故障可能中斷傳輸；正式遷移應建立重試、替代 agent、網路備援、分批策略與足夠切換緩衝。跨區復原需由目的儲存的複寫、備份或其他機制完成。</p>
+
+<h2>AWS DataSync 特有資安風險與控制</h2><ul><li><strong>任務角色可存取過多資料：</strong>將 IAM role 限制到指定 bucket、prefix、檔案系統與必要操作，分離來源讀取與目的寫入權限。</li><li><strong>操作人員使用長期憑證：</strong>使用聯合身分、MFA 與短期工作階段；不得把任何憑證、金鑰、權杖、密碼或 cookie 寫入任務、程式、頁面或日誌。</li><li><strong>agent 管理面暴露：</strong>把 agent 部署在受控網段，限制管理來源、虛擬化權限與主機存取，並依官方需求只開放必要連線。</li><li><strong>假冒或未授權 agent：</strong>保護啟用流程與主機控制權，記錄 agent 建立、啟用、更新與刪除事件，停用不再使用的 agent。</li><li><strong>來源位置權限過大：</strong>NFS export、SMB share、物件儲存或 HDFS 帳號只授予指定資料集的必要讀取權限。</li><li><strong>目的端公開存取：</strong>S3 啟用 Block Public Access 並限制 bucket policy；EFS、FSx 與其他檔案系統放在私有網路，安全群組只允許必要來源。</li><li><strong>未核准資料被大量外傳：</strong>先完成資料分類與法遵核准，使用 include filter 與目的 prefix 白名單，對異常傳輸量與新位置建立告警。</li><li><strong>傳輸範圍設定錯誤：</strong>include／exclude 規則必須版本化、雙人審查並以測試任務驗證，避免萬用路徑搬走整個 share。</li><li><strong>覆寫或刪除造成資料破壞：</strong>明確審查 overwrite、preserve deleted files 與目的端保留設定；高風險任務先使用隔離目的位置。</li><li><strong>兩端同時修改造成衝突：</strong>指定權威來源，切換前停止寫入或建立一致性快照；不要假設雙向任務能自動解決衝突。</li><li><strong>metadata 與 ACL 映射錯誤：</strong>測試擁有者、群組、時間、權限、ACL、符號連結與特殊檔名，對目的端語意差異建立補償控制。</li><li><strong>KMS 權限配置錯誤：</strong>限制 key policy 與 grant，驗證 DataSync role 可在需要時使用金鑰；避免停用或刪除仍在使用的金鑰。</li><li><strong>網路路徑未隔離：</strong>使用受控路由、VPN、Direct Connect、VPC endpoint 或其他適用私有連線，避免把來源儲存直接暴露於網際網路。</li><li><strong>機密資料出現在記錄：</strong>限制 CloudWatch Logs 存取與保留，避免以檔名、路徑或錯誤訊息暴露敏感內容；匯出前執行敏感資料檢查。</li><li><strong>控制面操作無法追溯：</strong>以組織層級 CloudTrail 集中記錄 DataSync、IAM、KMS、S3、EFS、FSx、EC2 與網路變更。</li><li><strong>任務失敗未被發現：</strong>以 CloudWatch、EventBridge 或通知監控任務失敗、驗證錯誤、跳過檔案、異常耗時與吞吐下降。</li><li><strong>驗證範圍不足：</strong>依風險選擇傳輸中或完整資料集驗證，另執行檔案數、容量、抽樣雜湊、應用讀取與業務對帳。</li><li><strong>DataSync 被誤當備份：</strong>目的端另建版本、不可變或跨帳號備份、跨區副本與定期還原演練。</li><li><strong>臨時資源長期留存：</strong>任務完成後撤銷臨時權限、刪除不用位置與 agent、關閉網路規則並保留必要稽核證據。</li></ul>
+
+<h2>共同責任邊界</h2>
+<p>AWS 負責 DataSync 受管服務與其底層雲端基礎設施，提供任務調度、資料傳輸、驗證、加密傳輸及與 IAM、KMS、CloudTrail、CloudWatch 等服務整合的能力。</p>
+<p>客戶負責資料分類與授權、來源及目的儲存安全、agent 主機與虛擬化環境、IAM 最小權限、MFA 與短期憑證、網路隔離、公開存取、KMS 金鑰政策、Secrets Manager／Parameter Store 中其他整合機密、任務範圍、metadata 與應用相容性、CloudTrail／CloudWatch、切換與回復、備份及跨區復原。任務成功不代表資料、權限、應用與復原能力已完成驗收。</p>
+
+<h2>上線與維運可執行檢查清單</h2><ul><li>□ 來源、目的、區域、容量、檔案數、大小分布、變更率與 metadata 清冊完整。</li><li>□ 資料敏感度、所有權、保留、資料落地與跨境資格已核准。</li><li>□ 位置組合、區域、任務模式、配額與檔案系統限制已依官方文件核對。</li><li>□ RTO、RPO、停寫窗口、驗證門檻、切換與回復條件已核准。</li><li>□ 應用一致性方法已確立，來源可停寫、快照或封存未完成檔案。</li><li>□ 操作人員使用聯合身分、MFA 與短期工作階段，無長期憑證散落。</li><li>□ DataSync 管理、任務執行、唯讀監看與切換核准角色已分離。</li><li>□ 來源與目的 IAM role、share 帳號及檔案系統權限符合最小權限。</li><li>□ S3 Block Public Access、bucket policy、EFS／FSx 私有網路與安全群組已驗證。</li><li>□ KMS key policy、grant、輪替、停用風險與 DataSync 使用權限已測試。</li><li>□ agent 位於受控環境，主機、管理面、虛擬化與網路存取均受限制。</li><li>□ DNS、防火牆、VPN／Direct Connect、VPC endpoint、頻寬與故障路徑已測試。</li><li>□ include／exclude filter 採白名單思維，已版本化、雙人審查與測試。</li><li>□ overwrite、刪除保留、metadata、ACL、符號連結與特殊檔名行為已確認。</li><li>□ 代表性試傳已驗證檔案內容、權限、應用讀取、效能與費用。</li><li>□ CloudTrail 已集中記錄 DataSync、IAM、KMS、儲存與網路控制面操作。</li><li>□ CloudWatch／EventBridge 已告警任務失敗、驗證錯誤、跳過與異常吞吐。</li><li>□ 正式傳輸期間來源負載、agent、WAN、目的配額與 KMS 狀態均受監控。</li><li>□ 最後同步前已停止來源寫入或建立一致性點。</li><li>□ DataSync 驗證與獨立檔案數、容量、抽樣雜湊及業務對帳皆通過。</li><li>□ 正式切換後保留可用的來源唯讀副本與核准回復窗口。</li><li>□ 目的端版本、生命週期、備份、跨帳號／跨區副本與還原演練已建立。</li><li>□ 完成後已撤銷臨時權限、停用閒置 agent／task 並清理網路規則。</li></ul>
+
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/what-is-datasync.html" target="_blank" rel="noopener noreferrer">What is AWS DataSync?</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/how-datasync-works.html" target="_blank" rel="noopener noreferrer">How AWS DataSync works</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/working-with-locations.html" target="_blank" rel="noopener noreferrer">Working with AWS DataSync locations</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/working-with-agents.html" target="_blank" rel="noopener noreferrer">Working with AWS DataSync agents</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/working-with-tasks.html" target="_blank" rel="noopener noreferrer">Working with AWS DataSync tasks</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/choosing-task-mode.html" target="_blank" rel="noopener noreferrer">Choosing a task mode</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/configure-metadata.html" target="_blank" rel="noopener noreferrer">Managing how AWS DataSync handles files, objects, and metadata</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/filtering.html" target="_blank" rel="noopener noreferrer">Filtering data transferred by AWS DataSync</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/configure-bandwidth.html" target="_blank" rel="noopener noreferrer">Configuring bandwidth for AWS DataSync transfers</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/verify-data-integrity.html" target="_blank" rel="noopener noreferrer">Verifying data integrity during a transfer</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/security.html" target="_blank" rel="noopener noreferrer">Security in AWS DataSync</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/identity-based-policy-examples.html" target="_blank" rel="noopener noreferrer">Identity-based policy examples for AWS DataSync</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/understand-datasync-network.html" target="_blank" rel="noopener noreferrer">Network requirements for AWS DataSync</a>（查閱：2026-11-22）</li>
+<li><a href="https://docs.aws.amazon.com/datasync/latest/userguide/monitor-datasync.html" target="_blank" rel="noopener noreferrer">Monitoring AWS DataSync</a>（查閱：2026-11-22）</li>
+<li><a href="https://aws.amazon.com/datasync/pricing/" target="_blank" rel="noopener noreferrer">AWS DataSync Pricing</a>（查閱：2026-11-22）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-11-22）</li>
+</ul>
+<h2>內容說明</h2><p>本文依 2026-11-22 可查閱的 AWS 官方文件整理。DataSync 支援的位置、區域、任務模式、配額、metadata 行為、網路需求與定價可能更新；正式導入前應依目標區域最新文件、代表性資料試傳、資安審查、費用估算、切換演練與可還原備份為準。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-11-21-aws-dms-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">AWS Database Migration Service：資料庫遷移與持續複寫基礎</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>
