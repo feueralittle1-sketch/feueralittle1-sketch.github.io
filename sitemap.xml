@@ -1243,7 +1243,13 @@
   </url>
   <url>
     <loc>https://www.2gwine.com/health-taiwan-security/posts/2026-11-21-international-personal-health-app-record-release.html</loc>
-    <lastmod>2026-11-21</lastmod>
+    <lastmod>2026-11-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://www.2gwine.com/health-taiwan-security/posts/2026-11-22-international-healthcare-threat-intelligence-sharing-governance.html</loc>
+    <lastmod>2026-11-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
