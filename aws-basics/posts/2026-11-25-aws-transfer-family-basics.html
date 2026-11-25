@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AWS 基礎介紹｜AWS Transfer Family：受管檔案傳輸與交換邊界</title>
+  <meta name="description" content="理解 AWS Transfer Family 的 SFTP、FTPS、FTP、AS2、身分整合、S3/EFS 存取、成本、可用性、安全控制與復原治理。" />
+  <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-11-25-aws-transfer-family-basics.html" />
+  <meta property="og:type" content="article" />
+  <meta property="og:title" content="AWS Transfer Family：受管檔案傳輸與交換邊界" />
+  <meta property="og:description" content="從協定、端點、身分與儲存授權，到最小權限、網路隔離、KMS、稽核、備份與跨區復原。" />
+  <meta property="og:url" content="https://www.2gwine.com/aws-basics/posts/2026-11-25-aws-transfer-family-basics.html" />
+  <meta property="og:image" content="https://www.2gwine.com/aws-basics/assets/aws-transfer-family-secure-exchange-flow.svg" />
+  <meta property="article:published_time" content="2026-11-25T21:30:00+08:00" />
+  <meta property="article:author" content="Dr. William" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="AWS Transfer Family：受管檔案傳輸與交換邊界" />
+  <meta name="twitter:description" content="掌握 SFTP、FTPS、FTP、AS2 的端點、身分、儲存授權、安全與復原控制。" />
+  <meta name="twitter:image" content="https://www.2gwine.com/aws-basics/assets/aws-transfer-family-secure-exchange-flow.svg" />
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1180px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}.warning{border-left:4px solid #fb7185;background:rgba(251,113,133,.09)}code{overflow-wrap:anywhere}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Transfer Family：受管檔案傳輸與交換邊界","description":"理解 AWS Transfer Family 的 SFTP、FTPS、FTP、AS2、身分整合、S3/EFS 存取、成本、可用性、安全控制與復原治理。","datePublished":"2026-11-25T21:30:00+08:00","dateModified":"2026-11-25T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-11-25-aws-transfer-family-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-transfer-family-secure-exchange-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+
+  <link rel="prev" href="./2026-11-24-amazon-fsx-basics.html" />
+</head>
+<body>
+<header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>
+<main class="max-w-5xl mx-auto px-4 py-10"><article class="glass rounded-3xl p-5 sm:p-8 md:p-12">
+<div class="flex flex-wrap gap-2 mb-5"><span class="chip rounded-full px-3 py-1 text-sm">AWS 基礎介紹</span><span class="chip rounded-full px-3 py-1 text-sm">受管檔案傳輸</span><span class="chip rounded-full px-3 py-1 text-sm">2026-11-25</span></div>
+<h1 class="text-4xl md:text-6xl font-black leading-tight my-5">AWS Transfer Family：受管檔案傳輸與交換邊界</h1>
+<p class="text-xl leading-9 muted">AWS Transfer Family 以受管端點承接 SFTP、FTPS、FTP、AS2 與瀏覽器式檔案交換，資料直接進出 Amazon S3 或 Amazon EFS。服務降低協定伺服器維運負擔，但不會自動完成身分驗證、目錄隔離、儲存授權、惡意檔案檢查、資料保留或跨區復原。</p>
+<p class="mt-5 muted">作者：Dr. William｜查閱與發布：2026-11-25</p>
+<div class="prose max-w-none mt-10">
+<div class="notice rounded-2xl p-5"><strong>設計原則：</strong>先確認交換對象、協定、端點暴露面、身分來源、檔案落點與處理責任，再建立 Transfer Family 端點。能成功登入並上傳檔案，不代表資料已被正確隔離、掃描、驗證或備份。</div>
+<h2>服務定位</h2>
+<p><strong>AWS Transfer Family</strong> 是受管檔案傳輸服務，可讓既有 SFTP、FTPS、FTP、AS2 或瀏覽器使用者把檔案傳入或傳出 Amazon S3 與 Amazon EFS。AWS 管理協定端點及其底層服務容量，客戶管理使用者、身分來源、端點類型、網路可達性、儲存權限、檔案處理與資料生命週期。</p>
+<p>服務適合保留合作夥伴或舊系統熟悉的檔案交換介面，同時把後端儲存移至 AWS。它不是通用檔案同步代理、資料庫複寫、即時串流、內容協作平台，也不會因採用 SFTP 就自動建立端到端資料治理。</p>
+<p>FTP 不提供傳輸加密，正式環境通常應優先評估 SFTP、FTPS、AS2 或私有網路路徑。若業務必須使用 FTP，需以內部 VPC 端點、受控 VPN／Direct Connect、來源限制與補償控制降低明文傳輸風險。</p>
+<h2>核心概念</h2>
+<div class="grid md:grid-cols-2 gap-4"><section class="chip rounded-2xl p-5"><h3 class="mt-0">傳輸與端點</h3><ul><li><strong>SFTP：</strong>透過 SSH 傳輸，適合金鑰或密碼式既有整合。</li><li><strong>FTPS：</strong>透過 TLS 保護 FTP 工作流程，需管理憑證與用戶端相容性。</li><li><strong>FTP：</strong>未加密協定，只應在明確隔離及風險接受下使用。</li><li><strong>AS2：</strong>常見於企業對企業結構化資料交換，涉及交易夥伴、憑證、簽章與回條。</li><li><strong>端點類型：</strong>公有、VPC 網際網路或 VPC 內部端點的協定支援、固定 IP 與可達性不同。</li></ul></section><section class="chip rounded-2xl p-5"><h3 class="mt-0">身分、授權與資料</h3><ul><li><strong>身分提供者：</strong>可依協定使用服務代管使用者、AWS Directory Service、Lambda 或 API Gateway 自訂整合。</li><li><strong>服務角色：</strong>Transfer Family 代表使用者存取 S3 或 EFS，IAM 權限必須限制到必要路徑與操作。</li><li><strong>邏輯目錄：</strong>把實際 bucket、prefix 或檔案系統路徑映射成使用者可理解的虛擬目錄。</li><li><strong>工作流程：</strong>可在上傳後執行複製、標記、解密或自訂處理，但仍需設計錯誤路徑與隔離區。</li><li><strong>觀測：</strong>CloudWatch 記錄連線與傳輸事件，CloudTrail 記錄控制面；S3 物件操作需依需求啟用資料事件。</li></ul></section></div>
+<h2>適合與不適合的使用情境</h2>
+<h3>適合</h3><ul><li>合作夥伴只能使用 SFTP、FTPS、FTP 或 AS2，後端希望改用 S3 或 EFS。</li><li>既有批次交換介面需要維持主機名稱、目錄與認證模式，降低移轉衝擊。</li><li>需要受管端點、結構化日誌、傳輸指標與上傳後處理流程。</li><li>每個交易夥伴需要獨立目錄、IAM 角色、KMS 權限與資料保留政策。</li><li>內部使用者需要以瀏覽器介面存取受控 S3 檔案區，而非直接取得 AWS 管理權限。</li></ul>
+<h3>不適合或不能單獨完成</h3><ul><li>應用需要毫秒級事件串流、訊息佇列或資料庫變更複寫；應比較 Kinesis、MSK、SQS、DMS 等服務。</li><li>需要雙向持續同步、衝突解決與端點代理；Transfer Family 不是完整檔案同步產品。</li><li>希望僅靠傳輸協定判斷檔案可信；仍需格式驗證、雜湊、惡意程式掃描與業務規則。</li><li>無法接受 S3 物件語意與傳統檔案系統行為差異，卻未做用戶端命令與部分上傳測試。</li><li>要求跨區自動接手，但沒有第二區域的 DNS、身分、端點、金鑰、資料副本與演練。</li><li>使用 FTP 對外公開，卻沒有正式風險接受、網路隔離及替代方案期限。</li></ul>
+<h2>示意故事案例：供應商以 SFTP 交付每日訂單檔</h2>
+<p><strong>以下為示意案例，不代表特定企業或正式部署。</strong> 一家零售企業每天接收多家供應商的訂單與庫存檔。供應商現有系統只能使用 SFTP，且每家公司必須只能看到自己的上傳區與處理結果。</p>
+<p>團隊建立具多可用區網路配置的 VPC 網際網路端點，透過 DNS 提供固定業務名稱並限制核准來源。供應商以個別身分登入；每個身分映射到獨立 IAM 角色與 S3 prefix，邏輯目錄只呈現 inbound、accepted、rejected。S3 啟用 Block Public Access、KMS 加密、版本與生命週期政策，金鑰政策只允許核准角色使用。</p>
+<p>檔案先落入隔離 prefix，事件觸發驗證與惡意檔案掃描。通過格式、大小、命名、雜湊與業務規則後才複製到 accepted；失敗檔案移至 rejected 並產生通知。CloudWatch 保存結構化傳輸日誌並告警登入失敗、傳輸錯誤與異常流量；CloudTrail 記錄端點、使用者、角色與金鑰變更，S3 資料事件依稽核需求記錄物件操作。關鍵交換檔另複寫到第二區域，團隊定期演練 DNS 切換、身分重建、金鑰授權與檔案重送。</p>
+<figure class="diagram rounded-2xl p-3 sm:p-5 my-7"><picture><source media="(max-width: 640px)" srcset="../assets/aws-transfer-family-secure-exchange-flow-mobile.svg" /><img class="w-full h-auto mx-auto" loading="lazy" src="../assets/aws-transfer-family-secure-exchange-flow.svg" alt="示意：外部交易夥伴經 SFTP、FTPS 或 AS2 連到受控 Transfer Family 端點，通過身分與最小權限後把檔案寫入 S3 隔離區，再進行檢查、分類、監控、備份與跨區復原" /></picture><figcaption class="muted text-sm mt-3 px-2 pb-2">原創示意圖：傳輸成功只是入口；隔離、驗證、授權、監控與復原才構成完整檔案交換邊界。</figcaption></figure>
+<h2>建置與運作流程</h2><ol><li>盤點交易夥伴、使用者、來源網路、檔案類型、每日量、尖峰連線、單檔大小與傳輸時窗。</li><li>確認協定為 SFTP、FTPS、FTP、AS2 或瀏覽器傳輸，記錄舊用戶端與密碼套件相容需求。</li><li>分類資料敏感度、所有權、保留、落地區域、跨境、刪除、不可變與稽核要求。</li><li>選擇 S3 或 EFS，驗證用戶端命令、目錄、重新命名、部分上傳與檔案鎖定語意。</li><li>定義端點類型、公私網路、固定 IP、DNS、Security Group、NACL、VPN／Direct Connect 與來源限制。</li><li>正式環境避免使用未加密 FTP；必要使用時限制為私有路徑並建立退場期限。</li><li>選擇服務代管、Directory Service、Lambda 或 API Gateway 身分來源，設計停用、鎖定、輪替與復原。</li><li>管理人員使用聯合身分、MFA 與短期角色；分離端點、使用者、網路、金鑰與日誌管理權限。</li><li>為每類使用者建立最小權限服務角色及信任政策，只允許必要 bucket、prefix、EFS path 與動作。</li><li>以邏輯目錄或 home directory 隱藏實體儲存結構，並以 IAM session policy 或獨立角色做第二層限制。</li><li>選擇並明確指定符合相容性與法遵需求的 Transfer Family security policy，不依賴可能變動的預設值。</li><li>設定 S3 Block Public Access、bucket policy、Object Ownership、版本、生命週期與必要的 Object Lock。</li><li>使用 KMS 加密資料，限制 key policy 與 grant；身分整合或 PGP 私密材料集中於 Secrets Manager／Parameter Store。</li><li>建立 inbound 隔離區、檔案大小與類型限制、格式驗證、惡意程式掃描、雜湊與核准後移動流程。</li><li>對 managed workflow、自訂 Lambda 與失敗路徑設定冪等、重試、隔離、通知及人工處理程序。</li><li>啟用 CloudWatch 結構化日誌、傳輸指標與告警，設定保留、集中查詢及敏感資訊遮罩。</li><li>啟用組織層級 CloudTrail；需要物件級稽核時，對指定 S3 bucket 啟用適量資料事件。</li><li>測試有效與無效登入、越權路徑、來源限制、舊演算法、部分上傳、大檔、重試及同名檔案。</li><li>定義 RTO、RPO，建立 S3 跨區複寫或 EFS 備份／複寫、第二區域端點、身分、DNS 與金鑰方案。</li><li>在隔離環境演練第二區域重建、資料驗證、交易夥伴連線、重送與回切。</li><li>持續檢查未使用端點、閒置協定、異常傳輸量、日誌成本、工作流程失敗與過期使用者。</li></ol>
+<h2>成本、可用性與維運考量</h2>
+<p>Transfer Family 費用依功能可能包含伺服器端點啟用時間、SFTP／FTPS／FTP 傳輸資料量、AS2 訊息、managed workflow 處理量、SFTP connector 呼叫與資料量，以及 web app units。另需計入 S3／EFS、資料傳輸、Route 53、Elastic IP、Lambda、API Gateway、Directory Service、Secrets Manager、KMS、CloudWatch 與 CloudTrail 費用。</p>
+<p>端點即使沒有傳輸，也可能持續產生啟用費用。估算時需分開計算端點數、啟用協定、區域、每月傳入與傳出 GB、檔案數、AS2 訊息數、工作流程處理量、日誌量與跨區複寫。小量低頻交換不一定比現有共享平台便宜，高量傳輸則應特別檢查資料傳出與日誌資料事件成本。</p>
+<p>AWS 文件說明 Transfer Family server 可跨最多三個可用區配置，底層連線與傳輸由冗餘自動擴展服務處理；這不等於交易夥伴、DNS、身分提供者、S3／EFS、KMS、工作流程與第二區域均具備相同可用性。端點多 AZ 不能取代跨區資料副本與復原演練。</p>
+<h2>AWS Transfer Family 特有資安風險與控制</h2><ul><li><strong>FTP 明文傳輸：</strong>優先改用 SFTP、FTPS 或 AS2；必要使用時僅允許 VPC 內部端點與受控私有連線。</li><li><strong>端點暴露過廣：</strong>依需求選擇 VPC 內部或網際網路端點，以 Security Group、NACL、來源 IP、VPN 與 Direct Connect 限制可達面。</li><li><strong>舊密碼套件長期保留：</strong>明確選定 security policy，盤點舊用戶端並訂定淘汰時間；CloudFormation 不應無意接受較舊預設。</li><li><strong>身分提供者回傳過度權限：</strong>驗證 Lambda／API Gateway 輸出的角色、目錄與政策，拒絕空值、錯誤來源或未核准協定。</li><li><strong>自訂認證可被濫用：</strong>限制 Transfer Family 對 Lambda／API Gateway 的呼叫權限，停用認證快取，對失敗與來源異常告警。</li><li><strong>目錄看似隔離但儲存仍可越權：</strong>邏輯目錄搭配獨立角色或 S3 session policy；EFS 另以 POSIX 權限與 access point 控制。</li><li><strong>S3 prefix 權限過寬：</strong>限制 ListBucket 條件、物件 ARN、刪除、覆寫、讀取與跨 partner 路徑，不共用全 bucket 管理角色。</li><li><strong>KMS 權限造成跨租戶解密：</strong>限制 key policy、grant 與 encryption context，分離資料管理者與金鑰管理者。</li><li><strong>秘密或 PGP 私密材料散落：</strong>集中於 Secrets Manager／Parameter Store，設定輪替、存取稽核與禁止日誌輸出。</li><li><strong>部分上傳被誤當完整檔案：</strong>以暫存命名、完成標記、大小／雜湊驗證與冪等處理避免下游提前讀取。</li><li><strong>惡意或錯誤檔案直接進核心系統：</strong>先寫隔離區，執行類型、格式、惡意程式、內容與業務規則檢查後再發布。</li><li><strong>同名檔案覆寫證據：</strong>啟用版本、唯一物件鍵、不可變保留或寫入政策，記錄原始名稱與處理結果。</li><li><strong>只記錄控制面：</strong>CloudTrail 管理事件不足以涵蓋所有檔案操作；結合 CloudWatch 傳輸日誌與必要的 S3 資料事件。</li><li><strong>日誌洩漏檔名或業務資料：</strong>控制日誌欄位、保留、查詢權限與匯出位置，避免把敏感內容寫入錯誤訊息。</li><li><strong>交易夥伴離場未撤權：</strong>建立到期日、停用程序、金鑰撤銷、目錄移除、來源 IP 清理與資料保留確認。</li><li><strong>備份只涵蓋資料：</strong>同步保存 IaC、端點參數、security policy、身分映射、DNS、憑證與工作流程設定。</li><li><strong>跨區復原無法登入：</strong>預先驗證第二區域身分提供者、KMS、DNS、憑證、端點與 partner allowlist。</li></ul>
+<h2>共同責任邊界</h2>
+<p>AWS 負責 Transfer Family 受管服務與底層雲端基礎設施，包括協定端點服務、硬體與服務容量管理、故障處理，以及與 S3、EFS、IAM、KMS、CloudWatch、CloudTrail、Lambda、API Gateway 等服務的整合能力。</p>
+<p>客戶負責協定與端點選型、交易夥伴身分、IAM 最小權限、MFA／短期管理憑證、網路隔離、公開存取、security policy、S3／EFS 權限、KMS 政策、Secrets Manager／Parameter Store、CloudTrail／CloudWatch、檔案驗證、惡意程式掃描、資料保留、備份、第二區域重建與復原驗收。AWS 管理端點可用性，不代表客戶資料交換流程與下游處理已具備韌性。</p>
+<h2>上線與維運可執行檢查清單</h2><ul><li>□ 交易夥伴、使用者、來源、協定、檔案類型、大小、頻率與時窗清冊完整。</li><li>□ 已比較 SFTP、FTPS、FTP、AS2、瀏覽器傳輸與替代整合方式。</li><li>□ FTP 若仍存在，已限制於私有路徑並有正式風險接受與退場日期。</li><li>□ S3／EFS 的命令、目錄、部分上傳、重新命名、覆寫與鎖定語意已測試。</li><li>□ 端點類型、AZ、DNS、固定 IP、Security Group、NACL 與來源限制已核准。</li><li>□ 管理人員使用聯合身分、MFA 與短期角色，權限已分離。</li><li>□ 身分提供者具停用、鎖定、輪替、來源驗證與故障處理程序。</li><li>□ 每個使用者或群組的服務角色只允許必要 bucket、prefix、EFS path 與動作。</li><li>□ 邏輯目錄另有 IAM session policy、獨立角色或 POSIX 權限作為儲存層限制。</li><li>□ 已明確指定並測試 security policy，未無意保留過時演算法。</li><li>□ S3 Block Public Access、bucket policy、版本、生命週期與 Object Ownership 已設定。</li><li>□ KMS key policy、grant、停用、刪除與第二區域復原權限已測試。</li><li>□ 整合秘密與 PGP 私密材料集中管理，頁面、範本與日誌無明文機密值。</li><li>□ inbound 隔離、格式、大小、命名、雜湊、惡意程式與業務規則檢查已落地。</li><li>□ workflow 具冪等、重試、失敗隔離、通知與人工處理程序。</li><li>□ CloudWatch 結構化日誌、指標、保留、查詢與異常告警已設定。</li><li>□ CloudTrail 管理事件已集中保存；必要 S3 資料事件範圍與成本已核准。</li><li>□ 無效登入、越權、來源限制、大檔、部分上傳、同名檔與中斷恢復均已測試。</li><li>□ RTO、RPO、資料副本、第二區域端點、DNS、身分、憑證與 KMS 方案已定義。</li><li>□ 已完成第二區域登入、傳輸、驗證、重送、回切及資料完整性演練。</li><li>□ 閒置端點、過期使用者、異常傳輸量、工作流程失敗與費用告警定期檢查。</li></ul>
+<h2>AWS 官方一手來源</h2><ul>
+<li><a href="https://aws.amazon.com/aws-transfer-family/" target="_blank" rel="noopener noreferrer">AWS Transfer Family 產品頁</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/what-is-aws-transfer-family.html" target="_blank" rel="noopener noreferrer">What is AWS Transfer Family?</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/tf-server-endpoint.html" target="_blank" rel="noopener noreferrer">Configuring an SFTP, FTPS, or FTP server endpoint</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/sftp-for-transfer-family.html" target="_blank" rel="noopener noreferrer">Identity provider options and endpoint types</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/security.html" target="_blank" rel="noopener noreferrer">Security in AWS Transfer Family</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/security-policies.html" target="_blank" rel="noopener noreferrer">Security policies for Transfer Family servers</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/users-policies.html" target="_blank" rel="noopener noreferrer">Managing access controls</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/users-policies-session.html" target="_blank" rel="noopener noreferrer">Creating a session policy for an S3 bucket</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/logical-dir-mappings.html" target="_blank" rel="noopener noreferrer">Using logical directories</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/transfer-workflows.html" target="_blank" rel="noopener noreferrer">AWS Transfer Family managed workflows</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/structured-logging.html" target="_blank" rel="noopener noreferrer">CloudWatch logging for Transfer Family servers</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/cloudtrail-logging.html" target="_blank" rel="noopener noreferrer">CloudTrail logging for AWS Transfer Family</a>（查閱：2026-11-25）</li>
+<li><a href="https://docs.aws.amazon.com/transfer/latest/userguide/transfer-file.html" target="_blank" rel="noopener noreferrer">Transferring files using a client</a>（查閱：2026-11-25）</li>
+<li><a href="https://aws.amazon.com/aws-transfer-family/pricing/" target="_blank" rel="noopener noreferrer">AWS Transfer Family Pricing</a>（查閱：2026-11-25）</li>
+<li><a href="https://aws.amazon.com/compliance/shared-responsibility-model/" target="_blank" rel="noopener noreferrer">AWS Shared Responsibility Model</a>（查閱：2026-11-25）</li>
+</ul>
+<h2>內容說明</h2><p>本文依 2026-11-25 可查閱的 AWS 官方文件整理。Transfer Family 的協定、端點類型、身分提供者、security policy、區域、配額、managed workflow、web app、日誌與價格可能更新；正式導入前應依目標區域最新文件、相容性測試、資安審查、費用估算與跨區復原演練為準。</p>
+</div>
+<nav aria-label="文章導覽" class="mt-10 pt-8 border-t border-white/10 grid sm:grid-cols-2 gap-4"><a class="glass rounded-2xl p-5 block" href="./2026-11-24-amazon-fsx-basics.html" rel="prev"><span class="muted text-sm">← 上一篇文章</span><strong class="block text-white mt-2">Amazon FSx：受管檔案儲存與選型基礎</strong></a><span aria-disabled="true" class="glass rounded-2xl p-5 block opacity-60 sm:text-right"><span class="muted text-sm">下一篇文章 →</span><strong class="block text-white mt-2">本系列最新文章</strong></span></nav>
+</article></main>
+<footer class="max-w-5xl mx-auto px-4 pb-12 text-center muted"><p>© 2026 Dr. William · AWS 基礎介紹</p></footer>
+</body></html>

@@ -6,8 +6,6 @@
   <title>AWS 基礎介紹｜AWS Proton：服務退場與平台工程遷移治理</title>
   <meta name="description" content="理解 AWS Proton 原有的平台工程模型、2026 年 10 月 7 日終止支援後的影響，以及如何盤點模板、管線、權限與已部署資源並安全遷移。" />
   <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-11-19-aws-proton-deprecation-migration-basics.html" />
-  <link rel="prev" href="./2026-11-18-aws-service-catalog-basics.html" />
-  <link rel="next" href="./2026-11-20-aws-transform-mgn-basics.html" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="AWS Proton：服務退場與平台工程遷移治理" />
   <meta property="og:description" content="從環境與服務模板、佈建方法、權限、管線到替代方案，整理 AWS Proton 終止支援後的遷移與安全控制。" />
@@ -22,6 +20,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#fff;font-weight:800}.prose h3{font-size:1.2rem;margin-top:1.6rem;margin-bottom:.7rem;color:#ffcb8a;font-weight:800}.prose ul,.prose ol{padding-left:1.4rem}.prose ul{list-style:disc}.prose ol{list-style:decimal}.prose strong{color:#fff}.muted{color:#a8bad8}.chip{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}a{color:#8fe8ff;overflow-wrap:anywhere}.diagram{background:#081426;border:1px solid rgba(255,255,255,.1)}.diagram img{max-height:1180px;object-fit:contain}.notice{border-left:4px solid #ff9900;background:rgba(255,153,0,.09)}.warning{border-left:4px solid #fb7185;background:rgba(251,113,133,.09)}code{overflow-wrap:anywhere}@media(max-width:640px){.prose h2{font-size:1.45rem}.diagram{padding:.35rem!important}.diagram img{max-height:none}}</style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"AWS Proton：服務退場與平台工程遷移治理","description":"理解 AWS Proton 原有的平台工程模型、2026 年 10 月 7 日終止支援後的影響，以及如何盤點模板、管線、權限與已部署資源並安全遷移。","datePublished":"2026-11-19T21:30:00+08:00","dateModified":"2026-11-19T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-11-19-aws-proton-deprecation-migration-basics.html","image":"https://www.2gwine.com/aws-basics/assets/aws-proton-migration-governance-flow.svg","isPartOf":{"@type":"CollectionPage","name":"AWS 基礎介紹","url":"https://www.2gwine.com/aws-basics/"}}</script>
+
+  <link rel="prev" href="./2026-11-18-aws-service-catalog-basics.html" />
+  <link rel="next" href="./2026-11-20-aws-transform-mgn-basics.html" />
 </head>
 <body>
 <header class="max-w-5xl mx-auto px-4 pt-6"><nav aria-label="主要導覽" class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-3"><a class="font-bold text-white no-underline" href="../../index.html">Dr. William</a><a href="../index.html">AWS 基礎介紹</a></nav></header>

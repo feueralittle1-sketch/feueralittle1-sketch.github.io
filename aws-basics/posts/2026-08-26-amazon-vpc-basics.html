@@ -7,8 +7,6 @@
   <meta name="description" content="理解 Amazon VPC 的 CIDR、子網路、路由、Security Group、NACL、端點與連線設計，並掌握公開暴露、成本、可用性及共同責任邊界。" />
   <meta name="keywords" content="AWS基礎介紹,Amazon VPC,VPC子網路,Security Group,網路隔離,VPC Endpoint" />
   <link rel="canonical" href="https://www.2gwine.com/aws-basics/posts/2026-08-26-amazon-vpc-basics.html" />
-  <link rel="prev" href="./2026-08-25-aws-iam-basics.html" />
-  <link rel="next" href="./2026-08-27-amazon-rds-aurora-basics.html" />
   <meta property="og:type" content="article" />
   <meta property="og:title" content="Amazon VPC：子網路、路由與網路隔離" />
   <meta property="og:description" content="從位址規劃、路由與分層子網路，理解 VPC 的連線、隔離、觀測與復原責任。" />
@@ -20,6 +18,9 @@
   <script src="https://cdn.tailwindcss.com"></script>
   <style>body{margin:0;color:#e6eefc;background:radial-gradient(circle at 15% 5%,rgba(255,153,0,.11),transparent 24%),linear-gradient(180deg,#07111f,#0b1730 42%,#050c18);font-family:"Inter","Noto Sans TC",system-ui,sans-serif;overflow-x:hidden}.glass{background:rgba(13,26,46,.76);border:1px solid rgba(255,255,255,.09);box-shadow:0 16px 60px rgba(0,0,0,.25);backdrop-filter:blur(20px)}.prose p,.prose li{color:#c6d4eb;line-height:1.9}.prose h2{font-size:1.75rem;line-height:1.3;margin-top:2.4rem;margin-bottom:1rem;color:#f4f8ff}.prose h3{font-size:1.2rem;margin-top:1.6rem;color:#ffcc84}.muted{color:#9fb3d9}.note{border-left:4px solid #ffbd70;background:rgba(255,153,0,.08)}a{color:#8fe8ff}.tag{border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.05)}figure{margin:2rem 0}figure img{display:block;max-width:100%;height:auto}figcaption{color:#94a3b8;font-size:.9rem;line-height:1.7;margin-top:.75rem;text-align:center}code{overflow-wrap:anywhere}@media(max-width:390px){.prose h2{font-size:1.5rem}}</style>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"TechArticle","headline":"Amazon VPC：子網路、路由與網路隔離","description":"理解 Amazon VPC 的核心概念、使用邊界、成本、可用性、網路隔離與共同責任。","datePublished":"2026-08-26T21:30:00+08:00","dateModified":"2026-08-26T21:30:00+08:00","inLanguage":"zh-Hant","author":{"@type":"Person","name":"Dr. William"},"publisher":{"@type":"Person","name":"Dr. William"},"mainEntityOfPage":"https://www.2gwine.com/aws-basics/posts/2026-08-26-amazon-vpc-basics.html","image":"https://www.2gwine.com/aws-basics/assets/vpc-private-three-tier-flow.svg"}</script>
+
+  <link rel="prev" href="./2026-08-25-aws-iam-basics.html" />
+  <link rel="next" href="./2026-08-27-amazon-rds-aurora-basics.html" />
 </head>
 <body>
 <header class="max-w-5xl mx-auto px-4 pt-6"><nav class="glass rounded-2xl px-5 py-4 flex flex-wrap justify-between gap-4"><a href="../index.html" class="font-bold no-underline">AWS 基礎介紹</a><a href="../../index.html">Dr. William 首頁</a></nav></header>
