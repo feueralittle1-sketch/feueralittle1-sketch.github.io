@@ -281,6 +281,12 @@
   <div class="spotlight" id="spotlight"></div>
   <div class="cursor-dot" id="cursorDot"></div>
   <div class="cursor-ring" id="cursorRing"></div>
+  <script>
+    if (navigator.maxTouchPoints > 0 || window.matchMedia('(hover: none), (pointer: coarse)').matches) {
+      ['spotlight', 'cursorDot', 'cursorRing'].forEach(id => document.getElementById(id)?.remove());
+      document.body.style.cursor = 'auto';
+    }
+  </script>
 
   <header class="fixed top-0 inset-x-0 z-50">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4">
@@ -702,13 +708,13 @@
               <p class="text-slate-300 leading-7 mb-5">以客觀圖解持續整理醫院資安韌性、資料治理、AI 治理與智慧醫療落地方法。</p>
               <div class="text-sm text-cyan-200">前往專欄 →</div>
             </a>
-            <a href="./aws-basics/posts/2026-11-25-aws-transfer-family-basics.html" class="glass rounded-[1.75rem] p-6 article-card transition duration-300 block">
+            <a href="./aws-basics/posts/2026-11-26-aws-snowball-edge-transition-basics.html" class="glass rounded-[1.75rem] p-6 article-card transition duration-300 block">
               <div class="flex items-center justify-between mb-5">
                 <span class="text-sm text-orange-200">NEW</span>
                 <iconify-icon icon="mdi:aws" width="28"></iconify-icon>
               </div>
-              <h3 class="text-2xl font-bold mb-4">AWS 基礎介紹｜最新：AWS Transfer Family</h3>
-              <p class="text-slate-300 leading-7 mb-5">從 SFTP、FTPS、FTP、AS2 端點與身分整合，到 S3／EFS 隔離、KMS、監控與跨區復原。</p>
+              <h3 class="text-2xl font-bold mb-4">AWS 基礎介紹｜最新：AWS Snowball Edge</h3>
+              <p class="text-slate-300 leading-7 mb-5">從終止銷售後的既有裝置安全作業，到 DataSync、Data Transfer Terminal、Outposts 遷移選型。</p>
               <div class="text-sm text-orange-200">閱讀最新文章 →</div>
             </a>
             <article class="glass rounded-[1.75rem] p-6 article-card transition duration-300">
@@ -882,7 +888,7 @@
     const spotlight = document.getElementById('spotlight');
     const cursorDot = document.getElementById('cursorDot');
     const cursorRing = document.getElementById('cursorRing');
-    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches && navigator.maxTouchPoints === 0;
 
     if (finePointer && spotlight && cursorDot && cursorRing) {
       let mouseX = window.innerWidth / 2;
@@ -922,6 +928,7 @@
       });
     } else {
       [spotlight, cursorDot, cursorRing].forEach(el => el?.remove());
+      document.body.style.cursor = 'auto';
     }
   </script>
 
