@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1400" height="900" viewBox="0 0 1400 900" role="img" aria-labelledby="title desc">
+  <title id="title">AWS Migration Hub 既有遷移追蹤與轉向流程示意</title>
+  <desc id="desc">從應用盤點、探索與依賴關係，經遷移工具更新與中央追蹤，到 AWS Transform 或其他現行工具的轉向，以及 IAM、網路、加密、稽核與復原控制。</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1"><stop stop-color="#071426"/><stop offset="1" stop-color="#10264a"/></linearGradient>
+    <filter id="shadow" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="10" stdDeviation="10" flood-color="#000" flood-opacity=".28"/></filter>
+    <marker id="arrow" markerWidth="12" markerHeight="12" refX="10" refY="6" orient="auto"><path d="M0 0L12 6L0 12Z" fill="#79ddff"/></marker>
+    <style>.t{font-family:Inter,'Noto Sans TC',sans-serif;fill:#f8fbff}.h{font-size:34px;font-weight:800}.s{font-size:18px;fill:#bcd0eb}.box{fill:#10233f;stroke:#365b83;stroke-width:2}.accent{fill:#142e50;stroke:#ffad35;stroke-width:2}.alt{fill:#0d3342;stroke:#4ed9c4;stroke-width:2}.warn{fill:#3a2131;stroke:#fb7185;stroke-width:2}.label{font-size:22px;font-weight:800}.body{font-size:17px;fill:#c9d8ed}.line{fill:none;stroke:#79ddff;stroke-width:4;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1400" height="900" rx="36" fill="url(#bg)"/>
+  <text x="70" y="75" class="t h">Migration Hub：既有追蹤與遷移治理轉向</text>
+  <text x="70" y="112" class="t s">示意流程｜新客戶自 2025-11-07 起不再開放，既有環境應同步規劃替代與退場</text>
+
+  <g filter="url(#shadow)"><rect x="70" y="160" width="255" height="135" rx="22" class="box"/><text x="95" y="202" class="t label">1. 建立遷移基線</text><text x="95" y="240" class="t body">應用／伺服器／資料庫</text><text x="95" y="270" class="t body">擁有者／依賴／波次／RTO・RPO</text></g>
+  <path d="M325 228H380" class="line"/>
+  <g filter="url(#shadow)"><rect x="390" y="160" width="290" height="135" rx="22" class="accent"/><text x="415" y="202" class="t label">2. 既有 Hub 受控追蹤</text><text x="415" y="240" class="t body">探索資料與工具狀態匯入</text><text x="415" y="270" class="t body">里程碑、阻塞、證據與例外</text></g>
+  <path d="M680 228H735" class="line"/>
+  <g filter="url(#shadow)"><rect x="745" y="160" width="260" height="135" rx="22" class="warn"/><text x="770" y="202" class="t label">3. 雙軌生命週期</text><text x="770" y="240" class="t body">既有使用：驗證可用期限</text><text x="770" y="270" class="t body">新需求：不建立 Hub 相依</text></g>
+  <path d="M1005 228H1060" class="line"/>
+  <g filter="url(#shadow)"><rect x="1070" y="160" width="260" height="135" rx="22" class="alt"/><text x="1095" y="202" class="t label">4. 轉向現行能力</text><text x="1095" y="240" class="t body">AWS Transform／MGN／DMS</text><text x="1095" y="270" class="t body">組合管理與自有治理平台</text></g>
+
+  <path d="M525 295V350" class="line"/>
+  <g filter="url(#shadow)"><rect x="70" y="365" width="1260" height="245" rx="28" class="box"/><text x="105" y="412" class="t label">遷移波次的運作閉環</text>
+    <rect x="105" y="450" width="220" height="110" rx="18" class="accent"/><text x="130" y="485" class="t body">盤點與分群</text><text x="130" y="516" class="t body">依賴、關鍵度、資料量</text><text x="130" y="545" class="t body">責任人與驗收條件</text>
+    <rect x="375" y="450" width="220" height="110" rx="18" class="accent"/><text x="400" y="485" class="t body">工具執行</text><text x="400" y="516" class="t body">MGN／DMS／合作工具</text><text x="400" y="545" class="t body">狀態與證據回傳</text>
+    <rect x="645" y="450" width="220" height="110" rx="18" class="accent"/><text x="670" y="485" class="t body">波次決策</text><text x="670" y="516" class="t body">就緒／阻塞／回復</text><text x="670" y="545" class="t body">變更與業務簽核</text>
+    <rect x="915" y="450" width="220" height="110" rx="18" class="accent"/><text x="940" y="485" class="t body">切換與驗收</text><text x="940" y="516" class="t body">功能、效能、資料完整性</text><text x="940" y="545" class="t body">RTO／RPO 與成本</text>
+    <rect x="1185" y="450" width="110" height="110" rx="18" class="alt"/><text x="1208" y="490" class="t body">關閉</text><text x="1208" y="522" class="t body">來源</text><text x="1208" y="548" class="t body">與權限</text>
+    <path d="M325 505H367M595 505H637M865 505H907M1135 505H1177" class="line"/>
+  </g>
+
+  <path d="M700 610V675" class="line"/>
+  <g filter="url(#shadow)"><rect x="150" y="690" width="1100" height="145" rx="28" class="alt"/><text x="185" y="735" class="t label">跨工具共同治理控制</text><text x="185" y="776" class="t body">聯合身分、MFA、短期憑證與最小權限　•　探索代理與管理端網路隔離　•　KMS 加密與秘密集中管理</text><text x="185" y="814" class="t body">CloudTrail／CloudWatch 與變更證據　•　來源備份、切換回復、跨區復原　•　資料最小化、保留期限與退場驗收</text></g>
+</svg>
